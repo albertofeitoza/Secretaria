@@ -1,0 +1,20 @@
+.centralizar {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  min-height: 25%;
+  min-width: 20%;
+
+}
+
+.classform {
+  display: flex;
+  flex-direction: column;
+}
+
+.button {
+  margin: 20px 15px 0 0;
+  margin-right: 15px;
+
+}
