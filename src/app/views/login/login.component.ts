@@ -12,6 +12,7 @@ export class LoginComponent {
 
   sessao: login = new login()
   isLoggedIn : boolean = false;
+  userPassword : string  = ""
   constructor(
     private auth: AutenticacaoService, 
     private router : Router
@@ -27,9 +28,9 @@ export class LoginComponent {
     }
       
 
-  async login(event: any) {
+  login(event: any) {
     if (event.which === 13 || event.which == 1) {
-        await this.auth.Autenticado(this.sessao)
+        this.auth.Autenticado(this.sessao)
     }
   }
 }

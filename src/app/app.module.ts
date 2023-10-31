@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import {NgxPrintModule} from 'ngx-print';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 //Componentes
@@ -37,6 +38,7 @@ import { UpdateMembroComponent } from './views/Membros/update-membro/update-memb
 import { CadastroMembrosComponent } from './views/Membros/cadastro-membros/cadastro-membros.component';
 import { RelatoriosComponent } from './views/Relatorios/relatorios/relatorios.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,7 +72,8 @@ import { RelatoriosComponent } from './views/Relatorios/relatorios/relatorios.co
     MatDialogModule,
     MatDividerModule,
     FormsModule,
-    NgxPrintModule
+    NgxPrintModule,
+    HttpClientModule
 
   ],
   providers: [AutenticacaoService],
