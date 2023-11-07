@@ -1,1 +1,82 @@
-<p>read-membros works!</p>
+<div class="menuInternoGrid">
+  <a routerLink="/membrosadd" class="cadGrupo">
+    <i class="material-icons">add</i>
+  </a>
+  <span class="search" (click)="buscarMembro($event)">
+    <i class="material-icons">search</i>
+  </span>
+  <input class="txtBusca" type="text" (keypress)="buscarMembro($event)" value="" />
+</div>
+<br>
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="pessoa" matSort>
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+      <mat-cell id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="foto">
+      <mat-header-cell *matHeaderCellDef>Foto</mat-header-cell>
+      <mat-cell mat-cell id="foto" *matCellDef="let row">
+        <img style="width: 10%; border-radius: 100%;" src="data:image/jpg;base64, {{row.fotoPath}}" alt="Red dot" />
+      </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="nome">
+      <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
+    </ng-container>
+
+
+    <!-- status -->
+    <ng-container matColumnDef="statusPessoa">
+      <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+
+        <div *ngIf="row.statusPessoa == 1">
+          <i class="material-icons">
+            ok
+          </i>
+        </div>
+        <div *ngIf="row.bloqueado == 2">
+          <i class="material-icons">
+            lock_open
+          </i>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+
+    <!-- Coluna de Ações -->
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+
+        <a (click)="AtualizarMembro(row.id)" class="edit">
+          <i class="material-icons">
+            edit
+          </i>
+        </a>
+        <a (click)="ExcluirAgenda(row.id)" class="delete">
+          <i class="material-icons">
+            delete
+          </i>
+        </a>
+
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
+    <mat-row (click)="PessoaSelecionada(row.id)" *matRowDef="let row; columns: Colunas;"
+      [ngClass]="{'corLinhaGrid' : row.id == pessoaSelecionada}"></mat-row>
+  </table>
+
+  <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+    aria-label="Select page of periodic elements">
+  </mat-paginator>
+
+</div>
+<!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->

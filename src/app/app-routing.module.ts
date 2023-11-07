@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { BemVindoComponent } from './views/bem-vindo/bem-vindo.component';
 import { ReadMembrosComponent } from './views/Membros/read-membros/read-membros.component';
 import { RelatoriosComponent } from './views/Relatorios/relatorios/relatorios.component';
+import { CadastroMembrosComponent } from './views/Membros/cadastro-membros/cadastro-membros.component';
 
 const routes: Routes = [
   {path : '', component: BemVindoComponent},
   {path: "home", component: HomeComponent },
   {path: "login", component: LoginComponent },
   {path: "membros", component: ReadMembrosComponent},
+  {path: "membrosadd", component: CadastroMembrosComponent},
   {path: "relatorios", component: RelatoriosComponent},
 
 ];

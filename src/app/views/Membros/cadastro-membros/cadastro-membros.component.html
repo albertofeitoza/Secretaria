@@ -1,1 +1,168 @@
-<p>cadastro-membros works!</p>
+<mat-accordion class="example-headers-align">
+  <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h2>Dados Pessoais</h2>
+      </mat-panel-title>
+      <mat-panel-description>
+        Nome, Rg, Cpf etc...
+        <mat-icon>account_circle</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <mat-form-field>
+      <mat-label>Nome</mat-label>
+      <input matInput placeholder="Nome" [(ngModel)]="pessoa.nome" name="nome">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>RG</mat-label>
+      <input matInput placeholder="RG - Números" [(ngModel)]="pessoa.cpf" name="cpf">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select style="padding-top: 8px;font-size: 14px; " appearance="outline" [(value)]="pessoa.estadoCivil"
+        placeholder="Estado Civil">
+        <mat-option *ngFor="let ec of estCivil" [value]="ec.id">
+          {{ec.value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Data Nascimento</mat-label>
+      <input matInput id="nascimento" [matDatepicker]="picker" (focus)="picker.open()"
+        [(ngModel)]="pessoa.dataNascimento" name="dataNascimento">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Profissão</mat-label>
+      <input matInput placeholder="Profissão" [(ngModel)]="pessoa.profissao" name="profissao">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select [(value)]="pessoa.grauInstrucao" placeholder="Grau Instrução">
+        <mat-option *ngFor="let i of instrucao" [value]="i.id">
+          {{i.value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select [(value)]="pessoa.sexo" placeholder="Sexo">
+        <mat-option *ngFor="let s of sexo" [value]="s.id">
+          {{s.value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field style="padding-top: 15px;">
+      <mat-select [(value)]="pessoa.statusPessoa" placeholder="Status">
+        <mat-option *ngFor="let sp of statusPessoa" [value]="sp.id">
+          {{sp.value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Naturalidade</mat-label>
+      <input matInput placeholder="Naturalidade" [(ngModel)]="pessoa.naturalidade" name="naturalidade">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Naturalidade-Estado</mat-label>
+      <input matInput placeholder="Naturalidade-Estado" [(ngModel)]="pessoa.naturalidadeEstado"
+        name="naturalidadeEstado">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nome da Esposa</mat-label>
+      <input matInput placeholder="Nome da Esposa" [(ngModel)]="pessoa.nomeConjuge" name="nomeConjuge">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Data Casamento</mat-label>
+
+        <input matInput id="casamento" [matDatepicker]="picker" (focus)="picker.open()"
+          [(ngModel)]="pessoa.dataCasamento" name="DataCasamento">
+
+    </mat-form-field>
+
+
+    <mat-action-row>
+      <button mat-button color="primary" (click)="Proximo()">Próximo</button>
+    </mat-action-row>
+
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h2>Endereço</h2>
+      </mat-panel-title>
+      <mat-panel-description>
+        Aqui será salvo o Endereço do cliente
+        <mat-icon>map</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <mat-form-field>
+      <mat-label>Country</mat-label>
+      <input matInput>
+    </mat-form-field>
+
+    <mat-action-row>
+      <button mat-button color="warn" (click)="Voltar()">Voltar</button>
+      <button mat-button color="primary" (click)="Proximo()">Próximo</button>
+    </mat-action-row>
+
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h2>Contatos</h2>
+      </mat-panel-title>
+      <mat-panel-description>
+        Aqui será salvo todos o contato do Membro
+        <mat-icon>map</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <mat-form-field>
+      <mat-label>Country</mat-label>
+      <input matInput>
+    </mat-form-field>
+
+    <mat-action-row>
+      <button mat-button color="warn" (click)="Voltar()">Voltar</button>
+      <button mat-button color="primary" (click)="Proximo()">Próximo</button>
+    </mat-action-row>
+
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h2>Histórico do cliente</h2>
+      </mat-panel-title>
+      <mat-panel-description>
+        Aqui será Salvo todo o Histórico do cliente, como data de chegada, saida Etc...
+        <mat-icon>date_range</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <mat-form-field>
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly>
+    </mat-form-field>
+    <mat-datepicker #picker></mat-datepicker>
+
+    <mat-action-row>
+      <button mat-button color="warn" (click)="Voltar()">Voltar</button>
+      <button mat-button color="primary" (click)="Proximo()">Salvar</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+</mat-accordion>

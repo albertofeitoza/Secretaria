@@ -4,7 +4,6 @@ import { login } from '../models/modelLogin';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../environments/environment';
-import { Endpoint } from '../enum/Endpoints';
 import { map, catchError, take } from 'rxjs/operators';
 import { UtilServiceService } from './util-service.service';
 
@@ -28,12 +27,18 @@ export class AutenticacaoService {
 
 
   Autenticado(sessao: login) {
-    this.loginSistema(sessao, Endpoint.Token).subscribe(x => {
-      this.token.emit(x.toString());
-      this.autenticado.emit(true);
+    // this.loginSistema(sessao, Endpoint.Token).subscribe(x => {
+    //   this.token.emit(x.toString());
+    //   this.autenticado.emit(true);
+    //   this.router.navigate(['/']);
+
+    // })
+
+    //login fixado para testes locais
+    this.autenticado.emit(true);
       this.router.navigate(['/']);
 
-    })
+
 
   }
   logoof() {

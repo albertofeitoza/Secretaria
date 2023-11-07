@@ -2,3 +2,107 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.red {
+    color: rgb(227, 94, 107);
+
+}
+
+.v-middle{
+
+    vertical-align: middle;
+}
+
+.msg-sucess{
+
+    background-color: #27a745;
+    color: #fff;
+}
+
+.msg-error{
+
+    background-color: #e36e6b;
+    color: #fff;
+}
+
+/*CSS da Aplicação */
+
+/* Grids Css Configuração de  menus  */
+.menuInternoGrid{
+  margin-top: 1%;
+}
+.menuInternoGrid a {
+  padding-left: 1%;
+}
+.menuInternoGrid .txtBusca {
+  float : right;
+  font-size: 15px;
+  width: 300px;
+  margin-top: 10px;
+  margin-right: 15px;
+  border-top-right-radius: 1%;
+}
+
+.menuInternoGrid .search {
+  float : right;
+  font-size: 15px;
+  width: 100px;
+  margin-top: 10px;
+}
+/* Grids Css Configuração de  menus  */
+.botaoBuscaPopups { /*popups*/
+    font-size: 25px;
+    margin-top: 12px;
+    padding-left: 15px;
+}
+
+.rodape{  /*Usar nos rodapés dos popups Botões*/
+   float: right;
+}
+
+.rodape .button {
+    margin-top: 15px;
+    margin-left : 15px;
+}
+
+.formularioRow {
+    display: flexbox;
+    flex-direction: row;
+    font-size: 12px;
+}
+
+.mat-form-field-infix{
+    width: auto;
+}
+
+mat-form-field{
+    padding-left: 9px;
+}
+
+mat-form-field mat-label{
+    font-size: 12px;
+}
+
+mat-form-field mat-label input{
+    font-size: 12px;
+}
+
+
+
+/*Cabeçalho das tabelas icone pra fechar os Popups*/
+table{
+    width: 100%;
+}
+
+.close{
+    float: right;
+    margin-top: 0px;
+    margin-right: 0px;
+    padding: 0px;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.corLinhaGrid {
+    background: aqua;
+  }

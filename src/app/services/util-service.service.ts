@@ -14,34 +14,89 @@ export class UtilServiceService {
 
   constructor(
     private snackBar: MatSnackBar,
-    private http : HttpClient,
-    private router : Router,
-    public overlay : Overlay,
-    public dialog : MatDialog,) { }
+    private http: HttpClient,
+    private router: Router,
+    public overlay: Overlay,
+    public dialog: MatDialog,) { }
 
-  showMessage(msg : string, isErro: boolean = false) : void { 
-    this.snackBar.open(msg, 'X' , { 
-      duration : 3000,
+  showMessage(msg: string, isErro: boolean = false): void {
+    this.snackBar.open(msg, 'X', {
+      duration: 3000,
       horizontalPosition: "right",
-      verticalPosition : "top",
-      panelClass : isErro ? ['msg-error'] : ['msg-sucess']
+      verticalPosition: "top",
+      panelClass: isErro ? ['msg-error'] : ['msg-sucess']
     })
 
   }
 
-  erroHandler(e: any) : Observable<any>{
+  erroHandler(e: any): Observable<any> {
     let mensagem = e.error;
-    this.showMessage(e.error, true )
-    return EMPTY 
+    this.showMessage(e.error, true)
+    return EMPTY
   }
 
-  convertToBase64(txt : string) : string {
+  convertToBase64(txt: string): string {
     return btoa(txt);
   }
 
-  convertBase64toText(txt: string) : string {
+  convertBase64toText(txt: string): string {
     return atob(txt);
 
+  }
+
+  EstCivil() {
+    let estCivil = []
+    estCivil.push({ "id": 0, "value": "Selecione" })
+    estCivil.push({ "id": 1, "value": "Solteiro" })
+    estCivil.push({ "id": 2, "value": "Primeiro Casamento" })
+    estCivil.push({ "id": 3, "value": "Segundo Casamento Viuvo" })
+    estCivil.push({ "id": 4, "value": "Segundo Casamento Divorciado" })
+    estCivil.push({ "id": 5, "value": "Viuvo" })
+    estCivil.push({ "id": 6, "value": "Separado" })
+    estCivil.push({ "id": 7, "value": "Divorciado" })
+
+    return estCivil
+  }
+
+  GrauInstrucao() {
+
+    let grauInstrucao = [];
+
+    grauInstrucao.push({ "id": 0, "value": "Selecione" })
+    grauInstrucao.push({ "id": 1, "value": "Analfabeto" })
+    grauInstrucao.push({ "id": 2, "value": "Ensino Fundamental" })
+    grauInstrucao.push({ "id": 3, "value": "Primeiro Grau Completo" })
+    grauInstrucao.push({ "id": 4, "value": "Primeiro Grau InCompleto" })
+    grauInstrucao.push({ "id": 5, "value": "Segundo Grau Completo" })
+    grauInstrucao.push({ "id": 6, "value": "Segundo Grau InCompleto" })
+    grauInstrucao.push({ "id": 7, "value": "Superior Completo" })
+    grauInstrucao.push({ "id": 8, "value": "Superior InCompleto" })
+
+    return grauInstrucao;
+
+  }
+
+  Sexo() {
+    let sexo = [];
+    sexo.push({ "id": 0, "value": "selecione" })
+    sexo.push({ "id": 1, "value": "Masculino" })
+    sexo.push({ "id": 2, "value": "Feminino" })
+    sexo.push({ "id": 3, "value": "Indefinido" })
+
+    return sexo;
+  }
+
+  StatusPessoa() {
+
+    let statusPessoa = [];
+
+    statusPessoa.push({ "id": 0, "value": "selecione" })
+    statusPessoa.push({ "id": 1, "value": "Em Comunhao" })
+    statusPessoa.push({ "id": 2, "value": "Afastado" })
+    statusPessoa.push({ "id": 3, "value": "Disciplinado" })
+    statusPessoa.push({ "id": 4, "value": "Excluído" })
+
+    return statusPessoa
   }
 
 }
