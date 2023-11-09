@@ -21,12 +21,13 @@ export class CadastroMembrosComponent {
   statusPessoa : any[]
   sexo : any[]
 
-  constructor(private serviceUtil : UtilServiceService) {
-
-  }
+  constructor(
+    private serviceUtil : UtilServiceService) {}
 
   ngOnInit() {
     this.CarregarCombos()
+    this.setStep(0)
+
   }
 
   CarregarCombos(){
@@ -50,7 +51,7 @@ export class CadastroMembrosComponent {
   }
 
   Salvar() {
-    alert("Salvando")
+    this.serviceUtil.showMessage("Membro Cadastrado com sucesso!", true)
   }
 
 }

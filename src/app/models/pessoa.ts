@@ -1,6 +1,7 @@
 import { ControleReuniaoObreiros } from "./ControleReuniaoObreiros";
 import { ControleSantaCeia } from "./ControleSantaCeia";
 import { DadosMembro } from "./DadosMembro";
+import { DadosObreiro } from "./DadosObreiro";
 import { PessoaEndereco } from "./PessoaEndereco";
 import { Usuario } from "./Usuario";
 import { contato } from "./contato";
@@ -26,6 +27,7 @@ export class Pessoa {
   pessoaEndereco: PessoaEndereco;
   contatos: contato[];
   dadosMembro: DadosMembro;
+  dadosObreiro : DadosObreiro
   controleSantaCeia: ControleSantaCeia[];
   controleReuniaoObreiros: ControleReuniaoObreiros[];
 }

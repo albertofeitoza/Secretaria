@@ -1,4 +1,5 @@
 <mat-accordion class="example-headers-align">
+  <!-- <img style="width: 205;height: 320px;" src="../../../../assets/img/rhayane.jpg" alt="" > -->
   <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -6,7 +7,12 @@
       </mat-panel-title>
       <mat-panel-description>
         Nome, Rg, Cpf etc...
-        <mat-icon>account_circle</mat-icon>
+
+        <!-- <mat-icon>account_circle</mat-icon> -->
+        <!-- <mat-form-field>
+          <mat-label>Foto</mat-label>
+          <input matInput placeholder="Foto" [(ngModel)]="pessoa.fotoPath" name="fotoPath" hidden="true">
+        </mat-form-field> -->
       </mat-panel-description>
     </mat-expansion-panel-header>
 
@@ -17,17 +23,22 @@
 
     <mat-form-field>
       <mat-label>RG</mat-label>
-      <input matInput placeholder="RG - Números" [(ngModel)]="pessoa.cpf" name="cpf">
+      <input matInput placeholder="RG - Números" [(ngModel)]="pessoa.rg" name="cpf">
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select style="padding-top: 8px;font-size: 14px; " appearance="outline" [(value)]="pessoa.estadoCivil"
-        placeholder="Estado Civil">
-        <mat-option *ngFor="let ec of estCivil" [value]="ec.id">
-          {{ec.value}}
-        </mat-option>
-      </mat-select>
+      <mat-label>CPF</mat-label>
+      <input matInput placeholder="RG - Números" [(ngModel)]="pessoa.cpf" name="cpf">
     </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Estado Civil</mat-label>
+        <mat-select  [(value)]="pessoa.estadoCivil" placeholder="Estado Civil">
+          <mat-option *ngFor="let ec of estCivil" [value]="ec.id">
+            {{ec.value}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
     <mat-form-field>
       <mat-label>Data Nascimento</mat-label>
@@ -41,6 +52,7 @@
     </mat-form-field>
 
     <mat-form-field>
+      <mat-label>Grau de Instrução</mat-label>
       <mat-select [(value)]="pessoa.grauInstrucao" placeholder="Grau Instrução">
         <mat-option *ngFor="let i of instrucao" [value]="i.id">
           {{i.value}}
@@ -49,6 +61,7 @@
     </mat-form-field>
 
     <mat-form-field>
+      <mat-label>Sexo</mat-label>
       <mat-select [(value)]="pessoa.sexo" placeholder="Sexo">
         <mat-option *ngFor="let s of sexo" [value]="s.id">
           {{s.value}}
@@ -57,7 +70,8 @@
     </mat-form-field>
 
 
-    <mat-form-field style="padding-top: 15px;">
+    <mat-form-field>
+      <mat-label>Status</mat-label>
       <mat-select [(value)]="pessoa.statusPessoa" placeholder="Status">
         <mat-option *ngFor="let sp of statusPessoa" [value]="sp.id">
           {{sp.value}}
@@ -83,10 +97,8 @@
 
     <mat-form-field>
       <mat-label>Data Casamento</mat-label>
-
-        <input matInput id="casamento" [matDatepicker]="picker" (focus)="picker.open()"
-          [(ngModel)]="pessoa.dataCasamento" name="DataCasamento">
-
+      <input matInput id="casamento" [matDatepicker]="picker" (focus)="picker.open()" [(ngModel)]="pessoa.dataCasamento"
+        name="DataCasamento">
     </mat-form-field>
 
 
@@ -125,7 +137,7 @@
         <h2>Contatos</h2>
       </mat-panel-title>
       <mat-panel-description>
-        Aqui será salvo todos o contato do Membro
+        Aqui será salvo todos os contatos do Membro.
         <mat-icon>map</mat-icon>
       </mat-panel-description>
     </mat-expansion-panel-header>
@@ -145,10 +157,10 @@
   <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <h2>Histórico do cliente</h2>
+        <h2>Histórico do Membro</h2>
       </mat-panel-title>
       <mat-panel-description>
-        Aqui será Salvo todo o Histórico do cliente, como data de chegada, saida Etc...
+        Aqui será Salvo todo o Histórico do cliente, como quando chegou na igreja, saida Etc...
         <mat-icon>date_range</mat-icon>
       </mat-panel-description>
     </mat-expansion-panel-header>

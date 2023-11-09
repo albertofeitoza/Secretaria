@@ -9,12 +9,21 @@
 </div>
 <br>
 
+
+
+
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="pessoa" matSort>
     <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
-      <mat-cell id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
+
+      <ng-container matColumnDef="id">
+        <mat-header-cell  style="display: none;" *matHeaderCellDef hidden="true">Id</mat-header-cell>
+        <mat-cell style="display: none;" id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
+      </ng-container>
+    <!-- rol Column -->
+    <ng-container matColumnDef="rol">
+      <mat-header-cell *matHeaderCellDef>Rol</mat-header-cell>
+      <mat-cell id="rol" *matCellDef="let row" hidden="true">{{row.rol}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="foto">
@@ -28,6 +37,17 @@
     <ng-container matColumnDef="nome">
       <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
       <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
+    </ng-container>
+    <!-- Data nascimento -->
+    <ng-container matColumnDef="dataNascimento">
+      <mat-header-cell *matHeaderCellDef>Data Nascimento</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.dataNascimento | date : 'dd/mm/yyyy'}}</mat-cell>
+    </ng-container>
+
+    <!-- Função -->
+    <ng-container matColumnDef="funcao">
+      <mat-header-cell *matHeaderCellDef>Função</mat-header-cell>
+      <mat-cell id="funcao" *matCellDef="let row" hidden="true">{{row.funcao}}</mat-cell>
     </ng-container>
 
 

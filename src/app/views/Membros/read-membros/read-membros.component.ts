@@ -22,7 +22,7 @@ export class ReadMembrosComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-  Colunas = ['id', 'foto', 'nome', 'statusPessoa', 'action']
+  Colunas = ['id', 'rol', 'foto', 'nome', 'dataNascimento', 'funcao', 'statusPessoa', 'action']
   dataSource: MatTableDataSource<Pessoa>;
 
   ngOnInit() {
@@ -41,7 +41,7 @@ export class ReadMembrosComponent implements OnInit {
     for (let index = 1; index < 10; index++) {
       pessoas.fotoPath = this.foto,
         pessoas.id = index
-      pessoas.nome = "Rhayanne Santos Freitas",
+        pessoas.nome = "Rhayanne Santos Freitas",
         pessoas.statusPessoa = 1
 
       this.pessoa.push(pessoas);

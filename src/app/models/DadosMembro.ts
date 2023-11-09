@@ -1,3 +1,5 @@
+import { Cargos } from "./Cargos";
+
 export class DadosMembro {
   id: number;
   pessoaId: number;
@@ -18,4 +20,7 @@ export class DadosMembro {
   cursoTeologicoOndeCursou: string;
   dizimista: boolean;
   frequentaEbd: boolean;
+  funcao : number
+  cargos : Cargos[]
+
 }
