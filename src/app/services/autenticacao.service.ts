@@ -6,6 +6,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { map, catchError, take } from 'rxjs/operators';
 import { UtilServiceService } from './util-service.service';
+import { Endpoint } from '../enum/Endpoints';
+import { ApiResponse } from '../models/ApiResponse';
+import { Token } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -19,43 +22,42 @@ export class AutenticacaoService {
   constructor(
     private router: Router,
     private http: HttpClient,
-    private utilService : UtilServiceService
+    private utilService: UtilServiceService
 
   ) {
     this.environmentUrl = environment.BASE_URL;
   }
 
-
   Autenticado(sessao: login) {
-    // this.loginSistema(sessao, Endpoint.Token).subscribe(x => {
-    //   this.token.emit(x.toString());
-    //   this.autenticado.emit(true);
-    //   this.router.navigate(['/']);
-
-    // })
-
-    //login fixado para testes locais
-    this.autenticado.emit(true);
-      this.router.navigate(['/']);
-
-
-
+    this.logoof()
+    this.loginSistema(sessao, Endpoint.Token)
   }
+
   logoof() {
     this.autenticado.emit(false);
   }
 
-  public loginSistema(T : login, endpoint: string) : Observable <any>{
-    return this.http.post<any>(this.environmentUrl + endpoint , T,).pipe(
+  loginSistema(T: login, endpoint: string) {
+    this.http.post<ApiResponse>(this.environmentUrl + endpoint, T,).pipe(
       map(obj => obj),
       catchError(e => this.utilService.erroHandler(e))
-    );
+    ).subscribe(ret => {
+      if(ret.code === 200)
+      {
+        this.token.emit(ret.data);
+        this.autenticado.emit(true);
+        this.router.navigate(['/']);
+      }else
+        this.utilService.showMessage(ret.mensagem, true)
+      
+      
+    })
   }
 
   Header() {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-       'Authorization': `Bearer ${this.token}`
+      'Authorization': `Bearer ${this.token}`
     });
     return { headers: headers };
   }

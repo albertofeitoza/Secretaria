@@ -23,7 +23,7 @@
       </form>
       
           <div>
-              <button class="button" mat-raised-button (click)="login($event)"  color="primary"> 
+              <button *ngIf="sessao.dominio && sessao.usuario && sessao.senha" class="button" mat-raised-button (click)="login($event)"  color="primary"> 
                   Login
               </button> 
           </div>
