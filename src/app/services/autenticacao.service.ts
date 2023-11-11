@@ -47,10 +47,9 @@ export class AutenticacaoService {
         this.token.emit(ret.data);
         this.autenticado.emit(true);
         this.router.navigate(['/']);
+        this.utilService.showMessage(ret.mensagem, false)
       }else
         this.utilService.showMessage(ret.mensagem, true)
-      
-      
     })
   }
 
