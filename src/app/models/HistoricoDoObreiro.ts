@@ -1,4 +1,4 @@
-export class HistoricoDoObreiro {
+export class Historico {
   id: number;
   dadosObreiroId: number;
   data: Date;

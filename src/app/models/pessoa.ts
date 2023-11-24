@@ -2,9 +2,10 @@ import { ControleReuniaoObreiros } from "./ControleReuniaoObreiros";
 import { ControleSantaCeia } from "./ControleSantaCeia";
 import { DadosMembro } from "./DadosMembro";
 import { DadosObreiro } from "./DadosObreiro";
+import { Logs } from "./Logs";
 import { PessoaEndereco } from "./PessoaEndereco";
 import { Usuario } from "./Usuario";
-import { contato } from "./contato";
+import { contatos } from "./contato";
 
 export class Pessoa {
   id: number;
@@ -12,7 +13,6 @@ export class Pessoa {
   nome: string;
   rg: string;
   cpf: string;
-  fotoPath: string;
   estadoCivil: number;
   dataNascimento: Date;
   profissao: string;
@@ -25,11 +25,12 @@ export class Pessoa {
   statusPessoa: number;
   usuario: Usuario;
   pessoaEndereco: PessoaEndereco;
-  contatos: contato[];
+  contatos: contatos[];
   dadosMembro: DadosMembro;
   dadosObreiro : DadosObreiro
   controleSantaCeia: ControleSantaCeia[];
   controleReuniaoObreiros: ControleReuniaoObreiros[];
+  logs : Logs[];
 }
 
 

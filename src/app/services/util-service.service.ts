@@ -99,4 +99,39 @@ export class UtilServiceService {
     return statusPessoa
   }
 
+  CursoTeologico(){
+    let cursoteoligico = [];
+    cursoteoligico.push({ "id": 0, "value": "selecione" })
+    cursoteoligico.push({ "id": 1, "value": "Basico" })
+    cursoteoligico.push({ "id": 2, "value": "Medio" })
+    cursoteoligico.push({ "id": 3, "value": "Bacharel" })
+    cursoteoligico.push({ "id": 4, "value": "Doutorado" })
+    
+    return cursoteoligico
+  }
+
+  Funcao(){
+    let funcao = [];
+    funcao.push({ "id": 0, "value": "selecione" })
+    funcao.push({ "id": 1, "value": "Membro" })
+    funcao.push({ "id": 2, "value": "Cooperador" })
+    funcao.push({ "id": 3, "value": "Diacono" })
+    funcao.push({ "id": 4, "value": "Presbitero" })
+    funcao.push({ "id": 5, "value": "Pastor" })
+    funcao.push({ "id": 6, "value": "Evangelista" })
+    funcao.push({ "id": 7, "value": "Missionario" })
+
+    return funcao
+  }
+
+  EntradaFuncao(){
+    let entradaFuncao = [];
+    entradaFuncao.push({ "id": 0, "value": "selecione" })
+    entradaFuncao.push({ "id": 1, "value": "Apresentado" })
+    entradaFuncao.push({ "id": 2, "value": "Consagrado" })
+    entradaFuncao.push({ "id": 3, "value": "Recebido" })
+    entradaFuncao.push({ "id": 3, "value": "Reintegrado" })
+   
+    return entradaFuncao
+  }
 }

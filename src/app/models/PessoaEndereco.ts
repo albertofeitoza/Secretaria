@@ -9,5 +9,4 @@ export class PessoaEndereco {
   estado: string;
   cep: number;
   complemento: string;
-  pessoa: string;
 }

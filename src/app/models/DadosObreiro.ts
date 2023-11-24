@@ -1,6 +1,6 @@
-import { HistoricoDoObreiro } from "./HistoricoDoObreiro";
+import { Historico } from "./HistoricoDoObreiro";
 
-export interface DadosObreiro {
+export class DadosObreiro {
   id: number;
   pessoaId: number;
   frequentaReunioesMinisteriais: boolean;
@@ -9,7 +9,8 @@ export interface DadosObreiro {
   possuiProtestos: boolean;
   pastorApresentador: string;
   pastorRegional: string;
+  cartaoProvisorio : boolean;
   observacao: string;
-  historicoDoObreiro: HistoricoDoObreiro[];
+  historico: Historico[];
 }
 

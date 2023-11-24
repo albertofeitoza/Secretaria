@@ -7,101 +7,108 @@
       </mat-panel-title>
       <mat-panel-description>
         Nome, Rg, Cpf etc...
-
-        <!-- <mat-icon>account_circle</mat-icon> -->
-        <!-- <mat-form-field>
-          <mat-label>Foto</mat-label>
-          <input matInput placeholder="Foto" [(ngModel)]="pessoa.fotoPath" name="fotoPath" hidden="true">
-        </mat-form-field> -->
       </mat-panel-description>
     </mat-expansion-panel-header>
+    <div class="mat-elevation-z8">
 
-    <mat-form-field>
-      <mat-label>Nome</mat-label>
-      <input matInput placeholder="Nome" [(ngModel)]="pessoa.nome" name="nome">
-    </mat-form-field>
+      <div style="float: right;padding-top: 15px;">
+        <img style="width: 80px; height: 110px;padding-right: 50px;" src="../../../../assets/img/27455363893.jpg"
+          alt="Imagem">
+        <br>
+        <input style="display: none" type="file" accept="image/*" (change)="processFile($event)" #fileInput>
+        <button (click)="fileInput.click()">Importar foto</button>
+      </div>
+      <div style="padding-top: 15px;">
+        <mat-form-field style="padding-left: 17px;">
+          <mat-label>Nome</mat-label>
+          <input matInput placeholder="Obrigatório" [(ngModel)]="pessoa.nome" name="nome">
+        </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>RG</mat-label>
-      <input matInput placeholder="RG - Números" [(ngModel)]="pessoa.rg" name="cpf">
-    </mat-form-field>
+        <mat-form-field>
+          <mat-label>RG</mat-label>
+          <input type="number" matInput placeholder="RG" [(ngModel)]="pessoa.rg" name="RG">
+        </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>CPF</mat-label>
-      <input matInput placeholder="RG - Números" [(ngModel)]="pessoa.cpf" name="cpf">
-    </mat-form-field>
+        <mat-form-field>
+          <mat-label>CPF</mat-label>
+          <input type="number" matInput placeholder="CPF" [(ngModel)]="pessoa.cpf" name="cpf">
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Estado Civil</mat-label>
-        <mat-select  [(value)]="pessoa.estadoCivil" placeholder="Estado Civil">
-          <mat-option *ngFor="let ec of estCivil" [value]="ec.id">
-            {{ec.value}}
-          </mat-option>
+        <mat-form-field>
+          <mat-label>Estado Civil</mat-label>
+          <mat-select [(value)]="pessoa.estadoCivil" placeholder="Estado Civil">
+            <mat-option *ngFor="let ec of estCivil" [value]="ec.id">
+              {{ec.value}}
+            </mat-option>
         </mat-select>
-      </mat-form-field>
+        </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Data Nascimento</mat-label>
-      <input matInput id="nascimento" [matDatepicker]="picker" (focus)="picker.open()"
-        [(ngModel)]="pessoa.dataNascimento" name="dataNascimento">
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Profissão</mat-label>
-      <input matInput placeholder="Profissão" [(ngModel)]="pessoa.profissao" name="profissao">
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Grau de Instrução</mat-label>
-      <mat-select [(value)]="pessoa.grauInstrucao" placeholder="Grau Instrução">
-        <mat-option *ngFor="let i of instrucao" [value]="i.id">
-          {{i.value}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Sexo</mat-label>
-      <mat-select [(value)]="pessoa.sexo" placeholder="Sexo">
-        <mat-option *ngFor="let s of sexo" [value]="s.id">
-          {{s.value}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+        <mat-form-field color="accent" style="width: 213px;">
+          <mat-label>Data Nascimento</mat-label>
+          <input matInput [matDatepicker]="dataNascimento" [(ngModel)]="pessoa.dataNascimento" name="dataNascimento">
+          <mat-datepicker-toggle matIconSuffix [for]="dataNascimento" ></mat-datepicker-toggle>
+          <mat-datepicker #dataNascimento></mat-datepicker>
+        </mat-form-field>
 
 
-    <mat-form-field>
-      <mat-label>Status</mat-label>
-      <mat-select [(value)]="pessoa.statusPessoa" placeholder="Status">
-        <mat-option *ngFor="let sp of statusPessoa" [value]="sp.id">
-          {{sp.value}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+        <mat-form-field>
+          <mat-label>Profissão</mat-label>
+          <input matInput placeholder="Profissão" [(ngModel)]="pessoa.profissao" name="profissao">
+        </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Naturalidade</mat-label>
-      <input matInput placeholder="Naturalidade" [(ngModel)]="pessoa.naturalidade" name="naturalidade">
-    </mat-form-field>
+        <mat-form-field>
+          <mat-label>Grau de Instrução</mat-label>
+          <mat-select [(value)]="pessoa.grauInstrucao" placeholder="Grau Instrução">
+            <mat-option *ngFor="let i of instrucao" [value]="i.id">
+              {{i.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Naturalidade-Estado</mat-label>
-      <input matInput placeholder="Naturalidade-Estado" [(ngModel)]="pessoa.naturalidadeEstado"
-        name="naturalidadeEstado">
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Nome da Esposa</mat-label>
-      <input matInput placeholder="Nome da Esposa" [(ngModel)]="pessoa.nomeConjuge" name="nomeConjuge">
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Data Casamento</mat-label>
-      <input matInput id="casamento" [matDatepicker]="picker" (focus)="picker.open()" [(ngModel)]="pessoa.dataCasamento"
-        name="DataCasamento">
-    </mat-form-field>
+        <mat-form-field>
+          <mat-label>Sexo</mat-label>
+          <mat-select [(value)]="pessoa.sexo" placeholder="Sexo">
+            <mat-option *ngFor="let s of sexo" [value]="s.id">
+              {{s.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
 
+        <mat-form-field>
+          <mat-label>Situação</mat-label>
+          <mat-select [(value)]="pessoa.statusPessoa" placeholder="Situação">
+            <mat-option *ngFor="let sp of statusPessoa" [value]="sp.id">
+              {{sp.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Naturalidade</mat-label>
+          <input matInput placeholder="Naturalidade" [(ngModel)]="pessoa.naturalidade" name="naturalidade">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Naturalidade-Estado</mat-label>
+          <input matInput placeholder="Naturalidade-Estado" [(ngModel)]="pessoa.naturalidadeEstado"
+            name="naturalidadeEstado">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Nome do Conjuge</mat-label>
+          <input matInput placeholder="Nome do Conjuge" [(ngModel)]="pessoa.nomeConjuge" name="nomeConjuge">
+        </mat-form-field>
+
+        <mat-form-field color="accent" style="width: 213px;">
+          <mat-label>Data Casamento</mat-label>
+          <input matInput [matDatepicker]="dataCasamento" [(ngModel)]="pessoa.dataCasamento" name="dataCasamento">
+          <mat-datepicker-toggle matIconSuffix [for]="dataCasamento"></mat-datepicker-toggle>
+          <mat-datepicker #dataCasamento></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+    </div>
     <mat-action-row>
       <button mat-button color="primary" (click)="Proximo()">Próximo</button>
     </mat-action-row>
@@ -119,12 +126,49 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <mat-form-field>
-      <mat-label>Country</mat-label>
-      <input matInput>
-    </mat-form-field>
+    <!-- DADOS DO ENDEREÇO -->
 
-    <mat-action-row>
+    <div class="mat-elevation-z8">
+      <div style="padding-top: 15px;">
+        <mat-form-field style="padding-left: 17px;">
+          <mat-label>CEP</mat-label>
+          <input matInput type="number" maxlength="8" placeholder="Informe o CEP" [(ngModel)]="endereco.cep" name="cep"
+            (keypress)="BuscaCep($event)">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Estado</mat-label>
+          <input matInput placeholder="Estado" [(ngModel)]="endereco.estado" name="estado">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Cidade</mat-label>
+          <input matInput placeholder="Cidade" [(ngModel)]="endereco.cidade" name="cidade">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Bairro</mat-label>
+          <input matInput placeholder="Bairro" [(ngModel)]="endereco.bairro" name="bairro">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Rua</mat-label>
+          <input matInput placeholder="Rua" [(ngModel)]="endereco.rua" name="rua">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Número</mat-label>
+          <input matInput placeholder="Número" [(ngModel)]="endereco.numero" name="numero">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Complemento</mat-label>
+          <input matInput placeholder="Complemento" [(ngModel)]="endereco.complemento" name="complemento">
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-action-row *ngIf="endereco.cep > 0 && endereco.estado && endereco.cidade 
+      && endereco.bairro && endereco.rua && endereco.numero ">
       <button mat-button color="warn" (click)="Voltar()">Voltar</button>
       <button mat-button color="primary" (click)="Proximo()">Próximo</button>
     </mat-action-row>
@@ -142,10 +186,100 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <mat-form-field>
-      <mat-label>Country</mat-label>
-      <input matInput>
-    </mat-form-field>
+    <!-- Grid com os contatos -->
+
+    <div class="menuInternoGrid">
+      <div class="mat-elevation-z8">
+        <div style="padding-top: 15px;">
+          <mat-form-field>
+            <mat-label>DDD</mat-label>
+            <input type="number" matInput placeholder="DDD" [(ngModel)]="contato.ddd" name="ddd">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Telefone</mat-label>
+            <input type="number" matInput placeholder="Telefone" [(ngModel)]="contato.telefone" name="telefone">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Celular</mat-label>
+            <input type="number" matInput placeholder="Celular" [(ngModel)]="contato.celular" name="celular">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Email" [(ngModel)]="contato.email" name="email">
+          </mat-form-field>
+
+          <a>
+            <i class="material-icons" (click)="AdicionarContato()">add</i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="contatos" matSort>
+        <!-- Id Column -->
+
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+          <mat-cell id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
+        </ng-container>
+        <!-- rol Column -->
+        <ng-container matColumnDef="ddd">
+          <mat-header-cell *matHeaderCellDef>DDD</mat-header-cell>
+          <mat-cell id="ddd" *matCellDef="let row">{{row.ddd}}</mat-cell>
+        </ng-container>
+
+        <!-- rol Column -->
+        <ng-container matColumnDef="telefone">
+          <mat-header-cell *matHeaderCellDef>Telefone</mat-header-cell>
+          <mat-cell id="telefone" *matCellDef="let row">{{row.telefone}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="celular">
+          <mat-header-cell *matHeaderCellDef>Foto</mat-header-cell>
+          <mat-cell mat-cell id="celular" *matCellDef="let row">{{row.celular}}</mat-cell>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="email">
+          <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.email}}</mat-cell>
+        </ng-container>
+
+        <!-- Coluna de Ações -->
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+
+            <!-- <a (click)="AtualizarContato(row.id)" class="edit">
+              <i class="material-icons">
+                edit
+              </i>
+            </a> -->
+            <a (click)="ExcluirContato(row.id)" class="delete">
+              <i class="material-icons">
+                delete
+              </i>
+            </a>
+
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
+        <mat-row (click)="ContatoSelecionado(row.id)" *matRowDef="let row; columns: Colunas;"
+          [ngClass]="{'corLinhaGrid' : row.id == contatoSelecionado}"></mat-row>
+      </table>
+
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+      </mat-paginator>
+
+    </div>
 
     <mat-action-row>
       <button mat-button color="warn" (click)="Voltar()">Voltar</button>
@@ -157,21 +291,308 @@
   <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <h2>Histórico do Membro</h2>
+        <h2>Dados do Membro</h2>
       </mat-panel-title>
       <mat-panel-description>
-        Aqui será Salvo todo o Histórico do cliente, como quando chegou na igreja, saida Etc...
+        Aqui consta os dados do Membro que se refere a Igreja.
+        <mat-icon>map</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <!-- dados Membro -->
+    <div class="menuInternoGrid">
+      <mat-form-field style="padding-left: 17px;">
+        <mat-label>ROL</mat-label>
+        <input type="number" matInput placeholder="rol" [(ngModel)]="dadosMembro.rol" name="rol">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Congregação</mat-label>
+        <input matInput placeholder="Congregacao" [(ngModel)]="dadosMembro.congregacao" name="congregacao">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Regional</mat-label>
+        <input matInput placeholder="Rg" [(ngModel)]="dadosMembro.regional" name="regional">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Batismo Filho Crente</mat-label>
+        <input style="height: 20px; width: 150px;" matInput placeholder="Batismo filho de Crente">
+        <input name="batismoFilhoCrente" [(ngModel)]="dadosMembro.batismoFilhoCrente"
+          [checked]="dadosMembro.batismoFilhoCrente" type="checkbox">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Batismo filho não Crente</mat-label>
+        <input style="height: 20px; width: 150px;" matInput placeholder="Batismo Filho de  não Crente">
+        <input name="batismoFilhoNaoCrente" [(ngModel)]="dadosMembro.batismoFilhoNaoCrente"
+          [checked]="dadosMembro.batismoFilhoNaoCrente" type="checkbox">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Fez Discipulado</mat-label>
+        <input style="height: 20px; width: 150px;" matInput placeholder="Fez Discipulado">
+        <input name="fezDiscipulado" [(ngModel)]="dadosMembro.fezDiscipulado" [checked]="dadosMembro.fezDiscipulado"
+          type="checkbox">
+      </mat-form-field>
+      <!-- data referencia -->
+      <mat-form-field color="accent" style="width: 213px;">
+        <mat-label>Data Batismo Águas</mat-label>
+        <input matInput [matDatepicker]="batismoAguas" [(ngModel)]="dadosMembro.batismoAguas" name="batismoAguas">
+        <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
+        <mat-datepicker-toggle matIconSuffix [for]="batismoAguas"></mat-datepicker-toggle>
+        <mat-datepicker #batismoAguas></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Batismo Águas Igreja</mat-label>
+        <input matInput placeholder="Batismo Águas Igreja" [(ngModel)]="dadosMembro.batismoAguasIgreja"
+          name="batismoAguasIgreja">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Batismo Águas Cidade</mat-label>
+        <input matInput placeholder="Batismo Águas Cidade" [(ngModel)]="dadosMembro.batismoAguasCidade"
+          name="batismoAguasCidade">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Batismo Águas Estado</mat-label>
+        <input matInput placeholder="Batismo Águas Estado" [(ngModel)]="dadosMembro.batismoAguasEstado"
+          name="batismoAguasEstado">
+      </mat-form-field>
+
+      <mat-form-field color="accent" style="width: 213px;">
+        <mat-label>Data do Batismo no E. Santo</mat-label>
+        <input matInput [matDatepicker]="batismoESanto" [(ngModel)]="dadosMembro.batismoESanto" name="batismoESanto">
+        <mat-datepicker-toggle matIconSuffix [for]="batismoESanto"></mat-datepicker-toggle>
+        <mat-datepicker #batismoESanto></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field color="accent" style="width: 213px;">
+        <mat-label>Membro Desde</mat-label>
+        <input matInput [matDatepicker]="membroDesde" [(ngModel)]="dadosMembro.membroDesde" name="membroDesde">
+        <mat-datepicker-toggle matIconSuffix [for]="membroDesde"></mat-datepicker-toggle>
+        <mat-datepicker #membroDesde></mat-datepicker>
+      </mat-form-field>
+
+
+      <mat-form-field color="accent" style="width: 213px;">
+        <mat-label>Validade Cartão Membro</mat-label>
+        <input matInput [matDatepicker]="validadeCartaoMembro" [(ngModel)]="dadosMembro.validadeCartaoMembro"
+          name="validadeCartaoMembro">
+        <mat-datepicker-toggle matIconSuffix [for]="validadeCartaoMembro"></mat-datepicker-toggle>
+        <mat-datepicker #validadeCartaoMembro></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Curso Teológico</mat-label>
+        <mat-select [(value)]="dadosMembro.cursoTeologico" placeholder="Curso Teológico">
+          <mat-option *ngFor="let ec of cursoTeoligico" [value]="ec.id">
+            {{ec.value}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Curso Teológico onde cursou</mat-label>
+        <input matInput placeholder="Curso Teológico onde cursou" [(ngModel)]="dadosMembro.cursoTeologicoOndeCursou"
+          name="cursoTeologicoOndeCursou">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Dizimista</mat-label>
+        <input style="height: 20px; width: 150px;" matInput placeholder="Dizimista">
+        <input name="dizimista" [(ngModel)]="dadosMembro.dizimista" [checked]="dadosMembro.dizimista" type="checkbox">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Frequenta EBD</mat-label>
+        <input style="height: 20px; width: 150px;" matInput placeholder="Frequenta EBD">
+        <input name="frequentaEbd" [(ngModel)]="dadosMembro.frequentaEbd" [checked]="dadosMembro.frequentaEbd"
+          type="checkbox">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Função</mat-label>
+        <mat-select [(value)]="dadosMembro.funcao" placeholder="Função">
+          <mat-option *ngFor="let ec of funcao" [value]="ec.id">
+            {{ec.value}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Cargos -->
+    <h3 style="padding-left: 17px;">Cargos</h3>
+    <div class="menuInternoGrid">
+      <mat-form-field style="padding-left: 17px;">
+        <mat-label>Cargo</mat-label>
+        <input matInput placeholder="Novo Cargo" [(ngModel)]="cargo.cargo" name="cargo">
+      </mat-form-field>
+
+      <mat-form-field color="accent" style="width: 213px;">
+        <mat-label>Data do Cargo</mat-label>
+        <input matInput [matDatepicker]="noCargoDesde" [(ngModel)]="cargo.noCargoDesde" name="noCargoDesde">
+        <mat-datepicker-toggle matIconSuffix [for]="noCargoDesde"></mat-datepicker-toggle>
+        <mat-datepicker #noCargoDesde></mat-datepicker>
+      </mat-form-field>
+
+      <a>
+        <i class="material-icons" (click)="AdicionarCargo()">add</i>
+      </a>
+    </div>
+    <br>
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="cargos" matSort>
+        <!-- Id Column -->
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+          <mat-cell id="id" *matCellDef="let row">{{row.id}}</mat-cell>
+        </ng-container>
+        <!-- rol Column -->
+        <ng-container matColumnDef="cargo">
+          <mat-header-cell *matHeaderCellDef>Nome Cargo</mat-header-cell>
+          <mat-cell id="cargo" *matCellDef="let row">{{row.cargo}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="noCargoDesde">
+          <mat-header-cell *matHeaderCellDef>Desde</mat-header-cell>
+          <mat-cell id="noCargoDesde" *matCellDef="let row">{{row.noCargoDesde | date : 'dd/MM/yyyy'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="noCargoAte">
+          <mat-header-cell *matHeaderCellDef>Até</mat-header-cell>
+          <mat-cell id="noCargoAte" *matCellDef="let row">{{row.noCargoAte}}</mat-cell>
+        </ng-container>
+
+        <!-- Coluna de Ações -->
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+
+            <a (click)="ExcluirCargo(row.id)" class="delete">
+              <i class="material-icons">
+                delete
+              </i>
+            </a>
+
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="ColunasCargos"></mat-header-row>
+        <mat-row (click)="CargoSelecionado(row.id)" *matRowDef="let row; columns: ColunasCargos;"
+          [ngClass]="{'corLinhaGrid' : row.id == cargoSelecionado}"></mat-row>
+      </table>
+
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+      </mat-paginator>
+
+    </div>
+
+    <mat-action-row>
+      <button mat-button color="warn" (click)="Voltar()">Voltar</button>
+      <button mat-button color="primary" (click)="Proximo()">Próximo</button>
+    </mat-action-row>
+
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h2>Dados de Obreiro</h2>
+      </mat-panel-title>
+      <mat-panel-description>
+        Aqui está Salvo as informações do Obreiro quando o Membro for um obreiro...
         <mat-icon>date_range</mat-icon>
       </mat-panel-description>
     </mat-expansion-panel-header>
+    <div class="mat-elevation-z8">
 
-    <mat-form-field>
-      <mat-label>Date</mat-label>
-      <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly>
-    </mat-form-field>
-    <mat-datepicker #picker></mat-datepicker>
+      <!-- histórico do OBREIRO -->
+      <div style="padding-top: 15px;">
 
-    <mat-action-row>
+        <mat-form-field style="padding-left: 17px;">
+          <mat-label>Frequenta Reuniões Min.</mat-label>
+          <input style="height: 20px; width: 150px;" matInput placeholder="Frequenta Reuniões Min.">
+          <input name="frequentaReunioesMinisteriais" [(ngModel)]="dadosObreiro.frequentaReunioesMinisteriais"
+            [checked]="dadosObreiro.frequentaReunioesMinisteriais" type="checkbox">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Frequenta Doutrina/Ensino.</mat-label>
+          <input style="height: 20px; width: 150px;" matInput placeholder="Frequenta Doutrina/Ensino.">
+          <input name="frequentaDoutrinaEnsinamento" [(ngModel)]="dadosObreiro.frequentaDoutrinaEnsinamento"
+            [checked]="dadosObreiro.frequentaDoutrinaEnsinamento" type="checkbox">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Possui Cheque S.F / Nome Sujo?</mat-label>
+          <input style="height: 20px; width: 150px;" matInput placeholder="Possui Cheque S.F / Nome Sujo?">
+          <input name="possuiChequeSemFundos" [(ngModel)]="dadosObreiro.possuiChequeSemFundos"
+            [checked]="dadosObreiro.possuiChequeSemFundos" type="checkbox">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Possui Protestos?</mat-label>
+          <input style="height: 20px; width: 150px;" matInput placeholder="Possui Protestos?">
+          <input name="possuiProtestos" [(ngModel)]="dadosObreiro.possuiProtestos"
+            [checked]="dadosObreiro.possuiProtestos" type="checkbox">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Pastor Apresentador</mat-label>
+          <input matInput placeholder="Pastor Apresentador" [(ngModel)]="dadosObreiro.pastorApresentador" name="nome">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Pastor Regional</mat-label>
+          <input matInput placeholder="Pastor Regional" [(ngModel)]="dadosObreiro.pastorRegional" name="pastorRegional">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Cartão Provisorio</mat-label>
+          <input style="height: 20px; width: 150px;" matInput placeholder="Cartão Provisorio">
+          <input name="cartaoProvisorio" [(ngModel)]="dadosObreiro.cartaoProvisorio"
+            [checked]="dadosObreiro.cartaoProvisorio" type="checkbox">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Observação</mat-label>
+          <input matInput placeholder="Observação" [(ngModel)]="dadosObreiro.observacao" name="Observação">
+        </mat-form-field>
+        <br>
+
+        <h3 style="padding-left: 17px;">Entrada na Função</h3>
+
+        <mat-form-field>
+          <mat-label>Entrada na Função</mat-label>
+          <mat-select [(value)]="historico.entradaFuncao" placeholder="Entrada na Função">
+            <mat-option *ngFor="let ef of entradaFuncao" [value]="ef.id">
+              {{ef.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field color="accent" style="width: 213px;">
+          <mat-label>Data entrada Função</mat-label>
+          <input matInput [matDatepicker]="dataEntradaFuncao" [(ngModel)]="historico.dataEntradaFuncao" name="dataEntradaFuncao">
+          <mat-datepicker-toggle matIconSuffix [for]="dataEntradaFuncao"></mat-datepicker-toggle>
+          <mat-datepicker #dataEntradaFuncao></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field color="accent" style="width: 213px;">
+          <mat-label>Data Saida Funcao</mat-label>
+          <input matInput [matDatepicker]="dataSaidaFuncao" [(ngModel)]="historico.dataSaidaFuncao" name="dataSaidaFuncao">
+          <mat-datepicker-toggle matIconSuffix [for]="dataSaidaFuncao"></mat-datepicker-toggle>
+          <mat-datepicker #dataSaidaFuncao></mat-datepicker>
+        </mat-form-field>
+
+      </div>
+
+    </div>
+    <mat-action-row >
       <button mat-button color="warn" (click)="Voltar()">Voltar</button>
       <button mat-button color="primary" (click)="Proximo()">Salvar</button>
     </mat-action-row>

@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, empty } from 'rxjs';
 import { login } from '../models/modelLogin';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -16,7 +16,7 @@ import { Token } from '@angular/compiler';
 export class AutenticacaoService {
 
   autenticado = new EventEmitter<boolean>();
-  token = new EventEmitter<string>();
+  token : string
   environmentUrl = ''
 
   constructor(
@@ -35,16 +35,18 @@ export class AutenticacaoService {
 
   logoof() {
     this.autenticado.emit(false);
+    this.token = "";
   }
 
   loginSistema(T: login, endpoint: string) {
+    this.logoof()
     this.http.post<ApiResponse>(this.environmentUrl + endpoint, T,).pipe(
       map(obj => obj),
       catchError(e => this.utilService.erroHandler(e))
     ).subscribe(ret => {
       if(ret.code === 200)
       {
-        this.token.emit(ret.data);
+        this.token = ret.data;
         this.autenticado.emit(true);
         this.router.navigate(['/']);
         this.utilService.showMessage(ret.mensagem, false)

@@ -1,25 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .red {
     color: rgb(227, 94, 107);
 
 }
 
-.v-middle{
+.v-middle {
 
     vertical-align: middle;
 }
 
-.msg-sucess{
+.msg-sucess {
 
     background-color: #27a745;
     color: #fff;
 }
 
-.msg-error{
+.msg-error {
 
     background-color: #e36e6b;
     color: #fff;
@@ -28,41 +35,46 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 /*CSS da Aplicação */
 
 /* Grids Css Configuração de  menus  */
-.menuInternoGrid{
-  margin-top: 1%;
+.menuInternoGrid {
+    margin-top: 1%;
 }
+
 .menuInternoGrid a {
-  padding-left: 1%;
+    padding-left: 1%;
 }
+
 .menuInternoGrid .txtBusca {
-  float : right;
-  font-size: 15px;
-  width: 300px;
-  margin-top: 10px;
-  margin-right: 15px;
-  border-top-right-radius: 1%;
+    float: right;
+    font-size: 15px;
+    width: 300px;
+    margin-top: 10px;
+    margin-right: 15px;
+    border-top-right-radius: 1%;
 }
 
 .menuInternoGrid .search {
-  float : right;
-  font-size: 15px;
-  width: 100px;
-  margin-top: 10px;
+    float: right;
+    font-size: 15px;
+    width: 100px;
+    margin-top: 10px;
 }
+
 /* Grids Css Configuração de  menus  */
-.botaoBuscaPopups { /*popups*/
+.botaoBuscaPopups {
+    /*popups*/
     font-size: 25px;
     margin-top: 12px;
     padding-left: 15px;
 }
 
-.rodape{  /*Usar nos rodapés dos popups Botões*/
-   float: right;
+.rodape {
+    /*Usar nos rodapés dos popups Botões*/
+    float: right;
 }
 
 .rodape .button {
     margin-top: 15px;
-    margin-left : 15px;
+    margin-left: 15px;
 }
 
 .formularioRow {
@@ -71,38 +83,51 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     font-size: 12px;
 }
 
-.mat-form-field-infix{
+.mat-form-field-infix {
     width: auto;
 }
 
-mat-form-field{
+mat-form-field {
     padding-left: 9px;
 }
 
-mat-form-field mat-label{
+mat-form-field mat-label {
     font-size: 12px;
 }
 
-mat-form-field mat-label input{
+mat-form-field mat-label input {
     font-size: 12px;
 }
 
 
 
 /*Cabeçalho das tabelas icone pra fechar os Popups*/
-table{
+table {
     width: 100%;
 }
 
-.close{
+.close {
     float: right;
     margin-top: 0px;
     margin-right: 0px;
     padding: 0px;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .corLinhaGrid {
     background: aqua;
-  }
+}
+
+.formataCheck{
+    height: 20px;
+    width: 150px;
+}

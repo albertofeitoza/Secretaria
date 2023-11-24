@@ -20,7 +20,7 @@ export class DadosMembro {
   cursoTeologicoOndeCursou: string;
   dizimista: boolean;
   frequentaEbd: boolean;
-  funcao : number
+  funcao : number;
   cargos : Cargos[]
-
+  
 }

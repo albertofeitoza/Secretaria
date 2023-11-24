@@ -1,4 +1,4 @@
-export class contato{
+export class contatos{
   id:       number;
   pessoaId: number;
   ddd:      number;

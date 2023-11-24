@@ -23,8 +23,15 @@ export class LoginComponent {
     ngOnInit(){
       this.auth.autenticado.subscribe(response => {
         this.isLoggedIn = response
-  
       })
+
+      this.sessao.dominio = ""
+      this.sessao.usuario = ""
+      this.sessao.senha = ""
+
+      this.sessao.dominio = "Sistema"
+      this.sessao.usuario = "admin"
+      this.sessao.senha = "123456"
     }
       
 
