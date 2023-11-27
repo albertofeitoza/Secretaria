@@ -1,14 +1,14 @@
 import { Cargos } from "./Cargos";
 
 export class DadosMembro {
-  id: number;
-  pessoaId: number;
-  rol: number;
+  id: number = 0
+  pessoaId: number = 0;
+  rol: number = 0;
   congregacao: string;
   regional: string;
-  batismoFilhoCrente: boolean;
-  batismoFilhoNaoCrente: boolean;
-  fezDiscipulado: boolean;
+  batismoFilhoCrente: boolean = false;
+  batismoFilhoNaoCrente: boolean = false;
+  fezDiscipulado: boolean = false;
   batismoAguas: Date;
   batismoAguasIgreja: string;
   batismoAguasCidade: string;
@@ -16,11 +16,10 @@ export class DadosMembro {
   batismoESanto: Date;
   membroDesde: Date;
   validadeCartaoMembro: Date;
-  cursoTeologico: number;
+  cursoTeologico: number = 0;
   cursoTeologicoOndeCursou: string;
-  dizimista: boolean;
-  frequentaEbd: boolean;
-  funcao : number;
+  dizimista: boolean = false;
+  frequentaEbd: boolean = false;
+  funcao : number = 0;
   cargos : Cargos[]
-  
 }

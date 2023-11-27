@@ -1,16 +1,15 @@
 import { Historico } from "./HistoricoDoObreiro";
 
 export class DadosObreiro {
-  id: number;
-  pessoaId: number;
-  frequentaReunioesMinisteriais: boolean;
-  frequentaDoutrinaEnsinamento: boolean;
-  possuiChequeSemFundos: boolean;
-  possuiProtestos: boolean;
+  id: number = 0
+  pessoaId: number = 0
+  frequentaReunioesMinisteriais: boolean = false
+  frequentaDoutrinaEnsinamento: boolean = false;
+  possuiChequeSemFundos: boolean = false;
+  possuiProtestos: boolean = false;
   pastorApresentador: string;
   pastorRegional: string;
-  cartaoProvisorio : boolean;
+  cartaoProvisorio : boolean = false;
   observacao: string;
   historico: Historico[];
 }
-

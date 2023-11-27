@@ -15,7 +15,7 @@ export class LoginComponent {
   userPassword : string  = ""
   constructor(
     private auth: AutenticacaoService, 
-    private router : Router
+    private router : Router,
   ) {
 
   }
@@ -38,6 +38,7 @@ export class LoginComponent {
   login(event: any) {
     if (event.which === 13 || event.which == 1) {
         this.auth.Autenticado(this.sessao)
+
     }
   }
 }

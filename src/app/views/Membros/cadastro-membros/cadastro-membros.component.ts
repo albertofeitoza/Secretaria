@@ -70,6 +70,7 @@ export class CadastroMembrosComponent {
   constructor(
     private serviceUtil: UtilServiceService,
     private serviceCadastro: AllservicesService<Pessoa>,
+    private serviceEndereco: AllservicesService<PessoaEndereco>,
     private servicoCep: AllservicesService<Cep>,
 
   ) { }
@@ -99,63 +100,105 @@ export class CadastroMembrosComponent {
   }
 
   Proximo() {
-    if (this.step == 4) {
-      this.Salvar()
-      this.step++;
-    } else
-      this.step++;
+    this.Salvar(this.step)
   }
 
   Voltar() {
     this.step--;
   }
 
-  Salvar() {
+  Salvar(step: number) {
 
     if (this.ValidaCpf()) {
 
-      if (this.ValidaCadastro()) {
+      switch (step) {
+        case 0:
+          if (this.ValidarPessoa() && this.pessoa.id == 0) {
 
-        this.serviceCadastro.read(Endpoint.Pessoa).subscribe(x => {
+            this.serviceCadastro.read(Endpoint.Pessoa).subscribe(x => {
 
-          
-          
-          if (!x.map(p => p.cpf).includes(this.pessoa.cpf.toString())) {
-            this.pessoa.dataCriacao = new Date
-            this.endereco.dtCriacao = new Date
-            this.pessoa.pessoaEndereco = this.endereco;
-            this.pessoa.contatos = this.contatos
-            this.pessoa.dadosMembro = this.dadosMembro
-            this.pessoa.dadosMembro.cargos = this.cargos
-            this.pessoa.dadosObreiro = this.dadosObreiro
+              if (!x.map(p => p.cpf).includes(this.pessoa.cpf.toString())) {
+                this.pessoa.cpf = this.pessoa.cpf != undefined ? this.pessoa.cpf.toString() : this.pessoa.cpf
+                this.pessoa.rg = this.pessoa.rg != undefined ? this.pessoa.rg.toString() : this.pessoa.rg
 
-            this.pessoa.cpf = this.pessoa.cpf.toString()
-            this.pessoa.rg = this.pessoa.rg.toString()
+                //salvar dados de Pessoa
+                this.serviceCadastro.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
+                  this.step++;
+                  this.pessoa.id = x.id
+                  this.serviceUtil.showMessage("cadastro realizado");
+                });
 
-
-            if (this.historico.entradaFuncao == 4) {
-              this.historico.reintegrado = true
-              this.historico.reintegradoEm = new Date
-            }
-            else
-              this.historico.reintegrado = false
-
-            this.historicos.push(this.historico)
-            this.pessoa.dadosObreiro.historico = this.historicos
-
-            //Salvando novo cadastro.
-            this.serviceCadastro.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
-              this.serviceUtil.showMessage("cadastro realizado");
+              } else
+                this.serviceUtil.showMessage(`Já existe cadastro para esse CPF : ${this.pessoa.cpf}`, true)
             });
-
           } else
-            this.serviceUtil.showMessage(`Já existe cadastro para esse CPF`, true)
-        });
-      }
+            this.step++;
 
+          break;
+
+        case 1:
+
+          if (this.ValidarEndereco() && this.pessoa.id > 0) {
+
+            this.endereco.pessoaId = this.pessoa.id;
+
+            //Salvar Endereço
+            this.serviceEndereco.create(this.endereco, Endpoint.Pessoa + Endpoint.PessoaEndereco)
+              .subscribe(x => {
+                this.endereco.id = x.id
+                this.step++
+                this.serviceUtil.showMessage("Endereço salvo", true);
+              })
+          }
+          else
+            this.step++
+
+          break;
+        case 3:
+          
+          break;
+
+        case 4:
+
+          break;
+        default:
+          break;
+      }
     }
 
   }
+
+  ValidarPessoa(): boolean {
+    let result: boolean = false;
+    this.pessoa.nome == undefined
+      ? this.serviceUtil.showMessage("Dados Pessoais -> Nome Obrigatório") :
+      this.pessoa.estadoCivil < 1 || this.pessoa.estadoCivil == undefined ? this.serviceUtil.showMessage("Selecione --> Estado Civil") :
+        this.pessoa.dataNascimento == undefined || this.pessoa.dataNascimento.toDateString() == "Mon Dec 31 1900" ? this.serviceUtil.showMessage("Informe a --> Data nascimento ") :
+          this.pessoa.grauInstrucao < 1 || this.pessoa.grauInstrucao == undefined ? this.serviceUtil.showMessage("Selecione --> Grau de Instrução") :
+            this.pessoa.sexo < 1 || this.pessoa.sexo == undefined ? this.serviceUtil.showMessage("Selecione --> Sexo ") :
+              this.pessoa.statusPessoa < 1 || this.pessoa.statusPessoa == undefined ? this.serviceUtil.showMessage("Selecione --> Situação ") :
+                this.pessoa.naturalidade == undefined ? this.serviceUtil.showMessage("Informe --> Naturalidade") :
+                  this.pessoa.naturalidadeEstado == undefined ? this.serviceUtil.showMessage("Informe --> Naturalidade Estado") :
+                    result = true
+    return result;
+
+  }
+
+  ValidarEndereco(): boolean {
+    let result: boolean = false;
+
+    this.endereco.cep == undefined || this.endereco.cep == 0 ? this.serviceUtil.showMessage("Informe o --> CEP e Pressione Enter") :
+      this.endereco.estado == undefined ? this.serviceUtil.showMessage("Informe --> Estado ") :
+        this.endereco.cidade == undefined ? this.serviceUtil.showMessage("Informe --> Cidade ") :
+          this.endereco.bairro == undefined ? this.serviceUtil.showMessage("Informe --> Bairro") :
+            this.endereco.rua == undefined ? this.serviceUtil.showMessage("Informe --> Rua ") :
+              this.endereco.numero == undefined ? this.serviceUtil.showMessage("Informe --> Nº Casa ") :
+                result = true
+
+    return result;
+  }
+
+
 
   processFile(event: any) {
 
@@ -203,37 +246,28 @@ export class CadastroMembrosComponent {
 
   ValidaCadastro(): boolean {
     let result: boolean = false;
-    this.pessoa.nome == undefined
-      ? this.serviceUtil.showMessage("Dados Pessoais -> Nome Obrigatório") :
-      this.pessoa.estadoCivil < 1 || this.pessoa.estadoCivil == undefined ? this.serviceUtil.showMessage("Selecione --> Estado Civil") :
-        this.pessoa.dataNascimento == undefined || this.pessoa.dataNascimento.toDateString() == "Mon Dec 31 1900" ? this.serviceUtil.showMessage("Informe a --> Data nascimento ") :
-          this.pessoa.grauInstrucao < 1 || this.pessoa.grauInstrucao == undefined ? this.serviceUtil.showMessage("Selecione --> Grau de Instrução") :
-            this.pessoa.sexo < 1 || this.pessoa.sexo == undefined ? this.serviceUtil.showMessage("Selecione --> Sexo ") :
-              this.pessoa.statusPessoa < 1 || this.pessoa.statusPessoa == undefined ? this.serviceUtil.showMessage("Selecione --> Situação ") :
-                this.pessoa.naturalidade == undefined ? this.serviceUtil.showMessage("Informe --> Naturalidade") :
-                  this.pessoa.naturalidadeEstado == undefined ? this.serviceUtil.showMessage("Informe --> Naturalidade Estado") :
-                    this.endereco.cep == undefined || this.endereco.cep == 0  ? this.serviceUtil.showMessage("Informe o --> CEP e Pressione Enter") :
-                      this.endereco.estado == undefined ? this.serviceUtil.showMessage("Informe --> Estado ") :
-                        this.endereco.cidade == undefined ? this.serviceUtil.showMessage("Informe --> Cidade ") :
-                          this.endereco.bairro == undefined ? this.serviceUtil.showMessage("Informe --> Bairro") :
-                            this.endereco.rua == undefined ? this.serviceUtil.showMessage("Informe --> Rua ") :
-                              this.endereco.numero == undefined ? this.serviceUtil.showMessage("Informe --> Nº Casa ") :
-                                this.dadosMembro.rol == undefined ? this.serviceUtil.showMessage("Informe --> Nº Rol ") :
-                                  this.dadosMembro.congregacao == undefined ? this.serviceUtil.showMessage("Informe a --> Congregação") :
-                                    this.dadosMembro.regional == undefined ? this.serviceUtil.showMessage("Informe --> Regional") :
-                                      this.dadosMembro.batismoAguas == undefined ? this.serviceUtil.showMessage("Informe a data de --> Batismo nas Águas") :
-                                        this.dadosMembro.batismoAguasIgreja == undefined ? this.serviceUtil.showMessage("Informe a Igreja --> Batismo nas Águas") :
-                                          this.dadosMembro.batismoAguasCidade == undefined ? this.serviceUtil.showMessage("Informe a Cidade --> Onde foi batizado") :
-                                            this.dadosMembro.batismoAguasEstado == undefined ? this.serviceUtil.showMessage("Informe o Estado --> Onde foi batizado") :
-                                              this.dadosMembro.membroDesde == undefined ? this.serviceUtil.showMessage("Informe --> Membro Desde") :
-                                                this.dadosMembro.validadeCartaoMembro == undefined ? this.serviceUtil.showMessage("Informe a data --> Validade do cartão de Membro") :
-                                                  this.dadosMembro.funcao == undefined || this.dadosMembro.funcao < 1 ? this.serviceUtil.showMessage("Selecione a Função --> Função") :
-                                                    this.dadosMembro.funcao > 1 && this.dadosObreiro.pastorApresentador == undefined ? this.serviceUtil.showMessage("Informe o --> Pastor Apresentador") :
-                                                      this.dadosMembro.funcao > 1 && this.dadosObreiro.pastorRegional == undefined ? this.serviceUtil.showMessage("Informe o --> Pastor Regional") :
-                                                        this.dadosMembro.funcao > 1 && this.historico.entradaFuncao < 1 ? this.serviceUtil.showMessage("Adicione a Entrada na Função") :
-                                                          this.dadosMembro.funcao > 1 && this.historico.dataEntradaFuncao == undefined ? this.serviceUtil.showMessage("Adicione a Data de entrada na Função") :
-                                                            this.cargo.cargo != undefined || this.cargo.noCargoDesde != undefined ? this.serviceUtil.showMessage("Adicione o cargo Informado ou a Data.") :
-                                                              result = true
+    this.endereco.cep == undefined || this.endereco.cep == 0 ? this.serviceUtil.showMessage("Informe o --> CEP e Pressione Enter") :
+      this.endereco.estado == undefined ? this.serviceUtil.showMessage("Informe --> Estado ") :
+        this.endereco.cidade == undefined ? this.serviceUtil.showMessage("Informe --> Cidade ") :
+          this.endereco.bairro == undefined ? this.serviceUtil.showMessage("Informe --> Bairro") :
+            this.endereco.rua == undefined ? this.serviceUtil.showMessage("Informe --> Rua ") :
+              this.endereco.numero == undefined ? this.serviceUtil.showMessage("Informe --> Nº Casa ") :
+                this.dadosMembro.rol == undefined ? this.serviceUtil.showMessage("Informe --> Nº Rol ") :
+                  this.dadosMembro.congregacao == undefined ? this.serviceUtil.showMessage("Informe a --> Congregação") :
+                    this.dadosMembro.regional == undefined ? this.serviceUtil.showMessage("Informe --> Regional") :
+                      this.dadosMembro.batismoAguas == undefined ? this.serviceUtil.showMessage("Informe a data de --> Batismo nas Águas") :
+                        this.dadosMembro.batismoAguasIgreja == undefined ? this.serviceUtil.showMessage("Informe a Igreja --> Batismo nas Águas") :
+                          this.dadosMembro.batismoAguasCidade == undefined ? this.serviceUtil.showMessage("Informe a Cidade --> Onde foi batizado") :
+                            this.dadosMembro.batismoAguasEstado == undefined ? this.serviceUtil.showMessage("Informe o Estado --> Onde foi batizado") :
+                              this.dadosMembro.membroDesde == undefined ? this.serviceUtil.showMessage("Informe --> Membro Desde") :
+                                this.dadosMembro.validadeCartaoMembro == undefined ? this.serviceUtil.showMessage("Informe a data --> Validade do cartão de Membro") :
+                                  this.dadosMembro.funcao == undefined || this.dadosMembro.funcao < 1 ? this.serviceUtil.showMessage("Selecione a Função --> Função") :
+                                    this.dadosMembro.funcao > 1 && this.dadosObreiro.pastorApresentador == undefined ? this.serviceUtil.showMessage("Informe o --> Pastor Apresentador") :
+                                      this.dadosMembro.funcao > 1 && this.dadosObreiro.pastorRegional == undefined ? this.serviceUtil.showMessage("Informe o --> Pastor Regional") :
+                                        this.dadosMembro.funcao > 1 && this.historico.entradaFuncao < 1 ? this.serviceUtil.showMessage("Adicione a Entrada na Função") :
+                                          this.dadosMembro.funcao > 1 && this.historico.dataEntradaFuncao == undefined ? this.serviceUtil.showMessage("Adicione a Data de entrada na Função") :
+                                            this.cargo.cargo != undefined || this.cargo.noCargoDesde != undefined ? this.serviceUtil.showMessage("Adicione o cargo Informado ou a Data.") :
+                                              result = true
 
     return result;
   }

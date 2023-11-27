@@ -1,6 +1,6 @@
 <mat-accordion class="example-headers-align">
   <!-- <img style="width: 205;height: 320px;" src="../../../../assets/img/rhayane.jpg" alt="" > -->
-  <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+  <mat-expansion-panel *ngIf="step >= 0" [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h2>Dados Pessoais</h2>
@@ -115,7 +115,7 @@
 
   </mat-expansion-panel>
 
-  <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+  <mat-expansion-panel *ngIf="step >= 1" [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h2>Endereço</h2>
@@ -175,7 +175,7 @@
 
   </mat-expansion-panel>
 
-  <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+  <mat-expansion-panel *ngIf="step >= 2" [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h2>Contatos</h2>
@@ -193,17 +193,17 @@
         <div style="padding-top: 15px;">
           <mat-form-field>
             <mat-label>DDD</mat-label>
-            <input type="number" matInput placeholder="DDD" [(ngModel)]="contato.ddd" name="ddd">
+            <input type="number" maxlength="2" matInput placeholder="DDD" [(ngModel)]="contato.ddd" name="ddd">
           </mat-form-field>
 
           <mat-form-field>
             <mat-label>Telefone</mat-label>
-            <input type="number" matInput placeholder="Telefone" [(ngModel)]="contato.telefone" name="telefone">
+            <input type="number" maxlength="9" matInput placeholder="Telefone" [(ngModel)]="contato.telefone" name="telefone">
           </mat-form-field>
 
           <mat-form-field>
             <mat-label>Celular</mat-label>
-            <input type="number" matInput placeholder="Celular" [(ngModel)]="contato.celular" name="celular">
+            <input type="number" maxlength="9" matInput placeholder="Celular" [(ngModel)]="contato.celular" name="celular">
           </mat-form-field>
 
           <mat-form-field>
@@ -241,7 +241,7 @@
         </ng-container>
 
         <ng-container matColumnDef="celular">
-          <mat-header-cell *matHeaderCellDef>Foto</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>Celular</mat-header-cell>
           <mat-cell mat-cell id="celular" *matCellDef="let row">{{row.celular}}</mat-cell>
         </ng-container>
 
@@ -256,11 +256,6 @@
           <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
           <mat-cell *matCellDef="let row">
 
-            <!-- <a (click)="AtualizarContato(row.id)" class="edit">
-              <i class="material-icons">
-                edit
-              </i>
-            </a> -->
             <a (click)="ExcluirContato(row.id)" class="delete">
               <i class="material-icons">
                 delete
@@ -288,7 +283,7 @@
 
   </mat-expansion-panel>
 
-  <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
+  <mat-expansion-panel *ngIf="step >= 3" [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h2>Dados do Membro</h2>
@@ -312,7 +307,7 @@
 
       <mat-form-field>
         <mat-label>Regional</mat-label>
-        <input matInput placeholder="Rg" [(ngModel)]="dadosMembro.regional" name="regional">
+        <input matInput placeholder="Regional" [(ngModel)]="dadosMembro.regional" name="regional">
       </mat-form-field>
 
       <mat-form-field>
@@ -498,7 +493,7 @@
 
   </mat-expansion-panel>
 
-  <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
+  <mat-expansion-panel *ngIf="step >= 4 && dadosMembro.funcao > 1" [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h2>Dados de Obreiro</h2>
@@ -582,12 +577,12 @@
           <mat-datepicker #dataEntradaFuncao></mat-datepicker>
         </mat-form-field>
 
-        <mat-form-field color="accent" style="width: 213px;">
+        <!-- <mat-form-field color="accent" style="width: 213px;">
           <mat-label>Data Saida Funcao</mat-label>
           <input matInput [matDatepicker]="dataSaidaFuncao" [(ngModel)]="historico.dataSaidaFuncao" name="dataSaidaFuncao">
           <mat-datepicker-toggle matIconSuffix [for]="dataSaidaFuncao"></mat-datepicker-toggle>
           <mat-datepicker #dataSaidaFuncao></mat-datepicker>
-        </mat-form-field>
+        </mat-form-field> -->
 
       </div>
 

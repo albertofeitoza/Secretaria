@@ -1,6 +1,6 @@
 export class ControleReuniaoObreiros {
-  id: number;
-  pessoaId: number;
-  data: Date;
-  motivo?: string;
+  id: number = 0;
+  pessoaId: number = 0;
+  data: Date = new Date;
+  motivo: string;
 }

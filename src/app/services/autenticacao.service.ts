@@ -16,7 +16,7 @@ import { Token } from '@angular/compiler';
 export class AutenticacaoService {
 
   autenticado = new EventEmitter<boolean>();
-  token : string
+  token: string
   environmentUrl = ''
 
   constructor(
@@ -29,8 +29,14 @@ export class AutenticacaoService {
   }
 
   Autenticado(sessao: login) {
-    this.logoof()
-    this.loginSistema(sessao, Endpoint.Token)
+    try {
+      this.logoof()
+      this.loginSistema(sessao, Endpoint.Token)
+    } catch (error) {
+      console.log("Teste")
+    }
+
+
   }
 
   logoof() {
@@ -39,18 +45,18 @@ export class AutenticacaoService {
   }
 
   loginSistema(T: login, endpoint: string) {
+
     this.logoof()
     this.http.post<ApiResponse>(this.environmentUrl + endpoint, T,).pipe(
       map(obj => obj),
-      catchError(e => this.utilService.erroHandler(e))
+      catchError(e => this.utilService.erroHandler(e)),
     ).subscribe(ret => {
-      if(ret.code === 200)
-      {
+      if (ret.code === 200) {
         this.token = ret.data;
         this.autenticado.emit(true);
         this.router.navigate(['/']);
         this.utilService.showMessage(ret.mensagem, false)
-      }else
+      } else
         this.utilService.showMessage(ret.mensagem, true)
     })
   }
@@ -62,5 +68,4 @@ export class AutenticacaoService {
     });
     return { headers: headers };
   }
-
 }
