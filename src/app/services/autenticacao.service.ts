@@ -16,7 +16,9 @@ import { Token } from '@angular/compiler';
 export class AutenticacaoService {
 
   autenticado = new EventEmitter<boolean>();
-  token: string
+  //token: string
+  token = new EventEmitter<string>();
+
   environmentUrl = ''
 
   constructor(
@@ -41,7 +43,7 @@ export class AutenticacaoService {
 
   logoof() {
     this.autenticado.emit(false);
-    this.token = "";
+    this.token.emit('')
   }
 
   loginSistema(T: login, endpoint: string) {

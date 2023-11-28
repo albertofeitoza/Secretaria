@@ -1,12 +1,13 @@
-import { Component, AfterViewInit, ViewChild, OnInit } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, OnInit, Injectable } from '@angular/core';
 import { Pessoa } from 'src/app/models/pessoa';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, _MatTableDataSource } from '@angular/material/table';
 import { MatSort, matSortAnimations } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { Observable } from 'rxjs';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { Observable, Subject } from 'rxjs';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { Endpoint } from 'src/app/enum/Endpoints';
 
+@Injectable()
 
 @Component({
   selector: 'app-read-membros',
@@ -14,18 +15,19 @@ import { Endpoint } from 'src/app/enum/Endpoints';
   styleUrls: ['./read-membros.component.css'],
 })
 export class ReadMembrosComponent implements OnInit {
-
+  
   estadoForm: boolean = true
   pessoa: Pessoa[] = new Array()
   pessoaSelecionada: number = 0
   corLinhaGrid: number = 0
  
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+ 
+
+  // @ViewChild(MatSort, { static: true }) sort: MatSort;
+  // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   Colunas = ['id', 'rol', 'foto', 'nome', 'dataNascimento', 'funcao', 'statusPessoa', 'action']
-  dataSource: MatTableDataSource<Pessoa>;
-
+  dataSource: MatTableDataSource<Pessoa>
  
   constructor(private serviceMembro : AllservicesService<Pessoa>) {
    
@@ -43,7 +45,7 @@ export class ReadMembrosComponent implements OnInit {
   buscarMembro(event: any) {
     this.serviceMembro.read(Endpoint.Pessoa, "")
       .subscribe(x => {
-        this.pessoa = x
+        this.pessoa = x ;
       })
   }
 

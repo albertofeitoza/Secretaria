@@ -7,19 +7,12 @@
   </span>
   <input class="txtBusca" type="text" (keypress)="buscarMembro($event)" value="" />
 </div>
-<br>
-
-
-
-
-<div class="mat-elevation-z8">
-  <table mat-table [dataSource]="pessoa" matSort>
+  <table mat-table [dataSource]="pessoa" class="mat-elevation-z8 demo-table">
     <!-- Id Column -->
-
-      <ng-container matColumnDef="id">
-        <mat-header-cell  style="display: none;" *matHeaderCellDef hidden="true">Id</mat-header-cell>
-        <mat-cell style="display: none;" id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
-      </ng-container>
+    <ng-container matColumnDef="id">
+      <mat-header-cell style="display: none;" *matHeaderCellDef hidden="true">Id</mat-header-cell>
+      <mat-cell style="display: none;" id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
+    </ng-container>
     <!-- rol Column -->
     <ng-container matColumnDef="rol">
       <mat-header-cell *matHeaderCellDef>Rol</mat-header-cell>
@@ -41,7 +34,7 @@
     <!-- Data nascimento -->
     <ng-container matColumnDef="dataNascimento">
       <mat-header-cell *matHeaderCellDef>Data Nascimento</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.dataNascimento | date : 'dd/mm/yyyy'}}</mat-cell>
+      <mat-cell *matCellDef="let row">{{row.dataNascimento | date : 'dd/MM/yyyy'}}</mat-cell>
     </ng-container>
 
     <!-- Função -->
@@ -93,10 +86,6 @@
     <mat-row (click)="PessoaSelecionada(row.id)" *matRowDef="let row; columns: Colunas;"
       [ngClass]="{'corLinhaGrid' : row.id == pessoaSelecionada}"></mat-row>
   </table>
-
-  <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+  <!-- <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
     aria-label="Select page of periodic elements">
-  </mat-paginator>
-
-</div>
-<!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+  </mat-paginator> -->

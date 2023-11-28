@@ -16,6 +16,7 @@ import { DadosObreiro } from 'src/app/models/DadosObreiro';
 import { MinValidator } from '@angular/forms';
 import { MAT_DATEPICKER_VALIDATORS } from '@angular/material/datepicker';
 import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
+import { ApiResponse } from 'src/app/models/ApiResponse';
 
 class ImageSnippet {
   constructor(public src: string, public file: File) { }
@@ -70,7 +71,9 @@ export class CadastroMembrosComponent {
   constructor(
     private serviceUtil: UtilServiceService,
     private serviceCadastro: AllservicesService<Pessoa>,
+    private buscaPorCpf: AllservicesService<ApiResponse>,
     private serviceEndereco: AllservicesService<PessoaEndereco>,
+    private servicoContato: AllservicesService<contatos>,
     private servicoCep: AllservicesService<Cep>,
 
   ) { }
@@ -115,9 +118,8 @@ export class CadastroMembrosComponent {
         case 0:
           if (this.ValidarPessoa() && this.pessoa.id == 0) {
 
-            this.serviceCadastro.read(Endpoint.Pessoa).subscribe(x => {
-
-              if (!x.map(p => p.cpf).includes(this.pessoa.cpf.toString())) {
+            this.buscaPorCpf.readById(this.pessoa.cpf, Endpoint.BuscaPorCpf).subscribe(response => {
+              if (response.code != 200) {
                 this.pessoa.cpf = this.pessoa.cpf != undefined ? this.pessoa.cpf.toString() : this.pessoa.cpf
                 this.pessoa.rg = this.pessoa.rg != undefined ? this.pessoa.rg.toString() : this.pessoa.rg
 
@@ -143,7 +145,7 @@ export class CadastroMembrosComponent {
             this.endereco.pessoaId = this.pessoa.id;
 
             //Salvar Endereço
-            this.serviceEndereco.create(this.endereco, Endpoint.Pessoa + Endpoint.PessoaEndereco)
+            this.serviceEndereco.create(this.endereco, Endpoint.Enderecos)
               .subscribe(x => {
                 this.endereco.id = x.id
                 this.step++
@@ -154,12 +156,9 @@ export class CadastroMembrosComponent {
             this.step++
 
           break;
+        case 2:
         case 3:
-          
-          break;
-
-        case 4:
-
+            this.step++
           break;
         default:
           break;
@@ -277,11 +276,13 @@ export class CadastroMembrosComponent {
   AdicionarContato() {
 
     if (this.contato.ddd > 0 && this.contato.telefone > 0) {
-      this.contato.id = this.contatos.length + 1
-      this.contatos.push(this.contato)
-      this.contato = new contatos()
-      let contatosAtualizados = this.contatos.slice()
-      this.contatos = contatosAtualizados;
+      this.contato.pessoaId = this.pessoa.id;
+      this.servicoContato.create(this.contato, Endpoint.Contatos)
+        .subscribe(x => {
+          this.serviceUtil.showMessage("Novo contato Adicionado!", false)
+          this.contato = new contatos()
+          this.BuscarContatos()
+        })
     } else
       this.serviceUtil.showMessage("informar pelo menos o DDD e o telefone.", false)
 
@@ -289,11 +290,20 @@ export class CadastroMembrosComponent {
   }
 
   ExcluirContato(id: any) {
-    var index = this.contatos.indexOf(id);
-    this.contatos.splice(index, 1)
-    let contatosAtualizados = this.contatos.slice()
-    this.contatos = contatosAtualizados;
+    this.servicoContato.delete(id, Endpoint.Contatos)
+    .subscribe(x => {
+      this.serviceUtil.showMessage("Contato Excluido!", false)
+      this.BuscarContatos()
+    })
   }
+
+  BuscarContatos() {
+    this.servicoContato.read(Endpoint.Contatos)
+      .subscribe(response => {
+        this.contatos = response.filter(x => x.pessoaId == this.pessoa.id)
+      })
+  }
+
 
   ContatoSelecionado(id: any) {
 
