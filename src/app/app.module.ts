@@ -47,6 +47,7 @@ import { DeleteMembroComponent } from './views/Membros/delete-membro/delete-memb
 import { UpdateMembroComponent } from './views/Membros/update-membro/update-membro.component';
 import { CadastroMembrosComponent } from './views/Membros/cadastro-membros/cadastro-membros.component';
 import { RelatoriosComponent } from './views/Relatorios/relatorios/relatorios.component';
+import { PopupConfirmacaoComponent } from './popups/popup-confirmacao/popup-confirmacao.component';
 
 registerLocaleData(localePt);
 
@@ -61,6 +62,7 @@ registerLocaleData(localePt);
     UpdateMembroComponent,
     CadastroMembrosComponent,
     RelatoriosComponent,
+    PopupConfirmacaoComponent,
 
 
   ],

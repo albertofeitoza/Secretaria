@@ -1,17 +1,27 @@
 export class Pessoa {
   id: number = 0;
-  dataCriacao: Date = new Date ;
+  dataCriacao: Date = new Date;
   nome: string;
   rg: string;
   cpf: string;
   estadoCivil: number = 0;
-  dataNascimento: Date ;
+  dataNascimento: Date;
   profissao: string;
   grauInstrucao: number = 0;
   sexo: number = 0;
   naturalidade: string;
   naturalidadeEstado: string;
   nomeConjuge: string;
-  dataCasamento: Date;
+  dataCasamento?: Date;
   statusPessoa: number = 0;
+}
+
+export class ViewPessoa {
+  id: number = 0;
+  rol: number = 0;
+  foto: string;
+  nome: string;
+  dataNascimento: Date;
+  funcao: string
+  statusPessoa: string
 }

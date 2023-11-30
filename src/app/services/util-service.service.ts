@@ -17,7 +17,8 @@ export class UtilServiceService {
     private http: HttpClient,
     private router: Router,
     public overlay: Overlay,
-    public dialog: MatDialog,) { }
+    public dialog: MatDialog
+    ) { }
 
   showMessage(msg: string, isErro: boolean = false): void {
     this.snackBar.open(msg, 'X', {
@@ -99,18 +100,18 @@ export class UtilServiceService {
     return statusPessoa
   }
 
-  CursoTeologico(){
+  CursoTeologico() {
     let cursoteoligico = [];
     cursoteoligico.push({ "id": 0, "value": "selecione" })
     cursoteoligico.push({ "id": 1, "value": "Basico" })
     cursoteoligico.push({ "id": 2, "value": "Medio" })
     cursoteoligico.push({ "id": 3, "value": "Bacharel" })
     cursoteoligico.push({ "id": 4, "value": "Doutorado" })
-    
+
     return cursoteoligico
   }
 
-  Funcao(){
+  Funcao() {
     let funcao = [];
     funcao.push({ "id": 0, "value": "selecione" })
     funcao.push({ "id": 1, "value": "Membro" })
@@ -124,14 +125,24 @@ export class UtilServiceService {
     return funcao
   }
 
-  EntradaFuncao(){
+  EntradaFuncao() {
     let entradaFuncao = [];
     entradaFuncao.push({ "id": 0, "value": "selecione" })
     entradaFuncao.push({ "id": 1, "value": "Apresentado" })
     entradaFuncao.push({ "id": 2, "value": "Consagrado" })
     entradaFuncao.push({ "id": 3, "value": "Recebido" })
     entradaFuncao.push({ "id": 3, "value": "Reintegrado" })
-   
+
     return entradaFuncao
+  }
+
+  PopupConfirmacao(mensagem: string, tipo: number, componente: any) {
+
+    const dialog = this.dialog.open(componente, {
+      width: 'auto',
+      height : 'auto',
+      data: { mensagem: mensagem, tipo: tipo }
+    });
+    return dialog.afterClosed();
   }
 }

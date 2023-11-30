@@ -1,6 +1,6 @@
 <div class="menuInternoGrid">
   <a routerLink="/membrosadd" class="cadGrupo">
-    <i class="material-icons">add</i>
+    <i class="material-icons">add_circle_outline</i>
   </a>
   <span class="search" (click)="buscarMembro($event)">
     <i class="material-icons">search</i>
@@ -47,19 +47,7 @@
     <!-- status -->
     <ng-container matColumnDef="statusPessoa">
       <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-
-        <div *ngIf="row.statusPessoa == 1">
-          <i class="material-icons">
-            ok
-          </i>
-        </div>
-        <div *ngIf="row.bloqueado == 2">
-          <i class="material-icons">
-            lock_open
-          </i>
-        </div>
-      </mat-cell>
+      <mat-cell *matCellDef="let row">{{row.statusPessoa}}</mat-cell>
     </ng-container>
 
 
@@ -73,7 +61,7 @@
             edit
           </i>
         </a>
-        <a (click)="ExcluirAgenda(row.id)" class="delete">
+        <a (click)="ExcluirMembro(row.id)" class="delete">
           <i class="material-icons">
             delete
           </i>

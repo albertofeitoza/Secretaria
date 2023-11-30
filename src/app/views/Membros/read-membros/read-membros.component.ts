@@ -1,11 +1,14 @@
 import { Component, AfterViewInit, ViewChild, OnInit, Injectable } from '@angular/core';
-import { Pessoa } from 'src/app/models/pessoa';
+import { Pessoa, ViewPessoa } from 'src/app/models/pessoa';
 import { MatTableDataSource, _MatTableDataSource } from '@angular/material/table';
 import { MatSort, matSortAnimations } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, map } from 'rxjs';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { Endpoint } from 'src/app/enum/Endpoints';
+import { UtilServiceService } from 'src/app/services/util-service.service';
+import { PopupConfirmacaoComponent } from 'src/app/popups/popup-confirmacao/popup-confirmacao.component';
+import { TipoPopup } from 'src/app/enum/TipoPopup';
 
 @Injectable()
 
@@ -17,7 +20,7 @@ import { Endpoint } from 'src/app/enum/Endpoints';
 export class ReadMembrosComponent implements OnInit {
   
   estadoForm: boolean = true
-  pessoa: Pessoa[] = new Array()
+  pessoa: ViewPessoa[] = new Array()
   pessoaSelecionada: number = 0
   corLinhaGrid: number = 0
  
@@ -29,8 +32,10 @@ export class ReadMembrosComponent implements OnInit {
   Colunas = ['id', 'rol', 'foto', 'nome', 'dataNascimento', 'funcao', 'statusPessoa', 'action']
   dataSource: MatTableDataSource<Pessoa>
  
-  constructor(private serviceMembro : AllservicesService<Pessoa>) {
-   
+  constructor(
+    private serverApi : AllservicesService<any>,
+    private serviceUtil : UtilServiceService
+    ) {
     
   }
   ngOnInit() {
@@ -43,9 +48,9 @@ export class ReadMembrosComponent implements OnInit {
   }
 
   buscarMembro(event: any) {
-    this.serviceMembro.read(Endpoint.Pessoa, "")
+    this.serverApi.read(Endpoint.Pessoa, "")
       .subscribe(x => {
-        this.pessoa = x ;
+       this.pessoa = x
       })
   }
 
@@ -57,8 +62,17 @@ export class ReadMembrosComponent implements OnInit {
     alert(id)
   }
 
-  ExcluirAgenda(id: number) {
-    alert(id)
+  ExcluirMembro(id: number) {
+    
+   this.serviceUtil.PopupConfirmacao("Deseja Excluir o Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
+   .subscribe(result => {
+       
+    alert(result)
+       
+    });
+   
+
+
   }
 
   PessoaSelecionada(id: number) {

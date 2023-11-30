@@ -1,0 +1,21 @@
+<mat-card>
+    <mat-card-title class="alinhar">
+        Atenção !
+    </mat-card-title>
+    <mat-card-subtitle class="alinhar alinharTexto">
+        {{mensagem}}
+        <hr />
+    </mat-card-subtitle>
+    <mat-card-content class="alinhar">
+        <a (click)="FecharPopup(false)">
+            <i class="material-icons">
+                cancel
+            </i>
+        </a>
+        <a (click)="FecharPopup(true)">
+            <i class="material-icons icones">
+                thumb_up_alt
+            </i>
+        </a>
+    </mat-card-content>
+</mat-card>

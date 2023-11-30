@@ -21,5 +21,5 @@ export class DadosMembro {
   dizimista: boolean = false;
   frequentaEbd: boolean = false;
   funcao : number = 0;
-  cargos : Cargos[]
 }
+

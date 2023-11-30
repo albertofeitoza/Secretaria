@@ -110,12 +110,12 @@
 
     </div>
     <mat-action-row>
-      <button mat-button color="primary" (click)="Proximo()">Próximo</button>
+      <button mat-button color="primary" (click)="Proximo()">Salvar</button>
     </mat-action-row>
 
   </mat-expansion-panel>
 
-  <mat-expansion-panel *ngIf="step >= 1" [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+  <mat-expansion-panel *ngIf="pessoa.id > 0" [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h2>Endereço</h2>
@@ -170,12 +170,12 @@
     <mat-action-row *ngIf="endereco.cep > 0 && endereco.estado && endereco.cidade 
       && endereco.bairro && endereco.rua && endereco.numero ">
       <button mat-button color="warn" (click)="Voltar()">Voltar</button>
-      <button mat-button color="primary" (click)="Proximo()">Próximo</button>
+      <button mat-button color="primary" (click)="Proximo()">Salvar</button>
     </mat-action-row>
 
   </mat-expansion-panel>
 
-  <mat-expansion-panel *ngIf="step >= 2" [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+  <mat-expansion-panel *ngIf="pessoa.id > 0" [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h2>Contatos</h2>
@@ -283,7 +283,7 @@
 
   </mat-expansion-panel>
 
-  <mat-expansion-panel *ngIf="step >= 3" [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
+  <mat-expansion-panel *ngIf="pessoa.id > 0" [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h2>Dados do Membro</h2>
@@ -433,6 +433,13 @@
         <mat-datepicker #noCargoDesde></mat-datepicker>
       </mat-form-field>
 
+      <mat-form-field color="accent" style="width: 213px;">
+        <mat-label>Ficou no cargo até</mat-label>
+        <input matInput [matDatepicker]="noCargoAte" [(ngModel)]="cargo.noCargoAte" name="noCargoAte">
+        <mat-datepicker-toggle matIconSuffix [for]="noCargoAte"></mat-datepicker-toggle>
+        <mat-datepicker #noCargoAte></mat-datepicker>
+      </mat-form-field>
+
       <a>
         <i class="material-icons" (click)="AdicionarCargo()">add</i>
       </a>
@@ -458,7 +465,7 @@
 
         <ng-container matColumnDef="noCargoAte">
           <mat-header-cell *matHeaderCellDef>Até</mat-header-cell>
-          <mat-cell id="noCargoAte" *matCellDef="let row">{{row.noCargoAte}}</mat-cell>
+          <mat-cell id="noCargoAte" *matCellDef="let row">{{row.noCargoAte | date : 'dd/MM/yyyy'}}</mat-cell>
         </ng-container>
 
         <!-- Coluna de Ações -->
@@ -488,12 +495,12 @@
 
     <mat-action-row>
       <button mat-button color="warn" (click)="Voltar()">Voltar</button>
-      <button mat-button color="primary" (click)="Proximo()">Próximo</button>
+      <button mat-button color="primary" (click)="Proximo()">Salvar</button>
     </mat-action-row>
 
   </mat-expansion-panel>
 
-  <mat-expansion-panel *ngIf="step >= 4 && dadosMembro.funcao > 1" [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
+  <mat-expansion-panel *ngIf="pessoa.id > 0 && dadosMembro.funcao > 1" [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h2>Dados de Obreiro</h2>
@@ -523,8 +530,8 @@
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Possui Cheque S.F / Nome Sujo?</mat-label>
-          <input style="height: 20px; width: 150px;" matInput placeholder="Possui Cheque S.F / Nome Sujo?">
+          <mat-label>Possui Cheque S.Fundo?</mat-label>
+          <input style="height: 20px; width: 150px;" matInput placeholder="Possui Cheque S.Fundo?">
           <input name="possuiChequeSemFundos" [(ngModel)]="dadosObreiro.possuiChequeSemFundos"
             [checked]="dadosObreiro.possuiChequeSemFundos" type="checkbox">
         </mat-form-field>
@@ -577,12 +584,12 @@
           <mat-datepicker #dataEntradaFuncao></mat-datepicker>
         </mat-form-field>
 
-        <!-- <mat-form-field color="accent" style="width: 213px;">
+        <mat-form-field color="accent" style="width: 213px;">
           <mat-label>Data Saida Funcao</mat-label>
           <input matInput [matDatepicker]="dataSaidaFuncao" [(ngModel)]="historico.dataSaidaFuncao" name="dataSaidaFuncao">
           <mat-datepicker-toggle matIconSuffix [for]="dataSaidaFuncao"></mat-datepicker-toggle>
           <mat-datepicker #dataSaidaFuncao></mat-datepicker>
-        </mat-form-field> -->
+        </mat-form-field>
 
       </div>
 
