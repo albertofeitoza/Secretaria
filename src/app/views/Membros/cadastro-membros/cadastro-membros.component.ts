@@ -17,6 +17,8 @@ import { MinValidator } from '@angular/forms';
 import { MAT_DATEPICKER_VALIDATORS } from '@angular/material/datepicker';
 import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
 import { ApiResponse } from 'src/app/models/ApiResponse';
+import { Filtros } from 'src/app/models/Filtros';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 
 class ImageSnippet {
   constructor(public src: string, public file: File) { }
@@ -48,6 +50,7 @@ export class CadastroMembrosComponent {
   historicos: Historico[] = new Array()
   historico: Historico = new Historico()
   foto: FormData = new FormData()
+  filtros: Filtros = new Filtros()
 
 
   //--------------
@@ -56,7 +59,7 @@ export class CadastroMembrosComponent {
 
   Colunas = ['id', 'ddd', 'telefone', 'celular', 'email', 'action']
   ColunasCargos = ['id', 'cargo', 'noCargoDesde', 'noCargoAte', 'action']
-  ColunasObreiro = ['id', 'funcao', 'entradaFuncao', 'dataEntradaFuncao', 'dataSaidaFuncao', 'reintegrado', 'reintegradoEm', 'aprovado', 'action']
+  ColunasHistoricoObreiro = ['id', 'funcao', 'entradaFuncao', 'dataEntradaFuncao', 'dataSaidaFuncao', 'reintegrado', 'reintegradoEm', 'aprovado', 'action']
   // ----------------
 
   //combos
@@ -72,15 +75,37 @@ export class CadastroMembrosComponent {
     private serviceUtil: UtilServiceService,
     private serverApi: AllservicesService<any>,
     private servicoCep: AllservicesService<Cep>,
+    private activatedRoute: ActivatedRoute
+
 
   ) { }
 
   ngOnInit() {
     this.CarregarCombos()
     this.setStep(0)
-
+    this.BuscarMembro()
 
   }
+
+  BuscarMembro() {
+    const id = Number(this.activatedRoute.snapshot.params['id']);
+
+    if (id > 0) {
+      this.serverApi.readById(id.toString(), Endpoint.Pessoa)
+        .subscribe(response => {
+          this.pessoa = response.data.pessoa != null ? response.data.pessoa : new Pessoa();
+          this.endereco = response.data.pessoaEndereco != null ? response.data.pessoaEndereco : this.endereco = new PessoaEndereco();
+          this.contatos = response.data.contatos
+          this.dadosMembro = response.data.dadosMembro
+          this.cargos = response.data.cargos
+          this.dadosObreiro = response.data?.dadosObreiro != null ? response.data.dadosObreiro : this.dadosObreiro = new DadosObreiro()
+          this.historicos = response.data?.historicoObreiro
+        })
+    }
+  }
+
+
+
 
   CarregarCombos() {
     this.estCivil = this.serviceUtil.EstCivil();
@@ -90,9 +115,6 @@ export class CadastroMembrosComponent {
     this.cursoTeoligico = this.serviceUtil.CursoTeologico();
     this.funcao = this.serviceUtil.Funcao()
     this.entradaFuncao = this.serviceUtil.EntradaFuncao()
-    //this.pessoa.dataNascimento = new Date('1901-01-01')
-    //this.pessoa.dataCasamento = new Date('1901-01-01')
-
   }
 
   setStep(index: number) {
@@ -131,11 +153,21 @@ export class CadastroMembrosComponent {
               } else
                 this.serviceUtil.showMessage(`Já existe cadastro para esse CPF : ${this.pessoa.cpf}`, true)
             });
-          } else
+          }
+          else {
+            this.pessoa.cpf = this.pessoa.cpf != undefined ? this.pessoa.cpf.toString() : this.pessoa.cpf
+            this.pessoa.rg = this.pessoa.rg != undefined ? this.pessoa.rg.toString() : this.pessoa.rg
+            this.pessoa.dataCasamento = this.pessoa.estadoCivil == 1 || this.pessoa.estadoCivil > 4 ? undefined : this.pessoa.dataCasamento
+
+            //Atualizando dados de Pessoa
+            this.serverApi.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
+              this.step++;
+              this.pessoa = x
+              this.serviceUtil.showMessage("cadastro Atualizado.");
+            });
             this.step++;
-
+          }
           break;
-
         case 1:
 
           if (this.ValidarEndereco() && this.pessoa.id > 0) {
@@ -242,11 +274,25 @@ export class CadastroMembrosComponent {
     let result: boolean = false;
     this.dadosMembro.funcao > 1 && this.dadosObreiro.pastorApresentador == undefined ? this.serviceUtil.showMessage("Informe o --> Pastor Apresentador") :
       this.dadosMembro.funcao > 1 && this.dadosObreiro.pastorRegional == undefined ? this.serviceUtil.showMessage("Informe o --> Pastor Regional") :
-        this.dadosMembro.funcao > 1 && this.historico.entradaFuncao < 1 ? this.serviceUtil.showMessage("Adicione a Entrada na Função") :
-          this.dadosMembro.funcao > 1 && this.historico.dataEntradaFuncao == undefined ? this.serviceUtil.showMessage("Adicione a Data de entrada na Função") :
-            this.cargo.cargo != undefined || this.cargo.noCargoDesde != undefined ? this.serviceUtil.showMessage("Adicione o cargo Informado e a Data.") :
-              result = true
+        result = true
     return result;
+  }
+
+
+  AdicionarFuncaoObreiro() {
+    if (this.ValidaDadosObreiro() && this.dadosObreiro.id > 0) {
+      
+      this.historico.dadosObreiroId = this.dadosObreiro.id;
+
+      this.serverApi.create(this.historico, Endpoint.HistoricoObreiro).subscribe(()=> {
+        this.serverApi.read(Endpoint.HistoricoObreiro).subscribe(response => {
+          this.historicos = response.filter(x => x.dadosObreiroId == this.dadosObreiro.id);
+        })
+      })
+        
+    }
+
+
   }
 
 
@@ -291,10 +337,6 @@ export class CadastroMembrosComponent {
       this.serviceUtil.showMessage("Informe o Cpf", false)
     return false
   }
-
-
-
-
 
   AdicionarContato() {
 
@@ -379,8 +421,7 @@ export class CadastroMembrosComponent {
 
   }
 
-  ExcluirHistorico(id: any) {
+  
 
-  }
 
 }

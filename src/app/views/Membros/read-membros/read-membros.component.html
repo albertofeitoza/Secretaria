@@ -1,79 +1,91 @@
 <div class="menuInternoGrid">
-  <a routerLink="/membrosadd" class="cadGrupo">
+  <a routerLink="/membrosadd">
     <i class="material-icons">add_circle_outline</i>
   </a>
-  <span class="search" (click)="buscarMembro($event)">
+
+  <a style="position: absolute;">
+    Inativos
+    <input name="Inativos" [(ngModel)]="filtros.Inativos" [checked]="filtros.Inativos" type="checkbox"
+      (change)="Filtros($event)">
+  </a>
+
+  <span class="search" (click)="Filtros($event)">
     <i class="material-icons">search</i>
   </span>
-  <input class="txtBusca" type="text" (keypress)="buscarMembro($event)" value="" />
+    <input id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)" value="" />
 </div>
-  <table mat-table [dataSource]="pessoa" class="mat-elevation-z8 demo-table">
-    <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <mat-header-cell style="display: none;" *matHeaderCellDef hidden="true">Id</mat-header-cell>
-      <mat-cell style="display: none;" id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
-    </ng-container>
-    <!-- rol Column -->
-    <ng-container matColumnDef="rol">
-      <mat-header-cell *matHeaderCellDef>Rol</mat-header-cell>
-      <mat-cell id="rol" *matCellDef="let row" hidden="true">{{row.rol}}</mat-cell>
-    </ng-container>
 
-    <ng-container matColumnDef="foto">
-      <mat-header-cell *matHeaderCellDef>Foto</mat-header-cell>
-      <mat-cell mat-cell id="foto" *matCellDef="let row">
-        <img style="width: 10%; border-radius: 100%;" src="../../../../assets/img/27455363893.jpg" alt="Foto">
-      </mat-cell>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="nome">
-      <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
-    </ng-container>
-    <!-- Data nascimento -->
-    <ng-container matColumnDef="dataNascimento">
-      <mat-header-cell *matHeaderCellDef>Data Nascimento</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.dataNascimento | date : 'dd/MM/yyyy'}}</mat-cell>
-    </ng-container>
-
-    <!-- Função -->
-    <ng-container matColumnDef="funcao">
-      <mat-header-cell *matHeaderCellDef>Função</mat-header-cell>
-      <mat-cell id="funcao" *matCellDef="let row" hidden="true">{{row.funcao}}</mat-cell>
-    </ng-container>
+<!-- <label>Inativos</label> -->
 
 
-    <!-- status -->
-    <ng-container matColumnDef="statusPessoa">
-      <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.statusPessoa}}</mat-cell>
-    </ng-container>
+
+<table mat-table [dataSource]="pessoa" class="mat-elevation-z8 demo-table">
+  <!-- Id Column -->
+  <ng-container matColumnDef="id">
+    <mat-header-cell style="display: none;" *matHeaderCellDef hidden="true">Id</mat-header-cell>
+    <mat-cell style="display: none;" id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
+  </ng-container>
+  <!-- rol Column -->
+  <ng-container matColumnDef="rol">
+    <mat-header-cell *matHeaderCellDef>Rol</mat-header-cell>
+    <mat-cell id="rol" *matCellDef="let row" hidden="true">{{row.rol}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="foto">
+    <mat-header-cell *matHeaderCellDef>Foto</mat-header-cell>
+    <mat-cell mat-cell id="foto" *matCellDef="let row">
+      <img style="width: 10%; border-radius: 100%;" src="../../../../assets/img/27455363893.jpg" alt="Foto">
+    </mat-cell>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="nome">
+    <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
+  </ng-container>
+  <!-- Data nascimento -->
+  <ng-container matColumnDef="dataNascimento">
+    <mat-header-cell *matHeaderCellDef>Data Nascimento</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.dataNascimento | date : 'dd/MM/yyyy'}}</mat-cell>
+  </ng-container>
+
+  <!-- Função -->
+  <ng-container matColumnDef="funcao">
+    <mat-header-cell *matHeaderCellDef>Função</mat-header-cell>
+    <mat-cell id="funcao" *matCellDef="let row" hidden="true">{{row.funcao}}</mat-cell>
+  </ng-container>
 
 
-    <!-- Coluna de Ações -->
-    <ng-container matColumnDef="action">
-      <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
-      <mat-cell *matCellDef="let row">
+  <!-- status -->
+  <ng-container matColumnDef="statusPessoa">
+    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.statusPessoa}}</mat-cell>
+  </ng-container>
 
-        <a (click)="AtualizarMembro(row.id)" class="edit">
-          <i class="material-icons">
-            edit
-          </i>
-        </a>
-        <a (click)="ExcluirMembro(row.id)" class="delete">
-          <i class="material-icons">
-            delete
-          </i>
-        </a>
 
-      </mat-cell>
-    </ng-container>
+  <!-- Coluna de Ações -->
+  <ng-container matColumnDef="action">
+    <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+    <mat-cell *matCellDef="let row">
 
-    <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
-    <mat-row (click)="PessoaSelecionada(row.id)" *matRowDef="let row; columns: Colunas;"
-      [ngClass]="{'corLinhaGrid' : row.id == pessoaSelecionada}"></mat-row>
-  </table>
-  <!-- <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+      <a (click)="AtualizarMembro(row.id)" class="edit">
+        <i class="material-icons">
+          edit
+        </i>
+      </a>
+      <a (click)="ExcluirMembro(row.id)" class="delete">
+        <i class="material-icons">
+          delete
+        </i>
+      </a>
+
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
+  <mat-row (click)="PessoaSelecionada(row.id)" *matRowDef="let row; columns: Colunas;"
+    [ngClass]="{'corLinhaGrid' : row.id == pessoaSelecionada}"></mat-row>
+</table>
+<!-- <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
     aria-label="Select page of periodic elements">
   </mat-paginator> -->

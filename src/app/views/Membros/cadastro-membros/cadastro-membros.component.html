@@ -40,13 +40,13 @@
             <mat-option *ngFor="let ec of estCivil" [value]="ec.id">
               {{ec.value}}
             </mat-option>
-        </mat-select>
+          </mat-select>
         </mat-form-field>
 
         <mat-form-field color="accent" style="width: 213px;">
           <mat-label>Data Nascimento</mat-label>
           <input matInput [matDatepicker]="dataNascimento" [(ngModel)]="pessoa.dataNascimento" name="dataNascimento">
-          <mat-datepicker-toggle matIconSuffix [for]="dataNascimento" ></mat-datepicker-toggle>
+          <mat-datepicker-toggle matIconSuffix [for]="dataNascimento"></mat-datepicker-toggle>
           <mat-datepicker #dataNascimento></mat-datepicker>
         </mat-form-field>
 
@@ -198,12 +198,14 @@
 
           <mat-form-field>
             <mat-label>Telefone</mat-label>
-            <input type="number" maxlength="9" matInput placeholder="Telefone" [(ngModel)]="contato.telefone" name="telefone">
+            <input type="number" maxlength="9" matInput placeholder="Telefone" [(ngModel)]="contato.telefone"
+              name="telefone">
           </mat-form-field>
 
           <mat-form-field>
             <mat-label>Celular</mat-label>
-            <input type="number" maxlength="9" matInput placeholder="Celular" [(ngModel)]="contato.celular" name="celular">
+            <input type="number" maxlength="9" matInput placeholder="Celular" [(ngModel)]="contato.celular"
+              name="celular">
           </mat-form-field>
 
           <mat-form-field>
@@ -500,7 +502,8 @@
 
   </mat-expansion-panel>
 
-  <mat-expansion-panel *ngIf="pessoa.id > 0 && dadosMembro.funcao > 1" [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
+  <mat-expansion-panel *ngIf="pessoa.id > 0 && dadosMembro.funcao > 1" [expanded]="step === 4" (opened)="setStep(4)"
+    hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h2>Dados de Obreiro</h2>
@@ -552,49 +555,151 @@
           <mat-label>Pastor Regional</mat-label>
           <input matInput placeholder="Pastor Regional" [(ngModel)]="dadosObreiro.pastorRegional" name="pastorRegional">
         </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Cartão Provisorio</mat-label>
-          <input style="height: 20px; width: 150px;" matInput placeholder="Cartão Provisorio">
-          <input name="cartaoProvisorio" [(ngModel)]="dadosObreiro.cartaoProvisorio"
-            [checked]="dadosObreiro.cartaoProvisorio" type="checkbox">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Observação</mat-label>
-          <input matInput placeholder="Observação" [(ngModel)]="dadosObreiro.observacao" name="Observação">
-        </mat-form-field>
+       
         <br>
 
-        <h3 style="padding-left: 17px;">Entrada na Função</h3>
+        <div *ngIf="dadosObreiro.id > 0">
 
-        <mat-form-field>
-          <mat-label>Entrada na Função</mat-label>
-          <mat-select [(value)]="historico.entradaFuncao" placeholder="Entrada na Função">
-            <mat-option *ngFor="let ef of entradaFuncao" [value]="ef.id">
-              {{ef.value}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+          <h3 style="padding-left: 17px;">Entrada na Função</h3>
 
-        <mat-form-field color="accent" style="width: 213px;">
-          <mat-label>Data entrada Função</mat-label>
-          <input matInput [matDatepicker]="dataEntradaFuncao" [(ngModel)]="historico.dataEntradaFuncao" name="dataEntradaFuncao">
-          <mat-datepicker-toggle matIconSuffix [for]="dataEntradaFuncao"></mat-datepicker-toggle>
-          <mat-datepicker #dataEntradaFuncao></mat-datepicker>
-        </mat-form-field>
+          <mat-form-field style="padding-left: 17px;">
+            <mat-label>Entrada na Função</mat-label>
+            <mat-select [(value)]="historico.entradaFuncao" placeholder="Entrada na Função">
+              <mat-option *ngFor="let ef of entradaFuncao" [value]="ef.id">
+                {{ef.value}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <mat-form-field color="accent" style="width: 213px;">
-          <mat-label>Data Saida Funcao</mat-label>
-          <input matInput [matDatepicker]="dataSaidaFuncao" [(ngModel)]="historico.dataSaidaFuncao" name="dataSaidaFuncao">
-          <mat-datepicker-toggle matIconSuffix [for]="dataSaidaFuncao"></mat-datepicker-toggle>
-          <mat-datepicker #dataSaidaFuncao></mat-datepicker>
-        </mat-form-field>
+          <mat-form-field color="accent" style="width: 213px;">
+            <mat-label>Data entrada Função</mat-label>
+            <input matInput [matDatepicker]="dataEntradaFuncao" [(ngModel)]="historico.dataEntradaFuncao"
+              name="dataEntradaFuncao">
+            <mat-datepicker-toggle matIconSuffix [for]="dataEntradaFuncao"></mat-datepicker-toggle>
+            <mat-datepicker #dataEntradaFuncao></mat-datepicker>
+          </mat-form-field>
 
+          <mat-form-field color="accent" style="width: 213px;">
+            <mat-label>Data Saida Funcao</mat-label>
+            <input matInput [matDatepicker]="dataSaidaFuncao" [(ngModel)]="historico.dataSaidaFuncao"
+              name="dataSaidaFuncao">
+            <mat-datepicker-toggle matIconSuffix [for]="dataSaidaFuncao"></mat-datepicker-toggle>
+            <mat-datepicker #dataSaidaFuncao></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Reintegrado</mat-label>
+            <input style="height: 20px; width: 150px;" matInput placeholder="Reintegrado">
+            <input name="reintegrado" [(ngModel)]="historico.reintegrado" [checked]="historico.reintegrado"
+              type="checkbox">
+          </mat-form-field>
+
+          <mat-form-field color="accent" style="width: 213px;">
+            <mat-label>Reintegrado Em</mat-label>
+            <input matInput [matDatepicker]="reintegradoem" [(ngModel)]="historico.reintegradoEm"
+              name="Reintegrado em.">
+            <mat-datepicker-toggle matIconSuffix [for]="reintegradoem"></mat-datepicker-toggle>
+            <mat-datepicker #reintegradoem></mat-datepicker>
+          </mat-form-field>
+
+
+          <mat-form-field>
+            <mat-label>Aprovado</mat-label>
+            <input style="height: 20px; width: 150px;" matInput placeholder="Aprovado">
+            <input name="aprovado" [(ngModel)]="historico.aprovado" [checked]="historico.aprovado" type="checkbox">
+          </mat-form-field>
+          <a style="padding-left: 15px;">
+            <i class="material-icons" (click)="AdicionarFuncaoObreiro()">add</i>
+          </a>
+        </div>
       </div>
 
+      <!-- Grid de Obreiros -->
+
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="historicos" matSort>
+          <!-- Id Column -->
+          <!--'', '', '', 'reintegrado', '', 'aprovado', 'action' -->
+          <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+            <mat-cell id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
+          </ng-container>
+          <!-- rol Column -->
+          <ng-container matColumnDef="funcao">
+            <mat-header-cell *matHeaderCellDef>Função</mat-header-cell>
+            <mat-cell id="funcao" *matCellDef="let row">{{row.funcao}}</mat-cell>
+          </ng-container>
+  
+          <!-- rol Column -->
+          <ng-container matColumnDef="entradaFuncao">
+            <mat-header-cell *matHeaderCellDef>Entrada na Função</mat-header-cell>
+            <mat-cell id="entradaFuncao" *matCellDef="let row">{{row.entradaFuncao}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="dataEntradaFuncao">
+            <mat-header-cell *matHeaderCellDef>Data de Entrada na Função</mat-header-cell>
+            <mat-cell mat-cell id="dataEntradaFuncao" *matCellDef="let row">{{row.dataEntradaFuncao}}</mat-cell>
+          </ng-container>
+  
+          <!-- Name Column -->
+          <ng-container matColumnDef="dataSaidaFuncao">
+            <mat-header-cell *matHeaderCellDef>Data de saída Função</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.dataSaidaFuncao}}</mat-cell>
+          </ng-container>
+  
+
+             <!-- Name Column -->
+             <ng-container matColumnDef="reintegrado">
+              <mat-header-cell *matHeaderCellDef>Reintegrado</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.reintegrado}}</mat-cell>
+            </ng-container>
+
+
+
+               <!-- Name Column -->
+          <ng-container matColumnDef="reintegradoEm">
+            <mat-header-cell *matHeaderCellDef>Reintegrado data</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.reintegradoEm}}</mat-cell>
+          </ng-container>
+
+
+
+             <!-- Name Column -->
+             <ng-container matColumnDef="aprovado">
+              <mat-header-cell *matHeaderCellDef>Aprovado</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.aprovado}}</mat-cell>
+            </ng-container>
+
+          <!-- Coluna de Ações -->
+          <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+  
+              <a (click)="AtualizarHistorico(row.id)" class="delete">
+                <i class="material-icons">
+                  edit
+                </i>
+              </a>
+  
+            </mat-cell>
+          </ng-container>
+  
+          <mat-header-row *matHeaderRowDef="ColunasHistoricoObreiro"></mat-header-row>
+          <mat-row (click)="HistoricoSelecionado(row.id)" *matRowDef="let row; columns: ColunasHistoricoObreiro;"
+            [ngClass]="{'corLinhaGrid' : row.id == historicoSelecionado}"></mat-row>
+        </table>
+  
+        <!-- <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+          aria-label="Select page of periodic elements">
+        </mat-paginator> -->
+  
+      </div>
+
+
+
+
     </div>
-    <mat-action-row >
+    <mat-action-row>
       <button mat-button color="warn" (click)="Voltar()">Voltar</button>
       <button mat-button color="primary" (click)="Proximo()">Salvar</button>
     </mat-action-row>

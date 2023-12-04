@@ -9,6 +9,8 @@ import { Endpoint } from 'src/app/enum/Endpoints';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 import { PopupConfirmacaoComponent } from 'src/app/popups/popup-confirmacao/popup-confirmacao.component';
 import { TipoPopup } from 'src/app/enum/TipoPopup';
+import { Filtros } from 'src/app/models/Filtros';
+import { Router } from '@angular/router';
 
 @Injectable()
 
@@ -18,28 +20,29 @@ import { TipoPopup } from 'src/app/enum/TipoPopup';
   styleUrls: ['./read-membros.component.css'],
 })
 export class ReadMembrosComponent implements OnInit {
-  
+
   estadoForm: boolean = true
   pessoa: ViewPessoa[] = new Array()
   pessoaSelecionada: number = 0
   corLinhaGrid: number = 0
- 
- 
+  filtros: Filtros = new Filtros()
+
 
   // @ViewChild(MatSort, { static: true }) sort: MatSort;
   // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   Colunas = ['id', 'rol', 'foto', 'nome', 'dataNascimento', 'funcao', 'statusPessoa', 'action']
   dataSource: MatTableDataSource<Pessoa>
- 
+
   constructor(
-    private serverApi : AllservicesService<any>,
-    private serviceUtil : UtilServiceService
-    ) {
-    
+    private serverApi: AllservicesService<any>,
+    private serviceUtil: UtilServiceService, 
+    private route : Router
+  ) {
+
   }
   ngOnInit() {
-    this.buscarMembro(null)
+    this.buscarMembro()
   }
 
 
@@ -47,10 +50,17 @@ export class ReadMembrosComponent implements OnInit {
     alert("aba" + id)
   }
 
-  buscarMembro(event: any) {
-    this.serverApi.read(Endpoint.Pessoa, "")
-      .subscribe(x => {
-       this.pessoa = x
+  buscarMembro() {
+    this.serverApi.read(Endpoint.Pessoa)
+      .subscribe(response => {
+        this.pessoa =
+          this.filtros.Inativos && this.filtros.TxtBusca.length == 0
+            ? response.filter(f => f.statusPessoa == 'Inativo')
+            : this.filtros.Inativos && this.filtros.TxtBusca.length > 0
+              ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.TxtBusca.toLowerCase()))
+              : !this.filtros.Inativos && this.filtros.TxtBusca.length > 0
+                ? response.filter(f => f.statusPessoa != 'Inativo' && f.nome.toLowerCase().includes(this.filtros.TxtBusca.toLowerCase()))
+                : response.filter(f => f.statusPessoa != 'Inativo');
       })
   }
 
@@ -59,20 +69,22 @@ export class ReadMembrosComponent implements OnInit {
   }
 
   AtualizarMembro(id: number) {
-    alert(id)
+    this.route.navigate([`/membrosupdate/${id}`]);
+
   }
 
   ExcluirMembro(id: number) {
-    
-   this.serviceUtil.PopupConfirmacao("Deseja Excluir o Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
-   .subscribe(result => {
-       
-    alert(result)
-       
-    });
-   
 
-
+    this.serviceUtil.PopupConfirmacao("Deseja Excluir o Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
+      .subscribe(result => {
+        if (result) {
+          this.serverApi.delete(id, Endpoint.Pessoa)
+            .subscribe(() => {
+              this.serviceUtil.showMessage("Membro excluído com sucesso!", false);
+              this.buscarMembro()
+            })
+        }
+      });
   }
 
   PessoaSelecionada(id: number) {
@@ -88,5 +100,12 @@ export class ReadMembrosComponent implements OnInit {
 
   }
 
+  Filtros(keyEvent: any) {
+
+    if (keyEvent.which === 13 || keyEvent.which == 1 || keyEvent.type == 'change') {
+      this.filtros.TxtBusca = (<HTMLSelectElement>document.getElementById('txtBusca')).value;
+      this.buscarMembro()
+    }
+  }
 
 }

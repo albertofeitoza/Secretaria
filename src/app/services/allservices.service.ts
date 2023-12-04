@@ -6,6 +6,7 @@ import { map, catchError, take } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UtilServiceService } from './util-service.service';
+import { Filtros } from '../models/Filtros';
 
 
 
@@ -34,12 +35,15 @@ export class AllservicesService<T> {
     );
   }
 
-  read(endpoint: string, token: string = ""): Observable<T[]> {
-    return this.http.get<T[]>(`${this.environmentUrl + endpoint}`, this.loginService.Header()).pipe(
+  read(endpoint: string, filtros: string = ""): Observable<T[]> {
+    
+    return this.http.get<T[]>(`${this.environmentUrl + endpoint}?${filtros}`, this.loginService.Header()).pipe(
       map(obj => obj),
       catchError(e => this.utilService.erroHandler(e))
     );
   }
+
+  // ?filtros=56656565
 
   readById(id: string, endpoint: string, token: string = ""): Observable<T> {
     const url = `${this.environmentUrl + endpoint}/${id}`
