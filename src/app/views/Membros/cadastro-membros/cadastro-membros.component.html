@@ -502,7 +502,7 @@
 
   </mat-expansion-panel>
 
-  <mat-expansion-panel *ngIf="pessoa.id > 0 && dadosMembro.funcao > 1" [expanded]="step === 4" (opened)="setStep(4)"
+  <mat-expansion-panel *ngIf="pessoa.id > 0 && dadosMembro.funcao > 1 && dadosMembro.id > 0" [expanded]="step === 4" (opened)="setStep(4)"
     hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -555,7 +555,7 @@
           <mat-label>Pastor Regional</mat-label>
           <input matInput placeholder="Pastor Regional" [(ngModel)]="dadosObreiro.pastorRegional" name="pastorRegional">
         </mat-form-field>
-       
+
         <br>
 
         <div *ngIf="dadosObreiro.id > 0">
@@ -619,7 +619,6 @@
       <div class="mat-elevation-z8">
         <table mat-table [dataSource]="historicos" matSort>
           <!-- Id Column -->
-          <!--'', '', '', 'reintegrado', '', 'aprovado', 'action' -->
           <ng-container matColumnDef="id">
             <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
             <mat-cell id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
@@ -629,70 +628,67 @@
             <mat-header-cell *matHeaderCellDef>Função</mat-header-cell>
             <mat-cell id="funcao" *matCellDef="let row">{{row.funcao}}</mat-cell>
           </ng-container>
-  
+
           <!-- rol Column -->
           <ng-container matColumnDef="entradaFuncao">
-            <mat-header-cell *matHeaderCellDef>Entrada na Função</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef>Como Iniciou</mat-header-cell>
             <mat-cell id="entradaFuncao" *matCellDef="let row">{{row.entradaFuncao}}</mat-cell>
           </ng-container>
-  
+
           <ng-container matColumnDef="dataEntradaFuncao">
-            <mat-header-cell *matHeaderCellDef>Data de Entrada na Função</mat-header-cell>
-            <mat-cell mat-cell id="dataEntradaFuncao" *matCellDef="let row">{{row.dataEntradaFuncao}}</mat-cell>
+            <mat-header-cell *matHeaderCellDef>Inicio Função</mat-header-cell>
+            <mat-cell mat-cell id="dataEntradaFuncao" *matCellDef="let row">{{row.dataEntradaFuncao | date :
+              'dd/MM/yyyy'}}</mat-cell>
           </ng-container>
-  
+
           <!-- Name Column -->
           <ng-container matColumnDef="dataSaidaFuncao">
-            <mat-header-cell *matHeaderCellDef>Data de saída Função</mat-header-cell>
-            <mat-cell *matCellDef="let row">{{row.dataSaidaFuncao}}</mat-cell>
+            <mat-header-cell *matHeaderCellDef>Função Até</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.dataSaidaFuncao | date : 'dd/MM/yyyy'}}</mat-cell>
           </ng-container>
-  
-
-             <!-- Name Column -->
-             <ng-container matColumnDef="reintegrado">
-              <mat-header-cell *matHeaderCellDef>Reintegrado</mat-header-cell>
-              <mat-cell *matCellDef="let row">{{row.reintegrado}}</mat-cell>
-            </ng-container>
 
 
+          <!-- Name Column -->
+          <ng-container matColumnDef="reintegrado">
+            <mat-header-cell *matHeaderCellDef>Reintegrado</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.reintegrado}}</mat-cell>
+          </ng-container>
 
-               <!-- Name Column -->
+          <!-- Name Column -->
           <ng-container matColumnDef="reintegradoEm">
-            <mat-header-cell *matHeaderCellDef>Reintegrado data</mat-header-cell>
-            <mat-cell *matCellDef="let row">{{row.reintegradoEm}}</mat-cell>
+            <mat-header-cell *matHeaderCellDef>Quando</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.reintegradoEm | date : 'dd/MM/yyyy'}}</mat-cell>
           </ng-container>
 
-
-
-             <!-- Name Column -->
-             <ng-container matColumnDef="aprovado">
-              <mat-header-cell *matHeaderCellDef>Aprovado</mat-header-cell>
-              <mat-cell *matCellDef="let row">{{row.aprovado}}</mat-cell>
-            </ng-container>
+          <!-- Name Column -->
+          <ng-container matColumnDef="aprovado">
+            <mat-header-cell *matHeaderCellDef>Aprovado</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.aprovado}}</mat-cell>
+          </ng-container>
 
           <!-- Coluna de Ações -->
           <ng-container matColumnDef="action">
             <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
             <mat-cell *matCellDef="let row">
-  
+
               <a (click)="AtualizarHistorico(row.id)" class="delete">
                 <i class="material-icons">
                   edit
                 </i>
               </a>
-  
+
             </mat-cell>
           </ng-container>
-  
+
           <mat-header-row *matHeaderRowDef="ColunasHistoricoObreiro"></mat-header-row>
           <mat-row (click)="HistoricoSelecionado(row.id)" *matRowDef="let row; columns: ColunasHistoricoObreiro;"
             [ngClass]="{'corLinhaGrid' : row.id == historicoSelecionado}"></mat-row>
         </table>
-  
+
         <!-- <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
           aria-label="Select page of periodic elements">
         </mat-paginator> -->
-  
+
       </div>
 
 

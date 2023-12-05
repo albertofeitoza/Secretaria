@@ -9,6 +9,8 @@ export enum Endpoint {
     Enderecos = '/Enderecos',
     Contatos = '/Contatos',
     Cargos = '/Cargos',
+    Ofertas = '/Ofertas',  
+    Relatorios = '/Relatorios',  
     cep = 'https://viacep.com.br/ws/{0}/json',
 
 }

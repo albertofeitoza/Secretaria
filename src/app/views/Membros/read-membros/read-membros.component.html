@@ -12,7 +12,7 @@
   <span class="search" (click)="Filtros($event)">
     <i class="material-icons">search</i>
   </span>
-    <input id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)" value="" />
+  <input id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)" value="" />
 </div>
 
 <!-- <label>Inativos</label> -->
@@ -27,7 +27,7 @@
   </ng-container>
   <!-- rol Column -->
   <ng-container matColumnDef="rol">
-    <mat-header-cell *matHeaderCellDef>Rol</mat-header-cell>
+    <mat-header-cell style="width: 2%;" *matHeaderCellDef>Rol</mat-header-cell>
     <mat-cell id="rol" *matCellDef="let row" hidden="true">{{row.rol}}</mat-cell>
   </ng-container>
 
@@ -73,7 +73,7 @@
           edit
         </i>
       </a>
-      <a (click)="ExcluirMembro(row.id)" class="delete">
+      <a *ngIf="!filtros.Inativos" (click)="ExcluirMembro(row.id)" class="delete">
         <i class="material-icons">
           delete
         </i>
@@ -86,6 +86,6 @@
   <mat-row (click)="PessoaSelecionada(row.id)" *matRowDef="let row; columns: Colunas;"
     [ngClass]="{'corLinhaGrid' : row.id == pessoaSelecionada}"></mat-row>
 </table>
-<!-- <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-    aria-label="Select page of periodic elements">
-  </mat-paginator> -->
+<mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+  aria-label="Select page of periodic elements">
+</mat-paginator>

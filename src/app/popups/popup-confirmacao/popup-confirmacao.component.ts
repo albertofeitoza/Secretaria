@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { PopupConfirm } from 'src/app/models/dialogConfirm';
+import { UtilServiceService } from 'src/app/services/util-service.service';
 
 @Component({
   selector: 'app-popup-confirmacao',
@@ -9,10 +11,11 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 export class PopupConfirmacaoComponent implements OnInit {
 
   mensagem: string = ""
-
+  resposta : PopupConfirm = new PopupConfirm();
   constructor(
     public dialogRef: MatDialogRef<PopupConfirmacaoComponent>,
-    public dialog: MatDialog
+    public dialog: MatDialog, 
+    private utilService : UtilServiceService
 
   ) {
   }
@@ -22,7 +25,19 @@ export class PopupConfirmacaoComponent implements OnInit {
   }
 
   FecharPopup(confirm: boolean): void {
-    this.dialogRef.close(confirm);
+    
+    if(this.resposta.Motivo && confirm){
+
+    this.resposta.Status = confirm;
+    this.resposta.Motivo = this.resposta.Motivo
+
+    this.dialogRef.close(this.resposta);
+    }
+    else{
+      this.utilService.showMessage("Obrigatório Informar o Motivo")
+      this.dialogRef.close(this.resposta)
+    }
+      
   }
 
 }

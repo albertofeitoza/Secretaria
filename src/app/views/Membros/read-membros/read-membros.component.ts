@@ -32,7 +32,7 @@ export class ReadMembrosComponent implements OnInit {
   // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   Colunas = ['id', 'rol', 'foto', 'nome', 'dataNascimento', 'funcao', 'statusPessoa', 'action']
-  dataSource: MatTableDataSource<Pessoa>
+  // dataSource = new MatTableDataSource<Pessoa>();
 
   constructor(
     private serverApi: AllservicesService<any>,
@@ -54,7 +54,10 @@ export class ReadMembrosComponent implements OnInit {
     this.serverApi.read(Endpoint.Pessoa)
       .subscribe(response => {
         this.pessoa =
-          this.filtros.Inativos && this.filtros.TxtBusca.length == 0
+        //  this.dataSource.data = response
+        //  this.dataSource._updateChangeSubscription();
+        
+        this.filtros.Inativos && this.filtros.TxtBusca.length == 0
             ? response.filter(f => f.statusPessoa == 'Inativo')
             : this.filtros.Inativos && this.filtros.TxtBusca.length > 0
               ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.TxtBusca.toLowerCase()))
@@ -77,8 +80,8 @@ export class ReadMembrosComponent implements OnInit {
 
     this.serviceUtil.PopupConfirmacao("Deseja Excluir o Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
       .subscribe(result => {
-        if (result) {
-          this.serverApi.delete(id, Endpoint.Pessoa)
+        if (result?.Status) {
+          this.serverApi.delete(id, Endpoint.Pessoa, result?.Motivo,)
             .subscribe(() => {
               this.serviceUtil.showMessage("Membro excluído com sucesso!", false);
               this.buscarMembro()
@@ -90,6 +93,11 @@ export class ReadMembrosComponent implements OnInit {
   PessoaSelecionada(id: number) {
     this.pessoaSelecionada = id
   }
+
+  mudarPagina(event : any){
+    alert("mudei")
+  }
+
 
   //contatos
   selecionarContato(ecent: any) {

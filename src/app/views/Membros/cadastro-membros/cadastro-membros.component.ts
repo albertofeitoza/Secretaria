@@ -46,7 +46,8 @@ export class CadastroMembrosComponent {
 
   cargos: Cargos[] = new Array()
   cargo: Cargos = new Cargos();
-
+  funcaoMembroCache: number = 1;
+  cursoTeologicoCache: number = 1;
   historicos: Historico[] = new Array()
   historico: Historico = new Historico()
   foto: FormData = new FormData()
@@ -96,10 +97,11 @@ export class CadastroMembrosComponent {
           this.pessoa = response.data.pessoa != null ? response.data.pessoa : new Pessoa();
           this.endereco = response.data.pessoaEndereco != null ? response.data.pessoaEndereco : this.endereco = new PessoaEndereco();
           this.contatos = response.data.contatos
-          this.dadosMembro = response.data.dadosMembro
+          this.dadosMembro = response?.data?.dadosMembro != null ? response?.data?.dadosMembro : this.dadosMembro = new DadosMembro()
+          this.funcaoMembroCache = response.data.dadosMembro.funcao
           this.cargos = response.data.cargos
           this.dadosObreiro = response.data?.dadosObreiro != null ? response.data.dadosObreiro : this.dadosObreiro = new DadosObreiro()
-          this.historicos = response.data?.historicoObreiro
+          this.historicos = response?.data?.historicoObreiro
         })
     }
   }
@@ -202,7 +204,6 @@ export class CadastroMembrosComponent {
         case 4:
 
           if (this.ValidaDadosObreiro() && this.pessoa.id > 0) {
-
             this.dadosObreiro.pessoaId = this.pessoa.id;
 
             this.serverApi.create(this.dadosObreiro, Endpoint.Obreiro)
@@ -252,7 +253,6 @@ export class CadastroMembrosComponent {
     return result;
   }
 
-
   ValidarDadosMembro(): boolean {
     let result: boolean = false;
     this.dadosMembro.rol == undefined ? this.serviceUtil.showMessage("Informe --> Nº Rol ") :
@@ -266,7 +266,10 @@ export class CadastroMembrosComponent {
                     this.dadosMembro.validadeCartaoMembro == undefined ? this.serviceUtil.showMessage("Informe a data --> Validade do cartão de Membro") :
                       this.dadosMembro.funcao == undefined || this.dadosMembro.funcao < 1 ? this.serviceUtil.showMessage("Selecione a Função --> Função") :
                         this.dadosMembro.cursoTeologico > 0 && this.dadosMembro.cursoTeologicoOndeCursou == undefined ? this.serviceUtil.showMessage("Informe onde cursou Teologia.") :
-                          result = true
+                          this.dadosMembro.funcao < this.funcaoMembroCache ? this.serviceUtil.showMessage("A função do Membro não pode ser rebaixada") :
+                            this.dadosMembro.funcao > this.funcaoMembroCache && this.dadosMembro.funcao - this.funcaoMembroCache > 1 ? this.serviceUtil.showMessage("Função Inválida deve ser adicionada uma por vez!.") :
+                              this.dadosMembro.id == 0 && this.dadosMembro.funcao > 1 ? this.serviceUtil.showMessage("No Primeiro cadastro do Membro ele deve ser atribuido a função Membro.") :
+                                result = true
     return result;
   }
 
@@ -278,21 +281,40 @@ export class CadastroMembrosComponent {
     return result;
   }
 
+  ValidaFuncao() : boolean{
+    let result: boolean = false;
+    this.dadosMembro.funcao > 1 && this.historico.entradaFuncao == 0  ? this.serviceUtil.showMessage("Informe a --> Entrada na Função") :
+      this.dadosMembro.funcao > 1 && this.historico.dataEntradaFuncao == undefined ? this.serviceUtil.showMessage("Informe a --> Data de entrada na Função") :
+      this.dadosMembro.funcao > 1 && this.historico.reintegrado ? this.serviceUtil.showMessage("Informe a --> Data de Reintegração.") :
+        result = true
+    return result;
+
+  }
 
   AdicionarFuncaoObreiro() {
-    if (this.ValidaDadosObreiro() && this.dadosObreiro.id > 0) {
-      
+    if (this.ValidaDadosObreiro() && this.dadosObreiro.id > 0 && this.ValidaFuncao()) {
+
       this.historico.dadosObreiroId = this.dadosObreiro.id;
+      this.historico.funcao = this.dadosMembro.funcao;
 
-      this.serverApi.create(this.historico, Endpoint.HistoricoObreiro).subscribe(()=> {
-        this.serverApi.read(Endpoint.HistoricoObreiro).subscribe(response => {
-          this.historicos = response.filter(x => x.dadosObreiroId == this.dadosObreiro.id);
-        })
+      //validar Funções
+
+      this.serverApi.create(this.historico, Endpoint.HistoricoObreiro).subscribe(() => {
+
+        this.serverApi.read(Endpoint.HistoricoObreiro)
+          .subscribe(his => {
+            let retorno = his.filter(x => x.dadosObreiroId == this.dadosObreiro.id);
+            retorno?.forEach(x => {
+              x.reintegrado = x.reintegrado ? "Sim" : "Não"
+              x.aprovado = x.aprovado ? "Sim" : "Não"
+              x.funcao = this.serviceUtil.Funcao().filter(xr => xr.id == x.funcao).map(x => x.value)
+              x.entradaFuncao = this.serviceUtil.EntradaFuncao().filter(ef => ef.id == x.entradaFuncao).map(x => x.value)
+            });
+
+            this.historicos = retorno
+          })
       })
-        
     }
-
-
   }
 
 
@@ -421,7 +443,7 @@ export class CadastroMembrosComponent {
 
   }
 
-  
+
 
 
 }
