@@ -3,10 +3,12 @@ import { environment } from '../environments/environment';
 import { Observable } from 'rxjs';
 import { AutenticacaoService } from './autenticacao.service';
 import { map, catchError, take } from 'rxjs/operators';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UtilServiceService } from './util-service.service';
 import { Filtros } from '../models/Filtros';
+import { Endpoint } from '../enum/Endpoints';
+import { PathLocationStrategy } from '@angular/common';
 
 
 
@@ -27,8 +29,22 @@ export class AllservicesService<T> {
     this.environmentUrl = environment.BASE_URL
   }
 
+  EnviarArquivoServidor(T: any, endpoint: string, fileName : string): Observable<T> {
+    let headers = this.loginService.HeaderForFile(fileName).headers;
+   const uploadReq = new HttpRequest
+      ('POST', this.environmentUrl + endpoint, T,
+        {
+          reportProgress: true,
+          headers : headers
+        });
+
+    return this.http.request(uploadReq).pipe(
+      map(obj => obj),
+      catchError(e => this.utilService.erroHandler(e))
+    );
+  }
   //Criar Cadastro
-  create(T: T, endpoint: string, token: string = ""): Observable<T> {
+  create(T: T, endpoint: string, message: string = ""): Observable<T> {
     return this.http.post<T>(this.environmentUrl + endpoint, T, this.loginService.Header()).pipe(
       map(obj => obj),
       catchError(e => this.utilService.erroHandler(e))
@@ -36,7 +52,7 @@ export class AllservicesService<T> {
   }
 
   read(endpoint: string, filtros: string = ""): Observable<T[]> {
-    
+    let teste = this.loginService.Header();
     return this.http.get<T[]>(`${this.environmentUrl + endpoint}?${filtros}`, this.loginService.Header()).pipe(
       map(obj => obj),
       catchError(e => this.utilService.erroHandler(e))

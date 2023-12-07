@@ -42,8 +42,10 @@ export class AutenticacaoService {
   }
 
   logoof() {
+    this.router.navigate(['/']);
     this.autenticado.emit(false);
     this.token.emit('')
+    
   }
 
   loginSistema(T: login, endpoint: string) {
@@ -63,11 +65,21 @@ export class AutenticacaoService {
     })
   }
 
-  Header() {
+  Header(){
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.token}`
     });
+    
     return { headers: headers };
   }
+
+  HeaderForFile(fileName : string){
+    const headers = new HttpHeaders({
+      'filename' : fileName,
+      'Authorization': `Bearer ${this.token}`
+    });
+    return { headers: headers };
+  }
+
 }

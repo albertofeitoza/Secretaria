@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AutenticacaoService } from './services/autenticacao.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,9 @@ export class AppComponent {
 
   isLoggedIn: boolean = false;
 
-  constructor(private auth: AutenticacaoService) { }
+  constructor(private auth: AutenticacaoService,
+    private router : Router
+    ) { }
 
   ngOnInit(): void {
     this.login()
@@ -19,7 +22,7 @@ export class AppComponent {
 
 
   login() {
-
+    this.router.navigate(['/']);
     this.auth.autenticado.subscribe(
       checLogin => this.isLoggedIn = checLogin
     );

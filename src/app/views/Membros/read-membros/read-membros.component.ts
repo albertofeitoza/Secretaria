@@ -36,8 +36,8 @@ export class ReadMembrosComponent implements OnInit {
 
   constructor(
     private serverApi: AllservicesService<any>,
-    private serviceUtil: UtilServiceService, 
-    private route : Router
+    private serviceUtil: UtilServiceService,
+    private route: Router
   ) {
 
   }
@@ -54,10 +54,7 @@ export class ReadMembrosComponent implements OnInit {
     this.serverApi.read(Endpoint.Pessoa)
       .subscribe(response => {
         this.pessoa =
-        //  this.dataSource.data = response
-        //  this.dataSource._updateChangeSubscription();
-        
-        this.filtros.Inativos && this.filtros.TxtBusca.length == 0
+          this.filtros.Inativos && this.filtros.TxtBusca.length == 0
             ? response.filter(f => f.statusPessoa == 'Inativo')
             : this.filtros.Inativos && this.filtros.TxtBusca.length > 0
               ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.TxtBusca.toLowerCase()))
@@ -65,6 +62,13 @@ export class ReadMembrosComponent implements OnInit {
                 ? response.filter(f => f.statusPessoa != 'Inativo' && f.nome.toLowerCase().includes(this.filtros.TxtBusca.toLowerCase()))
                 : response.filter(f => f.statusPessoa != 'Inativo');
       })
+
+      this.refreshGrid();
+  }
+
+  refreshGrid() {
+    let gridAtualizado = this.pessoa.slice()
+    this.pessoa = gridAtualizado;
   }
 
   cadastroMembro() {
@@ -94,7 +98,7 @@ export class ReadMembrosComponent implements OnInit {
     this.pessoaSelecionada = id
   }
 
-  mudarPagina(event : any){
+  mudarPagina(event: any) {
     alert("mudei")
   }
 
@@ -113,6 +117,7 @@ export class ReadMembrosComponent implements OnInit {
     if (keyEvent.which === 13 || keyEvent.which == 1 || keyEvent.type == 'change') {
       this.filtros.TxtBusca = (<HTMLSelectElement>document.getElementById('txtBusca')).value;
       this.buscarMembro()
+      this.refreshGrid();
     }
   }
 

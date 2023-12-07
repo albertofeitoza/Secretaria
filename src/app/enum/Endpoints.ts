@@ -10,7 +10,8 @@ export enum Endpoint {
     Contatos = '/Contatos',
     Cargos = '/Cargos',
     Ofertas = '/Ofertas',  
-    Relatorios = '/Relatorios',  
+    Relatorios = '/Relatorios',
+    UploadArquivo = '/File',
     cep = 'https://viacep.com.br/ws/{0}/json',
 
 }

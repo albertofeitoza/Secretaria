@@ -1,10 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { empty, find, identity, min } from 'rxjs';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { Cep } from 'src/app/models/Cep';
 import { DadosMembro } from 'src/app/models/DadosMembro';
 import { PessoaEndereco } from 'src/app/models/PessoaEndereco';
-import { Usuario } from 'src/app/models/Usuario';
 import { Pessoa } from 'src/app/models/pessoa';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
@@ -13,16 +11,8 @@ import { contatos } from 'src/app/models/contato';
 import { Cargos } from 'src/app/models/Cargos';
 import { Historico } from 'src/app/models/HistoricoDoObreiro';
 import { DadosObreiro } from 'src/app/models/DadosObreiro';
-import { MinValidator } from '@angular/forms';
-import { MAT_DATEPICKER_VALIDATORS } from '@angular/material/datepicker';
-import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
-import { ApiResponse } from 'src/app/models/ApiResponse';
 import { Filtros } from 'src/app/models/Filtros';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-
-class ImageSnippet {
-  constructor(public src: string, public file: File) { }
-}
 
 @Component({
   selector: 'app-cadastro-membros',
@@ -31,9 +21,6 @@ class ImageSnippet {
 })
 
 export class CadastroMembrosComponent {
-
-  selectedFile: ImageSnippet;
-
   // @ViewChild('fileInput') fileInput;
   contatoSelecionado = 0
   cargoSelecionado = 0
@@ -105,10 +92,6 @@ export class CadastroMembrosComponent {
         })
     }
   }
-
-
-
-
   CarregarCombos() {
     this.estCivil = this.serviceUtil.EstCivil();
     this.instrucao = this.serviceUtil.GrauInstrucao();
@@ -281,12 +264,12 @@ export class CadastroMembrosComponent {
     return result;
   }
 
-  ValidaFuncao() : boolean{
+  ValidaFuncao(): boolean {
     let result: boolean = false;
-    this.dadosMembro.funcao > 1 && this.historico.entradaFuncao == 0  ? this.serviceUtil.showMessage("Informe a --> Entrada na Função") :
+    this.dadosMembro.funcao > 1 && this.historico.entradaFuncao == 0 ? this.serviceUtil.showMessage("Informe a --> Entrada na Função") :
       this.dadosMembro.funcao > 1 && this.historico.dataEntradaFuncao == undefined ? this.serviceUtil.showMessage("Informe a --> Data de entrada na Função") :
-      this.dadosMembro.funcao > 1 && this.historico.reintegrado ? this.serviceUtil.showMessage("Informe a --> Data de Reintegração.") :
-        result = true
+        this.dadosMembro.funcao > 1 && this.historico.reintegrado ? this.serviceUtil.showMessage("Informe a --> Data de Reintegração.") :
+          result = true
     return result;
 
   }
@@ -321,12 +304,19 @@ export class CadastroMembrosComponent {
   processFile(event: any) {
 
     if (event.target.files && event.target.files[0]) {
-      const arquivo = <File>event.target.files[0];
+      const file = <File>event.target.files[0];
       const formData: FormData = new FormData();
-      formData.append('image', arquivo)
-      this.foto = formData
+      formData.append('image', file)
+      
+      this.serverApi.EnviarArquivoServidor(formData, Endpoint.UploadArquivo, this.pessoa.cpf)
+        .subscribe(x => {
+          event.target.files = undefined
+          this.serviceUtil.showMessage("Imagem importada com sucesso!", false);
+         
+        })
     }
   }
+
 
   BuscaCep(event: any) {
     if (event.which == 13) {
