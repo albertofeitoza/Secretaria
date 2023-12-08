@@ -30,7 +30,7 @@ export class CadastroMembrosComponent {
   endereco: PessoaEndereco = new PessoaEndereco();
   dadosMembro: DadosMembro = new DadosMembro();
   dadosObreiro: DadosObreiro = new DadosObreiro()
-
+  fotoPerfil: string = ""
   cargos: Cargos[] = new Array()
   cargo: Cargos = new Cargos();
   funcaoMembroCache: number = 1;
@@ -79,16 +79,19 @@ export class CadastroMembrosComponent {
     const id = Number(this.activatedRoute.snapshot.params['id']);
 
     if (id > 0) {
+      this.fotoPerfil = "";
       this.serverApi.readById(id.toString(), Endpoint.Pessoa)
         .subscribe(response => {
           this.pessoa = response.data.pessoa != null ? response.data.pessoa : new Pessoa();
           this.endereco = response.data.pessoaEndereco != null ? response.data.pessoaEndereco : this.endereco = new PessoaEndereco();
           this.contatos = response.data.contatos
           this.dadosMembro = response?.data?.dadosMembro != null ? response?.data?.dadosMembro : this.dadosMembro = new DadosMembro()
-          this.funcaoMembroCache = response.data.dadosMembro.funcao
+          this.funcaoMembroCache = response?.data?.dadosMembro?.funcao
           this.cargos = response.data.cargos
           this.dadosObreiro = response.data?.dadosObreiro != null ? response.data.dadosObreiro : this.dadosObreiro = new DadosObreiro()
           this.historicos = response?.data?.historicoObreiro
+          this.fotoPerfil = `../../../../assets/imagens/${response.data.pessoa.cpf.trim()}.jpg`
+          
         })
     }
   }
@@ -304,15 +307,16 @@ export class CadastroMembrosComponent {
   processFile(event: any) {
 
     if (event.target.files && event.target.files[0]) {
+      
       const file = <File>event.target.files[0];
       const formData: FormData = new FormData();
       formData.append('image', file)
       
       this.serverApi.EnviarArquivoServidor(formData, Endpoint.UploadArquivo, this.pessoa.cpf)
-        .subscribe(x => {
+      .subscribe(x => {
           event.target.files = undefined
           this.serviceUtil.showMessage("Imagem importada com sucesso!", false);
-         
+          this.BuscarMembro()
         })
     }
   }

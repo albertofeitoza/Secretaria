@@ -29,14 +29,13 @@ export class AllservicesService<T> {
     this.environmentUrl = environment.BASE_URL
   }
 
-  EnviarArquivoServidor(T: any, endpoint: string, fileName : string): Observable<T> {
+  EnviarArquivoServidor(T: any, endpoint: string, fileName: string): Observable<T> {
     let headers = this.loginService.HeaderForFile(fileName).headers;
-   const uploadReq = new HttpRequest
-      ('POST', this.environmentUrl + endpoint, T,
-        {
-          reportProgress: true,
-          headers : headers
-        });
+    const uploadReq = new HttpRequest('POST', this.environmentUrl + endpoint, T,
+      {
+        reportProgress: true,
+        headers: headers
+      });
 
     return this.http.request(uploadReq).pipe(
       map(obj => obj),

@@ -34,7 +34,7 @@
   <ng-container matColumnDef="foto">
     <mat-header-cell *matHeaderCellDef>Foto</mat-header-cell>
     <mat-cell mat-cell id="foto" *matCellDef="let row">
-      <img style="width: 10%; border-radius: 100%;" src="../../../../assets/imagens/27455363893.jpg" alt="Foto">
+      <img style="width: 10%; border-radius: 100%;" src="{{row.foto}}" alt="Foto">
     </mat-cell>
   </ng-container>
 

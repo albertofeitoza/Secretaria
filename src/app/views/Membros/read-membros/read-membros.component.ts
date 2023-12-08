@@ -77,6 +77,7 @@ export class ReadMembrosComponent implements OnInit {
 
   AtualizarMembro(id: number) {
     this.route.navigate([`/membrosupdate/${id}`]);
+    
 
   }
 
