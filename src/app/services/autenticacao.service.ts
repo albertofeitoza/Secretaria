@@ -16,11 +16,11 @@ import { Token } from '@angular/compiler';
 export class AutenticacaoService {
 
   autenticado = new EventEmitter<boolean>();
-  //token: string
   token = new EventEmitter<string>();
 
   environmentUrl = ''
-
+  sair : string = "";
+  
   constructor(
     private router: Router,
     private http: HttpClient,
@@ -35,7 +35,7 @@ export class AutenticacaoService {
       this.logoof()
       this.loginSistema(sessao, Endpoint.Token)
     } catch (error) {
-      console.log("Teste")
+      console.log("Erro ao acessar a API")
     }
 
 
@@ -44,13 +44,10 @@ export class AutenticacaoService {
   logoof() {
     this.router.navigate(['/']);
     this.autenticado.emit(false);
-    this.token.emit('')
-    
+    this.token = new EventEmitter<string>()
   }
 
   loginSistema(T: login, endpoint: string) {
-
-    this.logoof()
     this.http.post<ApiResponse>(this.environmentUrl + endpoint, T,).pipe(
       map(obj => obj),
       catchError(e => this.utilService.erroHandler(e)),
