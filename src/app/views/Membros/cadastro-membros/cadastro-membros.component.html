@@ -11,8 +11,8 @@
     </mat-expansion-panel-header>
     <div class="mat-elevation-z8">
 
-      <div style="float: right;padding-top: 15px;">
-        <img id="idFoto" style="width: 80px; height: 110px;padding-right: 50px;" src="{{fotoPerfil}}"
+      <div *ngIf="pessoa.id > 0" style="float: right;padding-top: 15px;">
+        <img *ngIf="pessoa.fotoCadastrada" style="width: 80px; height: 110px;padding-right: 50px;" src="{{fotoPerfil}}"
           alt="Imagem">
         <br>
         <input style="display: none" type="file" accept="image/*" (change)="processFile($event)" #fileInput>

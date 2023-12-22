@@ -54,7 +54,7 @@ export class ReadMembrosComponent implements OnInit {
     this.serverApi.read(Endpoint.Pessoa)
       .subscribe(response => {
         this.pessoa =
-          this.filtros.Inativos && this.filtros.TxtBusca.length == 0
+        this.filtros.Inativos && this.filtros.TxtBusca.length == 0
             ? response.filter(f => f.statusPessoa == 'Inativo')
             : this.filtros.Inativos && this.filtros.TxtBusca.length > 0
               ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.TxtBusca.toLowerCase()))

@@ -14,6 +14,7 @@ export class Pessoa {
   nomeConjuge: string;
   dataCasamento?: Date;
   statusPessoa: number = 0;
+  fotoCadastrada : boolean = false;
 }
 
 export class ViewPessoa {
