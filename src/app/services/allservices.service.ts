@@ -1,14 +1,11 @@
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { Observable } from 'rxjs';
 import { AutenticacaoService } from './autenticacao.service';
-import { map, catchError, take } from 'rxjs/operators';
-import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { map, catchError } from 'rxjs/operators';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UtilServiceService } from './util-service.service';
-import { Filtros } from '../models/Filtros';
-import { Endpoint } from '../enum/Endpoints';
-import { PathLocationStrategy } from '@angular/common';
 
 
 
@@ -42,6 +39,14 @@ export class AllservicesService<T> {
       catchError(e => this.utilService.erroHandler(e))
     );
   }
+  DownloadArquivoPdf(id: string, endpoint: string, token: string = "") : Observable<any> {
+    const url = `${this.environmentUrl + endpoint}/${id}`
+    return this.http.get(url, { responseType : 'blob'})
+    .pipe(
+      map(res => res)
+    )
+  }
+
   //Criar Cadastro
   create(T: T, endpoint: string, message: string = ""): Observable<T> {
     return this.http.post<T>(this.environmentUrl + endpoint, T, this.loginService.Header()).pipe(

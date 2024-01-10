@@ -1,1 +1,77 @@
-Relatórios do sistema 
+<h1 style="text-align: center;">Relatórios</h1>
+<div>
+    <mat-form-field>
+        <mat-select [(value)]="relatorioSelecionado" placeholder="Tipo de Relatório"
+            (selectionChange)="RelatorioSelecionado()">
+            <mat-option *ngFor="let tr of tipoRelatorio" [value]="tr.id">
+                {{tr.value}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div>
+        <a *ngIf="relatorioSelecionado > 0" style="padding-left: 17px;" (click)="Imprimir()" class="edit">
+            <img src="../../../../assets/Icons/Print.png" alt="Impressão do Relatorio">
+        </a>
+
+        <hr />
+    </div>
+
+    <div *ngIf="relatorioSelecionado == 4 && relatorioAniversario.length > 0">
+        <span>
+            <h2>Relatório - Aniversariantes do Mês</h2>
+        </span>
+        <table mat-table [dataSource]="relatorioAniversario" class="mat-elevation-z8 demo-table">
+            <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
+
+            <ng-container matColumnDef="nome">
+                <mat-header-cell *matHeaderCellDef hidden="true">Nome</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
+            </ng-container>
+            <!-- rol Column -->
+            <ng-container matColumnDef="dataNascimento">
+                <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data de Nascimento</mat-header-cell>
+                <mat-cell id="rol" *matCellDef="let row" hidden="true">{{row.dataNascimento | date :
+                    'dd/MM/yyyy'}}</mat-cell>
+            </ng-container>
+            <mat-row *matRowDef="let row; columns: Colunas;"></mat-row>
+        </table>
+        <h3>Total : {{totalAniversariantes}}</h3>
+    </div>
+
+
+    <div *ngIf="relatorioSelecionado == 4 && relatorioAniCasamento.length > 0">
+        <hr />
+        <span>
+            <h1>Relatório - Aniversariantes de casamento. </h1>
+        </span>
+
+        <table mat-table [dataSource]="relatorioAniCasamento" class="mat-elevation-z8 demo-table">
+            <mat-header-row *matHeaderRowDef="ColunasGridCasamento"></mat-header-row>
+
+            <ng-container matColumnDef="nome">
+                <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="nomeConjuge">
+                <mat-header-cell *matHeaderCellDef>Nome da Esposa</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.nomeConjuge}}</mat-cell>
+            </ng-container>
+
+            <!-- rol Column -->
+            <ng-container matColumnDef="dataCasamento">
+                <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data de Casamento</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.dataCasamento | date :
+                    'dd/MM/yyyy'}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="quantidadeAnosCasado">
+                <mat-header-cell style="width: 2%;" *matHeaderCellDef>Anos de Casados</mat-header-cell>
+                <mat-cell *matCellDef="let row" hidden="true">{{row.quantidadeAnosCasado}} Ano(s)</mat-cell>
+            </ng-container>
+            <mat-row *matRowDef="let row; columns: ColunasGridCasamento;"></mat-row>
+        </table>
+        <h3>Total : {{totalAniversariantesCasamento}}</h3>
+    </div>
+</div>

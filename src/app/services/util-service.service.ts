@@ -95,7 +95,7 @@ export class UtilServiceService {
     statusPessoa.push({ "id": 1, "value": "Em Comunhao" })
     statusPessoa.push({ "id": 2, "value": "Afastado" })
     statusPessoa.push({ "id": 3, "value": "Disciplinado" })
-    statusPessoa.push({ "id": 4, "value": "Excluído" })
+    statusPessoa.push({ "id": 4, "value": "Excluído da comunhão"})
 
     return statusPessoa
   }
@@ -134,6 +134,22 @@ export class UtilServiceService {
     entradaFuncao.push({ "id": 3, "value": "Reintegrado" })
 
     return entradaFuncao
+  }
+
+
+  TipoRelatorio(){
+    let relatorio = [];
+    relatorio.push({ "id": 0, "value": "selecione" })
+    relatorio.push({ "id": 1, "value": "Membros Ativos" })
+    relatorio.push({ "id": 2, "value": "Membros Inativos" })
+    relatorio.push({ "id": 3, "value": "Idosos" })
+    relatorio.push({ "id": 4, "value": "Aniversariantes" })
+    relatorio.push({ "id": 5, "value": "Membro" })
+    relatorio.push({ "id": 6, "value": "Santa Ceia" })
+    relatorio.push({ "id": 7, "value": "Reunião de Obreiros"})
+    relatorio.push({ "id": 8, "value": "Reunião de Obreiros na Sede"})
+
+    return relatorio
   }
 
   PopupConfirmacao(mensagem: string, tipo: number, componente: any) {

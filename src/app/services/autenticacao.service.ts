@@ -64,6 +64,7 @@ export class AutenticacaoService {
 
   Header(){
     const headers = new HttpHeaders({
+      'Accept' : 'application/pdf',
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.token}`
     });
