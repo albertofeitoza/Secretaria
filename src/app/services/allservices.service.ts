@@ -41,7 +41,7 @@ export class AllservicesService<T> {
   }
   DownloadArquivoPdf(id: string, endpoint: string, token: string = "") : Observable<any> {
     const url = `${this.environmentUrl + endpoint}/${id}`
-    return this.http.get(url, { responseType : 'blob'})
+    return this.http.get(url, { responseType : 'blob', headers : this.loginService.Header().headers} )
     .pipe(
       map(res => res)
     )

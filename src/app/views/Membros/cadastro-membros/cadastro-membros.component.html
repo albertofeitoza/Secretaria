@@ -106,6 +106,14 @@
           <mat-datepicker-toggle matIconSuffix [for]="dataCasamento"></mat-datepicker-toggle>
           <mat-datepicker #dataCasamento></mat-datepicker>
         </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Idoso</mat-label>
+          <input style="height: 20px; width: 150px;" matInput placeholder="Idoso">
+          <input name="idoso" [(ngModel)]="pessoa.idoso"
+            [checked]="pessoa.idoso" type="checkbox">
+        </mat-form-field>
+
       </div>
 
     </div>

@@ -151,8 +151,7 @@ export class CadastroMembrosComponent {
             this.serverApi.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
               this.step++;
               this.pessoa = x
-              this.serviceUtil.showMessage("cadastro Atualizado.");
-            });
+               });
             this.step++;
           }
           break;

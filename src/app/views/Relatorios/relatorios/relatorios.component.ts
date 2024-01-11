@@ -5,7 +5,7 @@ import {
   Injectable,
 } from '@angular/core';
 import { Endpoint } from 'src/app/enum/Endpoints';
-import { RelatorioAnivCasamento } from 'src/app/models/relatorios';
+import { RelatorioAnivCasamento, RelatorioIdosos, RelatorioMembrosAtivos } from 'src/app/models/relatorios';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 
@@ -27,9 +27,14 @@ export class RelatoriosComponent implements OnInit {
 
   relatorioAniversario: RelatorioAnivCasamento[] = new Array();
   relatorioAniCasamento: RelatorioAnivCasamento[] = new Array();
+  relatorioMembrosAtivos: RelatorioMembrosAtivos[] = new Array()
+  relatorioIdosos: RelatorioIdosos[] = new Array()
 
   Colunas = ['nome', 'dataNascimento']
   ColunasGridCasamento = ['nome', 'nomeConjuge', 'dataCasamento', 'quantidadeAnosCasado']
+  ColunasGridMembrosAtivos = ['nome', 'rol', 'congregacao', 'validadeCartaoMembro']
+  ColunasGridRelatorioIdosos = ['nome', 'endereco', 'ultimaSantaCeia']
+
   totalAniversariantes: number = 0
   totalAniversariantesCasamento: number = 0
 
@@ -52,13 +57,30 @@ export class RelatoriosComponent implements OnInit {
   RelatorioSelecionado() {
     this.serverApi.readById(this.relatorioSelecionado.toString(), Endpoint.Relatorios)
       .subscribe(rel => {
-        let response: RelatorioAnivCasamento[] = new Array()
-        response = rel;
-        this.relatorioAniversario = response.filter(x => x.tipoRelatorio == 4)
-        this.relatorioAniCasamento = response.filter(x => x.tipoRelatorio == 9)
 
-        this.totalAniversariantes = this.relatorioAniversario.length;
-        this.totalAniversariantesCasamento = this.relatorioAniCasamento.length
+        switch (this.relatorioSelecionado) {
+          case 1:
+          case 2:
+            this.relatorioMembrosAtivos = rel
+            break;
+          case 3:
+            this.relatorioIdosos = rel
+            break;
+          case 4:
+            let response: RelatorioAnivCasamento[] = new Array()
+            response = rel;
+            this.relatorioAniversario = response.filter(x => x.tipoRelatorio == 4)
+            this.relatorioAniCasamento = response.filter(x => x.tipoRelatorio == 9)
+            this.totalAniversariantes = this.relatorioAniversario.length;
+            this.totalAniversariantesCasamento = this.relatorioAniCasamento.length
+            break;
+
+          default:
+            break;
+        }
+
+
+
       })
   }
 
@@ -89,7 +111,7 @@ export class RelatoriosComponent implements OnInit {
 
         const blob = new Blob([result], { type: 'application/pdf' });
         var fileURL = URL.createObjectURL(blob);
-        
+
         var a = document.createElement("a");
         a.href = fileURL;
         a.download = blob.text.name;

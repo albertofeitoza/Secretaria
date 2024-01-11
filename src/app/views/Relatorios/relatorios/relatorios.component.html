@@ -17,7 +17,72 @@
         <hr />
     </div>
 
-    <div *ngIf="relatorioSelecionado == 4 && relatorioAniversario.length > 0">
+    <div *ngIf="relatorioSelecionado == 1 || relatorioSelecionado == 2">
+        <span>
+            <h1 *ngIf="relatorioSelecionado == 1">Relatório - Membros Ativos. </h1>
+            <h1 *ngIf="relatorioSelecionado == 2">Relatório - Membros Inativos. </h1>
+        </span>
+
+        <table mat-table [dataSource]="relatorioMembrosAtivos" class="mat-elevation-z4 demo-table">
+            <mat-header-row *matHeaderRowDef="ColunasGridMembrosAtivos"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ColunasGridMembrosAtivos;"></mat-row>
+
+            <ng-container matColumnDef="nome">
+                <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="rol">
+                <mat-header-cell *matHeaderCellDef>Número Rol</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.rol}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="congregacao">
+                <mat-header-cell *matHeaderCellDef>Congregação</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.congregacao}}</mat-cell>
+            </ng-container>
+
+            <!-- rol Column -->
+            <ng-container matColumnDef="validadeCartaoMembro">
+                <mat-header-cell style="width: 2%;" *matHeaderCellDef>Validade do Cartão de Membro</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.validadeCartaoMembro | date : 'dd/MM/yyyy'}}</mat-cell>
+            </ng-container>
+
+            
+        </table>
+        <h3>Total : {{relatorioMembrosAtivos.length}}</h3>
+    </div>
+
+    <div *ngIf="relatorioSelecionado == 3">
+        <span>
+            <h1 >Relatório - Idosos </h1>
+        </span>
+
+        <table mat-table [dataSource]="relatorioIdosos" class="mat-elevation-z4 demo-table">
+            <mat-header-row *matHeaderRowDef="ColunasGridRelatorioIdosos"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ColunasGridRelatorioIdosos;"></mat-row>
+            ['nome', 'endereco', 'ultimaSantaCeia']
+            <ng-container matColumnDef="nome">
+                <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="endereco">
+                <mat-header-cell *matHeaderCellDef>Endereço</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.endereco}}</mat-cell>
+            </ng-container>
+
+            <!-- rol Column -->
+            <ng-container matColumnDef="ultimaSantaCeia">
+                <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data da Ultima Ceia</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.ultimaSantaCeia | date : 'dd/MM/yyyy'}}</mat-cell>
+            </ng-container>
+            
+        </table>
+        <h3>Total : {{relatorioIdosos.length}}</h3>
+    </div>
+
+    <div *ngIf="relatorioSelecionado == 4">
         <span>
             <h2>Relatório - Aniversariantes do Mês</h2>
         </span>
@@ -38,9 +103,7 @@
         </table>
         <h3>Total : {{totalAniversariantes}}</h3>
     </div>
-
-
-    <div *ngIf="relatorioSelecionado == 4 && relatorioAniCasamento.length > 0">
+    <div *ngIf="relatorioSelecionado == 4 ">
         <hr />
         <span>
             <h1>Relatório - Aniversariantes de casamento. </h1>
@@ -74,4 +137,5 @@
         </table>
         <h3>Total : {{totalAniversariantesCasamento}}</h3>
     </div>
+
 </div>
