@@ -56,14 +56,12 @@ export class AllservicesService<T> {
   }
 
   read(endpoint: string, filtros: string = ""): Observable<T[]> {
-    let teste = this.loginService.Header();
-    return this.http.get<T[]>(`${this.environmentUrl + endpoint}?${filtros}`, this.loginService.Header()).pipe(
+    let url = this.environmentUrl + endpoint;
+    return this.http.get<T[]>(`${this.environmentUrl + endpoint}`, this.loginService.Header()).pipe(
       map(obj => obj),
       catchError(e => this.utilService.erroHandler(e))
     );
   }
-
-  // ?filtros=56656565
 
   readById(id: string, endpoint: string, token: string = ""): Observable<T> {
     const url = `${this.environmentUrl + endpoint}/${id}`

@@ -14,8 +14,7 @@ export class LoginComponent {
   isLoggedIn : boolean = false;
   userPassword : string  = ""
   constructor(
-    private auth: AutenticacaoService, 
-    private router : Router,
+    private auth: AutenticacaoService
   ) {
 
   }

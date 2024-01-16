@@ -144,10 +144,9 @@ export class UtilServiceService {
     relatorio.push({ "id": 2, "value": "Membros Inativos" })
     relatorio.push({ "id": 3, "value": "Idosos" })
     relatorio.push({ "id": 4, "value": "Aniversariantes" })
-    relatorio.push({ "id": 5, "value": "Membro" })
-    relatorio.push({ "id": 6, "value": "Santa Ceia" })
-    relatorio.push({ "id": 7, "value": "Reunião de Obreiros"})
-    relatorio.push({ "id": 8, "value": "Reunião de Obreiros na Sede"})
+    relatorio.push({ "id": 5, "value": "Santa Ceia" })
+    relatorio.push({ "id": 6, "value": "Reunião de Obreiros"})
+    relatorio.push({ "id": 7, "value": "Reunião de Obreiros na Sede"})
 
     return relatorio
   }
