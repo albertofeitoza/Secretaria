@@ -5,7 +5,7 @@ import {
   Injectable,
 } from '@angular/core';
 import { Endpoint } from 'src/app/enum/Endpoints';
-import { RelatorioAnivCasamento, RelatorioCeia, RelatorioIdosos, RelatorioMembrosAtivos } from 'src/app/models/relatorios';
+import { RelatorioAnivCasamento, RelatorioIdosos, RelatorioMembrosAtivos, RelatorioPresenca } from 'src/app/models/relatorios';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 
@@ -21,41 +21,23 @@ import { UtilServiceService } from 'src/app/services/util-service.service';
 export class RelatoriosComponent implements OnInit {
 
   TituloRelatorio: string = "Relatórios"
-  imprimir : boolean = false
+  imprimir: boolean = false
   tipoRelatorio: any[]
   relatorioSelecionado: number = 0;
-
+  nomeRelatorio: string = "";
   relatorioAniversario: RelatorioAnivCasamento[] = new Array();
   relatorioAniCasamento: RelatorioAnivCasamento[] = new Array();
   relatorioMembrosAtivos: RelatorioMembrosAtivos[] = new Array()
   relatorioIdosos: RelatorioIdosos[] = new Array()
-  relatorioCeia : RelatorioCeia[] = new Array()
+  relatorioPresenca: RelatorioPresenca[] = new Array()
+
+
   Colunas = ['nome', 'dataNascimento']
   ColunasGridCasamento = ['nome', 'nomeConjuge', 'dataCasamento', 'quantidadeAnosCasado']
   ColunasGridMembrosAtivos = ['nome', 'rol', 'congregacao', 'validadeCartaoMembro']
   ColunasGridRelatorioIdosos = ['nome', 'endereco', 'ultimaSantaCeia']
   ColunasGridRelatorioCeia = ['nome', 'janeiro', 'fevereiro', 'marco'
-              ,'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro', 'participacao' ]
-
-  nome: string
-    janeiro: string
-    fevereiro: string
-    marco: string
-    abril: string
-    maio: string
-    junho: string
-    julho: string
-    agosto: string
-    setembro: string
-    outubro: string
-    novembro: string
-    dezembro: string
-    participacao : string
-
-
-
-
-
+    , 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro', 'participacao']
 
   totalAniversariantes: number = 0
   totalAniversariantesCasamento: number = 0
@@ -80,7 +62,7 @@ export class RelatoriosComponent implements OnInit {
     this.imprimir = false;
     this.serverApi.readById(this.relatorioSelecionado.toString(), Endpoint.Relatorios)
       .subscribe(rel => {
-        
+
         switch (this.relatorioSelecionado) {
           case 1:
           case 2:
@@ -101,9 +83,21 @@ export class RelatoriosComponent implements OnInit {
             this.imprimir = true
             break;
           case 5:
-            this.relatorioCeia = rel
+            this.nomeRelatorio = "Relatório - Membros / Participação na Santa Ceia. "
+            this.relatorioPresenca = rel
             this.imprimir = true
-          break
+            break
+
+          case 6:
+            this.nomeRelatorio = "Relatório - Obreiros / Participação de Reunião Local. "
+            this.relatorioPresenca = rel
+            this.imprimir = true
+            break
+          case 7:
+            this.nomeRelatorio = "Relatório - Obreiros / Participação de Reunião na Sede. "
+            this.relatorioPresenca = rel
+            this.imprimir = true
+            break
           default:
             break;
         }
@@ -113,7 +107,7 @@ export class RelatoriosComponent implements OnInit {
 
   Imprimir(): void {
     this.serverApi.DownloadArquivoPdf(this.relatorioSelecionado.toString(), Endpoint.DownloadArquivo)
-    .subscribe(result => {
+      .subscribe(result => {
         const blob = new Blob([result], { type: 'application/pdf' });
         var fileURL = URL.createObjectURL(blob);
 

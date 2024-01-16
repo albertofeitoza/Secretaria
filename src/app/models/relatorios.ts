@@ -19,7 +19,7 @@ export class RelatorioIdosos{
     endereco : string
     ultimaSantaCeia : string
 }
-export class RelatorioCeia{
+export class RelatorioPresenca{
     nome: string
     janeiro: string
     fevereiro: string
