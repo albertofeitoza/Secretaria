@@ -24,8 +24,10 @@ export class LoginComponent {
         this.isLoggedIn = response
       })
       this.sessao = new login()
+      this.sessao.dominio = "Sistema"
+      this.sessao.usuario = "admin"
+      this.sessao.senha = "@adminRoot2024"
     }
-      
 
   login(event: any) {
     if (event.which === 13 || event.which == 1) {

@@ -62,6 +62,25 @@ export class RelatoriosComponent implements OnInit {
     this.imprimir = false;
     this.serverApi.readById(this.relatorioSelecionado.toString(), Endpoint.Relatorios)
       .subscribe(rel => {
+        
+        let trataCamposPresenca : RelatorioPresenca [] = new Array()
+        trataCamposPresenca = rel
+        
+        trataCamposPresenca.forEach(element  => {
+          element.janeiro = element.janeiro != null ? "Sucesso" : "Erro";
+          element.fevereiro = element.fevereiro != null ? "Sucesso" : "Erro";
+          element.marco = element.marco != null ? "Sucesso" : "Erro";
+          element.abril = element.abril!= null ? "Sucesso" : "Erro";
+          element.maio = element.maio != null ? "Sucesso" : "Erro";
+          element.junho = element.junho != null ? "Sucesso" : "Erro";
+          element.julho = element.julho != null ? "Sucesso" : "Erro";
+          element.agosto = element.agosto != null ? "Sucesso" : "Erro";
+          element.setembro = element.setembro != null ? "Sucesso" : "Erro";
+          element.outubro = element.outubro != null ? "Sucesso" : "Erro";
+          element.novembro = element.novembro != null ? "Sucesso" : "Erro";
+          element.dezembro = element.dezembro != null ? "Sucesso" : "Erro";
+
+        });
 
         switch (this.relatorioSelecionado) {
           case 1:
@@ -84,18 +103,18 @@ export class RelatoriosComponent implements OnInit {
             break;
           case 5:
             this.nomeRelatorio = "Relatório - Membros / Participação na Santa Ceia. "
-            this.relatorioPresenca = rel
+            this.relatorioPresenca = trataCamposPresenca
             this.imprimir = true
             break
 
           case 6:
             this.nomeRelatorio = "Relatório - Obreiros / Participação de Reunião Local. "
-            this.relatorioPresenca = rel
+            this.relatorioPresenca = trataCamposPresenca
             this.imprimir = true
             break
           case 7:
             this.nomeRelatorio = "Relatório - Obreiros / Participação de Reunião na Sede. "
-            this.relatorioPresenca = rel
+            this.relatorioPresenca = trataCamposPresenca
             this.imprimir = true
             break
           default:
