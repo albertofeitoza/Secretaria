@@ -72,6 +72,7 @@ export class UtilServiceService {
     grauInstrucao.push({ "id": 6, "value": "Segundo Grau InCompleto" })
     grauInstrucao.push({ "id": 7, "value": "Superior Completo" })
     grauInstrucao.push({ "id": 8, "value": "Superior InCompleto" })
+    grauInstrucao.push({ "id": 9, "value": "Mestrado" })
 
     return grauInstrucao;
 
@@ -102,7 +103,7 @@ export class UtilServiceService {
 
   CursoTeologico() {
     let cursoteoligico = [];
-    cursoteoligico.push({ "id": 0, "value": "selecione" })
+    cursoteoligico.push({ "id": 0, "value": "Nenhum" })
     cursoteoligico.push({ "id": 1, "value": "Basico" })
     cursoteoligico.push({ "id": 2, "value": "Medio" })
     cursoteoligico.push({ "id": 3, "value": "Bacharel" })
