@@ -341,7 +341,10 @@ export class CadastroMembrosComponent {
   ValidaCpf(): boolean {
 
     if (this.pessoa.cpf) {
-      if (!cpf.isValid(this.pessoa.cpf.toString())) {
+      
+      let numeroCpf = ("00000000000" + this.pessoa.cpf).slice(-11);
+      
+      if (!cpf.isValid(numeroCpf)) {
         this.serviceUtil.showMessage("Cpf Inválido", false)
         return false
 

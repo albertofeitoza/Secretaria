@@ -22,17 +22,16 @@ import { Router } from '@angular/router';
 export class ReadMembrosComponent implements OnInit {
 
   estadoForm: boolean = true
-  pessoa: ViewPessoa[] = new Array()
   pessoaSelecionada: number = 0
   corLinhaGrid: number = 0
   filtros: Filtros = new Filtros()
 
 
-  // @ViewChild(MatSort, { static: true }) sort: MatSort;
-  // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   Colunas = ['id', 'rol', 'foto', 'nome', 'dataNascimento', 'funcao', 'statusPessoa', 'action']
-  // dataSource = new MatTableDataSource<Pessoa>();
+  datasource = new MatTableDataSource<Pessoa>();
 
   constructor(
     private serverApi: AllservicesService<any>,
@@ -46,6 +45,12 @@ export class ReadMembrosComponent implements OnInit {
   }
 
 
+  ngAfterViewInit() {
+    this.datasource.paginator = this.paginator
+    this.datasource.sort = this.sort;
+  }
+
+
   AbaCadastroMembro(id: any) {
     alert("aba" + id)
   }
@@ -53,8 +58,9 @@ export class ReadMembrosComponent implements OnInit {
   buscarMembro() {
     this.serverApi.read(Endpoint.Pessoa)
       .subscribe(response => {
-        this.pessoa =
-        this.filtros.Inativos && this.filtros.TxtBusca.length == 0
+
+        this.datasource.data =
+          this.filtros.Inativos && this.filtros.TxtBusca.length == 0
             ? response.filter(f => f.statusPessoa == 'Inativo')
             : this.filtros.Inativos && this.filtros.TxtBusca.length > 0
               ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.TxtBusca.toLowerCase()))
@@ -62,13 +68,6 @@ export class ReadMembrosComponent implements OnInit {
                 ? response.filter(f => f.statusPessoa != 'Inativo' && f.nome.toLowerCase().includes(this.filtros.TxtBusca.toLowerCase()))
                 : response.filter(f => f.statusPessoa != 'Inativo');
       })
-
-      this.refreshGrid();
-  }
-
-  refreshGrid() {
-    let gridAtualizado = this.pessoa.slice()
-    this.pessoa = gridAtualizado;
   }
 
   cadastroMembro() {
@@ -77,8 +76,6 @@ export class ReadMembrosComponent implements OnInit {
 
   AtualizarMembro(id: number) {
     this.route.navigate([`/membrosupdate/${id}`]);
-    
-
   }
 
   ExcluirMembro(id: number) {
@@ -118,7 +115,6 @@ export class ReadMembrosComponent implements OnInit {
     if (keyEvent.which === 13 || keyEvent.which == 1 || keyEvent.type == 'change') {
       this.filtros.TxtBusca = (<HTMLSelectElement>document.getElementById('txtBusca')).value;
       this.buscarMembro()
-      this.refreshGrid();
     }
   }
 
