@@ -58,7 +58,7 @@ export class ReadMembrosComponent implements OnInit {
   buscarMembro() {
     this.serverApi.read(Endpoint.Pessoa)
       .subscribe(response => {
-
+        response = response.sort()
         this.datasource.data =
           this.filtros.Inativos && this.filtros.TxtBusca.length == 0
             ? response.filter(f => f.statusPessoa == 'Inativo')
