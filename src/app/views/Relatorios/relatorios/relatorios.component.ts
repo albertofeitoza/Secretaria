@@ -44,7 +44,7 @@ export class RelatoriosComponent implements OnInit {
   totalAniversariantesCasamento: number = 0
 
   constructor(private serviceUtil: UtilServiceService,
-    private serverApi: AllservicesService<any>,
+    private serverApi: AllservicesService<any>
   ) { }
 
   ngOnInit() {
@@ -137,34 +137,14 @@ export class RelatoriosComponent implements OnInit {
   Imprimir(): void {
     this.serverApi.DownloadArquivoPdf(this.relatorioSelecionado.toString(), Endpoint.DownloadArquivo)
       .subscribe(result => {
-        const blob = new Blob([result], { type: 'application/pdf' });
-        var fileURL = URL.createObjectURL(blob);
-
-        let iframe = document.createElement('iframe');
-        document.body.appendChild(iframe);
-
-        iframe.style.display = 'none';
-        iframe.src = fileURL;
-        iframe.onload = function () {
-          setTimeout(function () {
-            iframe.focus();
-            iframe.contentWindow?.print();
-          }, 1);
-        };
+        this.serviceUtil.Imprimir(result)
       });
   }
 
   BaixarArquivo() {
     this.serverApi.DownloadArquivoPdf(this.relatorioSelecionado.toString(), Endpoint.DownloadArquivo)
       .subscribe(result => {
-
-        const blob = new Blob([result], { type: 'application/pdf' });
-        var fileURL = URL.createObjectURL(blob);
-
-        var a = document.createElement("a");
-        a.href = fileURL;
-        a.download = blob.text.name;
-        a.click();
+        this.serviceUtil.BaixarArquivo(result);
       }
       )
   };

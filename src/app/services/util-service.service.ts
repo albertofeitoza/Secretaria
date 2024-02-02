@@ -45,6 +45,35 @@ export class UtilServiceService {
 
   }
 
+  Imprimir(result : any){
+    const blob = new Blob([result], { type: 'application/pdf' });
+    var fileURL = URL.createObjectURL(blob);
+
+    let iframe = document.createElement('iframe');
+    document.body.appendChild(iframe);
+
+    iframe.style.display = 'none';
+    iframe.src = fileURL;
+    iframe.onload = function () {
+      setTimeout(function () {
+        iframe.focus();
+        iframe.contentWindow?.print();
+      }, 1);
+    };
+  }
+
+  BaixarArquivo(result : any){
+    
+    const blob = new Blob([result], { type: 'application/pdf'});
+    var fileURL = URL.createObjectURL(blob);
+
+    var a = document.createElement("a");
+    a.href = fileURL;
+    a.download = blob.text.name;
+    a.click();
+
+  }
+
   EstCivil() {
     let estCivil = []
     estCivil.push({ "id": 0, "value": "Selecione" })

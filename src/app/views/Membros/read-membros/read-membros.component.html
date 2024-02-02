@@ -69,14 +69,13 @@
       <th style="width: 14%;" mat-header-cell *matHeaderCellDef>Ações</th>
       <td style="padding-left: 3.5%; height: 21px;width: 16%;" mat-cell *matCellDef="let row">
           <a (click)="AtualizarMembro(row.id)" class="edit">
-            <i class="material-icons" style="line-height: unset;" >
-              edit
-            </i>
+            <img style="line-height: unset;" src="../../../../assets/Icons/edit.png" alt="Editar Cadastro">
+          </a>
+          <a (click)="ImprimirFichaMembro(row.id)" class="edit">
+            <img style="line-height: unset;" src="../../../../assets/Icons/Print.png" alt="Historico">
           </a>
           <a *ngIf="!filtros.inativos" (click)="ExcluirMembro(row.id)" class="delete">
-            <i class="material-icons" style="line-height: unset;">
-              delete
-            </i>
+            <img style="line-height: unset;" src="../../../../assets/Icons/delete.png" alt="Excluir">
           </a>
       </td>
     </ng-container>

@@ -78,6 +78,11 @@ export class ReadMembrosComponent implements OnInit {
     this.route.navigate([`/membrosupdate/${id}`]);
   }
 
+  
+  ImprimirFichaMembro(id: number) {
+    this.route.navigate([`/membrosupdate/${id}`]);
+  }
+
   ExcluirMembro(id: number) {
 
     this.serviceUtil.PopupConfirmacao("Deseja Excluir o Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
