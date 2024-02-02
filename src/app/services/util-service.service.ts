@@ -140,7 +140,7 @@ export class UtilServiceService {
 
   TipoRelatorio(){
     let relatorio = [];
-    relatorio.push({ "id": 0, "value": "selecione" })
+    relatorio.push({ "id": 0, "value": "Selecione" })
     relatorio.push({ "id": 1, "value": "Membros Ativos" })
     relatorio.push({ "id": 2, "value": "Membros Inativos" })
     relatorio.push({ "id": 3, "value": "Idosos" })

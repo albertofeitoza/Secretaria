@@ -6,6 +6,7 @@ import { map, catchError } from 'rxjs/operators';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UtilServiceService } from './util-service.service';
+import { Filtros } from '../models/Filtros';
 
 
 
@@ -63,10 +64,10 @@ export class AllservicesService<T> {
     );
   }
 
-  readById(id: string, endpoint: string, token: string = ""): Observable<T> {
+  readById(id: string, endpoint: string, filtros: string = ""): Observable<T> {
     const url = `${this.environmentUrl + endpoint}/${id}`
 
-    return this.http.get<T>(url, this.loginService.Header()).pipe(
+    return this.http.get<T>(url, this.loginService.Header(filtros)).pipe(
       map(obj => obj),
       catchError(e => this.utilService.erroHandler(e))
     );

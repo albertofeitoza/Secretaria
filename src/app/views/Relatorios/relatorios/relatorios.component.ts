@@ -5,6 +5,7 @@ import {
   Injectable,
 } from '@angular/core';
 import { Endpoint } from 'src/app/enum/Endpoints';
+import { Filtros } from 'src/app/models/Filtros';
 import { RelatorioAnivCasamento, RelatorioIdosos, RelatorioMembrosAtivos, RelatorioPresenca } from 'src/app/models/relatorios';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
@@ -60,7 +61,16 @@ export class RelatoriosComponent implements OnInit {
 
   RelatorioSelecionado() {
     this.imprimir = false;
-    this.serverApi.readById(this.relatorioSelecionado.toString(), Endpoint.Relatorios)
+
+    //Exemplo de filtros
+    // let filtros : Filtros = new Filtros()
+    // filtros.dataInicial = new Date("2024-01-01")
+    // filtros.dataFinal = new Date("2024-01-29")
+    
+    // let filtro = JSON.stringify(filtros)
+    
+
+    this.serverApi.readById(this.relatorioSelecionado.toString(), Endpoint.Relatorios, /*filtro*/)
       .subscribe(rel => {
         
         let trataCamposPresenca : RelatorioPresenca [] = new Array()

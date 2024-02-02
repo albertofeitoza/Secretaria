@@ -62,10 +62,11 @@ export class AutenticacaoService {
     })
   }
 
-  Header(){
+  Header(filtros : string = ""){
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.token}`
+      'Authorization': `Bearer ${this.token}`,
+      'filtros' : `${filtros}`
     });
     
     return { headers: headers };

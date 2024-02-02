@@ -92,9 +92,8 @@
                 </ng-container>
                 <!-- rol Column -->
                 <ng-container matColumnDef="dataNascimento">
-                    <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data de Nascimento</mat-header-cell>
-                    <mat-cell id="rol" *matCellDef="let row" hidden="true">{{row.dataNascimento | date :
-                        'dd/MM/yyyy'}}</mat-cell>
+                    <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data de Aniversário</mat-header-cell>
+                    <mat-cell id="rol" *matCellDef="let row" hidden="true">{{row.dataNascimento | date : 'dd/MM/yyyy'}}</mat-cell>
                 </ng-container>
                 <mat-row *matRowDef="let row; columns: Colunas;"></mat-row>
             </table>
@@ -107,7 +106,7 @@
         <span>
             <h1>Relatório - Aniversariantes de casamento. </h1>
         </span>
-        <div class="mat-elevation-z4" style="height: 120px;overflow: auto;">
+        <div class="mat-elevation-z4" style="height: 118px;overflow: auto;">
             <table mat-table [dataSource]="relatorioAniCasamento" class="mat-elevation-z4 demo-table">
                 <mat-header-row *matHeaderRowDef="ColunasGridCasamento"></mat-header-row>
 
@@ -123,9 +122,8 @@
 
                 <!-- rol Column -->
                 <ng-container matColumnDef="dataCasamento">
-                    <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data de Casamento</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.dataCasamento | date :
-                        'dd/MM/yyyy'}}</mat-cell>
+                    <mat-header-cell style="width: 2%;" *matHeaderCellDef>Aniv. de Casamento</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.dataCasamento | date : 'dd/MM/yyyy'}}</mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="quantidadeAnosCasado">

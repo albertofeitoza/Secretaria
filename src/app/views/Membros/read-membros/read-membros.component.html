@@ -5,7 +5,7 @@
 
   <a style="position: absolute;">
     Inativos
-    <input name="Inativos" [(ngModel)]="filtros.Inativos" [checked]="filtros.Inativos" type="checkbox"
+    <input name="Inativos" [(ngModel)]="filtros.inativos" [checked]="filtros.inativos" type="checkbox"
       (change)="Filtros($event)">
   </a>
 
@@ -73,7 +73,7 @@
               edit
             </i>
           </a>
-          <a *ngIf="!filtros.Inativos" (click)="ExcluirMembro(row.id)" class="delete">
+          <a *ngIf="!filtros.inativos" (click)="ExcluirMembro(row.id)" class="delete">
             <i class="material-icons" style="line-height: unset;">
               delete
             </i>

@@ -60,12 +60,12 @@ export class ReadMembrosComponent implements OnInit {
       .subscribe(response => {
         response = response.sort()
         this.datasource.data =
-          this.filtros.Inativos && this.filtros.TxtBusca.length == 0
+          this.filtros.inativos && this.filtros.txtBusca.length == 0
             ? response.filter(f => f.statusPessoa == 'Inativo')
-            : this.filtros.Inativos && this.filtros.TxtBusca.length > 0
-              ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.TxtBusca.toLowerCase()))
-              : !this.filtros.Inativos && this.filtros.TxtBusca.length > 0
-                ? response.filter(f => f.statusPessoa != 'Inativo' && f.nome.toLowerCase().includes(this.filtros.TxtBusca.toLowerCase()))
+            : this.filtros.inativos && this.filtros.txtBusca.length > 0
+              ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+              : !this.filtros.inativos && this.filtros.txtBusca.length > 0
+                ? response.filter(f => f.statusPessoa != 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
                 : response.filter(f => f.statusPessoa != 'Inativo');
       })
   }
@@ -113,7 +113,7 @@ export class ReadMembrosComponent implements OnInit {
   Filtros(keyEvent: any) {
 
     if (keyEvent.which === 13 || keyEvent.which == 1 || keyEvent.type == 'change') {
-      this.filtros.TxtBusca = (<HTMLSelectElement>document.getElementById('txtBusca')).value;
+      this.filtros.txtBusca = (<HTMLSelectElement>document.getElementById('txtBusca')).value;
       this.buscarMembro()
     }
   }
