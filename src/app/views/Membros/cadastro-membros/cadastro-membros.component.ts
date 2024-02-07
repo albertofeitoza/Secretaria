@@ -305,7 +305,7 @@ export class CadastroMembrosComponent {
 
   processFile(event: any) {
 
-    if (event.target.files && event.target.files[0]) {
+    if (event.target.files && event.target.files[0] && this.ValidaCpf()) {
       
       const file = <File>event.target.files[0];
       const formData: FormData = new FormData();
