@@ -1,0 +1,44 @@
+<div  style="padding-left: 17px;padding-top: 1%;">
+    <div>
+        <mat-form-field>
+            <mat-label>Informe o CPF</mat-label>
+            <input matInput placeholder="CPF" [(ngModel)]="pessoa.cpf" name="cpf">
+        </mat-form-field>
+
+        <span class="search" (click)="Filtros()">
+            <i class="material-icons">search</i>
+        </span>
+    </div>
+
+    <div>
+
+        <mat-form-field >
+            <mat-label>Nome</mat-label>
+            <input matInput placeholder="Nome do Usuário" [(ngModel)]="pessoa.nome" name="nomeUsuario">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Usuario</mat-label>
+            <input matInput placeholder="Usuário" [(ngModel)]="usuario.nomeUsuario" name="Usuario">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Senha</mat-label>
+            <input type="password" matInput placeholder="Senha" [(ngModel)]="usuario.senha" name="senha">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Tipo de Usuário</mat-label>
+            <mat-select [(value)]="usuario.tipoUsuario" placeholder="Tipo de Usuario">
+                <mat-option *ngFor="let tu of tipousuarios" [value]="tu.id">
+                    {{tu.value}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <span class="search" (click)="SalvarUsuario()">
+            <i class="material-icons">add</i>
+        </span>
+
+    </div>
+</div>

@@ -6,4 +6,5 @@ export class Usuario {
   senha: string;
   biometria: string;
   sessao: string;
+  tipoUsuario : number
 }

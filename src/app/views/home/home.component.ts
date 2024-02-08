@@ -12,6 +12,9 @@ import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 export class HomeComponent {
   private breakpointObserver = inject(BreakpointObserver);
 
+  tipoUsuario : Number = 0
+  width : string = "200px;"
+
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
@@ -21,8 +24,27 @@ export class HomeComponent {
     constructor(private auth : AutenticacaoService)
     {}
 
+
+      ngOnInit(){
+        this.PermissaoMenus()
+      }
+
     logoof(){
       this.auth.logoof()
 
+    }
+
+    PermissaoMenus(){
+      this.tipoUsuario = this.auth.tipoUsuarioLogado
+    }
+
+    Menu(){
+      
+      let teste = 
+        this.width.includes("200px;") ? 
+          this.width = "57px;" : 
+            this.width.includes("57px;") ? 
+              this.width = "200px;" : this.width = "200px;"
+      return teste;
     }
 }

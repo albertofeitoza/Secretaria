@@ -49,6 +49,7 @@ import { CadastroMembrosComponent } from './views/Membros/cadastro-membros/cadas
 import { RelatoriosComponent } from './views/Relatorios/relatorios/relatorios.component';
 import { PopupConfirmacaoComponent } from './popups/popup-confirmacao/popup-confirmacao.component';
 import { OfertasComponent } from './views/ofertas/ofertas.component';
+import { UsuariosComponent } from './views/usuarios/usuarios.component';
 
 registerLocaleData(localePt);
 
@@ -65,6 +66,7 @@ registerLocaleData(localePt);
     RelatoriosComponent,
     PopupConfirmacaoComponent,
     OfertasComponent,
+    UsuariosComponent,
 
 
   ],

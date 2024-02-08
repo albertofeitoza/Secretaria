@@ -1,24 +1,35 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+  <mat-sidenav #drawer style="width: {{width}}" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
-    <mat-toolbar><a mat-list-item routerLink="/">
-        <i class="material-icons">
-          home
-        </i>
-      </a></mat-toolbar>
-    <mat-nav-list>
+
+    <mat-nav-list *ngIf="tipoUsuario === 1">
+      <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
       <a mat-list-item routerLink="/membros"><i class="material-icons">people</i> Membros</a>
       <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i> Ofertas</a>
       <a mat-list-item routerLink="/relatorios"><i class="material-icons">assignment</i>Relatórios</a>
+      <a mat-list-item routerLink="/usuarios"><i class="material-icons">account_box</i>Usuários</a>
+      <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
+    </mat-nav-list>
+
+    <mat-nav-list *ngIf="tipoUsuario === 2">
+      <a mat-list-item routerLink="/membros"><i class="material-icons">people</i> Membros</a>
+      <a mat-list-item routerLink="/relatorios"><i class="material-icons">assignment</i>Relatórios</a>
+      <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
+    </mat-nav-list>
+    
+    <mat-nav-list *ngIf="tipoUsuario === 3">
+      <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
+    </mat-nav-list>
+    
+    <mat-nav-list *ngIf="tipoUsuario === 4">
+      <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i> Ofertas</a>
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
+  
+  <mat-sidenav-content style="margin-left: {{width}}">
     <mat-toolbar color="primary">
-      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
-        <mat-icon aria-label="Side nav toggle icon">Menu</mat-icon>
-      </button>
+      <img style="padding-right: 15px;" src="../../../assets/Icons/baseline.png" (click)="Menu()" alt="alternar Menu">
       <span>Secretaria</span>
     </mat-toolbar>
     <router-outlet></router-outlet>

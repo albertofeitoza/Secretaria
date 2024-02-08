@@ -181,6 +181,17 @@ export class UtilServiceService {
     return relatorio
   }
 
+  TipoUsuario(){
+    let tipoUsuario = [];
+    tipoUsuario.push({ "id": 0, "value": "Selecione" })
+    tipoUsuario.push({ "id": 2, "value": "Secretario" })
+    tipoUsuario.push({ "id": 3, "value": "Membro" })
+    tipoUsuario.push({ "id": 4, "value": "Tesoureiro" })
+  
+    return tipoUsuario;
+  
+  }
+
   PopupConfirmacao(mensagem: string, tipo: number, componente: any) {
 
     const dialog = this.dialog.open(componente, {

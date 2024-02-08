@@ -23,11 +23,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/web.config",
-              "src/EnvApiServer.bat",
-              "src/EnvHttpServer.bat",
-              "src/StartApi.bat",
-              "src/HttpServer.bat" 
+              "src/web.config"
             ],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",

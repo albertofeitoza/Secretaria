@@ -1,5 +1,4 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { EMPTY, Observable, empty } from 'rxjs';
 import { login } from '../models/modelLogin';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -8,7 +7,10 @@ import { map, catchError, take } from 'rxjs/operators';
 import { UtilServiceService } from './util-service.service';
 import { Endpoint } from '../enum/Endpoints';
 import { ApiResponse } from '../models/ApiResponse';
-import { Token } from '@angular/compiler';
+//import * as jwt_decode from 'jwt-decode';
+import {JwtDecodeOptions, JwtHeader, JwtPayload, jwtDecode} from 'jwt-decode';
+import { TokenResponse } from '../models/token';
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,7 @@ export class AutenticacaoService {
 
   autenticado = new EventEmitter<boolean>();
   token = new EventEmitter<string>();
+  public tipoUsuarioLogado : Number = 0;
 
   environmentUrl = ''
   sair : string = "";
@@ -55,6 +58,7 @@ export class AutenticacaoService {
       if (ret.code === 200) {
         this.token = ret.data;
         this.autenticado.emit(true);
+        this.tipoUsuarioLogado = this.getDecodedAccessToken(ret.data)
         this.router.navigate(['/']);
         this.utilService.showMessage(ret.mensagem, false)
       } else
@@ -78,6 +82,14 @@ export class AutenticacaoService {
       'Authorization': `Bearer ${this.token}`
     });
     return { headers: headers };
+  }
+
+  getDecodedAccessToken(token: string): any {
+    try {
+      return Number(jwtDecode<TokenResponse>(token).unique_name[1])
+    } catch(Error) {
+      return null;
+    }
   }
 
 }

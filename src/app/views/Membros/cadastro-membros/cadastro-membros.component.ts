@@ -21,7 +21,6 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 })
 
 export class CadastroMembrosComponent {
-  // @ViewChild('fileInput') fileInput;
   contatoSelecionado = 0
   cargoSelecionado = 0
   historicoSelecionado = 0

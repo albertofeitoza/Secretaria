@@ -1,1 +1,0 @@
-start C:\inetpub\wwwroot\Secretaria\HttpServer.bat
