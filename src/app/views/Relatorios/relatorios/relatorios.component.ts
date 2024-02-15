@@ -31,7 +31,7 @@ export class RelatoriosComponent implements OnInit {
   relatorioMembrosAtivos: RelatorioMembrosAtivos[] = new Array()
   relatorioIdosos: RelatorioIdosos[] = new Array()
   relatorioPresenca: RelatorioPresenca[] = new Array()
-  spinner : boolean = true
+  spinner: boolean = false
 
   Colunas = ['nome', 'dataNascimento']
   ColunasGridCasamento = ['nome', 'nomeConjuge', 'dataCasamento', 'quantidadeAnosCasado']
@@ -61,26 +61,29 @@ export class RelatoriosComponent implements OnInit {
 
   RelatorioSelecionado() {
     this.imprimir = false;
+    
+    if(this.relatorioSelecionado > 0)
+      this.spinner = true;
 
     //Exemplo de filtros
     // let filtros : Filtros = new Filtros()
     // filtros.dataInicial = new Date("2024-01-01")
     // filtros.dataFinal = new Date("2024-01-29")
-    
+
     // let filtro = JSON.stringify(filtros)
-    
+
 
     this.serverApi.readById(this.relatorioSelecionado.toString(), Endpoint.Relatorios, /*filtro*/)
       .subscribe(rel => {
-        
-        let trataCamposPresenca : RelatorioPresenca [] = new Array()
+
+        let trataCamposPresenca: RelatorioPresenca[] = new Array()
         trataCamposPresenca = rel
-        
-        trataCamposPresenca.forEach(element  => {
+
+        trataCamposPresenca.forEach(element => {
           element.janeiro = element.janeiro != null ? "Sucesso" : "Erro";
           element.fevereiro = element.fevereiro != null ? "Sucesso" : "Erro";
           element.marco = element.marco != null ? "Sucesso" : "Erro";
-          element.abril = element.abril!= null ? "Sucesso" : "Erro";
+          element.abril = element.abril != null ? "Sucesso" : "Erro";
           element.maio = element.maio != null ? "Sucesso" : "Erro";
           element.junho = element.junho != null ? "Sucesso" : "Erro";
           element.julho = element.julho != null ? "Sucesso" : "Erro";
@@ -97,10 +100,12 @@ export class RelatoriosComponent implements OnInit {
           case 2:
             this.relatorioMembrosAtivos = rel
             this.imprimir = true
+            this.spinner = false;
             break;
           case 3:
             this.relatorioIdosos = rel
             this.imprimir = true
+            this.spinner = false;
             break;
           case 4:
             let response: RelatorioAnivCasamento[] = new Array()
@@ -116,22 +121,24 @@ export class RelatoriosComponent implements OnInit {
             this.nomeRelatorio = "Relatório - Membros / Participação na Santa Ceia. "
             this.relatorioPresenca = trataCamposPresenca
             this.imprimir = true
+            this.spinner = false;
             break
 
           case 6:
             this.nomeRelatorio = "Relatório - Obreiros / Participação de Reunião Local. "
             this.relatorioPresenca = trataCamposPresenca
             this.imprimir = true
+            this.spinner = false;
             break
           case 7:
             this.nomeRelatorio = "Relatório - Obreiros / Participação de Reunião na Sede. "
             this.relatorioPresenca = trataCamposPresenca
             this.imprimir = true
+            this.spinner = false;
             break
           default:
             break;
         }
-
       })
   }
 

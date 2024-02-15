@@ -25,6 +25,7 @@ export class ReadMembrosComponent implements OnInit {
   pessoaSelecionada: number = 0
   corLinhaGrid: number = 0
   filtros: Filtros = new Filtros()
+  spinner : boolean = false
 
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -56,6 +57,8 @@ export class ReadMembrosComponent implements OnInit {
   }
 
   buscarMembro() {
+    try {
+    this.spinner = true
     this.serverApi.read(Endpoint.Pessoa)
       .subscribe(response => {
         response = response.sort()
@@ -67,7 +70,15 @@ export class ReadMembrosComponent implements OnInit {
               : !this.filtros.inativos && this.filtros.txtBusca.length > 0
                 ? response.filter(f => f.statusPessoa != 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
                 : response.filter(f => f.statusPessoa != 'Inativo');
+                
+        this.spinner = false;
+      
       })
+    } catch (error) {
+      this.spinner = false
+    }
+    
+    
   }
 
   cadastroMembro() {

@@ -17,11 +17,12 @@
             <h1 *ngIf="relatorioSelecionado == 1">Relatório - Membros Ativos. </h1>
             <h1 *ngIf="relatorioSelecionado == 2">Relatório - Membros Inativos. </h1>
         </span>
+        
         <div class="mat-elevation-z4" style="height: 355px;overflow: auto;">
             <table mat-table [dataSource]="relatorioMembrosAtivos" class="mat-elevation-z4 demo-table">
                 <mat-header-row *matHeaderRowDef="ColunasGridMembrosAtivos"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: ColunasGridMembrosAtivos;"></mat-row>
-
+                
                 <ng-container matColumnDef="nome">
                     <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
                     <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
@@ -44,6 +45,7 @@
                     <mat-cell *matCellDef="let row">{{row.validadeCartaoMembro | date : 'dd/MM/yyyy'}}</mat-cell>
                 </ng-container>
             </table>
+            <mat-spinner *ngIf="spinner"></mat-spinner> 
         </div>
         <h3>Total : {{relatorioMembrosAtivos.length}}</h3>
     </div>
@@ -54,9 +56,11 @@
         </span>
         <div class="mat-elevation-z4" style="height: 125px;overflow: auto;">
             <table mat-table [dataSource]="relatorioIdosos" class="mat-elevation-z4 demo-table">
+          
                 <mat-header-row *matHeaderRowDef="ColunasGridRelatorioIdosos"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: ColunasGridRelatorioIdosos;"></mat-row>
                 ['nome', 'endereco', 'ultimaSantaCeia']
+                
                 <ng-container matColumnDef="nome">
                     <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
                     <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
@@ -74,6 +78,7 @@
                 </ng-container>
 
             </table>
+            <mat-spinner *ngIf="spinner"></mat-spinner> 
         </div>
         <h3>Total : {{relatorioIdosos.length}}</h3>
     </div>
@@ -84,23 +89,26 @@
             <h2>Relatório - Aniversariantes do Mês</h2>
         </span>
 
-            <div class="mat-elevation-z4" style="height: 140px;overflow: auto;">
-                <table mat-table [dataSource]="relatorioAniversario" class="mat-elevation-z8 demo-table">
-                    <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
+        <div class="mat-elevation-z4" style="height: 140px;overflow: auto;">
 
-                    <ng-container matColumnDef="nome">
-                        <mat-header-cell *matHeaderCellDef hidden="true">Nome</mat-header-cell>
-                        <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
-                    </ng-container>
-                    <!-- rol Column -->
-                    <ng-container matColumnDef="dataNascimento">
-                        <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data de Aniversário</mat-header-cell>
-                        <mat-cell id="rol" *matCellDef="let row" hidden="true">{{row.dataNascimento | date :
-                            'dd/MM/yyyy'}}</mat-cell>
-                    </ng-container>
-                    <mat-row *matRowDef="let row; columns: Colunas;"></mat-row>
-                </table>
-            </div>
+            <table mat-table [dataSource]="relatorioAniversario" class="mat-elevation-z8 demo-table">
+         
+                <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
+                <ng-container matColumnDef="nome">
+                    <mat-header-cell *matHeaderCellDef hidden="true">Nome</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
+                </ng-container>
+                <!-- rol Column -->
+                <ng-container matColumnDef="dataNascimento">
+                    <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data de Aniversário</mat-header-cell>
+                    <mat-cell id="rol" *matCellDef="let row" hidden="true">{{row.dataNascimento | date :
+                        'dd/MM/yyyy'}}</mat-cell>
+                </ng-container>
+
+                <mat-row *matRowDef="let row; columns: Colunas;"></mat-row>
+            </table>
+            <mat-spinner *ngIf="spinner"></mat-spinner> 
+        </div>
 
         <h3>Total : {{totalAniversariantes}}</h3>
     </div>
@@ -112,6 +120,7 @@
         </span>
         <div class="mat-elevation-z4" style="height: 118px;overflow: auto;">
             <table mat-table [dataSource]="relatorioAniCasamento" class="mat-elevation-z4 demo-table">
+                
                 <mat-header-row *matHeaderRowDef="ColunasGridCasamento"></mat-header-row>
 
                 <ng-container matColumnDef="nome">
@@ -136,6 +145,7 @@
                 </ng-container>
                 <mat-row *matRowDef="let row; columns: ColunasGridCasamento;"></mat-row>
             </table>
+            <mat-spinner *ngIf="spinner"></mat-spinner> 
         </div>
         <h3>Total : {{totalAniversariantesCasamento}}</h3>
     </div>
@@ -246,6 +256,7 @@
                     <td style="padding-left:3%;" mat-cell *matCellDef="let row">{{row.participacao}}</td>
                 </ng-container>
             </table>
+            <mat-spinner *ngIf="spinner"></mat-spinner> 
         </div>
         <h3>Total : {{relatorioPresenca.length}}</h3>
     </div>
