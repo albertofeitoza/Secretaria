@@ -143,16 +143,16 @@ export class RelatoriosComponent implements OnInit {
   }
 
   Imprimir(): void {
-    this.serverApi.DownloadArquivoPdf(this.relatorioSelecionado.toString(), Endpoint.DownloadArquivo)
+    this.serverApi.DownloadArquivo(this.relatorioSelecionado.toString(), Endpoint.DownloadArquivo)
       .subscribe(result => {
-        this.serviceUtil.Imprimir(result)
+        this.serviceUtil.Imprimir(result, 'application/pdf')
       });
   }
 
   BaixarArquivo() {
-    this.serverApi.DownloadArquivoPdf(this.relatorioSelecionado.toString(), Endpoint.DownloadArquivo)
+    this.serverApi.DownloadArquivo(this.relatorioSelecionado.toString(), Endpoint.DownloadArquivo)
       .subscribe(result => {
-        this.serviceUtil.BaixarArquivo(result);
+        this.serviceUtil.BaixarArquivo(result, 'application/pdf', '') ;
       }
       )
   };

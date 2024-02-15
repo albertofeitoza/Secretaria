@@ -37,7 +37,7 @@ export class AllservicesService<T> {
       catchError(e => this.utilService.erroHandler(e))
     );
   }
-  DownloadArquivoPdf(id: string, endpoint: string, token: string = "") : Observable<any> {
+  DownloadArquivo(id: string, endpoint: string, token: string = "") : Observable<any> {
     const url = `${this.environmentUrl + endpoint}/${id}`
     return this.http.get(url, { responseType : 'blob', headers : this.loginService.Header().headers} )
     .pipe(

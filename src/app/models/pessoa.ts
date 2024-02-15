@@ -16,6 +16,8 @@ export class Pessoa {
   statusPessoa: number = 0;
   fotoCadastrada : boolean = false;
   idoso : boolean = false;
+  nomePai : string;
+  nomeMae : string;
 }
 
 export class ViewPessoa {

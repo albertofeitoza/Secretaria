@@ -45,8 +45,8 @@ export class UtilServiceService {
 
   }
 
-  Imprimir(result : any){
-    const blob = new Blob([result], { type: 'application/pdf' });
+  Imprimir(result : any, type : string){
+    const blob = new Blob([result], { type: type });
     var fileURL = URL.createObjectURL(blob);
 
     let iframe = document.createElement('iframe');
@@ -58,18 +58,18 @@ export class UtilServiceService {
       setTimeout(function () {
         iframe.focus();
         iframe.contentWindow?.print();
-      }, 1);
+      }, 2);
     };
   }
 
-  BaixarArquivo(result : any){
+  BaixarArquivo(result : any, type : string, nomeArquivo : string ){
     
-    const blob = new Blob([result], { type: 'application/pdf'});
+    const blob = new Blob([result], { type: type});
     var fileURL = URL.createObjectURL(blob);
 
     var a = document.createElement("a");
     a.href = fileURL;
-    a.download = blob.text.name;
+    a.download = nomeArquivo == undefined ? blob.text.name : nomeArquivo
     a.click();
 
   }

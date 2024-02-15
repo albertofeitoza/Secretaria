@@ -113,6 +113,16 @@
             [checked]="pessoa.idoso" type="checkbox">
         </mat-form-field>
 
+        <mat-form-field>
+          <mat-label>Nome do Pai</mat-label>
+          <input matInput placeholder="Nome do Pai" [(ngModel)]="pessoa.nomePai" name="nomePai">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Nome da Mãe</mat-label>
+          <input matInput placeholder="Nome da Mãe<" [(ngModel)]="pessoa.nomeMae" name="nomeMae">
+        </mat-form-field>
+
       </div>
 
     </div>
@@ -431,6 +441,47 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+
+      <mat-form-field color="accent" style="width: 213px;">
+        <mat-label>Mudança Com Carta</mat-label>
+        <input matInput [matDatepicker]="mudancaComcarta" [(ngModel)]="dadosMembro.mudancaComCarta" name="mudancaComCarta">
+        <mat-datepicker-toggle matIconSuffix [for]="mudancaComcarta"></mat-datepicker-toggle>
+        <mat-datepicker #mudancaComcarta></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Mudança Com Carta(Igreja)</mat-label>
+        <input matInput placeholder="Mudança Com Carta(Igreja)" [(ngModel)]="dadosMembro.mudancaComCartaIgreja"
+          name="mudancaComCartaIgreja">
+      </mat-form-field>
+
+      <mat-form-field color="accent" style="width: 213px;">
+        <mat-label>Mudança Sem Carta</mat-label>
+        <input matInput [matDatepicker]="mudancaSemcarta" [(ngModel)]="dadosMembro.mudancaSemCarta" name="mudancaSemCarta">
+        <mat-datepicker-toggle matIconSuffix [for]="mudancaSemcarta"></mat-datepicker-toggle>
+        <mat-datepicker #mudancaSemcarta></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field color="accent" style="width: 213px;">
+        <mat-label>Data Comunhão</mat-label>
+        <input matInput [matDatepicker]="dataComunhao" [(ngModel)]="dadosMembro.comunhao" name="comunhao">
+        <mat-datepicker-toggle matIconSuffix [for]="dataComunhao"></mat-datepicker-toggle>
+        <mat-datepicker #dataComunhao></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Procedência</mat-label>
+        <input matInput placeholder="Procedência" [(ngModel)]="dadosMembro.procedencia"
+          name="procedencia">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Observação</mat-label>
+        <input type="textarea" matInput placeholder="Procedência" [(ngModel)]="dadosMembro.observacao"
+          name="observacao">
+      </mat-form-field>
+
+
     </div>
 
     <!-- Cargos -->

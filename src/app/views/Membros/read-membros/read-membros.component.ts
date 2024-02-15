@@ -25,7 +25,7 @@ export class ReadMembrosComponent implements OnInit {
   pessoaSelecionada: number = 0
   corLinhaGrid: number = 0
   filtros: Filtros = new Filtros()
-  spinner : boolean = false
+  spinner: boolean = false
 
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -58,27 +58,27 @@ export class ReadMembrosComponent implements OnInit {
 
   buscarMembro() {
     try {
-    this.spinner = true
-    this.serverApi.read(Endpoint.Pessoa)
-      .subscribe(response => {
-        response = response.sort()
-        this.datasource.data =
-          this.filtros.inativos && this.filtros.txtBusca.length == 0
-            ? response.filter(f => f.statusPessoa == 'Inativo')
-            : this.filtros.inativos && this.filtros.txtBusca.length > 0
-              ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
-              : !this.filtros.inativos && this.filtros.txtBusca.length > 0
-                ? response.filter(f => f.statusPessoa != 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
-                : response.filter(f => f.statusPessoa != 'Inativo');
-                
-        this.spinner = false;
-      
-      })
+      this.spinner = true
+      this.serverApi.read(Endpoint.Pessoa)
+        .subscribe(response => {
+          response = response.sort()
+          this.datasource.data =
+            this.filtros.inativos && this.filtros.txtBusca.length == 0
+              ? response.filter(f => f.statusPessoa == 'Inativo')
+              : this.filtros.inativos && this.filtros.txtBusca.length > 0
+                ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+                : !this.filtros.inativos && this.filtros.txtBusca.length > 0
+                  ? response.filter(f => f.statusPessoa != 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+                  : response.filter(f => f.statusPessoa != 'Inativo');
+
+          this.spinner = false;
+
+        })
     } catch (error) {
       this.spinner = false
     }
-    
-    
+
+
   }
 
   cadastroMembro() {
@@ -89,12 +89,16 @@ export class ReadMembrosComponent implements OnInit {
     this.route.navigate([`/membrosupdate/${id}`]);
   }
 
-  
+
   ImprimirFichaMembro(id: number) {
-    this.route.navigate([`/membrosupdate/${id}`]);
+
+    this.serverApi.DownloadArquivo(id.toString(), Endpoint.RelatoriosFichaMembro)
+      .subscribe((result) => {
+        this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `FichaMembro_${id.toString()}.docx`);
+      });
   }
 
-  ExcluirMembro(id: number) {
+  ExcluirMembro(id: number) { 
 
     this.serviceUtil.PopupConfirmacao("Deseja Excluir o Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
       .subscribe(result => {

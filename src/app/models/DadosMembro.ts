@@ -21,5 +21,11 @@ export class DadosMembro {
   dizimista: boolean = false;
   frequentaEbd: boolean = false;
   funcao : number = 0;
+  mudancaComCarta : Date;
+  mudancaComCartaIgreja : string;
+  mudancaSemCarta : Date;
+  comunhao : Date;
+  procedencia : string;
+  observacao : string;
 }
 
