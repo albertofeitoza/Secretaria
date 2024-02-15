@@ -12,16 +12,19 @@
     </mat-nav-list>
 
     <mat-nav-list *ngIf="tipoUsuario === 2">
+      <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
       <a mat-list-item routerLink="/membros"><i class="material-icons">people</i> Membros</a>
       <a mat-list-item routerLink="/relatorios"><i class="material-icons">assignment</i>Relatórios</a>
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
     </mat-nav-list>
     
     <mat-nav-list *ngIf="tipoUsuario === 3">
+      <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
     </mat-nav-list>
     
     <mat-nav-list *ngIf="tipoUsuario === 4">
+      <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
       <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i> Ofertas</a>
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
     </mat-nav-list>
@@ -29,7 +32,7 @@
   
   <mat-sidenav-content style="margin-left: {{width}}">
     <mat-toolbar color="primary">
-      <img style="padding-right: 15px;" src="../../../assets/Icons/baseline.png" (click)="Menu()" alt="alternar Menu">
+      <img style="padding-right: 15px;" src="./assets/Icons/baseline.png" (click)="Menu()" alt="alternar Menu">
       <span>Secretaria</span>
     </mat-toolbar>
     <router-outlet></router-outlet>

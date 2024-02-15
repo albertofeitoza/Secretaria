@@ -31,7 +31,7 @@ export class RelatoriosComponent implements OnInit {
   relatorioMembrosAtivos: RelatorioMembrosAtivos[] = new Array()
   relatorioIdosos: RelatorioIdosos[] = new Array()
   relatorioPresenca: RelatorioPresenca[] = new Array()
-
+  spinner : boolean = true
 
   Colunas = ['nome', 'dataNascimento']
   ColunasGridCasamento = ['nome', 'nomeConjuge', 'dataCasamento', 'quantidadeAnosCasado']
@@ -110,6 +110,7 @@ export class RelatoriosComponent implements OnInit {
             this.totalAniversariantes = this.relatorioAniversario.length;
             this.totalAniversariantesCasamento = this.relatorioAniCasamento.length
             this.imprimir = true
+            this.spinner = false
             break;
           case 5:
             this.nomeRelatorio = "Relatório - Membros / Participação na Santa Ceia. "

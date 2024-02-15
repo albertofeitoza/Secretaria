@@ -89,7 +89,7 @@ export class CadastroMembrosComponent {
           this.cargos = response.data.cargos
           this.dadosObreiro = response.data?.dadosObreiro != null ? response.data.dadosObreiro : this.dadosObreiro = new DadosObreiro()
           this.historicos = response?.data?.historicoObreiro
-          this.fotoPerfil = `../../../../assets/imagens/${response.data.pessoa.cpf.trim()}.jpg`
+          this.fotoPerfil = `./assets/imagens/${response.data.pessoa.cpf.trim()}.jpg`
           
         })
     }
@@ -357,7 +357,7 @@ export class CadastroMembrosComponent {
 
   AdicionarContato() {
 
-    if (this.contato.ddd > 0 && this.contato.telefone > 0) {
+    if (this.contato.ddd > 0 ) {
       this.contato.pessoaId = this.pessoa.id;
       this.contato.ddd = Number(this.contato.ddd.toString().length > 2 ? this.contato.ddd.toString().substring(0, 2) : this.contato.ddd)
       this.contato.telefone = Number(this.contato.telefone.toString().length > 9 ? this.contato.telefone.toString().substring(0, 9) : this.contato.telefone)
@@ -365,12 +365,11 @@ export class CadastroMembrosComponent {
 
       this.serverApi.create(this.contato, Endpoint.Contatos)
         .subscribe(x => {
-          this.serviceUtil.showMessage("Novo contato Adicionado!", false)
           this.contato = new contatos()
           this.BuscarContatos()
         })
     } else
-      this.serviceUtil.showMessage("informar pelo menos o DDD e o telefone.", false)
+      this.serviceUtil.showMessage("informar os dados do contato.", false)
 
 
   }
@@ -382,6 +381,13 @@ export class CadastroMembrosComponent {
         this.BuscarContatos()
       })
   }
+
+  EditarContato(id : any){
+    this.serverApi.readById(id, Endpoint.Contatos).subscribe(con => {
+      this.contato = con.data
+    })
+  }
+
 
   BuscarContatos() {
     this.serverApi.read(Endpoint.Contatos)

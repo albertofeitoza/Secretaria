@@ -50,6 +50,7 @@ import { RelatoriosComponent } from './views/Relatorios/relatorios/relatorios.co
 import { PopupConfirmacaoComponent } from './popups/popup-confirmacao/popup-confirmacao.component';
 import { OfertasComponent } from './views/ofertas/ofertas.component';
 import { UsuariosComponent } from './views/usuarios/usuarios.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 registerLocaleData(localePt);
 
@@ -103,7 +104,8 @@ registerLocaleData(localePt);
     MatInputModule,
     MatButtonModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     {

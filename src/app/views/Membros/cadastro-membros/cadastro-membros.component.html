@@ -265,6 +265,12 @@
           <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
           <mat-cell *matCellDef="let row">
 
+            <a (click)="EditarContato(row.id)" class="delete">
+              <i class="material-icons">
+                edit
+              </i>
+            </a>
+
             <a (click)="ExcluirContato(row.id)" class="delete">
               <i class="material-icons">
                 delete
@@ -483,7 +489,7 @@
           <mat-cell *matCellDef="let row">
 
             <a (click)="ExcluirCargo(row.id)" class="delete">
-              <img src="../../../../assets/Icons/delete.png" alt="">
+              <img src="./assets/Icons/delete.png" alt="">
             </a>
 
           </mat-cell>
