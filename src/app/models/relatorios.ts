@@ -1,6 +1,7 @@
 export class RelatorioAnivCasamento {
     nome: string
     dataNascimento : Date
+    dataAniversario : Date
     nomeConjuge: string;
     dataCasamento: string;
     quantidadeAnosCasado: number;

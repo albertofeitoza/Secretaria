@@ -33,7 +33,7 @@ export class RelatoriosComponent implements OnInit {
   relatorioPresenca: RelatorioPresenca[] = new Array()
   spinner: boolean = false
 
-  Colunas = ['nome', 'dataNascimento']
+  Colunas = ['nome', 'dataNascimento', 'dataAniversario']
   ColunasGridCasamento = ['nome', 'nomeConjuge', 'dataCasamento', 'quantidadeAnosCasado']
   ColunasGridMembrosAtivos = ['nome', 'rol', 'congregacao', 'validadeCartaoMembro']
   ColunasGridRelatorioIdosos = ['nome', 'endereco', 'ultimaSantaCeia']

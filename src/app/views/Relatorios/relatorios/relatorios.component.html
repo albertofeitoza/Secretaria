@@ -100,8 +100,14 @@
                 </ng-container>
                 <!-- rol Column -->
                 <ng-container matColumnDef="dataNascimento">
-                    <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data de Aniversário</mat-header-cell>
+                    <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data de Nascimento</mat-header-cell>
                     <mat-cell id="rol" *matCellDef="let row" hidden="true">{{row.dataNascimento | date :
+                        'dd/MM/yyyy'}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="dataAniversario">
+                    <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data de Aniversário</mat-header-cell>
+                    <mat-cell id="rol" *matCellDef="let row" hidden="true">{{row.dataAniversario | date :
                         'dd/MM/yyyy'}}</mat-cell>
                 </ng-container>
 
