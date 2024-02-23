@@ -89,7 +89,7 @@ export class CadastroMembrosComponent {
           this.cargos = response.data.cargos
           this.dadosObreiro = response.data?.dadosObreiro != null ? response.data.dadosObreiro : this.dadosObreiro = new DadosObreiro()
           this.historicos = response?.data?.historicoObreiro
-          this.fotoPerfil = `./assets/imagens/${response.data.pessoa.cpf.trim()}.jpg`
+          this.pessoa.fotoCadastrada ? this.fotoPerfil = `./assets/imagens/${response.data.pessoa.cpf.trim()}.jpg` : ""
           
         })
     }
@@ -317,6 +317,15 @@ export class CadastroMembrosComponent {
           this.BuscarMembro()
         })
     }
+  }
+
+  RemoverFoto(idPessoa : any){
+
+    this.serverApi.readById(idPessoa, Endpoint.RemoverFotoperfil)
+      .subscribe(() => {
+          this.serviceUtil.showMessage("Imagem removida com sucesso!", false);
+          this.BuscarMembro()
+        })
   }
 
 

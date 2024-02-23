@@ -105,7 +105,7 @@ export class ReadMembrosComponent implements OnInit {
         if (result?.Status) {
           this.serverApi.delete(id, Endpoint.Pessoa, result?.Motivo,)
             .subscribe(() => {
-              this.serviceUtil.showMessage("Membro excluído com sucesso!", false);
+                this.serviceUtil.showMessage("Membro excluído com sucesso!", false);
               this.buscarMembro()
             })
         }

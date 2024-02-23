@@ -11,11 +11,11 @@ import { UtilServiceService } from 'src/app/services/util-service.service';
 export class PopupConfirmacaoComponent implements OnInit {
 
   mensagem: string = ""
-  resposta : PopupConfirm = new PopupConfirm();
+  resposta: PopupConfirm = new PopupConfirm();
   constructor(
     public dialogRef: MatDialogRef<PopupConfirmacaoComponent>,
-    public dialog: MatDialog, 
-    private utilService : UtilServiceService
+    public dialog: MatDialog,
+    private utilService: UtilServiceService
 
   ) {
   }
@@ -25,19 +25,20 @@ export class PopupConfirmacaoComponent implements OnInit {
   }
 
   FecharPopup(confirm: boolean): void {
-    
-    if(this.resposta.Motivo && confirm){
 
-    this.resposta.Status = confirm;
-    this.resposta.Motivo = this.resposta.Motivo
-
-    this.dialogRef.close(this.resposta);
+    if (confirm) {
+      if (this.resposta.Motivo) {
+        this.resposta.Status = confirm;
+        this.resposta.Motivo = this.resposta.Motivo
+        this.dialogRef.close(this.resposta);
+      }
+      else
+        this.utilService.showMessage("Obrigatório Informar o Motivo")
     }
-    else{
-      this.utilService.showMessage("Obrigatório Informar o Motivo")
+    else {
       this.dialogRef.close(this.resposta)
     }
-      
+
   }
 
 }

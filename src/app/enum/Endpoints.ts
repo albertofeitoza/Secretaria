@@ -13,6 +13,7 @@ export enum Endpoint {
     Relatorios = '/Relatorios',
     RelatoriosFichaMembro = '/Relatorios/FichaMembro',
     UploadArquivo = '/File/FotoPerfil',
+    RemoverFotoperfil = '/File/FotoPerfilRemover',
     DownloadArquivo = '/File/DownloadArquivo',
     cep = 'https://viacep.com.br/ws/{0}/json',
 
