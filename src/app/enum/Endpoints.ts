@@ -1,5 +1,6 @@
 export enum Endpoint {
     Token = '/Token',
+    ResetSenha = '/Token/resetSenha',
     Usuario = '/Usuarios',
     Pessoa = '/Pessoa',
     Membros = '/Membros',

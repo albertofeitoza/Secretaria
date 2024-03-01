@@ -326,6 +326,8 @@ export class CadastroMembrosComponent {
           this.serviceUtil.showMessage("Imagem removida com sucesso!", false);
           this.BuscarMembro()
         })
+
+        
   }
 
 

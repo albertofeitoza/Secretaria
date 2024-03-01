@@ -1,32 +1,67 @@
-<div *ngIf="!isLoggedIn">
-<mat-card class="centralizar">
-  <mat-card-title><i class="material-icons">account_box</i></mat-card-title>
-      <form class="classform">
-          <mat-form-field > 
-              <input matInput placeholder="dominio" 
-               [(ngModel)]="sessao.dominio" name="name" placeholder="Igreja">
-               
-          </mat-form-field>
+<div *ngIf="!isLoggedIn && !esqueciSenha">
+    <mat-card class="centralizar">
+        <mat-card-title><i class="material-icons">account_box</i></mat-card-title>
+        <form class="classform">
+            <mat-form-field>
+                <input matInput placeholder="dominio" [(ngModel)]="sessao.dominio" name="name" placeholder="Igreja">
 
-          <mat-form-field > 
-              <input matInput placeholder="login" 
-               [(ngModel)]="sessao.usuario" name="name" placeholder="login">
-               
-          </mat-form-field>
-         
-          <mat-form-field >
-              <input matInput placeholder="senha"
-              [(ngModel)]="sessao.senha" type="password" name="senha" (keypress)="login($event)">
-              
-          </mat-form-field>
-          <h1>{{userPassword}}</h1>
-      </form>
-      
-          <div>
-              <button *ngIf="sessao.dominio && sessao.usuario && sessao.senha" class="button" mat-raised-button (click)="login($event)"  color="primary"> 
-                  Login
-              </button> 
-          </div>
+            </mat-form-field>
 
-</mat-card>        
+            <mat-form-field>
+                <input matInput placeholder="login" [(ngModel)]="sessao.usuario" name="name" placeholder="login">
+
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput placeholder="senha" [(ngModel)]="sessao.senha" type="password" name="senha"
+                    (keypress)="login($event)">
+
+            </mat-form-field>
+        </form>
+
+        <div style="padding-left: 15px;padding-bottom: 15px;">
+            <button *ngIf="sessao.dominio && sessao.usuario && sessao.senha" class="button" mat-raised-button
+                (click)="login($event)" color="primary">
+                Login
+            </button>
+
+            <button style="float: right;" class="button" mat-raised-button
+                (click)="EsqueciSenha($event)" color="primary">
+                Esqueci a senha
+            </button>
+        </div>
+
+    </mat-card>
+
+</div>
+
+<div *ngIf="esqueciSenha">
+
+    <mat-card class="centralizar">
+        <mat-card-title><i class="material-icons">account_box</i></mat-card-title>
+        <form class="classform">
+            <mat-form-field *ngIf="sequenciaTelaReset == 1">
+                <input matInput placeholder="Informe o CPF" [(ngModel)]="dadosResetSenha.cpf" name="name" placeholder="Informe o CPF">
+            </mat-form-field>
+
+            <mat-form-field *ngIf="sequenciaTelaReset == 2">
+                <input matInput placeholder="Informe o Token" [(ngModel)]="dadosResetSenha.token" name="Token" placeholder="Informe o Token">
+            </mat-form-field>
+
+            <mat-form-field *ngIf="sequenciaTelaReset == 2">
+                <input matInput placeholder="Nova Senha" [(ngModel)]="dadosResetSenha.novaSenha" type="password" name="novasenha" placeholder="Nova Senha">
+            </mat-form-field>
+
+            <mat-form-field *ngIf="sequenciaTelaReset == 2">
+                <input matInput placeholder="Confirme Nova Senha" [(ngModel)]="dadosResetSenha.novaSenhaConfirm" type="password" name="confirmenovasenha" placeholder="Confirme Nova Senha">
+            </mat-form-field>
+        </form>
+
+        <div style="padding-left: 15px;padding-bottom: 15px;">
+            <button class="button" mat-raised-button
+                (click)="EnviaDados($event)" color="primary">
+                {{InfBotao}}
+            </button>
+        </div>
+    </mat-card>
 </div>

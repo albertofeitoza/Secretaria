@@ -37,6 +37,8 @@ export class AutenticacaoService {
     try {
       this.logoof()
       this.loginSistema(sessao, Endpoint.Token)
+    
+      
     } catch (error) {
       console.log("Erro ao acessar a API")
     }
@@ -51,6 +53,7 @@ export class AutenticacaoService {
   }
 
   loginSistema(T: login, endpoint: string) {
+    
     this.http.post<ApiResponse>(this.environmentUrl + endpoint, T,).pipe(
       map(obj => obj),
       catchError(e => this.utilService.erroHandler(e)),

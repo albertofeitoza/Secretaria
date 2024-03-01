@@ -12,11 +12,17 @@ import { UtilServiceService } from 'src/app/services/util-service.service';
 })
 export class UsuariosComponent {
 
+
+  usuarios: Usuario[] = new Array()
+
   usuario: Usuario = new Usuario();
   cpf: any
   tipousuarios: any[]
   pessoa: Pessoa = new Pessoa()
+  spinner: boolean = false;
+  linhaSelecionada: number = 0
 
+  Colunas = ['id', 'nomeUsuario', 'dominio', 'action']
 
   constructor(
     private utilService: UtilServiceService,
@@ -27,6 +33,7 @@ export class UsuariosComponent {
 
   ngOnInit() {
     this.CarregarCombos()
+    this.BuscaUsuarios()
 
   }
 
@@ -34,40 +41,57 @@ export class UsuariosComponent {
     this.tipousuarios = this.utilService.TipoUsuario()
   }
 
-  Filtros() {
-    
-    this.serverApi.readById(this.pessoa.cpf, Endpoint.BuscaPorCpf).subscribe(res => {
+  Filtros(keyEvent: any) {
 
-      if (res.code == 200)
-        this.pessoa = res.data;
-      else
-        this.utilService.showMessage("Cpf não cadastrado", true);
+    if (keyEvent.which == 13 || keyEvent.which == 1) {
 
-    })
+      if (this.cpf) {
+        this.serverApi.readById(this.cpf, Endpoint.BuscaPorCpf).subscribe(res => {
+          if (res.code == 200)
+            this.pessoa = res.data;
+          else
+            this.utilService.showMessage("Cpf não cadastrado", true);
+          this.cpf = ""
+        })
+      } else
+        this.utilService.showMessage("Informe o cpf.", true);
+    }
+  }
+
+  SalvarUsuario() {
+    if (this.usuario.nomeUsuario != null && this.usuario.senha != null || this.usuario.senha != "******" && this.usuario.tipoUsuario > 0) {
+
+      if (this.pessoa != null && this.pessoa.nome != null) {
+        this.usuario.dominio = "Ferrazopolis";
+        this.usuario.pessoaId = this.pessoa.id
+        this.serverApi.create(this.usuario, Endpoint.Usuario).subscribe(x => {
+
+          this.utilService.showMessage("Usuário cadastrado com sucesso.", true);
+
+        })
+      }
+    }
+  }
+
+  BuscaUsuarios() {
+    this.serverApi.read(Endpoint.Usuario)
+      .subscribe(response => {
+        this.usuarios = response
+      })
+  }
+
+  BuscarUsuarioPorId(id: any) {
+    this.serverApi.readById(id, Endpoint.Usuario)
+      .subscribe(res => {
+        this.usuario = res.data
+        this.pessoa = res.data.pessoa
+      }
+      )
 
   }
 
-  SalvarUsuario(){
-   
-    if(this.pessoa != null)
-    {
-      this.usuario.id = 0;
-      this.usuario.dominio = "Ferrazopolis";
-      this.usuario.id = 0;
-      this.usuario.pessoaId = this.pessoa.id
-
-      this.serverApi.create(this.usuario, Endpoint.Usuario).subscribe(x => {
-        this.utilService.showMessage("Usuário cadastrado com sucesso", true);
-        
-
-      })
-
-    }
-    
-
-
-
-    
+  LinhaSelecionada(id: any) {
+    this.linhaSelecionada = id;
   }
 
 }

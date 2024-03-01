@@ -74,7 +74,7 @@
         <a (click)="AtualizarMembro(row.id)" class="edit">
           <img style="line-height: unset;" src="./assets/Icons/edit.png" alt="Editar Cadastro">
         </a>
-        <a (click)="ImprimirFichaMembro(row.id)" class="edit">
+        <a *ngIf="!filtros.inativos" (click)="ImprimirFichaMembro(row.id)" class="edit">
           <img style="line-height: unset;" src="./assets/Icons/msword.png" alt="Download">
         </a>
         <a *ngIf="!filtros.inativos" (click)="ExcluirMembro(row.id)" class="delete">

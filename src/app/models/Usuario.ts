@@ -8,3 +8,13 @@ export class Usuario {
   sessao: string;
   tipoUsuario : number
 }
+
+export class ResetSenha
+{
+  cpf : string
+  token : string
+  novaSenha : string
+  novaSenhaConfirm : string
+  idUsuario : number
+  sequencia : number = 1
+}
