@@ -102,10 +102,10 @@ export class ReadMembrosComponent implements OnInit {
 
     this.serviceUtil.PopupConfirmacao("Deseja Excluir o Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
       .subscribe(result => {
-        if (result?.Status) {
+        if (result.Status) {
           this.serverApi.delete(id, Endpoint.Pessoa, result?.Motivo,)
-            .subscribe(() => {
-                this.serviceUtil.showMessage("Membro excluído com sucesso!", false);
+            .subscribe(response => {
+              this.serviceUtil.showMessage(response.mensagem, false);
               this.buscarMembro()
             })
         }
