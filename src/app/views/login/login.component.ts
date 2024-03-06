@@ -41,6 +41,7 @@ export class LoginComponent {
       this.isLoggedIn = response
     })
     this.sessao = new login()
+    this.sessao.dominio = "Ferrazopolis";
   }
 
   login(event: any) {

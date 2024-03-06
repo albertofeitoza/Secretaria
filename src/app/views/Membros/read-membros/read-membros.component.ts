@@ -103,11 +103,25 @@ export class ReadMembrosComponent implements OnInit {
     this.serviceUtil.PopupConfirmacao("Deseja Excluir o Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
       .subscribe(result => {
         if (result.Status) {
-          this.serverApi.delete(id, Endpoint.Pessoa, result?.Motivo,)
+          
+          let pessoa : Pessoa = new Pessoa();
+          pessoa.id = id;
+          pessoa.nome = result.Motivo
+          pessoa.dataCriacao = new Date
+          pessoa.cpf = "0"
+          pessoa.estadoCivil = 1
+          pessoa.dataNascimento = new  Date
+          pessoa.grauInstrucao = 1
+          pessoa.sexo = 1
+          pessoa.statusPessoa = 5
+          pessoa.fotoCadastrada = false,
+          pessoa.idoso = false
+         
+          this.serverApi.create(pessoa, Endpoint.Pessoa)
             .subscribe(response => {
-              this.serviceUtil.showMessage(response.mensagem, false);
+              this.serviceUtil.showMessage("Membro excluído com sucesso!.", false);
               this.buscarMembro()
-            })
+          })
         }
       });
   }
