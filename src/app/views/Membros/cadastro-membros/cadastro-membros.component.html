@@ -481,15 +481,32 @@
 
       <mat-form-field>
         <mat-label>Observação</mat-label>
-        <input type="textarea" matInput placeholder="Procedência" [(ngModel)]="dadosMembro.observacao"
+        <input matInput placeholder="Observação" [(ngModel)]="dadosMembro.observacao"
           name="observacao">
       </mat-form-field>
-
-
     </div>
+     
+    <mat-action-row>
+      <button mat-button color="warn" (click)="Voltar()">Voltar</button>
+      <button mat-button color="primary" (click)="Proximo()">Salvar</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+   
+
+  <mat-expansion-panel *ngIf="pessoa.id > 0" [expanded]="step === 5" (opened)="setStep(5)" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h2>Cargos do Membro</h2>
+      </mat-panel-title>
+      <mat-panel-description>
+        Aqui será salvo todos os cargos Membro.
+        <mat-icon>map</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
 
     <!-- Cargos -->
-    <h3 style="padding-left: 17px;">Cargos</h3>
+ 
+    <h3 style="padding-left: 17px;"><b>Cargos</b></h3>
     <div class="menuInternoGrid">
       <mat-form-field style="padding-left: 17px;">
         <mat-label>Cargo</mat-label>
@@ -561,12 +578,76 @@
 
     </div>
 
-    <mat-action-row>
-      <button mat-button color="warn" (click)="Voltar()">Voltar</button>
-      <button mat-button color="primary" (click)="Proximo()">Salvar</button>
-    </mat-action-row>
+
 
   </mat-expansion-panel>
+
+
+
+
+
+  <mat-expansion-panel *ngIf="pessoa.id > 0" [expanded]="step === 6" (opened)="setStep(6)" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h2>Ocorrências / Histórico do Membro</h2>
+      </mat-panel-title>
+      <mat-panel-description>
+        Aqui será salvo todo o histórico ou ocorrências do Membro.
+        <mat-icon>map</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <!-- ocorrências -->
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="logs" matSort>
+
+        <mat-header-row *matHeaderRowDef="colunasLogs"></mat-header-row>
+        <!-- Id Column -->
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+          <mat-cell id="id" *matCellDef="let row">{{row.id}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="pessoaId">
+          <mat-header-cell *matHeaderCellDef>Pessoa</mat-header-cell>
+          <mat-cell id="pessoaId" *matCellDef="let row">{{row.pessoaId}}</mat-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="data">
+          <mat-header-cell *matHeaderCellDef>Data da Ocorrência</mat-header-cell>
+          <mat-cell id="data" *matCellDef="let row">{{row.data | date : 'dd/MM/yyyy'}}</mat-cell>
+        </ng-container>
+        
+        <!-- rol Column -->
+        <ng-container matColumnDef="tipoLog">
+          <mat-header-cell *matHeaderCellDef>Tipo Ocorrência</mat-header-cell>
+          <mat-cell id="tipoLog" *matCellDef="let row">{{row.tipoLog}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="descricao">
+          <mat-header-cell *matHeaderCellDef>Ocorrência</mat-header-cell>
+          <mat-cell id="descricao" *matCellDef="let row">{{row.descricao}}</mat-cell>
+        </ng-container>
+
+        <!-- Coluna de Ações -->
+        <!-- <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+
+            <a (click)="ExcluirCargo(row.id)" class="delete">
+              <img src="./assets/Icons/delete.png" alt="">
+            </a>
+
+          </mat-cell>
+        </ng-container>  -->
+        <mat-row (click)="LogSelecionado(row.id)" *matRowDef="let row; columns: colunasLogs;"
+          [ngClass]="{'corLinhaGrid' : row.id == cargoSelecionado}"></mat-row>
+      </table>
+    </div>
+
+    <!-- ocorrencias -->
+
+  </mat-expansion-panel>
+
 
   <mat-expansion-panel *ngIf="pessoa.id > 0 && dadosMembro.funcao > 1 && dadosMembro.id > 0" [expanded]="step === 4" (opened)="setStep(4)"
     hideToggle>
@@ -737,11 +818,11 @@
             <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
             <mat-cell *matCellDef="let row">
 
-              <a (click)="AtualizarHistorico(row.id)" class="delete">
+              <!-- <a (click)="AtualizarHistorico(row.id)" class="delete">
                 <i class="material-icons">
                   edit
                 </i>
-              </a>
+              </a> -->
 
             </mat-cell>
           </ng-container>

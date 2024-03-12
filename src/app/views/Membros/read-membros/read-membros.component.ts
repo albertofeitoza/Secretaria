@@ -91,10 +91,11 @@ export class ReadMembrosComponent implements OnInit {
 
 
   ImprimirFichaMembro(id: number) {
-
+    this.spinner = true
     this.serverApi.DownloadArquivo(id.toString(), Endpoint.RelatoriosFichaMembro)
       .subscribe((result) => {
         this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `FichaMembro_${id.toString()}.docx`);
+        this.spinner = false;
       });
   }
 
@@ -150,6 +151,14 @@ export class ReadMembrosComponent implements OnInit {
       this.filtros.txtBusca = (<HTMLSelectElement>document.getElementById('txtBusca')).value;
       this.buscarMembro()
     }
+  }
+
+  CartaRecomendacao(id : number){
+    alert(id)
+  }
+
+  CartaMudanca(id : number){
+    alert(id)
   }
 
 }

@@ -1,4 +1,4 @@
-<div class="menuInternoGrid">
+<div class="menuInternoGrid col-md-12">
   <a routerLink="/membrosadd">
     <i class="material-icons">add_circle_outline</i>
   </a>
@@ -8,19 +8,14 @@
     <input name="Inativos" [(ngModel)]="filtros.inativos" [checked]="filtros.inativos" type="checkbox"
       (change)="Filtros($event)">
   </a>
-
-  <span class="search" (click)="Filtros($event)">
+    <mat-spinner style="width: 10%;height: 8%;" *ngIf="spinner"> Aguarde! </mat-spinner>  
+  <span class="search col-md-4" (click)="Filtros($event)">
     <i class="material-icons">search</i>
   </span>
   <input id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)" value="" />
 </div>
 
-<!-- <label>Inativos</label> -->
-
 <div class="mat-elevation-z4" style="height:73%; width: 100%;overflow: auto;">
-  
-  <mat-spinner *ngIf="spinner"></mat-spinner>
-
   <table mat-table [dataSource]="datasource" class="mat-elevation-z8 demo-table">
     <!-- Id Column -->
     <ng-container matColumnDef="id">
@@ -72,13 +67,19 @@
       <th style="width: 14%;" mat-header-cell *matHeaderCellDef>Ações</th>
       <td style="padding-left: 3.5%; height: 21px;width: 16%;" mat-cell *matCellDef="let row">
         <a (click)="AtualizarMembro(row.id)" class="edit">
-          <img style="line-height: unset;" src="./assets/Icons/edit.png" alt="Editar Cadastro">
+          <img style="line-height: unset;" src="./assets/Icons/edit.png" title="Alterar o cadastro" alt="Editar Cadastro">
         </a>
         <a *ngIf="!filtros.inativos" (click)="ImprimirFichaMembro(row.id)" class="edit">
-          <img style="line-height: unset;" src="./assets/Icons/msword.png" alt="Download">
+          <img style="line-height: unset;" src="./assets/Icons/msword.png" title="Download da ficha de membro" alt="Download">
         </a>
-        <a *ngIf="!filtros.inativos" (click)="ExcluirMembro(row.id)" class="delete">
-          <img style="line-height: unset;" src="./assets/Icons/delete.png" alt="Excluir">
+        <a *ngIf="!filtros.inativos" (click)="CartaRecomendacao(row.id)"  class="delete">
+          <img style="line-height: unset;" src="./assets/Icons/CartaRecomendacao.png" title="Carta de recomendação" alt="Excluir">
+        </a>
+        <a *ngIf="!filtros.inativos" (click)="CartaMudanca(row.id)"  class="delete">
+          <img style="line-height: unset;" src="./assets/Icons/CartaMudanca.png" title="Carta de Mudança" alt="Excluir">
+        </a>
+        <a *ngIf="!filtros.inativos" (click)="ExcluirMembro(row.id)"  class="delete">
+          <img style="line-height: unset;" src="./assets/Icons/delete.png" title="Excluir" alt="Excluir">
         </a>
       </td>
     </ng-container>

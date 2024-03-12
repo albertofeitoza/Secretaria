@@ -13,6 +13,7 @@ import { Historico } from 'src/app/models/HistoricoDoObreiro';
 import { DadosObreiro } from 'src/app/models/DadosObreiro';
 import { Filtros } from 'src/app/models/Filtros';
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Logs } from 'src/app/models/Logs';
 
 @Component({
   selector: 'app-cadastro-membros',
@@ -23,6 +24,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 export class CadastroMembrosComponent {
   contatoSelecionado = 0
   cargoSelecionado = 0
+  logSelecionado = 0
   historicoSelecionado = 0
   step = 0;
   pessoa: Pessoa = new Pessoa();
@@ -38,7 +40,7 @@ export class CadastroMembrosComponent {
   historico: Historico = new Historico()
   foto: FormData = new FormData()
   filtros: Filtros = new Filtros()
-
+  logs: Logs[] = new Array()
 
   //--------------
   contatos: contatos[] = new Array()
@@ -47,6 +49,8 @@ export class CadastroMembrosComponent {
   Colunas = ['id', 'ddd', 'telefone', 'celular', 'email', 'action']
   ColunasCargos = ['id', 'cargo', 'noCargoDesde', 'noCargoAte', 'action']
   ColunasHistoricoObreiro = ['id', 'funcao', 'entradaFuncao', 'dataEntradaFuncao', 'dataSaidaFuncao', 'reintegrado', 'reintegradoEm', 'aprovado', 'action']
+  colunasLogs = ['id', 'data', 'pessoaId', 'tipoLog', 'descricao']
+
   // ----------------
 
   //combos
@@ -89,8 +93,9 @@ export class CadastroMembrosComponent {
           this.cargos = response.data.cargos
           this.dadosObreiro = response.data?.dadosObreiro != null ? response.data.dadosObreiro : this.dadosObreiro = new DadosObreiro()
           this.historicos = response?.data?.historicoObreiro
+          this.logs = response?.data?.logs;
           this.pessoa.fotoCadastrada ? this.fotoPerfil = `./assets/imagens/${response.data.pessoa.cpf.trim()}.jpg` : ""
-          
+
         })
     }
   }
@@ -150,8 +155,7 @@ export class CadastroMembrosComponent {
             this.serverApi.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
               this.step++;
               this.pessoa = x
-               });
-            this.step++;
+            });
           }
           break;
         case 1:
@@ -168,21 +172,17 @@ export class CadastroMembrosComponent {
                 this.serviceUtil.showMessage("Endereço salvo", true);
               })
           }
-          else
-            this.step++
-
           break;
         case 2:
         case 3:
           if (this.ValidarDadosMembro() && this.pessoa.id > 0) {
             this.dadosMembro.pessoaId = this.pessoa.id;
-            this.serverApi.create(this.dadosMembro, Endpoint.Membros)
+              this.serverApi.create(this.dadosMembro, Endpoint.Membros)
               .subscribe(x => {
                 this.dadosMembro = x
                 this.step++
               })
-          } else
-            this.step++
+          } 
           break;
 
         case 4:
@@ -305,13 +305,13 @@ export class CadastroMembrosComponent {
   processFile(event: any) {
 
     if (event.target.files && event.target.files[0] && this.ValidaCpf()) {
-      
+
       const file = <File>event.target.files[0];
       const formData: FormData = new FormData();
       formData.append('image', file)
-      
+
       this.serverApi.EnviarArquivoServidor(formData, Endpoint.UploadArquivo, this.pessoa.cpf)
-      .subscribe(x => {
+        .subscribe(x => {
           event.target.files = undefined
           this.serviceUtil.showMessage("Imagem importada com sucesso!", false);
           this.BuscarMembro()
@@ -319,41 +319,47 @@ export class CadastroMembrosComponent {
     }
   }
 
-  RemoverFoto(idPessoa : any){
+  RemoverFoto(idPessoa: any) {
 
     this.serverApi.readById(idPessoa, Endpoint.RemoverFotoperfil)
       .subscribe(() => {
-          this.serviceUtil.showMessage("Imagem removida com sucesso!", false);
-          this.BuscarMembro()
-        })
+        this.serviceUtil.showMessage("Imagem removida com sucesso!", false);
+        this.BuscarMembro()
+      })
 
-        
+
   }
 
 
   BuscaCep(event: any) {
-    if (event.which == 13) {
-      this.servicoCep.buscarExterna(Endpoint.cep.replace('{0}', this.endereco.cep.toString().padStart(8, '0'))).subscribe(ret => {
-        if (ret.logradouro != null) {
-          this.endereco.estado = ret.uf
-          this.endereco.cidade = ret.localidade
-          this.endereco.bairro = ret.bairro
-          this.endereco.rua = ret.logradouro
-          this.endereco.complemento = ret.complemento
-        }
-        else {
-          this.serviceUtil.showMessage("Não foi possível encontrar o CEP informado", false)
-        }
-      });
+    try {
+      if (event.which == 13) {
+
+        this.servicoCep.buscarExterna(Endpoint.cep.replace('{0}', this.endereco.cep.toString().padStart(8, '0')))
+        .subscribe(ret => {
+          if (ret.logradouro != null) {
+            this.endereco.estado = ret.uf
+            this.endereco.cidade = ret.localidade
+            this.endereco.bairro = ret.bairro
+            this.endereco.rua = ret.logradouro
+            this.endereco.complemento = ret.complemento
+          }
+          else {
+            this.serviceUtil.showMessage("Não foi possível encontrar o CEP informado", false)
+          }
+        });
+      }
+    } catch (error) {
+      this.serviceUtil.showMessage(`site do correio indisponível ${error}`, false)
     }
   }
 
   ValidaCpf(): boolean {
 
     if (this.pessoa.cpf) {
-      
+
       let numeroCpf = ("00000000000" + this.pessoa.cpf).slice(-11);
-      
+
       if (!cpf.isValid(numeroCpf)) {
         this.serviceUtil.showMessage("Cpf Inválido", false)
         return false
@@ -368,7 +374,7 @@ export class CadastroMembrosComponent {
 
   AdicionarContato() {
 
-    if (this.contato.ddd > 0 ) {
+    if (this.contato.ddd > 0) {
       this.contato.pessoaId = this.pessoa.id;
       this.contato.ddd = Number(this.contato.ddd.toString().length > 2 ? this.contato.ddd.toString().substring(0, 2) : this.contato.ddd)
       this.contato.telefone = Number(this.contato.telefone.toString().length > 9 ? this.contato.telefone.toString().substring(0, 9) : this.contato.telefone)
@@ -393,7 +399,7 @@ export class CadastroMembrosComponent {
       })
   }
 
-  EditarContato(id : any){
+  EditarContato(id: any) {
     this.serverApi.readById(id, Endpoint.Contatos).subscribe(con => {
       this.contato = con.data
     })
@@ -444,6 +450,10 @@ export class CadastroMembrosComponent {
 
   CargoSelecionado(id: any) {
     this.cargoSelecionado = id
+  }
+
+  LogSelecionado(id: any) {
+    this.logSelecionado = id
   }
 
 

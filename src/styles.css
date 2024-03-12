@@ -142,3 +142,11 @@ body {
     background-color: #e36e6b;
     color: #fff;
 }
+
+.delete{
+    cursor: pointer;
+}
+
+.edit{
+    cursor: pointer;
+}
