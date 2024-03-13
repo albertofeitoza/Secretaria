@@ -152,10 +152,15 @@ export class CadastroMembrosComponent {
             this.pessoa.dataCasamento = this.pessoa.estadoCivil == 1 || this.pessoa.estadoCivil > 4 ? undefined : this.pessoa.dataCasamento
 
             //Atualizando dados de Pessoa
-            this.serverApi.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
-              this.step++;
-              this.pessoa = x
-            });
+            if(this.ValidarPessoa()){
+              this.serverApi.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
+                this.step++;
+                this.pessoa = x
+                this.serviceUtil.showMessage(`Dados atualizados`, false)
+
+              });
+            }
+            
           }
           break;
         case 1:
@@ -217,7 +222,7 @@ export class CadastroMembrosComponent {
                 this.pessoa.naturalidade == undefined ? this.serviceUtil.showMessage("Informe --> Naturalidade") :
                   this.pessoa.naturalidadeEstado == undefined ? this.serviceUtil.showMessage("Informe --> Naturalidade Estado") :
                     this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.dataCasamento == undefined ? this.serviceUtil.showMessage("Informe a Data de Casamento.") :
-                      this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.nomeConjuge == undefined ? this.serviceUtil.showMessage("Informe a Nome do Conjuje.") :
+                      this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.nomeConjuge == undefined ? this.serviceUtil.showMessage("Informe a Nome do Cônjuje.") :
                         result = true
     return result;
 
