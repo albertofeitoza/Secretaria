@@ -11,6 +11,7 @@ import { PopupConfirmacaoComponent } from 'src/app/popups/popup-confirmacao/popu
 import { TipoPopup } from 'src/app/enum/TipoPopup';
 import { Filtros } from 'src/app/models/Filtros';
 import { Router } from '@angular/router';
+import { TransplantedType } from '@angular/compiler';
 
 @Injectable()
 
@@ -91,40 +92,49 @@ export class ReadMembrosComponent implements OnInit {
 
 
   ImprimirFichaMembro(id: number) {
+
     this.spinner = true
+    let confirm : boolean = false;
     this.serverApi.DownloadArquivo(id.toString(), Endpoint.RelatoriosFichaMembro)
-      .subscribe((result) => {
-        this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `FichaMembro_${id.toString()}.docx`);
-        this.serviceUtil.showMessage("Aguarde o Download.", false);
-        this.spinner = false;
+      .subscribe(result => {
+  
+      this.serviceUtil.showMessage("Aguarde o Download.", false);
+          this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `FichaMembro_${id.toString()}.docx`);
+          this.spinner = false;
+      },
+      (error) => {
+        this.serviceUtil.showMessage("Não foi possível baixar a ficha, verifique o cadastro", true);
       });
   }
 
-  ExcluirMembro(id: number) { 
+  ExcluirMembro(id: number) {
 
     this.serviceUtil.PopupConfirmacao("Deseja Excluir o Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
       .subscribe(result => {
         if (result.Status) {
-          
-          let pessoa : Pessoa = new Pessoa();
+
+          let pessoa: Pessoa = new Pessoa();
           pessoa.id = id;
           pessoa.nome = result.Motivo
           pessoa.dataCriacao = new Date
           pessoa.cpf = "0"
           pessoa.estadoCivil = 1
-          pessoa.dataNascimento = new  Date
+          pessoa.dataNascimento = new Date
           pessoa.grauInstrucao = 1
           pessoa.sexo = 1
           pessoa.statusPessoa = 5
           pessoa.fotoCadastrada = false,
-          pessoa.idoso = false
-         
+            pessoa.idoso = false
+
           this.serverApi.create(pessoa, Endpoint.Pessoa)
             .subscribe(response => {
               this.serviceUtil.showMessage("Membro excluído com sucesso!.", false);
               this.buscarMembro()
-          })
+            })
         }
+      }, 
+      (error) => {
+        this.serviceUtil.showMessage("Problema pra excluir o cadastro!.", false);
       });
   }
 
@@ -154,11 +164,11 @@ export class ReadMembrosComponent implements OnInit {
     }
   }
 
-  CartaRecomendacao(id : number){
+  CartaRecomendacao(id: number) {
     alert(id)
   }
 
-  CartaMudanca(id : number){
+  CartaMudanca(id: number) {
     alert(id)
   }
 
