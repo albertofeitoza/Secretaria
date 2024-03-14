@@ -95,6 +95,7 @@ export class ReadMembrosComponent implements OnInit {
     this.serverApi.DownloadArquivo(id.toString(), Endpoint.RelatoriosFichaMembro)
       .subscribe((result) => {
         this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `FichaMembro_${id.toString()}.docx`);
+        this.serviceUtil.showMessage("Aguarde o Download.", false);
         this.spinner = false;
       });
   }
