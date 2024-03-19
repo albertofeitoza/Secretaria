@@ -18,7 +18,7 @@ export class DadosMembro {
   cursoTeologicoOndeCursou: string = ""
   dizimista: boolean = false
   frequentaEbd: boolean = false
-  funcao : number = 1
+  funcao : number = 0
   mudancaComCarta : Date
   mudancaComCartaIgreja : string
   mudancaSemCarta : Date

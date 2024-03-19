@@ -14,6 +14,8 @@ import { DadosObreiro } from 'src/app/models/DadosObreiro';
 import { Filtros } from 'src/app/models/Filtros';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Logs } from 'src/app/models/Logs';
+import { TipoPopup } from 'src/app/enum/TipoPopup';
+import { HistoricoPopupComponent } from '../historico-popup/historico-popup.component';
 
 @Component({
   selector: 'app-cadastro-membros',
@@ -48,7 +50,7 @@ export class CadastroMembrosComponent {
 
   Colunas = ['id', 'ddd', 'telefone', 'celular', 'email', 'action']
   ColunasCargos = ['id', 'cargo', 'noCargoDesde', 'noCargoAte', 'action']
-  ColunasHistoricoObreiro = ['id', 'funcao', 'entradaFuncao', 'dataEntradaFuncao', 'dataSaidaFuncao', 'reintegrado', 'reintegradoEm', 'aprovado', 'action']
+  ColunasHistoricoObreiro = ['id','pastorApresentador','pastorRegional', 'funcao', 'entradaFuncao', 'dataEntradaFuncao', 'dataSaidaFuncao', 'reintegrado', 'reintegradoEm', 'aprovado']
   colunasLogs = ['id', 'data', 'pessoaId', 'tipoLog', 'descricao']
 
   // ----------------
@@ -152,7 +154,7 @@ export class CadastroMembrosComponent {
             this.pessoa.dataCasamento = this.pessoa.estadoCivil == 1 || this.pessoa.estadoCivil > 4 ? undefined : this.pessoa.dataCasamento
 
             //Atualizando dados de Pessoa
-            if(this.ValidarPessoa()){
+            if (this.ValidarPessoa()) {
               this.serverApi.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
                 this.step++;
                 this.pessoa = x
@@ -160,7 +162,7 @@ export class CadastroMembrosComponent {
 
               });
             }
-            
+
           }
           break;
         case 1:
@@ -182,17 +184,17 @@ export class CadastroMembrosComponent {
         case 3:
           if (this.ValidarDadosMembro() && this.pessoa.id > 0) {
             this.dadosMembro.pessoaId = this.pessoa.id;
-              this.serverApi.create(this.dadosMembro, Endpoint.Membros)
+            this.serverApi.create(this.dadosMembro, Endpoint.Membros)
               .subscribe(x => {
                 this.dadosMembro = x
                 this.step++
               })
-          } 
+          }
           break;
 
         case 4:
 
-          if (this.ValidaDadosObreiro() && this.pessoa.id > 0) {
+          if (this.pessoa.id > 0) {
             this.dadosObreiro.pessoaId = this.pessoa.id;
 
             this.serverApi.create(this.dadosObreiro, Endpoint.Obreiro)
@@ -201,13 +203,11 @@ export class CadastroMembrosComponent {
                 this.serviceUtil.showMessage("Dados de obreiro salvo com suecsso!", true);
               });
           }
-
           break;
         default:
           break;
       }
     }
-
   }
 
   ValidarPessoa(): boolean {
@@ -255,38 +255,59 @@ export class CadastroMembrosComponent {
                     this.dadosMembro.validadeCartaoMembro == undefined ? this.serviceUtil.showMessage("Informe a data --> Validade do cartão de Membro") :
                       this.dadosMembro.funcao == undefined || this.dadosMembro.funcao < 1 ? this.serviceUtil.showMessage("Selecione a Função --> Função") :
                         this.dadosMembro.cursoTeologico > 0 && this.dadosMembro.cursoTeologicoOndeCursou == undefined ? this.serviceUtil.showMessage("Informe onde cursou Teologia.") :
-                          this.dadosMembro.funcao < this.funcaoMembroCache ? this.serviceUtil.showMessage("A função do Membro não pode ser rebaixada") :
+                          this.dadosMembro.funcao < this.funcaoMembroCache ? this.serviceUtil.showMessage("A função não pode ser rebaixada") :
                             this.dadosMembro.funcao > this.funcaoMembroCache && this.dadosMembro.funcao - this.funcaoMembroCache > 1 ? this.serviceUtil.showMessage("Função Inválida deve ser adicionada uma por vez!.") :
                               this.dadosMembro.id == 0 && this.dadosMembro.funcao > 1 ? this.serviceUtil.showMessage("No Primeiro cadastro do Membro ele deve ser atribuido a função Membro.") :
                                 result = true
     return result;
   }
 
-  ValidaDadosObreiro(): boolean {
-    let result: boolean = false;
-    this.dadosMembro.funcao > 1 && this.dadosObreiro.pastorApresentador == undefined ? this.serviceUtil.showMessage("Informe o --> Pastor Apresentador") :
-      this.dadosMembro.funcao > 1 && this.dadosObreiro.pastorRegional == undefined ? this.serviceUtil.showMessage("Informe o --> Pastor Regional") :
-        result = true
-    return result;
+  AlteraFuncao() {
+    if (this.dadosMembro.funcao > 1 && this.ValidarDadosMembro()) {
+
+      this.serviceUtil.PopupConfirmacao("Informar os dados", TipoPopup.ComponenteInstancia, HistoricoPopupComponent)
+        .subscribe(x => {
+
+          if (x.Status) {
+            this.historico = x.data
+
+            if (this.dadosObreiro.id == 0) {
+              this.dadosObreiro.id = 0;
+              this.dadosObreiro.pessoaId = this.pessoa.id;
+              this.dadosObreiro.pastorApresentador = x.data.pastorApresentador;
+              this.dadosObreiro.pastorRegional = x.data.pastorRegional;
+
+              this.serverApi.create(this.dadosObreiro, Endpoint.Obreiro)
+                .subscribe(x => {
+                  this.dadosObreiro = x;
+                  this.historico.dadosObreiroId = x.id
+                  this.AdicionarFuncaoObreiro();
+                  this.funcaoMembroCache = x.funcao;
+                  this.serviceUtil.showMessage("Obreiro cadastrado com sucesso.", false)
+                });
+
+            } else {
+              this.AdicionarFuncaoObreiro();
+              this.serviceUtil.showMessage("Obreiro alterado com sucesso.", false)
+            }
+
+          }
+          else {
+            this.serviceUtil.showMessage("Informações ignoradas", false)
+            this.dadosMembro.funcao = this.serviceUtil.Funcao().filter(x => x.id == this.funcaoMembroCache)[0].id
+          }
+        })
+    }
   }
 
-  ValidaFuncao(): boolean {
-    let result: boolean = false;
-    this.dadosMembro.funcao > 1 && this.historico.entradaFuncao == 0 ? this.serviceUtil.showMessage("Informe a --> Entrada na Função") :
-      this.dadosMembro.funcao > 1 && this.historico.dataEntradaFuncao == undefined ? this.serviceUtil.showMessage("Informe a --> Data de entrada na Função") :
-        this.dadosMembro.funcao > 1 && this.historico.reintegrado ? this.serviceUtil.showMessage("Informe a --> Data de Reintegração.") :
-          result = true
-    return result;
-
-  }
 
   AdicionarFuncaoObreiro() {
-    if (this.ValidaDadosObreiro() && this.dadosObreiro.id > 0 && this.ValidaFuncao()) {
+
+    if (this.dadosObreiro.id > 0 ) {
 
       this.historico.dadosObreiroId = this.dadosObreiro.id;
       this.historico.funcao = this.dadosMembro.funcao;
-
-      //validar Funções
+      
 
       this.serverApi.create(this.historico, Endpoint.HistoricoObreiro).subscribe(() => {
 
@@ -301,8 +322,10 @@ export class CadastroMembrosComponent {
             });
 
             this.historicos = retorno
+            this.funcaoMembroCache = this.dadosMembro.funcao;
           })
       })
+
     }
   }
 
@@ -341,18 +364,18 @@ export class CadastroMembrosComponent {
       if (event.which == 13) {
 
         this.servicoCep.buscarExterna(Endpoint.cep.replace('{0}', this.endereco.cep.toString().padStart(8, '0')))
-        .subscribe(ret => {
-          if (ret.logradouro != null) {
-            this.endereco.estado = ret.uf
-            this.endereco.cidade = ret.localidade
-            this.endereco.bairro = ret.bairro
-            this.endereco.rua = ret.logradouro
-            this.endereco.complemento = ret.complemento
-          }
-          else {
-            this.serviceUtil.showMessage("Não foi possível encontrar o CEP informado", false)
-          }
-        });
+          .subscribe(ret => {
+            if (ret.logradouro != null) {
+              this.endereco.estado = ret.uf
+              this.endereco.cidade = ret.localidade
+              this.endereco.bairro = ret.bairro
+              this.endereco.rua = ret.logradouro
+              this.endereco.complemento = ret.complemento
+            }
+            else {
+              this.serviceUtil.showMessage("Não foi possível encontrar o CEP informado", false)
+            }
+          });
       }
     } catch (error) {
       this.serviceUtil.showMessage(`site do correio indisponível ${error}`, false)

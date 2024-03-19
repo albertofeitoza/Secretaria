@@ -148,9 +148,8 @@ export class UtilServiceService {
     funcao.push({ "id": 2, "value": "Cooperador" })
     funcao.push({ "id": 3, "value": "Diacono" })
     funcao.push({ "id": 4, "value": "Presbitero" })
-    funcao.push({ "id": 5, "value": "Pastor" })
-    funcao.push({ "id": 6, "value": "Evangelista" })
-    funcao.push({ "id": 7, "value": "Missionario" })
+    funcao.push({ "id": 5, "value": "Evangelista" })
+    funcao.push({ "id": 6, "value": "Pastor" })
 
     return funcao
   }
@@ -197,7 +196,7 @@ export class UtilServiceService {
     const dialog = this.dialog.open(componente, {
       width: 'auto',
       height : 'auto',
-      data: { mensagem: mensagem, tipo: tipo }
+      data: { mensagem: mensagem, tipo: tipo, data : componente}
     });
     return dialog.afterClosed();
   }

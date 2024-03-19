@@ -51,6 +51,8 @@ import { PopupConfirmacaoComponent } from './popups/popup-confirmacao/popup-conf
 import { OfertasComponent } from './views/ofertas/ofertas.component';
 import { UsuariosComponent } from './views/usuarios/usuarios.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { PopupcomponetComponent } from './popups/popupcomponet/popupcomponet.component';
+import { HistoricoPopupComponent } from './views/Membros/historico-popup/historico-popup.component';
 
 registerLocaleData(localePt);
 
@@ -68,6 +70,8 @@ registerLocaleData(localePt);
     PopupConfirmacaoComponent,
     OfertasComponent,
     UsuariosComponent,
+    PopupcomponetComponent,
+    HistoricoPopupComponent,
 
 
   ],

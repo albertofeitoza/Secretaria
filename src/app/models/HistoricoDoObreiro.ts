@@ -9,4 +9,7 @@ export class Historico {
   reintegrado: boolean = false;
   reintegradoEm: Date;
   aprovado: boolean = false;
+  pastorApresentador : string;
+  pastorRegional : string
+
 }
