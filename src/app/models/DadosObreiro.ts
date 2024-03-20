@@ -7,8 +7,6 @@ export class DadosObreiro {
   frequentaDoutrinaEnsinamento: boolean = false;
   possuiChequeSemFundos: boolean = false;
   possuiProtestos: boolean = false;
-  pastorApresentador: string;
-  pastorRegional: string;
   cartaoProvisorio : boolean = false;
   observacao: string;
   historico: Historico[];
