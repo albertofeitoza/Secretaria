@@ -125,7 +125,7 @@ export class CadastroMembrosComponent {
 
   Salvar(step: number) {
 
-    if (this.ValidaCpf()) {
+    if (this.ValidaCpf(this.pessoa.cpf)) {
 
       switch (step) {
         case 0:
@@ -209,7 +209,24 @@ export class CadastroMembrosComponent {
       }
     }
   }
-
+  BuscarConjuje(keyEvent : any){
+    
+    if(keyEvent.which == 13){
+      
+      if(this.pessoa.cpf == this.pessoa.cpfConjuge)
+        return this.serviceUtil.showMessage(`O CPF informado é mesmo do  ${this.pessoa.nome}.`, true);
+      
+      if(this.ValidaCpf(this.pessoa.cpfConjuge))
+        {
+          this.serverApi.readById(this.pessoa.cpfConjuge, Endpoint.BuscaPorCpf).subscribe(response => {
+            if (response.code == 200) {
+              this.pessoa.nomeConjuge = response.data.nome
+            }else
+              this.serviceUtil.showMessage(`${response.mensagem}, verifique o cadastro da esposa antes de prosseguir.`, true)
+          });
+        }
+    }
+  }
   ValidarPessoa(): boolean {
     let result: boolean = false;
     this.pessoa.nome == undefined
@@ -222,7 +239,7 @@ export class CadastroMembrosComponent {
                 this.pessoa.naturalidade == undefined ? this.serviceUtil.showMessage("Informe --> Naturalidade") :
                   this.pessoa.naturalidadeEstado == undefined ? this.serviceUtil.showMessage("Informe --> Naturalidade Estado") :
                     this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.dataCasamento == undefined ? this.serviceUtil.showMessage("Informe a Data de Casamento.") :
-                      this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.nomeConjuge == undefined ? this.serviceUtil.showMessage("Informe a Nome do Cônjuje.") :
+                      this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.cpfConjuge == "" || this.pessoa.cpfConjuge == undefined ? this.serviceUtil.showMessage("Informe o CPF do Cônjuje e pressione enter.") :
                         result = true
     return result;
 
@@ -241,6 +258,15 @@ export class CadastroMembrosComponent {
 
     return result;
   }
+
+  LimparCampoConjuge(){
+   
+    alert("seleciona")
+   
+    this.pessoa.cpfConjuge = this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 ? this.pessoa.cpfConjuge  : "";
+    this.pessoa.nomeConjuge = this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 ? this.pessoa.nomeConjuge : "";
+  }
+
 
   ValidarDadosMembro(): boolean {
     let result: boolean = false;
@@ -330,7 +356,7 @@ export class CadastroMembrosComponent {
 
   processFile(event: any) {
 
-    if (event.target.files && event.target.files[0] && this.ValidaCpf()) {
+    if (event.target.files && event.target.files[0] && this.ValidaCpf(this.pessoa.cpf)) {
 
       const file = <File>event.target.files[0];
       const formData: FormData = new FormData();
@@ -380,11 +406,11 @@ export class CadastroMembrosComponent {
     }
   }
 
-  ValidaCpf(): boolean {
+  ValidaCpf(cpfEntrada : string ): boolean {
 
-    if (this.pessoa.cpf) {
+    if (cpfEntrada) {
 
-      let numeroCpf = ("00000000000" + this.pessoa.cpf).slice(-11);
+      let numeroCpf = ("00000000000" + cpfEntrada).slice(-11);
 
       if (!cpf.isValid(numeroCpf)) {
         this.serviceUtil.showMessage("Cpf Inválido", false)

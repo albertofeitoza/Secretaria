@@ -37,7 +37,7 @@
 
         <mat-form-field>
           <mat-label>Estado Civil</mat-label>
-          <mat-select [(value)]="pessoa.estadoCivil" placeholder="Estado Civil">
+          <mat-select [(value)]="pessoa.estadoCivil" placeholder="Estado Civil" (selectionChange)="LimparCampoConjuge()">
             <mat-option *ngFor="let ec of estCivil" [value]="ec.id">
               {{ec.value}}
             </mat-option>
@@ -97,8 +97,13 @@
         </mat-form-field>
 
         <mat-form-field>
+          <mat-label>CPF Conjuje</mat-label>
+          <input matInput placeholder="CPF Conjuje" [(ngModel)]="pessoa.cpfConjuge" name="cpfConjuge" (keypress)="BuscarConjuje($event)">
+        </mat-form-field>
+
+        <mat-form-field>
           <mat-label>Nome do Conjuge</mat-label>
-          <input matInput placeholder="Nome do Conjuge" [(ngModel)]="pessoa.nomeConjuge" name="nomeConjuge">
+          <input disabled="true" matInput placeholder="Nome do Conjuge" [(ngModel)]="pessoa.nomeConjuge" name="nomeConjuge">
         </mat-form-field>
 
         <mat-form-field color="accent" style="width: 213px;">
@@ -122,7 +127,7 @@
 
         <mat-form-field>
           <mat-label>Nome da Mãe</mat-label>
-          <input matInput placeholder="Nome da Mãe<" [(ngModel)]="pessoa.nomeMae" name="nomeMae">
+          <input matInput placeholder="Nome da Mãe" [(ngModel)]="pessoa.nomeMae" name="nomeMae">
         </mat-form-field>
 
       </div>

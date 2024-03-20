@@ -18,6 +18,7 @@ export class Pessoa {
   idoso : boolean = false;
   nomePai : string;
   nomeMae : string;
+  cpfConjuge: string;
 }
 
 export class ViewPessoa {
