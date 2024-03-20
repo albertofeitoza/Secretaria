@@ -31,11 +31,11 @@ ngOnInit(): void {
   FecharPopup(confirm: boolean){
   
     if (confirm) {
-      if (this.historico.dataEntradaFuncao && this.dadosObreiro.pastorApresentador && this.dadosObreiro.pastorRegional && this.historico.entradaFuncao) {
+      if (this.historico.dataEntradaFuncao && this.historico.pastorApresentador && this.historico.pastorRegional && this.historico.entradaFuncao) {
 
         let dados ={
-          pastorApresentador : this.dadosObreiro.pastorApresentador,
-          pastorRegional : this.dadosObreiro.pastorRegional,
+          pastorApresentador : this.historico.pastorApresentador,
+          pastorRegional : this.historico.pastorRegional,
           entradaFuncao : this.historico.entradaFuncao,
           dataEntradaFuncao : this.historico.dataEntradaFuncao,
           reintegrado : this.historico.reintegrado,

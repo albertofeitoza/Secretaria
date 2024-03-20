@@ -274,8 +274,6 @@ export class CadastroMembrosComponent {
             if (this.dadosObreiro.id == 0) {
               this.dadosObreiro.id = 0;
               this.dadosObreiro.pessoaId = this.pessoa.id;
-              this.dadosObreiro.pastorApresentador = x.data.pastorApresentador;
-              this.dadosObreiro.pastorRegional = x.data.pastorRegional;
 
               this.serverApi.create(this.dadosObreiro, Endpoint.Obreiro)
                 .subscribe(x => {
