@@ -11,5 +11,6 @@ export class Historico {
   aprovado: boolean = false;
   pastorApresentador : string;
   pastorRegional : string;
+  local : string;
 
 }

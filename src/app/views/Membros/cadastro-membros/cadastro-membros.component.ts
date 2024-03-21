@@ -50,7 +50,7 @@ export class CadastroMembrosComponent {
 
   Colunas = ['id', 'ddd', 'telefone', 'celular', 'email', 'action']
   ColunasCargos = ['id', 'cargo', 'noCargoDesde', 'noCargoAte', 'action']
-  ColunasHistoricoObreiro = ['id','pastorApresentador','pastorRegional', 'funcao', 'entradaFuncao', 'dataEntradaFuncao', 'dataSaidaFuncao', 'reintegrado', 'reintegradoEm', 'aprovado']
+  ColunasHistoricoObreiro = ['id','pastorApresentador','pastorRegional', 'local', 'funcao', 'entradaFuncao', 'dataEntradaFuncao', 'dataSaidaFuncao', 'reintegrado', 'reintegradoEm', 'aprovado']
   colunasLogs = ['id', 'data', 'pessoaId', 'tipoLog', 'descricao']
 
   // ----------------
@@ -260,9 +260,6 @@ export class CadastroMembrosComponent {
   }
 
   LimparCampoConjuge(){
-   
-    alert("seleciona")
-   
     this.pessoa.cpfConjuge = this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 ? this.pessoa.cpfConjuge  : "";
     this.pessoa.nomeConjuge = this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 ? this.pessoa.nomeConjuge : "";
   }

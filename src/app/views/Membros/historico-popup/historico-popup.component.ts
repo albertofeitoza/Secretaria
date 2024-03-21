@@ -31,7 +31,7 @@ ngOnInit(): void {
   FecharPopup(confirm: boolean){
   
     if (confirm) {
-      if (this.historico.dataEntradaFuncao && this.historico.pastorApresentador && this.historico.pastorRegional && this.historico.entradaFuncao) {
+      if (this.historico.dataEntradaFuncao && this.historico.pastorApresentador && this.historico.pastorRegional && this.historico.entradaFuncao && this.historico.local ) {
 
         let dados ={
           pastorApresentador : this.historico.pastorApresentador,
@@ -40,7 +40,8 @@ ngOnInit(): void {
           dataEntradaFuncao : this.historico.dataEntradaFuncao,
           reintegrado : this.historico.reintegrado,
           reintegradoEm : this.historico.reintegradoEm,
-          aprovado : this.historico.aprovado
+          aprovado : this.historico.aprovado,
+          local : this.historico.local
          }
          this.resposta.Status = true;
          this.resposta.data = dados

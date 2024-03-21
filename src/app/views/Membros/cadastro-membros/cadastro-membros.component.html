@@ -396,6 +396,11 @@
         <mat-datepicker #batismoESanto></mat-datepicker>
       </mat-form-field>
 
+      <mat-form-field>
+        <mat-label>Batismo no E. Santo Igreja</mat-label>
+        <input matInput placeholder="Batismo no E. Santo Igreja" [(ngModel)]="dadosMembro.batismoESantoIgreja" name="batismoESantoIgreja">
+      </mat-form-field>
+
       <mat-form-field color="accent" style="width: 213px;">
         <mat-label>Membro Desde</mat-label>
         <input matInput [matDatepicker]="membroDesde" [(ngModel)]="dadosMembro.membroDesde" name="membroDesde">
@@ -460,6 +465,12 @@
         <mat-label>Mudança Com Carta(Igreja)</mat-label>
         <input matInput placeholder="Mudança Com Carta(Igreja)" [(ngModel)]="dadosMembro.mudancaComCartaIgreja"
           name="mudancaComCartaIgreja">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Mudança Com Carta(Estado)</mat-label>
+        <input matInput placeholder="Mudança Com Carta(Estado)" [(ngModel)]="dadosMembro.mudancaComCartaIgrejaEstado"
+          name="mudancaComCartaIgrejaEstado">
       </mat-form-field>
 
       <mat-form-field color="accent" style="width: 213px;">
@@ -678,7 +689,7 @@
 
         <mat-form-field>
           <mat-label>Cartão Provisório</mat-label>
-          <input style="height: 20px; width: 150px;" matInput placeholder="Possui Protestos?">
+          <input style="height: 20px; width: 150px;" matInput placeholder="Cartão Provisório?">
           <input name="possuiProtestos" [(ngModel)]="dadosObreiro.cartaoProvisorio"
             [checked]="dadosObreiro.cartaoProvisorio" type="checkbox">
         </mat-form-field>
@@ -703,6 +714,11 @@
           <ng-container matColumnDef="pastorRegional">
             <mat-header-cell *matHeaderCellDef>Pr.Regional</mat-header-cell>
             <mat-cell id="pastorRegional" *matCellDef="let row">{{row.pastorRegional}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="local">
+            <mat-header-cell *matHeaderCellDef>Local</mat-header-cell>
+            <mat-cell id="local" *matCellDef="let row">{{row.local}}</mat-cell>
           </ng-container>
 
           <!-- rol Column -->

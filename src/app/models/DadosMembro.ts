@@ -25,4 +25,6 @@ export class DadosMembro {
   comunhao : Date
   procedencia : string
   observacao : string
+  batismoESantoIgreja : string
+  mudancaComCartaIgrejaEstado : string
 }
