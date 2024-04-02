@@ -239,7 +239,7 @@ export class CadastroMembrosComponent {
                 this.pessoa.naturalidade == undefined ? this.serviceUtil.showMessage("Informe --> Naturalidade") :
                   this.pessoa.naturalidadeEstado == undefined ? this.serviceUtil.showMessage("Informe --> Naturalidade Estado") :
                     this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.dataCasamento == undefined ? this.serviceUtil.showMessage("Informe a Data de Casamento.") :
-                      this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.cpfConjuge == "" || this.pessoa.cpfConjuge == undefined ? this.serviceUtil.showMessage("Informe o CPF do Cônjuje e pressione enter.") :
+                      this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.cpfConjuge == "" ? this.serviceUtil.showMessage("Informe o CPF do Cônjuje e pressione enter.") :
                         result = true
     return result;
 
