@@ -51,7 +51,7 @@ export class CadastroMembrosComponent {
   Colunas = ['id', 'ddd', 'telefone', 'celular', 'email', 'action']
   ColunasCargos = ['id', 'cargo', 'noCargoDesde', 'noCargoAte', 'action']
   ColunasHistoricoObreiro = ['id','pastorApresentador','pastorRegional', 'local', 'funcao', 'entradaFuncao', 'dataEntradaFuncao', 'dataSaidaFuncao', 'reintegrado', 'reintegradoEm', 'aprovado']
-  colunasLogs = ['id', 'data', 'pessoaId', 'tipoLog', 'descricao']
+  colunasLogs = ['data', 'descricao']
 
   // ----------------
 

@@ -596,10 +596,10 @@
   <mat-expansion-panel *ngIf="pessoa.id > 0" [expanded]="step === 6" (opened)="setStep(6)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <h2>Ocorrências / Histórico do Membro</h2>
+        <h2>Ocorrências da Pessoa</h2>
       </mat-panel-title>
       <mat-panel-description>
-        Aqui será salvo todo o histórico ou ocorrências do Membro.
+        Aqui será salvo todo o histórico ou ocorrências da pessoa / Membro.
         <mat-icon>map</mat-icon>
       </mat-panel-description>
     </mat-expansion-panel-header>
@@ -608,31 +608,15 @@
       <table mat-table [dataSource]="logs" matSort>
 
         <mat-header-row *matHeaderRowDef="colunasLogs"></mat-header-row>
-        <!-- Id Column -->
-        <ng-container matColumnDef="id">
-          <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
-          <mat-cell id="id" *matCellDef="let row">{{row.id}}</mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="pessoaId">
-          <mat-header-cell *matHeaderCellDef>Pessoa</mat-header-cell>
-          <mat-cell id="pessoaId" *matCellDef="let row">{{row.pessoaId}}</mat-cell>
-        </ng-container>
         
         <ng-container matColumnDef="data">
-          <mat-header-cell *matHeaderCellDef>Data da Ocorrência</mat-header-cell>
-          <mat-cell id="data" *matCellDef="let row">{{row.data | date : 'dd/MM/yyyy'}}</mat-cell>
-        </ng-container>
-        
-        <!-- rol Column -->
-        <ng-container matColumnDef="tipoLog">
-          <mat-header-cell *matHeaderCellDef>Tipo Ocorrência</mat-header-cell>
-          <mat-cell id="tipoLog" *matCellDef="let row">{{row.tipoLog}}</mat-cell>
+          <th style="width:20%;" mat-header-cell *matHeaderCellDef>Data da Ocorrência</th>
+          <td style="width:20%;" mat-cell id="data" *matCellDef="let row">{{row.data | date : 'dd/MM/yyyy hh:mm:ss'}}</td>
         </ng-container>
 
         <ng-container matColumnDef="descricao">
-          <mat-header-cell *matHeaderCellDef>Ocorrência</mat-header-cell>
-          <mat-cell id="descricao" *matCellDef="let row">{{row.descricao}}</mat-cell>
+          <th mat-header-cell *matHeaderCellDef>Ocorrência</th>
+          <td mat-cell id="descricao" *matCellDef="let row">{{row.descricao}}</td>
         </ng-container>
 
         <mat-row (click)="LogSelecionado(row.id)" *matRowDef="let row; columns: colunasLogs;"
