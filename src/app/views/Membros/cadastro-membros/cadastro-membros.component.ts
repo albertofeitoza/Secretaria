@@ -16,6 +16,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Logs } from 'src/app/models/Logs';
 import { TipoPopup } from 'src/app/enum/TipoPopup';
 import { HistoricoPopupComponent } from '../historico-popup/historico-popup.component';
+import { igreja } from 'src/app/models/Igreja';
 
 @Component({
   selector: 'app-cadastro-membros',
@@ -30,6 +31,7 @@ export class CadastroMembrosComponent {
   historicoSelecionado = 0
   step = 0;
   pessoa: Pessoa = new Pessoa();
+  igreja : igreja = new igreja();
   endereco: PessoaEndereco = new PessoaEndereco();
   dadosMembro: DadosMembro = new DadosMembro();
   dadosObreiro: DadosObreiro = new DadosObreiro()
@@ -88,6 +90,7 @@ export class CadastroMembrosComponent {
       this.serverApi.readById(id.toString(), Endpoint.Pessoa)
         .subscribe(response => {
           this.pessoa = response.data.pessoa != null ? response.data.pessoa : new Pessoa();
+          this.igreja = response.data.pessoa.igreja != null ? response.data.pessoa.igreja : new igreja();
           this.endereco = response.data.pessoaEndereco != null ? response.data.pessoaEndereco : this.endereco = new PessoaEndereco();
           this.contatos = response.data.contatos
           this.dadosMembro = response?.data?.dadosMembro != null ? response?.data?.dadosMembro : this.dadosMembro = new DadosMembro()
@@ -136,7 +139,7 @@ export class CadastroMembrosComponent {
                 this.pessoa.cpf = this.pessoa.cpf != undefined ? this.pessoa.cpf.toString() : this.pessoa.cpf
                 this.pessoa.rg = this.pessoa.rg != undefined ? this.pessoa.rg.toString() : this.pessoa.rg
                 this.pessoa.dataCasamento = this.pessoa.estadoCivil == 1 || this.pessoa.estadoCivil > 4 ? undefined : this.pessoa.dataCasamento
-
+                this.pessoa.igrejaId = this.igreja.id
                 //salvar dados de Pessoa
                 this.serverApi.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
                   this.step++;

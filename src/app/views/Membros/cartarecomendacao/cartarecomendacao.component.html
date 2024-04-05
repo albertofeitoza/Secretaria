@@ -1,0 +1,70 @@
+<div style="padding: 15px;">
+
+    <h3>Solicitações de cartas</h3>
+
+
+    <label>Nome : {{dados.nome}}</label>
+    <br />
+    <hr />
+    <div style="display: flex; padding: 15px;">
+        <mat-form-field>
+            <mat-label>Informe o Tipo de documento</mat-label>
+            <mat-select [(value)]="relatorioSelecionado" placeholder="Tipo de documento">
+                <mat-option *ngFor="let cmb of comboCartas" [value]="cmb.id">
+                    {{cmb.value}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div *ngIf="relatorioSelecionado >= 13 && relatorioSelecionado <= 14 ">
+            <mat-form-field>
+                <mat-label>Cidade Destino</mat-label>
+                <input matInput placeholder="Informe a cidade Destino" [(ngModel)]="dadosSolicitacao.cidade"
+                    name="Cidade">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Estado Destino</mat-label>
+                <input matInput placeholder="Informe Estado Destino" [(ngModel)]="dadosSolicitacao.estado"
+                    name="estado">
+            </mat-form-field>
+        </div>
+
+        <div *ngIf="relatorioSelecionado >= 15 && relatorioSelecionado <= 16 ">
+            <mat-form-field>
+                <mat-label>Nome da Igreja Destino</mat-label>
+                <input matInput placeholder="Informe o nome da Igreja Destino"
+                    [(ngModel)]="dadosSolicitacao.igrejaDestino" name="igreja">
+            </mat-form-field>
+        </div>
+        <br />
+
+    </div>
+    <div *ngIf="relatorioSelecionado >= 15 && relatorioSelecionado <= 16 ">
+        <label>
+            Obs:  Em caso de carta de Mudança, a baixa do Membro é automática <br />
+            e em caso de carta de mudança de Casal a baixa será realizada do casal.
+
+        </label>
+    </div>
+    <mat-card-content class="alinhar">
+        <a (click)="FecharPopup(false)">
+            <i class="material-icons">
+                cancel
+            </i>
+        </a>
+        <a *ngIf="dadosSolicitacao.cidade != undefined && dadosSolicitacao.estado != undefined && relatorioSelecionado >= 13 && relatorioSelecionado <= 14"
+            (click)="FecharPopup(true)">
+            <i class="material-icons icones">
+                thumb_up_alt
+            </i>
+        </a>
+        <a *ngIf="dadosSolicitacao.igrejaDestino != undefined && relatorioSelecionado >= 15 && relatorioSelecionado <= 16"
+            (click)="FecharPopup(true)">
+            <i class="material-icons icones">
+                thumb_up_alt
+            </i>
+        </a>
+
+    </mat-card-content>
+</div>

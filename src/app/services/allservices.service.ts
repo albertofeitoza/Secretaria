@@ -6,6 +6,7 @@ import { map, catchError } from 'rxjs/operators';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UtilServiceService } from './util-service.service';
+import { Cartas } from '../models/Cartas';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,15 @@ export class AllservicesService<T> {
   }
   DownloadArquivo(id: string, endpoint: string, token: string = "") : Observable<any> {
     const url = `${this.environmentUrl + endpoint}/${id}`
+    return this.http.get(url, { responseType : 'blob', headers : this.loginService.Header().headers} )
+    .pipe(
+      map(res => res)
+    )
+  }
+
+
+  DownloadCartas(dados : Cartas, endpoint: string) : Observable<any> {
+    const url = `${this.environmentUrl + endpoint}?IdPessoa=${dados.idPessoa}&TipoRelatorio=${dados.tipoRelatorio}&Cidade=${dados.cidade}&Estado=${dados.estado}&IgrejaDestino=${dados.igrejaDestino}`
     return this.http.get(url, { responseType : 'blob', headers : this.loginService.Header().headers} )
     .pipe(
       map(res => res)

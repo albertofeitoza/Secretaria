@@ -180,6 +180,19 @@ export class UtilServiceService {
     return relatorio
   }
 
+
+  TipoCartas(){
+    let documento = [];
+    documento.push({ "id": 0, "value": "Selecione"})
+    documento.push({ "id": 13, "value": "Carta de Recomendação"})
+    documento.push({ "id": 14, "value": "Carta de Rec.Casal"})
+    documento.push({ "id": 15, "value": "Carta de Mudança"})
+    documento.push({ "id": 16, "value": "Carta de Mud.Casal"})
+     
+    return documento
+  
+  }
+
   TipoUsuario(){
     let tipoUsuario = [];
     tipoUsuario.push({ "id": 0, "value": "Selecione" })
@@ -191,11 +204,13 @@ export class UtilServiceService {
   
   }
 
-  PopupConfirmacao(mensagem: string, tipo: number, componente: any) {
+  PopupConfirmacao(mensagem: string, tipo: number, componente: any, Id : any = 0) {
 
     const dialog = this.dialog.open(componente, {
+      id : Id,
       width: 'auto',
       height : 'auto',
+      disableClose : true,
       data: { mensagem: mensagem, tipo: tipo, data : componente}
     });
     return dialog.afterClosed();

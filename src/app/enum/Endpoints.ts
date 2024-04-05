@@ -13,6 +13,7 @@ export enum Endpoint {
     Ofertas = '/Ofertas',  
     Relatorios = '/Relatorios',
     RelatoriosFichaMembro = '/Relatorios/FichaMembro',
+    RelatoriosCartas = '/Relatorios/Cartas',
     UploadArquivo = '/File/FotoPerfil',
     RemoverFotoperfil = '/File/FotoPerfilRemover',
     DownloadArquivo = '/File/DownloadArquivo',

@@ -12,6 +12,8 @@ import { TipoPopup } from 'src/app/enum/TipoPopup';
 import { Filtros } from 'src/app/models/Filtros';
 import { Router } from '@angular/router';
 import { TransplantedType } from '@angular/compiler';
+import { CartarecomendacaoComponent } from '../cartarecomendacao/cartarecomendacao.component';
+import { Cartas } from 'src/app/models/Cartas';
 
 @Injectable()
 
@@ -94,17 +96,17 @@ export class ReadMembrosComponent implements OnInit {
   ImprimirFichaMembro(id: number) {
 
     this.spinner = true
-    let confirm : boolean = false;
+    let confirm: boolean = false;
     this.serverApi.DownloadArquivo(id.toString(), Endpoint.RelatoriosFichaMembro)
       .subscribe(result => {
-  
-      this.serviceUtil.showMessage("Aguarde o Download.", false);
-          this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `FichaMembro_${id.toString()}.docx`);
-          this.spinner = false;
+
+        this.serviceUtil.showMessage("Aguarde o Download.", false);
+        this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `FichaMembro_${id.toString()}.docx`);
+        this.spinner = false;
       },
-      (error) => {
-        this.serviceUtil.showMessage("Não foi possível baixar a ficha, verifique o cadastro", true);
-      });
+        (error) => {
+          this.serviceUtil.showMessage("Não foi possível baixar a ficha, verifique o cadastro", true);
+        });
   }
 
   ExcluirMembro(id: number) {
@@ -132,10 +134,10 @@ export class ReadMembrosComponent implements OnInit {
               this.buscarMembro()
             })
         }
-      }, 
-      (error) => {
-        this.serviceUtil.showMessage("Problema pra excluir o cadastro!.", false);
-      });
+      },
+        (error) => {
+          this.serviceUtil.showMessage("Problema pra excluir o cadastro!.", false);
+        });
   }
 
   PessoaSelecionada(id: number) {
@@ -164,12 +166,32 @@ export class ReadMembrosComponent implements OnInit {
     }
   }
 
-  CartaRecomendacao(id: number) {
-    alert(id)
-  }
+  Cartas(id: number) {
 
-  CartaMudanca(id: number) {
-    alert(id)
+    this.serviceUtil.PopupConfirmacao("Informar os dados", TipoPopup.ComponenteInstancia, CartarecomendacaoComponent, id)
+      .subscribe(x => {
+
+        if (x.Status) {
+            
+          let dados : Cartas = new Cartas();
+          dados = x.data;
+          this.spinner = true;
+          this.serverApi.DownloadCartas(dados , Endpoint.RelatoriosCartas)
+          .subscribe(result => {
+    
+            this.serviceUtil.showMessage("Aguarde o Download.", false);
+            //this.serviceUtil.Imprimir(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `Carta_${id.toString()}.docx`);
+            this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `Carta${id.toString()}.docx`);
+            this.spinner = false;
+          },
+            (error) => {
+              this.serviceUtil.showMessage("Não foi possível baixar a Carta , verifique o cadastro", true);
+            });
+        }
+        else {
+          this.serviceUtil.showMessage("Informações ignoradas", false)
+        }
+      })
   }
 
 }

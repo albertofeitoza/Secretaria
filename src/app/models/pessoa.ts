@@ -19,6 +19,7 @@ export class Pessoa {
   nomePai : string;
   nomeMae : string;
   cpfConjuge: string;
+  igrejaId : number;
 }
 
 export class ViewPessoa {

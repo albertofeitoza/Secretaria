@@ -53,6 +53,7 @@ import { UsuariosComponent } from './views/usuarios/usuarios.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { PopupcomponetComponent } from './popups/popupcomponet/popupcomponet.component';
 import { HistoricoPopupComponent } from './views/Membros/historico-popup/historico-popup.component';
+import { CartarecomendacaoComponent } from './views/Membros/cartarecomendacao/cartarecomendacao.component';
 
 registerLocaleData(localePt);
 
@@ -72,6 +73,7 @@ registerLocaleData(localePt);
     UsuariosComponent,
     PopupcomponetComponent,
     HistoricoPopupComponent,
+    CartarecomendacaoComponent,
 
 
   ],

@@ -72,11 +72,8 @@
         <a *ngIf="!filtros.inativos" (click)="ImprimirFichaMembro(row.id)" class="edit">
           <img style="line-height: unset;" src="./assets/Icons/msword.png" title="Download da ficha de membro" alt="Download">
         </a>
-        <a *ngIf="!filtros.inativos" (click)="CartaRecomendacao(row.id)"  class="delete">
-          <img style="line-height: unset;" src="./assets/Icons/CartaRecomendacao.png" title="Carta de recomendação" alt="Excluir">
-        </a>
-        <a *ngIf="!filtros.inativos" (click)="CartaMudanca(row.id)"  class="delete">
-          <img style="line-height: unset;" src="./assets/Icons/CartaMudanca.png" title="Carta de Mudança" alt="Excluir">
+        <a *ngIf="!filtros.inativos" (click)="Cartas(row.id)"  class="delete">
+          <img style="line-height: unset;" src="./assets/Icons/CartaRecomendacao.png" title="Solicitação de Cartas" alt="Excluir">
         </a>
         <a *ngIf="!filtros.inativos" (click)="ExcluirMembro(row.id)"  class="delete">
           <img style="line-height: unset;" src="./assets/Icons/delete.png" title="Excluir" alt="Excluir">

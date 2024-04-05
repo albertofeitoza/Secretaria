@@ -5,4 +5,6 @@ export class Logs {
     data: Date = new Date
     tipoLog: string 
     descricao: string 
+    criadoPor : string
+
 }
