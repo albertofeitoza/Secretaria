@@ -17,6 +17,7 @@ import { Logs } from 'src/app/models/Logs';
 import { TipoPopup } from 'src/app/enum/TipoPopup';
 import { HistoricoPopupComponent } from '../historico-popup/historico-popup.component';
 import { igreja } from 'src/app/models/Igreja';
+import { PopupConfirmacaoComponent } from 'src/app/popups/popup-confirmacao/popup-confirmacao.component';
 
 @Component({
   selector: 'app-cadastro-membros',
@@ -45,6 +46,7 @@ export class CadastroMembrosComponent {
   foto: FormData = new FormData()
   filtros: Filtros = new Filtros()
   logs: Logs[] = new Array()
+  situacaoCache : number = 0
 
   //--------------
   contatos: contatos[] = new Array()
@@ -95,6 +97,7 @@ export class CadastroMembrosComponent {
           this.contatos = response.data.contatos
           this.dadosMembro = response?.data?.dadosMembro != null ? response?.data?.dadosMembro : this.dadosMembro = new DadosMembro()
           this.funcaoMembroCache = response?.data?.dadosMembro?.funcao
+          this.situacaoCache = response?.data?.pessoa?.statusPessoa
           this.cargos = response.data.cargos
           this.dadosObreiro = response.data?.dadosObreiro != null ? response.data.dadosObreiro : this.dadosObreiro = new DadosObreiro()
           this.historicos = response?.data?.historicoObreiro
@@ -323,6 +326,28 @@ export class CadastroMembrosComponent {
         })
     }
   }
+
+  AlteraSituacao() {
+    if (this.ValidarDadosMembro() && this.situacaoCache == 5 && this.pessoa.statusPessoa < 5 && this.pessoa.id > 0) {
+
+      this.serviceUtil.PopupConfirmacao("Informe o Motivo da Reativação do Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
+      .subscribe(result => {
+        if (result.Status) {
+
+          this.pessoa.nome = result.Motivo;
+
+          this.serverApi.create(this.pessoa, Endpoint.Pessoa)
+            .subscribe(response => {
+              this.serviceUtil.showMessage("Membro excluído com sucesso!.", false);
+            })
+        }
+      },
+        (error) => {
+          this.serviceUtil.showMessage("Problema pra excluir o cadastro!.", false);
+        });
+    }
+  }
+
 
 
   AdicionarFuncaoObreiro() {

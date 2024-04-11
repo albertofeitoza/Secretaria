@@ -78,7 +78,7 @@
 
         <mat-form-field>
           <mat-label>Situação</mat-label>
-          <mat-select [(value)]="pessoa.statusPessoa" placeholder="Situação">
+          <mat-select [(value)]="pessoa.statusPessoa" placeholder="Situação" (selectionChange)="AlteraSituacao()">
             <mat-option *ngFor="let sp of statusPessoa" [value]="sp.id">
               {{sp.value}}
             </mat-option>
