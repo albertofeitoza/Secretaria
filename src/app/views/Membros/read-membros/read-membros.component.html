@@ -1,27 +1,24 @@
-<div class="menuInternoGrid col-md-12">
+<div class="menuInternoGrid">
   <div class="row col-md-12">
-
-    
       <a routerLink="/membrosadd">
         <i class="material-icons">add_circle_outline</i>
       </a>
-    
       <a style="position: absolute;">
         Inativos
         <input name="inativos" [(ngModel)]="filtros.inativos" [checked]="filtros.inativos" type="checkbox"
-        (change)="Filtros($event)">
-        
+          (change)="Filtros($event)">
+
         Pré Cadastro
         <input name="precadastro" [(ngModel)]="filtros.precadastro" [checked]="filtros.precadastro" type="checkbox"
           (change)="Filtros($event)">
       </a>
-    
+
+      <!-- <mat-spinner style="width: 10%;height: 8%;" *ngIf="spinner"> Aguarde! </mat-spinner> -->
+      <span style="margin-top: 1px;" class="search" (click)="Filtros($event)">
+        <i class="material-icons">search</i>
+      </span>
+      <input style="margin-top: 1px;" id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)" value="" />
   </div>
-  <mat-spinner style="width: 10%;height: 8%;" *ngIf="spinner"> Aguarde! </mat-spinner>
-  <span class="search col-md-4" (click)="Filtros($event)">
-    <i class="material-icons">search</i>
-  </span>
-  <input id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)" value="" />
 </div>
 
 <div class="mat-elevation-z4" style="height:73%; width: 100%;overflow: auto;">
