@@ -10,7 +10,7 @@ import { UtilServiceService } from 'src/app/services/util-service.service';
 import { PopupConfirmacaoComponent } from 'src/app/popups/popup-confirmacao/popup-confirmacao.component';
 import { TipoPopup } from 'src/app/enum/TipoPopup';
 import { Filtros } from 'src/app/models/Filtros';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { TransplantedType } from '@angular/compiler';
 import { CartarecomendacaoComponent } from '../cartarecomendacao/cartarecomendacao.component';
 import { Cartas } from 'src/app/models/Cartas';
@@ -30,7 +30,6 @@ export class ReadMembrosComponent implements OnInit {
   filtros: Filtros = new Filtros()
   spinner: boolean = false
 
-
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -40,11 +39,16 @@ export class ReadMembrosComponent implements OnInit {
   constructor(
     private serverApi: AllservicesService<any>,
     private serviceUtil: UtilServiceService,
-    private route: Router
+    private route: Router,
+    private activatedRoute : ActivatedRoute
   ) {
 
   }
   ngOnInit() {
+    
+    if(this.activatedRoute.snapshot.params['nome'] != null)
+      this.filtros.txtBusca = this.activatedRoute.snapshot.params['nome'];
+    
     this.buscarMembro()
   }
 
@@ -66,13 +70,29 @@ export class ReadMembrosComponent implements OnInit {
         .subscribe(response => {
           response = response.sort()
           this.datasource.data =
-            this.filtros.inativos && this.filtros.txtBusca.length == 0
+            this.filtros.inativos && !this.filtros.precadastro && this.filtros.txtBusca.length == 0
               ? response.filter(f => f.statusPessoa == 'Inativo')
-              : this.filtros.inativos && this.filtros.txtBusca.length > 0
-                ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
-                : !this.filtros.inativos && this.filtros.txtBusca.length > 0
-                  ? response.filter(f => f.statusPessoa != 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
-                  : response.filter(f => f.statusPessoa != 'Inativo');
+
+              : !this.filtros.inativos && this.filtros.precadastro && this.filtros.txtBusca.length == 0
+                ? response.filter(f => f.statusPessoa == 'PreCadastro')
+
+                : this.filtros.inativos && this.filtros.precadastro && this.filtros.txtBusca.length == 0
+                  ? response.filter(f => f.statusPessoa == 'PreCadastro' || f.statusPessoa == 'Inativo')
+
+                  : this.filtros.inativos && this.filtros.precadastro && this.filtros.txtBusca.length > 0
+                    ? response.filter(f => f.statusPessoa == 'PreCadastro' || f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+
+                    : this.filtros.inativos && !this.filtros.precadastro && this.filtros.txtBusca.length > 0
+                      ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+
+                      : !this.filtros.inativos && this.filtros.precadastro && this.filtros.txtBusca.length > 0
+                        ? response.filter(f => f.statusPessoa == 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+
+                        //Geral
+                        : !this.filtros.inativos && !this.filtros.precadastro && this.filtros.txtBusca.length > 0
+                          ? response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+
+                          : response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro');
 
           this.spinner = false;
 
@@ -160,8 +180,9 @@ export class ReadMembrosComponent implements OnInit {
 
   Filtros(keyEvent: any) {
 
-    if (keyEvent.which === 13 || keyEvent.which == 1 || keyEvent.type == 'change') {
+    if (keyEvent.which === 13 || keyEvent.which === 1 || keyEvent.type == 'change') {
       this.filtros.txtBusca = (<HTMLSelectElement>document.getElementById('txtBusca')).value;
+
       this.buscarMembro()
     }
   }
@@ -172,21 +193,21 @@ export class ReadMembrosComponent implements OnInit {
       .subscribe(x => {
 
         if (x.Status) {
-            
-          let dados : Cartas = new Cartas();
+
+          let dados: Cartas = new Cartas();
           dados = x.data;
           this.spinner = true;
-          this.serverApi.DownloadCartas(dados , Endpoint.RelatoriosCartas)
-          .subscribe(result => {
-    
-            this.serviceUtil.showMessage("Aguarde o Download.", false);
-            //this.serviceUtil.Imprimir(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `Carta_${id.toString()}.docx`);
-            this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `Carta${id.toString()}.docx`);
-            this.spinner = false;
-          },
-            (error) => {
-              this.serviceUtil.showMessage("Não foi possível baixar a Carta , verifique o cadastro", true);
-            });
+          this.serverApi.DownloadCartas(dados, Endpoint.RelatoriosCartas)
+            .subscribe(result => {
+
+              this.serviceUtil.showMessage("Aguarde o Download.", false);
+              //this.serviceUtil.Imprimir(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `Carta_${id.toString()}.docx`);
+              this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `Carta${id.toString()}.docx`);
+              this.spinner = false;
+            },
+              (error) => {
+                this.serviceUtil.showMessage("Não foi possível baixar a Carta , verifique o cadastro", true);
+              });
         }
         else {
           this.serviceUtil.showMessage("Informações ignoradas", false)

@@ -15,6 +15,7 @@ const routes: Routes = [
   {path: "home", component: HomeComponent },
   {path: "login", component: LoginComponent },
   {path: "membros", component: ReadMembrosComponent},
+  {path: "membros/:nome", component: ReadMembrosComponent},
   {path: "membrosadd", component: CadastroMembrosComponent},
   {path: "membrosupdate/:id", component: UpdateMembroComponent},
   {path: "relatorios", component: RelatoriosComponent},

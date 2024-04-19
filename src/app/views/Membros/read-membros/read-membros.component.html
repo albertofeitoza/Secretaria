@@ -1,14 +1,23 @@
 <div class="menuInternoGrid col-md-12">
-  <a routerLink="/membrosadd">
-    <i class="material-icons">add_circle_outline</i>
-  </a>
+  <div class="row col-md-12">
 
-  <a style="position: absolute;">
-    Inativos
-    <input name="Inativos" [(ngModel)]="filtros.inativos" [checked]="filtros.inativos" type="checkbox"
-      (change)="Filtros($event)">
-  </a>
-    <mat-spinner style="width: 10%;height: 8%;" *ngIf="spinner"> Aguarde! </mat-spinner>  
+    
+      <a routerLink="/membrosadd">
+        <i class="material-icons">add_circle_outline</i>
+      </a>
+    
+      <a style="position: absolute;">
+        Inativos
+        <input name="inativos" [(ngModel)]="filtros.inativos" [checked]="filtros.inativos" type="checkbox"
+        (change)="Filtros($event)">
+        
+        Pré Cadastro
+        <input name="precadastro" [(ngModel)]="filtros.precadastro" [checked]="filtros.precadastro" type="checkbox"
+          (change)="Filtros($event)">
+      </a>
+    
+  </div>
+  <mat-spinner style="width: 10%;height: 8%;" *ngIf="spinner"> Aguarde! </mat-spinner>
   <span class="search col-md-4" (click)="Filtros($event)">
     <i class="material-icons">search</i>
   </span>
@@ -67,15 +76,18 @@
       <th style="width: 14%;" mat-header-cell *matHeaderCellDef>Ações</th>
       <td style="padding-left: 3.5%; height: 21px;width: 16%;" mat-cell *matCellDef="let row">
         <a (click)="AtualizarMembro(row.id)" class="edit">
-          <img style="line-height: unset;" src="./assets/Icons/edit.png" title="Alterar o cadastro" alt="Editar Cadastro">
+          <img style="line-height: unset;" src="./assets/Icons/edit.png" title="Alterar o cadastro"
+            alt="Editar Cadastro">
         </a>
-        <a *ngIf="!filtros.inativos" (click)="ImprimirFichaMembro(row.id)" class="edit">
-          <img style="line-height: unset;" src="./assets/Icons/msword.png" title="Download da ficha de membro" alt="Download">
+        <a *ngIf="!filtros.inativos && !filtros.precadastro" (click)="ImprimirFichaMembro(row.id)" class="edit">
+          <img style="line-height: unset;" src="./assets/Icons/msword.png" title="Download da ficha de membro"
+            alt="Download">
         </a>
-        <a *ngIf="!filtros.inativos" (click)="Cartas(row.id)"  class="delete">
-          <img style="line-height: unset;" src="./assets/Icons/CartaRecomendacao.png" title="Solicitação de Cartas" alt="Excluir">
+        <a *ngIf="!filtros.inativos && !filtros.precadastro" (click)="Cartas(row.id)" class="delete">
+          <img style="line-height: unset;" src="./assets/Icons/CartaRecomendacao.png" title="Solicitação de Cartas"
+            alt="Excluir">
         </a>
-        <a *ngIf="!filtros.inativos" (click)="ExcluirMembro(row.id)"  class="delete">
+        <a *ngIf="!filtros.inativos" (click)="ExcluirMembro(row.id)" class="delete">
           <img style="line-height: unset;" src="./assets/Icons/delete.png" title="Excluir" alt="Excluir">
         </a>
       </td>
