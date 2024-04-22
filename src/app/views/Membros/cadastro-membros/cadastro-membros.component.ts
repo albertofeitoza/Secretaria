@@ -470,7 +470,7 @@ export class CadastroMembrosComponent {
   }
 
   ExcluirContato(id: any) {
-    this.serverApi.delete(id, Endpoint.Contatos)
+    this.serverApi.delete(id, Endpoint.Contatos, "Exclusão de contato")
       .subscribe(x => {
         this.serviceUtil.showMessage("Contato Excluido!", false)
         this.BuscarContatos()
@@ -519,10 +519,17 @@ export class CadastroMembrosComponent {
 
   ExcluirCargo(id: any) {
 
-    var index = this.cargos.indexOf(id);
-    this.cargos.splice(index, 1)
-    let cargosAtualizados = this.cargos.slice()
-    this.cargos = cargosAtualizados;
+    this.serverApi.delete(id.toString(), Endpoint.Cargos, "Exclusão de cargo")
+      .subscribe(() => {
+        this.serviceUtil.showMessage("Cargo Excluido", false);
+
+        var index = this.cargos.indexOf(id);
+        this.cargos.splice(index, 1)
+        let cargosAtualizados = this.cargos.slice()
+        this.cargos = cargosAtualizados;
+      })
+    
+    
 
   }
 
