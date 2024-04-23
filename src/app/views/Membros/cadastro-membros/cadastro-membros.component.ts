@@ -471,7 +471,8 @@ export class CadastroMembrosComponent {
 
   ExcluirContato(id: any) {
     this.serverApi.delete(id, Endpoint.Contatos, "Exclusão de contato")
-      .subscribe(x => {
+      .subscribe(() => {
+        
         this.serviceUtil.showMessage("Contato Excluido!", false)
         this.BuscarContatos()
       })
