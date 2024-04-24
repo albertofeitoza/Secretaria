@@ -32,7 +32,7 @@ export class CadastroMembrosComponent {
   historicoSelecionado = 0
   step = 0;
   pessoa: Pessoa = new Pessoa();
-  igreja : igreja = new igreja();
+  igreja: igreja = new igreja();
   endereco: PessoaEndereco = new PessoaEndereco();
   dadosMembro: DadosMembro = new DadosMembro();
   dadosObreiro: DadosObreiro = new DadosObreiro()
@@ -46,7 +46,7 @@ export class CadastroMembrosComponent {
   foto: FormData = new FormData()
   filtros: Filtros = new Filtros()
   logs: Logs[] = new Array()
-  situacaoCache : number = 0
+  situacaoCache: number = 0
 
   //--------------
   contatos: contatos[] = new Array()
@@ -54,7 +54,7 @@ export class CadastroMembrosComponent {
 
   Colunas = ['id', 'ddd', 'telefone', 'celular', 'email', 'action']
   ColunasCargos = ['id', 'cargo', 'noCargoDesde', 'noCargoAte', 'action']
-  ColunasHistoricoObreiro = ['id','pastorApresentador','pastorRegional', 'local', 'funcao', 'entradaFuncao', 'dataEntradaFuncao', 'dataSaidaFuncao', 'reintegrado', 'reintegradoEm', 'aprovado']
+  ColunasHistoricoObreiro = ['id', 'pastorApresentador', 'pastorRegional', 'local', 'funcao', 'entradaFuncao', 'dataEntradaFuncao', 'dataSaidaFuncao', 'reintegrado', 'reintegradoEm', 'aprovado']
   colunasLogs = ['data', 'descricao']
 
   // ----------------
@@ -215,22 +215,21 @@ export class CadastroMembrosComponent {
       }
     }
   }
-  BuscarConjuje(keyEvent : any){
-    
-    if(keyEvent.which == 13){
-      
-      if(this.pessoa.cpf == this.pessoa.cpfConjuge)
+  BuscarConjuje(keyEvent: any) {
+
+    if (keyEvent.which == 13) {
+
+      if (this.pessoa.cpf == this.pessoa.cpfConjuge)
         return this.serviceUtil.showMessage(`O CPF informado é mesmo do  ${this.pessoa.nome}.`, true);
-      
-      if(this.ValidaCpf(this.pessoa.cpfConjuge))
-        {
-          this.serverApi.readById(this.pessoa.cpfConjuge, Endpoint.BuscaPorCpf).subscribe(response => {
-            if (response.code == 200) {
-              this.pessoa.nomeConjuge = response.data.nome
-            }else
-              this.serviceUtil.showMessage(`${response.mensagem}, verifique o cadastro da esposa antes de prosseguir.`, true)
-          });
-        }
+
+      if (this.ValidaCpf(this.pessoa.cpfConjuge)) {
+        this.serverApi.readById(this.pessoa.cpfConjuge, Endpoint.BuscaPorCpf).subscribe(response => {
+          if (response.code == 200) {
+            this.pessoa.nomeConjuge = response.data.nome
+          } else
+            this.serviceUtil.showMessage(`${response.mensagem}, verifique o cadastro da esposa antes de prosseguir.`, true)
+        });
+      }
     }
   }
   ValidarPessoa(): boolean {
@@ -265,8 +264,8 @@ export class CadastroMembrosComponent {
     return result;
   }
 
-  LimparCampoConjuge(){
-    this.pessoa.cpfConjuge = this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 ? this.pessoa.cpfConjuge  : "";
+  LimparCampoConjuge() {
+    this.pessoa.cpfConjuge = this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 ? this.pessoa.cpfConjuge : "";
     this.pessoa.nomeConjuge = this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 ? this.pessoa.nomeConjuge : "";
   }
 
@@ -331,21 +330,21 @@ export class CadastroMembrosComponent {
     if (this.ValidarDadosMembro() && this.situacaoCache == 5 && this.pessoa.statusPessoa < 5 && this.pessoa.id > 0) {
 
       this.serviceUtil.PopupConfirmacao("Informe o Motivo da Reativação do Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
-      .subscribe(result => {
-        if (result.Status) {
-          let guardaNome = this.pessoa.nome;
-          this.pessoa.nome = result.Motivo;
+        .subscribe(result => {
+          if (result.Status) {
+            let guardaNome = this.pessoa.nome;
+            this.pessoa.nome = result.Motivo;
 
-          this.serverApi.create(this.pessoa, Endpoint.Pessoa)
-            .subscribe(response => {
-              this.serviceUtil.showMessage("Membro Reativado com sucesso!.", false);
-              this.pessoa.nome = guardaNome;
-            })
-        }
-      },
-        (error) => {
-          this.serviceUtil.showMessage("Problema pra reativar o cadastro!.", false);
-        });
+            this.serverApi.create(this.pessoa, Endpoint.Pessoa)
+              .subscribe(response => {
+                this.serviceUtil.showMessage("Membro Reativado com sucesso!.", false);
+                this.pessoa.nome = guardaNome;
+              })
+          }
+        },
+          (error) => {
+            this.serviceUtil.showMessage("Problema pra reativar o cadastro!.", false);
+          });
     }
   }
 
@@ -353,11 +352,11 @@ export class CadastroMembrosComponent {
 
   AdicionarFuncaoObreiro() {
 
-    if (this.dadosObreiro.id > 0 ) {
+    if (this.dadosObreiro.id > 0) {
 
       this.historico.dadosObreiroId = this.dadosObreiro.id;
       this.historico.funcao = this.dadosMembro.funcao;
-      
+
 
       this.serverApi.create(this.historico, Endpoint.HistoricoObreiro).subscribe(() => {
 
@@ -432,7 +431,7 @@ export class CadastroMembrosComponent {
     }
   }
 
-  ValidaCpf(cpfEntrada : string ): boolean {
+  ValidaCpf(cpfEntrada: string): boolean {
 
     if (cpfEntrada) {
 
@@ -470,12 +469,15 @@ export class CadastroMembrosComponent {
   }
 
   ExcluirContato(id: any) {
-    this.serverApi.delete(id, Endpoint.Contatos, "Exclusão de contato")
+    this.serverApi.delete(id, Endpoint.Contatos)
       .subscribe(() => {
-        
+
         this.serviceUtil.showMessage("Contato Excluido!", false)
         this.BuscarContatos()
-      })
+      },
+        (error) => {
+          this.serviceUtil.showMessage("Problema pra excluir o contato!.", true);
+        })
   }
 
   EditarContato(id: any) {
@@ -529,8 +531,6 @@ export class CadastroMembrosComponent {
         let cargosAtualizados = this.cargos.slice()
         this.cargos = cargosAtualizados;
       })
-    
-    
 
   }
 

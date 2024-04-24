@@ -88,7 +88,7 @@ export class AllservicesService<T> {
   }
 
   delete(id: number, endpoint: string, motivo: string = ""): Observable<T> {
-    const url = `${this.environmentUrl + endpoint}/${id}/${motivo}`
+    const url = `${this.environmentUrl + endpoint}/${id}`
     return this.http.delete<T>(url, this.loginService.Header()).pipe(
       map(obj => obj),
       catchError(e => this.utilService.erroHandler(e))
