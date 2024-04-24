@@ -349,7 +349,7 @@ export class CadastroMembrosComponent {
   }
 
 
-
+  
   AdicionarFuncaoObreiro() {
 
     if (this.dadosObreiro.id > 0) {
