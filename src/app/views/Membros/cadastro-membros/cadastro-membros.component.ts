@@ -349,7 +349,7 @@ export class CadastroMembrosComponent {
   }
 
 
-  
+
   AdicionarFuncaoObreiro() {
 
     if (this.dadosObreiro.id > 0) {
@@ -469,15 +469,14 @@ export class CadastroMembrosComponent {
   }
 
   ExcluirContato(id: any) {
-    this.serverApi.delete(id, Endpoint.Contatos)
-      .subscribe(() => {
+    
+    let body = {id : id,acao : "excluir"};
 
-        this.serviceUtil.showMessage("Contato Excluido!", false)
-        this.BuscarContatos()
-      },
-        (error) => {
-          this.serviceUtil.showMessage("Problema pra excluir o contato!.", true);
-        })
+    this.serverApi.create(body, Endpoint.Contatos+'/Excluir').subscribe(x =>{
+      this.serviceUtil.showMessage("Contato Excluido com sucesso!")
+      this.BuscarContatos()
+    });
+      
   }
 
   EditarContato(id: any) {
