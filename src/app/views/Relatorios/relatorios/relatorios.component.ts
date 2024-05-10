@@ -36,6 +36,7 @@ export class RelatoriosComponent implements OnInit {
   Colunas = ['nome', 'dataNascimento', 'dataAniversario']
   ColunasGridCasamento = ['nome', 'nomeConjuge', 'dataCasamento', 'quantidadeAnosCasado']
   ColunasGridMembrosAtivos = ['nome', 'rol', 'congregacao', 'validadeCartaoMembro']
+  ColunasGridBatizados = ['nome', 'rol', 'congregacao', 'dataBatismo']
   ColunasGridRelatorioIdosos = ['nome', 'endereco', 'ultimaSantaCeia']
   ColunasGridRelatorioCeia = ['nome', 'janeiro', 'fevereiro', 'marco'
     , 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro', 'participacao']
@@ -98,6 +99,7 @@ export class RelatoriosComponent implements OnInit {
         switch (this.relatorioSelecionado) {
           case 1:
           case 2:
+          case 17:
             this.relatorioMembrosAtivos = rel
             this.imprimir = true
             this.spinner = false;
@@ -135,17 +137,6 @@ export class RelatoriosComponent implements OnInit {
             this.relatorioPresenca = trataCamposPresenca
             this.imprimir = true
             this.spinner = false;
-            break
-
-          case 17:
-            this.nomeRelatorio = "Relatório - Batizados"
-            //filtrar os dados anuais
-            this.relatorioMembrosAtivos = rel
-            this.imprimir = true
-            this.spinner = false;
-            break;
-         
-          default:
             break;
         }
       })
