@@ -1,9 +1,11 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer style="width: {{width}}" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+  <mat-sidenav #drawer style="width: {{width}}" fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false">
 
     <mat-nav-list *ngIf="tipoUsuario === 1">
       <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
+      <a mat-list-item routerLink="/filhos"><i class="material-icons">people</i> Crianças</a>
       <a mat-list-item routerLink="/membros"><i class="material-icons">people</i> Membros</a>
       <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i> Ofertas</a>
       <a mat-list-item routerLink="/relatorios"><i class="material-icons">assignment</i>Relatórios</a>
@@ -13,27 +15,37 @@
 
     <mat-nav-list *ngIf="tipoUsuario === 2">
       <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
+      <a mat-list-item routerLink="/filhos"><i class="material-icons">people</i> Crianças</a>
       <a mat-list-item routerLink="/membros"><i class="material-icons">people</i> Membros</a>
       <a mat-list-item routerLink="/relatorios"><i class="material-icons">assignment</i>Relatórios</a>
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
     </mat-nav-list>
-    
+
     <mat-nav-list *ngIf="tipoUsuario === 3">
       <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
     </mat-nav-list>
-    
+
     <mat-nav-list *ngIf="tipoUsuario === 4">
       <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
       <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i> Ofertas</a>
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
     </mat-nav-list>
+
+    <mat-nav-list *ngIf="tipoUsuario === 5">
+      <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
+      <a mat-list-item routerLink="/filhos"><i class="material-icons">people</i> Crianças</a>
+      <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
+    </mat-nav-list>
+
+
   </mat-sidenav>
-  
+
   <mat-sidenav-content style="margin-left: {{width}}">
     <mat-toolbar color="primary">
-      <img style="padding-right: 15px;cursor: pointer;" src="./assets/Icons/baseline.png" (click)="Menu()" title="Alternar menu" alt="alternar Menu">
-      <span>Secretaria</span>
+      <img style="padding-right: 15px;cursor: pointer;" src="./assets/Icons/baseline.png" (click)="Menu()"
+        title="Alternar menu" alt="alternar Menu">
+      <span><img class="logo" src="./assets/imagens/Sistema/logo.png" alt="logo"></span>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

@@ -13,6 +13,7 @@ export class RelatorioMembrosAtivos{
     rol: number
     congregacao : string
     validadeCartaoMembro : Date
+    dataBatismo : Date
 }
 
 export class RelatorioIdosos{

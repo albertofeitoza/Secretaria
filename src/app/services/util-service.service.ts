@@ -160,7 +160,9 @@ export class UtilServiceService {
     entradaFuncao.push({ "id": 1, "value": "Apresentado" })
     entradaFuncao.push({ "id": 2, "value": "Consagrado" })
     entradaFuncao.push({ "id": 3, "value": "Recebido" })
-    entradaFuncao.push({ "id": 3, "value": "Reintegrado" })
+    entradaFuncao.push({ "id": 5, "value": "Ordenado" })
+    entradaFuncao.push({ "id": 4, "value": "Reintegrado" })
+    
 
     return entradaFuncao
   }
@@ -176,12 +178,13 @@ export class UtilServiceService {
     relatorio.push({ "id": 5, "value": "Santa Ceia" })
     relatorio.push({ "id": 6, "value": "Reunião Ob. Local"})
     relatorio.push({ "id": 7, "value": "Reunião Ob. Sede"})
+    relatorio.push({ "id": 17, "value": "Batizados"})
 
     return relatorio
   }
 
 
-  TipoCartas(){
+  TipoCartas() {
     let documento = [];
     documento.push({ "id": 0, "value": "Selecione"})
     documento.push({ "id": 13, "value": "Carta de Recomendação"})
@@ -199,18 +202,29 @@ export class UtilServiceService {
     tipoUsuario.push({ "id": 2, "value": "Secretario" })
     tipoUsuario.push({ "id": 3, "value": "Membro" })
     tipoUsuario.push({ "id": 4, "value": "Tesoureiro" })
+    tipoUsuario.push({ "id": 5, "value": "DepInfantil" })
   
     return tipoUsuario;
   
   }
 
-  PopupConfirmacao(mensagem: string, tipo: number, componente: any, Id : any = 0) {
+  SimNao(){
+    let simNao = [];
+    simNao.push({ "id": 0, "value": "Selecione" })
+    simNao.push({ "id": 1, "value": "Sim" })
+    simNao.push({ "id": 2, "value": "Não" })
+    return simNao;
+  }
+
+
+
+  PopupConfirmacao(mensagem: string, tipo: number, componente: any, Id : any = 0, Width: any = 'auto', Height: any = 'auto', disableClose: boolean = false ) {
 
     const dialog = this.dialog.open(componente, {
       id : Id,
-      width: 'auto',
-      height : 'auto',
-      disableClose : true,
+      width: Width,
+      height : Height,
+      disableClose : disableClose,
       data: { mensagem: mensagem, tipo: tipo, data : componente}
     });
     return dialog.afterClosed();

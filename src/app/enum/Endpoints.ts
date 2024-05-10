@@ -4,6 +4,7 @@ export enum Endpoint {
     Usuario = '/Usuarios',
     Pessoa = '/Pessoa',
     Membros = '/Membros',
+    Filhos = '/Filhos',
     Obreiro = '/Obreiro',
     HistoricoObreiro = '/HistoricoObreiro',
     BuscaPorCpf = '/Pessoa/buscaPorCpf',

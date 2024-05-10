@@ -61,8 +61,8 @@ export class RelatoriosComponent implements OnInit {
 
   RelatorioSelecionado() {
     this.imprimir = false;
-    
-    if(this.relatorioSelecionado > 0)
+
+    if (this.relatorioSelecionado > 0)
       this.spinner = true;
 
     //Exemplo de filtros
@@ -136,6 +136,15 @@ export class RelatoriosComponent implements OnInit {
             this.imprimir = true
             this.spinner = false;
             break
+
+          case 17:
+            this.nomeRelatorio = "Relatório - Batizados"
+            //filtrar os dados anuais
+            this.relatorioMembrosAtivos = rel
+            this.imprimir = true
+            this.spinner = false;
+            break;
+         
           default:
             break;
         }
@@ -152,7 +161,7 @@ export class RelatoriosComponent implements OnInit {
   BaixarArquivo() {
     this.serverApi.DownloadArquivo(this.relatorioSelecionado.toString(), Endpoint.DownloadArquivo)
       .subscribe(result => {
-        this.serviceUtil.BaixarArquivo(result, 'application/pdf', '') ;
+        this.serviceUtil.BaixarArquivo(result, 'application/pdf', '');
       }
       )
   };

@@ -1,0 +1,123 @@
+<div class="center">
+    <div class="mat-elevation-z8">
+        <div class="titulo">
+            <h2>Cadastro de Filhos / Criança</h2>
+
+        </div>
+
+        <div style="padding-top: 15px;">
+
+            <mat-form-field>
+                <mat-label>Nome</mat-label>
+                <input matInput placeholder="Nome" [(ngModel)]="filho.nome" name="nome">
+            </mat-form-field>
+
+            <mat-form-field color="accent" style="width: 213px;">
+                <mat-label>Data de Nascimento</mat-label>
+                <input matInput [matDatepicker]="dataNascimento" [(ngModel)]="filho.dataNascimento"
+                    name="dataNascimento">
+                <mat-datepicker-toggle matIconSuffix [for]="dataNascimento"></mat-datepicker-toggle>
+                <mat-datepicker #dataNascimento></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>É Membro?</mat-label>
+                <mat-select [(value)]="filho.membro" placeholder="É Membro">
+                    <mat-option *ngFor="let sn of simNao" [value]="sn.id">
+                        {{sn.value}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Pai</mat-label>
+                <mat-select [(value)]="filho.membro" placeholder="Selecione o Pai">
+                    <mat-option *ngFor="let p of pai" [value]="p.id">
+                        {{p.nome}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Mãe</mat-label>
+                <mat-select [(value)]="filho.membro" placeholder="Selecione a Mãe">
+                    <mat-option *ngFor="let m of mae" [value]="m.id">
+                        {{m.nome}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <a>
+                <i class="material-icons" (click)="Adicionar()">save</i>
+            </a>
+        </div>
+    </div>
+</div>
+<br>
+
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="filhos" matSort>
+        <!-- Id Column -->
+
+        <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
+        <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+            <mat-cell id="id" *matCellDef="let row">{{row.id}}</mat-cell>
+        </ng-container>
+
+        <!-- rol Column -->
+        <ng-container matColumnDef="nome">
+            <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+            <mat-cell id="dataNascimento" *matCellDef="let row">{{row.nome}}</mat-cell>
+        </ng-container>
+
+        <!-- rol Column -->
+        <ng-container matColumnDef="dataNascimento">
+            <mat-header-cell *matHeaderCellDef>Data de Nascimento</mat-header-cell>
+            <mat-cell id="dataNascimento" *matCellDef="let row">{{row.dataNascimento | date : 'dd/MM/yyyy'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="membro">
+            <mat-header-cell *matHeaderCellDef>É Membro?</mat-header-cell>
+            <mat-cell mat-cell id="membro" *matCellDef="let row">{{row.membro}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="nomePai">
+            <mat-header-cell *matHeaderCellDef>Nome Pai</mat-header-cell>
+            <mat-cell mat-cell id="pai" *matCellDef="let row">{{row.idpai}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="nomeMae">
+            <mat-header-cell *matHeaderCellDef>Nome Mãe</mat-header-cell>
+            <mat-cell mat-cell id="mae" *matCellDef="let row">{{row.idmae}}</mat-cell>
+        </ng-container>
+
+        <!-- Coluna de Ações -->
+        <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+
+                <a (click)="Editar(row.id)" class="delete">
+                    <i class="material-icons">
+                        edit
+                    </i>
+                </a>
+
+                <a (click)="Excluir(row.id)" class="delete">
+                    <i class="material-icons">
+                        delete
+                    </i>
+                </a>
+            </mat-cell>
+        </ng-container>
+
+        <mat-row style="height: 10%;" (click)="FilhoSelecionado(row.id)" *matRowDef="let row; columns: Colunas;"
+            [ngClass]="{'corLinhaGrid' : row.id == contatoSelecionado}">
+        </mat-row>
+
+    </table>
+    
+    <mat-paginator #paginator [pageSizeOptions]="[5, 10]" showFirstLastButtons
+      aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>

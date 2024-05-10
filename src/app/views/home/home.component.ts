@@ -13,7 +13,7 @@ export class HomeComponent {
   private breakpointObserver = inject(BreakpointObserver);
 
   tipoUsuario : Number = 0
-  width : string = "200px;"
+  width  = "200px;"
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -40,11 +40,11 @@ export class HomeComponent {
 
     Menu(){
       
-      let teste = 
+      let menu = 
         this.width.includes("200px;") ? 
           this.width = "57px;" : 
             this.width.includes("57px;") ? 
               this.width = "200px;" : this.width = "200px;"
-      return teste;
+      return menu;
     }
 }

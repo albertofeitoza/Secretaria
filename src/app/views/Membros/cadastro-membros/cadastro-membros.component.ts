@@ -3,7 +3,7 @@ import { Endpoint } from 'src/app/enum/Endpoints';
 import { Cep } from 'src/app/models/Cep';
 import { DadosMembro } from 'src/app/models/DadosMembro';
 import { PessoaEndereco } from 'src/app/models/PessoaEndereco';
-import { Pessoa } from 'src/app/models/pessoa';
+import { Pessoa, ViewFilhos } from 'src/app/models/pessoa';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 import { cpf } from 'cpf-cnpj-validator';
@@ -46,6 +46,7 @@ export class CadastroMembrosComponent {
   foto: FormData = new FormData()
   filtros: Filtros = new Filtros()
   logs: Logs[] = new Array()
+  filhos : ViewFilhos = new ViewFilhos()
   situacaoCache: number = 0
 
   //--------------
@@ -102,8 +103,8 @@ export class CadastroMembrosComponent {
           this.dadosObreiro = response.data?.dadosObreiro != null ? response.data.dadosObreiro : this.dadosObreiro = new DadosObreiro()
           this.historicos = response?.data?.historicoObreiro
           this.logs = response?.data?.logs;
+          this.filhos = response?.data?.filhos
           this.pessoa.fotoCadastrada ? this.fotoPerfil = `./assets/imagens/${response.data.pessoa.cpf.trim()}.jpg` : ""
-
         })
     }
   }
@@ -521,8 +522,11 @@ export class CadastroMembrosComponent {
 
   ExcluirCargo(id: any) {
 
-    this.serverApi.delete(id.toString(), Endpoint.Cargos, "Exclusão de cargo")
-      .subscribe(() => {
+
+    let body = {id : id,acao : "excluir"};
+
+    this.serverApi.create(body, Endpoint.Cargos + "/Excluir")
+      .subscribe(x => {
         this.serviceUtil.showMessage("Cargo Excluido", false);
 
         var index = this.cargos.indexOf(id);
@@ -530,7 +534,6 @@ export class CadastroMembrosComponent {
         let cargosAtualizados = this.cargos.slice()
         this.cargos = cargosAtualizados;
       })
-
   }
 
   CargoSelecionado(id: any) {

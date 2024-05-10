@@ -14,12 +14,12 @@ export class Pessoa {
   nomeConjuge: string;
   dataCasamento?: Date;
   statusPessoa: number = 0;
-  fotoCadastrada : boolean = false;
-  idoso : boolean = false;
-  nomePai : string;
-  nomeMae : string;
+  fotoCadastrada: boolean = false;
+  idoso: boolean = false;
+  nomePai: string;
+  nomeMae: string;
   cpfConjuge: string;
-  igrejaId : number;
+  igrejaId: number;
 }
 
 export class ViewPessoa {
@@ -30,4 +30,15 @@ export class ViewPessoa {
   dataNascimento: Date;
   funcao: string
   statusPessoa: string
+  sexo : number
+}
+
+export class ViewFilhos {
+  id: number = 0;
+  dataCriacao: Date;
+  nome: string  ;
+  dataNascimento: Date;
+  membro: string;
+  idPai: string;
+  idMae: string;
 }

@@ -14,6 +14,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { TransplantedType } from '@angular/compiler';
 import { CartarecomendacaoComponent } from '../cartarecomendacao/cartarecomendacao.component';
 import { Cartas } from 'src/app/models/Cartas';
+import { FilhosComponent } from '../Modal/filhos/filhos.component';
 
 @Injectable()
 
@@ -215,4 +216,7 @@ export class ReadMembrosComponent implements OnInit {
       })
   }
 
+  Filhos(id : number){
+    this.serviceUtil.PopupConfirmacao('', TipoPopup.ComponenteInstancia, FilhosComponent,id, '70%', '80%');
+  }
 }

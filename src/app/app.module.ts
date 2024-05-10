@@ -54,6 +54,11 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { PopupcomponetComponent } from './popups/popupcomponet/popupcomponet.component';
 import { HistoricoPopupComponent } from './views/Membros/historico-popup/historico-popup.component';
 import { CartarecomendacaoComponent } from './views/Membros/cartarecomendacao/cartarecomendacao.component';
+import { ControlePresencaComponent } from './views/Membros/Modal/controle-presenca/controle-presenca.component';
+import { HistoricoMembroComponent } from './views/Membros/Modal/historico-membro/historico-membro.component';
+import { ServiceCenterComponent } from './views/service-center/service-center.component';
+import { FilhosComponent } from './views/Membros/Modal/filhos/filhos.component';
+import { FilhosMembrosComponent } from './views/filhos-membros/filhos-membros.component';
 
 registerLocaleData(localePt);
 
@@ -74,6 +79,11 @@ registerLocaleData(localePt);
     PopupcomponetComponent,
     HistoricoPopupComponent,
     CartarecomendacaoComponent,
+    ControlePresencaComponent,
+    HistoricoMembroComponent,
+    ServiceCenterComponent,
+    FilhosComponent,
+    FilhosMembrosComponent,
 
 
   ],

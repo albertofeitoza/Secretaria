@@ -35,8 +35,6 @@
       <td>
     </ng-container>
 
-
-
     <ng-container matColumnDef="foto">
       <th style="width:7%;" mat-header-cell *matHeaderCellDef>Foto</th>
       <td id="foto" mat-cell *matCellDef="let row">
@@ -84,8 +82,13 @@
           <img style="line-height: unset;" src="./assets/Icons/CartaRecomendacao.png" title="Solicitação de Cartas"
             alt="Excluir">
         </a>
+
         <a *ngIf="!filtros.inativos" (click)="ExcluirMembro(row.id)" class="delete">
           <img style="line-height: unset;" src="./assets/Icons/delete.png" title="Excluir" alt="Excluir">
+        </a>
+
+        <a *ngIf="!filtros.inativos" (click)="Filhos(row.id)" class="delete">
+          <img style="line-height: unset;" src="./assets/Icons/family_restroom.png" title="Filhos" alt="Filhos">
         </a>
       </td>
     </ng-container>
