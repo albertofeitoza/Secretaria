@@ -1,1 +1,59 @@
-<p>controle-presenca works!</p>
+<div style="padding: 15px;">
+
+    <h3>Controle de Presença, reunião de obreiros e Santa Ceia</h3>
+
+    <label>Nome : {{dados.nome}}</label>
+    <br />
+    <hr />
+    <div style="display: flex; padding: 15px;">
+        <mat-form-field>
+            <mat-label>Selecione a Opção</mat-label>
+            <mat-select [(value)]="tipoPresencaSelecionado" placeholder="Tipo de documento">
+                <mat-option *ngFor="let cmb of comboTipoPresenca" [value]="cmb.id">
+                    {{cmb.value}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field color="accent" style="width: 213px;">
+            <mat-label>Data</mat-label>
+            <input matInput [matDatepicker]="dataPresenca" [(ngModel)]="controlePresenca.data" name="data">
+            <mat-datepicker-toggle matIconSuffix [for]="dataPresenca"></mat-datepicker-toggle>
+            <mat-datepicker #dataPresenca></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field style="width: 500px;">
+            <mat-label>Motivo</mat-label>
+            <input matInput placeholder="Motivo" [(ngModel)]="controlePresenca.motivo" name="motivo">
+        </mat-form-field>
+        
+        <span *ngIf="tipoPresencaSelecionado > 0 && controlePresenca.data && controlePresenca.motivo " 
+            style="padding-left: 3px; padding-top: 1.5%;" (click)="Salvar()">
+            <mat-icon>save</mat-icon>
+        </span>
+    </div>
+
+
+
+    <mat-card-content class="alinhar">
+        <!-- <a (click)="FecharPopup(false)">
+            <i class="material-icons">
+                cancel
+            </i>
+        </a>
+         -->
+        <!-- <a *ngIf="dadosSolicitacao.cidade != undefined && dadosSolicitacao.estado != undefined && relatorioSelecionado >= 13 && relatorioSelecionado <= 14"
+            (click)="FecharPopup(true)">
+            <i class="material-icons icones">
+                thumb_up_alt
+            </i>
+        </a>
+        <a *ngIf="dadosSolicitacao.igrejaDestino != undefined && relatorioSelecionado >= 15 && relatorioSelecionado <= 16"
+            (click)="FecharPopup(true)">
+            <i class="material-icons icones">
+                thumb_up_alt
+            </i>
+        </a> -->
+
+    </mat-card-content>
+</div>

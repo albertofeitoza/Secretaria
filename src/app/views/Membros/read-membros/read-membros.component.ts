@@ -1,20 +1,19 @@
-import { Component, AfterViewInit, ViewChild, OnInit, Injectable } from '@angular/core';
-import { Pessoa, ViewPessoa } from 'src/app/models/pessoa';
+import { Component, ViewChild, OnInit, Injectable } from '@angular/core';
+import { Pessoa } from 'src/app/models/pessoa';
 import { MatTableDataSource, _MatTableDataSource } from '@angular/material/table';
-import { MatSort, matSortAnimations } from '@angular/material/sort';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
-import { Observable, Subject, map } from 'rxjs';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 import { PopupConfirmacaoComponent } from 'src/app/popups/popup-confirmacao/popup-confirmacao.component';
 import { TipoPopup } from 'src/app/enum/TipoPopup';
 import { Filtros } from 'src/app/models/Filtros';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CartarecomendacaoComponent } from '../cartarecomendacao/cartarecomendacao.component';
 import { Cartas } from 'src/app/models/Cartas';
 import { FilhosComponent } from '../Modal/filhos/filhos.component';
-import { Sort, MatSortModule } from '@angular/material/sort';
+import { ControlePresencaComponent } from '../Modal/controle-presenca/controle-presenca.component';
 
 @Injectable()
 
@@ -218,4 +217,10 @@ export class ReadMembrosComponent implements OnInit {
   Filhos(id: number) {
     this.serviceUtil.PopupConfirmacao('', TipoPopup.ComponenteInstancia, FilhosComponent, id, '70%', '80%');
   }
+
+  public JustificarPresenca(id : number): void {
+    
+    
+    this.serviceUtil.PopupConfirmacao('', TipoPopup.ComponenteInstancia, ControlePresencaComponent, id, '70%', '35%');
+  } 
 }

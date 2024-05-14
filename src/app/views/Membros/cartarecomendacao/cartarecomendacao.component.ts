@@ -16,7 +16,6 @@ export class CartarecomendacaoComponent implements OnInit {
 
   resposta: PopupConfirm = new PopupConfirm();
   dados: Pessoa = new Pessoa();
-  teste: string = "ok"
   relatorioSelecionado: number = 0;
   comboCartas: any[]
   dadosSolicitacao: Cartas = new Cartas()

@@ -184,16 +184,23 @@ export class UtilServiceService {
   }
 
 
-  TipoCartas() {
+  public TipoCartas() : any {
     let documento = [];
     documento.push({ "id": 0, "value": "Selecione"})
     documento.push({ "id": 13, "value": "Carta de Recomendação"})
     documento.push({ "id": 14, "value": "Carta de Rec.Casal"})
     documento.push({ "id": 15, "value": "Carta de Mudança"})
     documento.push({ "id": 16, "value": "Carta de Mud.Casal"})
-     
     return documento
-  
+  }
+
+  public JustificativaPresenca() : any {
+    let presenca = [];
+    presenca.push({ "id": 0, "value": "Selecione"})
+    presenca.push({ "id": 3, "value": "Santa Ceia"})
+    presenca.push({ "id": 1, "value": "Reuniao Obreiro Local"})
+    presenca.push({ "id": 2, "value": "Reuniao Obreiro Sede"})
+    return presenca
   }
 
   TipoUsuario(){
