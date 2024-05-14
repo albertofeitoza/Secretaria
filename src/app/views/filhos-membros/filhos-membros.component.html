@@ -2,11 +2,8 @@
     <div class="mat-elevation-z8">
         <div class="titulo">
             <h2>Cadastro de Filhos / Criança</h2>
-
         </div>
-
         <div style="padding-top: 15px;">
-
             <mat-form-field>
                 <mat-label>Nome</mat-label>
                 <input matInput placeholder="Nome" [(ngModel)]="filho.nome" name="nome">
@@ -114,9 +111,7 @@
         <mat-row style="height: 10%;" (click)="FilhoSelecionado(row.id)" *matRowDef="let row; columns: Colunas;"
             [ngClass]="{'corLinhaGrid' : row.id == contatoSelecionado}">
         </mat-row>
-
     </table>
-    
-    <mat-paginator #paginator [pageSizeOptions]="[5, 10]" showFirstLastButtons>
-    </mat-paginator>
 </div>
+<mat-paginator #paginator [pageSizeOptions]="[7, 10, 50]" showFirstLastButtons>
+</mat-paginator>

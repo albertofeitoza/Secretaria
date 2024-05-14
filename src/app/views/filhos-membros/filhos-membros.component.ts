@@ -4,7 +4,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Endpoint } from 'src/app/enum/Endpoints';
-import { ApiResponse } from 'src/app/models/ApiResponse';
 import { Pessoa, ViewFilhos } from 'src/app/models/pessoa';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
@@ -18,7 +17,7 @@ export class FilhosMembrosComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-  filhos = new MatTableDataSource<ViewFilhos>([]);
+  filhos = new MatTableDataSource<ViewFilhos>();
 
   filho: ViewFilhos = new ViewFilhos();
   contatoSelecionado: 0;
@@ -42,6 +41,12 @@ export class FilhosMembrosComponent implements OnInit {
   ngOnInit(): void {
     this.CarregarCombos()
   }
+  
+  ngAfterViewInit() {
+    this.filhos.paginator = this.paginator
+    this.filhos.sort = this.sort;
+  }
+  
   private BuscarDados() {
     this.serviceApi.read(Endpoint.Filhos)
       .subscribe((response: ViewFilhos[]) => {
@@ -60,6 +65,7 @@ export class FilhosMembrosComponent implements OnInit {
           filhos.push(filho);
         });
         this.filhos.data = filhos;
+        this.filhos.sort = this.sort
       })
   }
 

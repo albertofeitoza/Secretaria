@@ -11,10 +11,10 @@ import { PopupConfirmacaoComponent } from 'src/app/popups/popup-confirmacao/popu
 import { TipoPopup } from 'src/app/enum/TipoPopup';
 import { Filtros } from 'src/app/models/Filtros';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { TransplantedType } from '@angular/compiler';
 import { CartarecomendacaoComponent } from '../cartarecomendacao/cartarecomendacao.component';
 import { Cartas } from 'src/app/models/Cartas';
 import { FilhosComponent } from '../Modal/filhos/filhos.component';
+import { Sort, MatSortModule } from '@angular/material/sort';
 
 @Injectable()
 
@@ -30,26 +30,25 @@ export class ReadMembrosComponent implements OnInit {
   corLinhaGrid: number = 0
   filtros: Filtros = new Filtros()
   spinner: boolean = false
+  Colunas = ['id', 'rol', 'foto', 'nome', 'dataNascimento', 'funcao', 'statusPessoa', 'action']
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
-  Colunas = ['id', 'rol', 'foto', 'nome', 'dataNascimento', 'funcao', 'statusPessoa', 'action']
   datasource = new MatTableDataSource<Pessoa>();
 
   constructor(
     private serverApi: AllservicesService<any>,
     private serviceUtil: UtilServiceService,
     private route: Router,
-    private activatedRoute : ActivatedRoute
+    private activatedRoute: ActivatedRoute
   ) {
 
   }
   ngOnInit() {
-    
-    if(this.activatedRoute.snapshot.params['nome'] != null)
+
+    if (this.activatedRoute.snapshot.params['nome'] != null)
       this.filtros.txtBusca = this.activatedRoute.snapshot.params['nome'];
-    
+
     this.buscarMembro()
   }
 
@@ -216,7 +215,7 @@ export class ReadMembrosComponent implements OnInit {
       })
   }
 
-  Filhos(id : number){
-    this.serviceUtil.PopupConfirmacao('', TipoPopup.ComponenteInstancia, FilhosComponent,id, '70%', '80%');
+  Filhos(id: number) {
+    this.serviceUtil.PopupConfirmacao('', TipoPopup.ComponenteInstancia, FilhosComponent, id, '70%', '80%');
   }
 }
