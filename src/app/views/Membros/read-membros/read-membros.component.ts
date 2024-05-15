@@ -14,6 +14,8 @@ import { CartarecomendacaoComponent } from '../cartarecomendacao/cartarecomendac
 import { Cartas } from 'src/app/models/Cartas';
 import { FilhosComponent } from '../Modal/filhos/filhos.component';
 import { ControlePresencaComponent } from '../Modal/controle-presenca/controle-presenca.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 
 @Injectable()
 

@@ -72,9 +72,7 @@
             <ng-container matColumnDef="action">
                 <th style="width: auto" mat-header-cell *matHeaderCellDef>Ações</th>
                 <td style="padding-left: 3.5%; height: 21px;width: 25;" mat-cell *matCellDef="let row">
-                    <a (click)="BuscarUsuarioPorId(row.id)" class="edit">
-                        <img style="line-height: unset;" src="./assets/Icons/edit.png" alt="Editar Cadastro">
-                    </a>
+                    <mat-icon matTooltip="Editar Cadastro!" (click)="BuscarUsuarioPorId(row.id)">edit</mat-icon>
                 </td>
             </ng-container>
 

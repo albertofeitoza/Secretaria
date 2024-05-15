@@ -9,20 +9,19 @@
         </mat-select>
     </mat-form-field>
 
-    <a *ngIf="relatorioSelecionado > 0 && imprimir" style="padding-left: 17px;" (click)="Imprimir()" class="edit">
-        <img src="./assets/Icons/Print.png" alt="Impressão do Relatorio">
-    </a>
+    <mat-icon *ngIf="relatorioSelecionado > 0 && imprimir" matTooltip="Imprimir!" (click)="Imprimir()">print</mat-icon>
+
     <div *ngIf="relatorioSelecionado == 1 || relatorioSelecionado == 2">
         <span>
             <h1 *ngIf="relatorioSelecionado == 1">Relatório - Membros Ativos. </h1>
             <h1 *ngIf="relatorioSelecionado == 2">Relatório - Membros Inativos. </h1>
         </span>
-        
+
         <div class="mat-elevation-z4" style="height: 355px;overflow: auto;">
             <table mat-table [dataSource]="relatorioMembrosAtivos" class="mat-elevation-z4 demo-table">
                 <mat-header-row *matHeaderRowDef="ColunasGridMembrosAtivos"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: ColunasGridMembrosAtivos;"></mat-row>
-                
+
                 <ng-container matColumnDef="nome">
                     <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
                     <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
@@ -45,7 +44,7 @@
                     <mat-cell *matCellDef="let row">{{row.validadeCartaoMembro | date : 'dd/MM/yyyy'}}</mat-cell>
                 </ng-container>
             </table>
-            <mat-spinner *ngIf="spinner"></mat-spinner> 
+            <mat-spinner *ngIf="spinner"></mat-spinner>
         </div>
         <h3>Total : {{relatorioMembrosAtivos.length}}</h3>
     </div>
@@ -56,11 +55,11 @@
         </span>
         <div class="mat-elevation-z4" style="height: 125px;overflow: auto;">
             <table mat-table [dataSource]="relatorioIdosos" class="mat-elevation-z4 demo-table">
-          
+
                 <mat-header-row *matHeaderRowDef="ColunasGridRelatorioIdosos"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: ColunasGridRelatorioIdosos;"></mat-row>
                 ['nome', 'endereco', 'ultimaSantaCeia']
-                
+
                 <ng-container matColumnDef="nome">
                     <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
                     <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
@@ -78,7 +77,7 @@
                 </ng-container>
 
             </table>
-            <mat-spinner *ngIf="spinner"></mat-spinner> 
+            <mat-spinner *ngIf="spinner"></mat-spinner>
         </div>
         <h3>Total : {{relatorioIdosos.length }}</h3>
     </div>
@@ -92,7 +91,7 @@
         <div class="mat-elevation-z4" style="height: 140px;overflow: auto;">
 
             <table mat-table [dataSource]="relatorioAniversario" class="mat-elevation-z8 demo-table">
-         
+
                 <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
                 <ng-container matColumnDef="nome">
                     <mat-header-cell *matHeaderCellDef hidden="true">Nome</mat-header-cell>
@@ -113,7 +112,7 @@
 
                 <mat-row *matRowDef="let row; columns: Colunas;"></mat-row>
             </table>
-            <mat-spinner *ngIf="spinner"></mat-spinner> 
+            <mat-spinner *ngIf="spinner"></mat-spinner>
         </div>
 
         <h3>Total : {{totalAniversariantes}}</h3>
@@ -126,7 +125,7 @@
         </span>
         <div class="mat-elevation-z4" style="height: 118px;overflow: auto;">
             <table mat-table [dataSource]="relatorioAniCasamento" class="mat-elevation-z4 demo-table">
-                
+
                 <mat-header-row *matHeaderRowDef="ColunasGridCasamento"></mat-header-row>
 
                 <ng-container matColumnDef="nome">
@@ -151,7 +150,7 @@
                 </ng-container>
                 <mat-row *matRowDef="let row; columns: ColunasGridCasamento;"></mat-row>
             </table>
-            <mat-spinner *ngIf="spinner"></mat-spinner> 
+            <mat-spinner *ngIf="spinner"></mat-spinner>
         </div>
         <h3>Total : {{totalAniversariantesCasamento}}</h3>
     </div>
@@ -176,84 +175,84 @@
                 <ng-container matColumnDef="janeiro">
                     <th mat-header-cell *matHeaderCellDef>JAN</th>
                     <td style="padding-left:1.8%;" *matCellDef="let row">
-                        <img src="./assets/Icons/{{row.janeiro}}.png">
+                        <mat-icon>{{row.janeiro}}</mat-icon>
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="fevereiro">
                     <th mat-header-cell *matHeaderCellDef>FEV</th>
                     <td style="padding-left:2%;" mat-cell *matCellDef="let row">
-                        <img src="./assets/Icons/{{row.fevereiro}}.png">
+                        <mat-icon>{{row.fevereiro}}</mat-icon>
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="marco">
                     <th mat-header-cell *matHeaderCellDef>MAR</th>
                     <td style="padding-left:2%;" mat-cell *matCellDef="let row">
-                        <img src="./assets/Icons/{{row.marco}}.png">
+                        <mat-icon>{{row.marco}}</mat-icon>
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="abril">
                     <th mat-header-cell *matHeaderCellDef>ABR</th>
                     <td style="padding-left:2%;" mat-cell *matCellDef="let row">
-                        <img src="./assets/Icons/{{row.abril}}.png">
+                        <mat-icon>{{row.abril}}</mat-icon>
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="maio">
                     <th mat-header-cell *matHeaderCellDef>MAI</th>
                     <td style="padding-left:1.5%;" mat-cell *matCellDef="let row">
-                        <img src="./assets/Icons/{{row.maio}}.png">
+                        <mat-icon>{{row.maio}}</mat-icon>
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="junho">
                     <th mat-header-cell *matHeaderCellDef>JUN</th>
                     <td style="padding-left:1.5%;" mat-cell *matCellDef="let row">
-                        <img src="./assets/Icons/{{row.junho}}.png">
+                        <mat-icon>{{row.junho}}</mat-icon>
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="julho">
                     <th mat-header-cell *matHeaderCellDef>JUL</th>
                     <td style="padding-left:1.5%;" mat-cell *matCellDef="let row">
-                        <img src="./assets/Icons/{{row.julho}}.png">
+                        <mat-icon>{{row.julho}}</mat-icon>
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="agosto">
                     <th mat-header-cell *matHeaderCellDef>AGO</th>
                     <td style="padding-left:2%;" mat-cell *matCellDef="let row">
-                        <img src="./assets/Icons/{{row.agosto}}.png">
+                        <mat-icon>{{row.agosto}}</mat-icon>
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="setembro">
                     <th mat-header-cell *matHeaderCellDef>SET</th>
                     <td style="padding-left:1.5%;" mat-cell *matCellDef="let row">
-                        <img src="./assets/Icons/{{row.setembro}}.png">
+                        <mat-icon>{{row.setembro}}</mat-icon>
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="outubro">
                     <th mat-header-cell *matHeaderCellDef>OUT</th>
                     <td style="padding-left:1.5%;" mat-cell *matCellDef="let row">
-                        <img src="./assets/Icons/{{row.outubro}}.png">
+                        <mat-icon>{{row.outubro}}</mat-icon>
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="novembro">
                     <th mat-header-cell *matHeaderCellDef>NOV</th>
                     <td style="padding-left:1.5%;" mat-cell *matCellDef="let row">
-                        <img src="./assets/Icons/{{row.novembro}}.png">
+                        <mat-icon>{{row.novembro}}</mat-icon>
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="dezembro">
                     <th mat-header-cell *matHeaderCellDef>DEZ</th>
                     <td style="padding-left:1.7%;" mat-cell *matCellDef="let row">
-                        <img src="./assets/Icons/{{row.dezembro}}.png">
+                        <mat-icon>{{row.dezembro}}</mat-icon>
                     </td>
                 </ng-container>
 
@@ -262,7 +261,7 @@
                     <td style="padding-left:3%;" mat-cell *matCellDef="let row">{{row.participacao}}</td>
                 </ng-container>
             </table>
-            <mat-spinner *ngIf="spinner"></mat-spinner> 
+            <mat-spinner *ngIf="spinner"></mat-spinner>
         </div>
         <h3>Total : {{relatorioPresenca.length}}</h3>
     </div>
@@ -271,12 +270,12 @@
         <span>
             <h1 *ngIf="relatorioSelecionado == 17">Relatório - Batizados </h1>
         </span>
-        
+
         <div class="mat-elevation-z4" style="height: 355px;overflow: auto;">
             <table mat-table [dataSource]="relatorioMembrosAtivos" class="mat-elevation-z4 demo-table">
                 <mat-header-row *matHeaderRowDef="ColunasGridBatizados"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: ColunasGridBatizados;"></mat-row>
-                
+
                 <ng-container matColumnDef="nome">
                     <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
                     <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
@@ -298,7 +297,7 @@
                     <mat-cell *matCellDef="let row">{{row.dataBatismo | date : 'dd/MM/yyyy'}}</mat-cell>
                 </ng-container>
             </table>
-            <mat-spinner *ngIf="spinner"></mat-spinner> 
+            <mat-spinner *ngIf="spinner"></mat-spinner>
         </div>
         <h3>Total : {{relatorioMembrosAtivos.length}}</h3>
     </div>

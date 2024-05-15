@@ -578,11 +578,7 @@
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
           <mat-cell *matCellDef="let row">
-
-            <a (click)="ExcluirCargo(row.id)" class="delete">
-              <img src="./assets/Icons/delete.png" alt="">
-            </a>
-
+            <mat-icon matTooltip="Excluir Cargo!" (click)="ExcluirCargo(row.id)">delete</mat-icon>
           </mat-cell>
         </ng-container>
 

@@ -1,7 +1,7 @@
 <div *ngIf="!isLoggedIn && !esqueciSenha">
     <mat-card class="centralizar">
-        <mat-card-title><i class="material-icons">account_box</i></mat-card-title>
         <form class="classform">
+            <mat-card-title><i class="material-icons">account_circle</i></mat-card-title>
             <mat-form-field>
                 <input matInput placeholder="dominio" [(ngModel)]="sessao.dominio" name="name" placeholder="Igreja">
 
@@ -38,8 +38,9 @@
 <div *ngIf="esqueciSenha">
 
     <mat-card class="centralizar">
-        <mat-card-title><i class="material-icons">account_box</i></mat-card-title>
+        
         <form class="classform">
+            <mat-card-title><i class="material-icons">account_circle</i></mat-card-title>
             <mat-form-field *ngIf="sequenciaTelaReset == 1">
                 <input matInput placeholder="Informe o CPF" [(ngModel)]="dadosResetSenha.cpf" name="name" placeholder="Informe o CPF">
             </mat-form-field>

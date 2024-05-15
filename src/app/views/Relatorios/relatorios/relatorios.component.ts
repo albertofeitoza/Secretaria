@@ -81,18 +81,18 @@ export class RelatoriosComponent implements OnInit {
         trataCamposPresenca = rel
 
         trataCamposPresenca.forEach(element => {
-          element.janeiro = element.janeiro != null ? "Sucesso" : "Erro";
-          element.fevereiro = element.fevereiro != null ? "Sucesso" : "Erro";
-          element.marco = element.marco != null ? "Sucesso" : "Erro";
-          element.abril = element.abril != null ? "Sucesso" : "Erro";
-          element.maio = element.maio != null ? "Sucesso" : "Erro";
-          element.junho = element.junho != null ? "Sucesso" : "Erro";
-          element.julho = element.julho != null ? "Sucesso" : "Erro";
-          element.agosto = element.agosto != null ? "Sucesso" : "Erro";
-          element.setembro = element.setembro != null ? "Sucesso" : "Erro";
-          element.outubro = element.outubro != null ? "Sucesso" : "Erro";
-          element.novembro = element.novembro != null ? "Sucesso" : "Erro";
-          element.dezembro = element.dezembro != null ? "Sucesso" : "Erro";
+          element.janeiro = element.janeiro != null ? "done" : "highlight_off";
+          element.fevereiro = element.fevereiro != null ? "done" : "highlight_off";
+          element.marco = element.marco != null ? "done" : "highlight_off";
+          element.abril = element.abril != null ? "done" : "highlight_off";
+          element.maio = element.maio != null ? "done" : "highlight_off";
+          element.junho = element.junho != null ? "done" : "highlight_off";
+          element.julho = element.julho != null ? "done" : "highlight_off";
+          element.agosto = element.agosto != null ? "done" : "highlight_off";
+          element.setembro = element.setembro != null ? "done" : "highlight_off";
+          element.outubro = element.outubro != null ? "done" : "highlight_off";
+          element.novembro = element.novembro != null ? "done" : "highlight_off";
+          element.dezembro = element.dezembro != null ? "done" : "highlight_off";
 
         });
 

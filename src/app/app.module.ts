@@ -59,6 +59,7 @@ import { HistoricoMembroComponent } from './views/Membros/Modal/historico-membro
 import { ServiceCenterComponent } from './views/service-center/service-center.component';
 import { FilhosComponent } from './views/Membros/Modal/filhos/filhos.component';
 import { FilhosMembrosComponent } from './views/filhos-membros/filhos-membros.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 registerLocaleData(localePt);
 
@@ -121,7 +122,8 @@ registerLocaleData(localePt);
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTooltipModule
   ],
   providers: [
     {

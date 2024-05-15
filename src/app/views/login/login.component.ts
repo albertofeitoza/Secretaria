@@ -45,9 +45,15 @@ export class LoginComponent {
   }
 
   login(event: any) {
-    if (event.which === 13 || event.which == 1) {
-      this.auth.Autenticado(this.sessao)
+    try {
+      if (event.which === 13 || event.which == 1) {
+       this.auth.Autenticado(this.sessao)
+      }  
+    } catch (error) {
+      this.serviceUtil.showMessage(`${error}`,true)
     }
+    
+    
   }
 
   EsqueciSenha(event: any) {

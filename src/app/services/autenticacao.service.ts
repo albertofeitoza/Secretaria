@@ -8,8 +8,9 @@ import { UtilServiceService } from './util-service.service';
 import { Endpoint } from '../enum/Endpoints';
 import { ApiResponse } from '../models/ApiResponse';
 //import * as jwt_decode from 'jwt-decode';
-import {JwtDecodeOptions, JwtHeader, JwtPayload, jwtDecode} from 'jwt-decode';
+import { JwtDecodeOptions, JwtHeader, JwtPayload, jwtDecode } from 'jwt-decode';
 import { TokenResponse } from '../models/token';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -19,11 +20,11 @@ export class AutenticacaoService {
 
   autenticado = new EventEmitter<boolean>();
   token = new EventEmitter<string>();
-  public tipoUsuarioLogado : Number = 0;
+  public tipoUsuarioLogado: Number = 0;
 
   environmentUrl = ''
-  sair : string = "";
-  
+  sair: string = "";
+
   constructor(
     private router: Router,
     private http: HttpClient,
@@ -37,13 +38,9 @@ export class AutenticacaoService {
     try {
       this.logoof()
       this.loginSistema(sessao, Endpoint.Token)
-    
-      
     } catch (error) {
-      console.log("Erro ao acessar a API")
+      console.log(error);
     }
-
-
   }
 
   logoof() {
@@ -53,35 +50,40 @@ export class AutenticacaoService {
   }
 
   loginSistema(T: login, endpoint: string) {
-    
-    this.http.post<ApiResponse>(this.environmentUrl + endpoint, T,).pipe(
-      map(obj => obj),
-      catchError(e => this.utilService.erroHandler(e)),
-    ).subscribe(ret => {
-      if (ret.code === 200) {
-        this.token = ret.data;
-        this.autenticado.emit(true);
-        this.tipoUsuarioLogado = this.getDecodedAccessToken(ret.data)
-        this.router.navigate(['/']);
-        this.utilService.showMessage(ret.mensagem, false)
-      } else
-        this.utilService.showMessage(ret.mensagem, true)
-    })
+    try {
+      this.http.post<ApiResponse>(this.environmentUrl + endpoint, T,).pipe(
+        map(obj => obj),
+        catchError(e => this.utilService.erroHandler(e)),
+      ).subscribe(ret => {
+        if (ret.code === 200) {
+          this.token = ret.data;
+          this.autenticado.emit(true);
+          this.tipoUsuarioLogado = this.getDecodedAccessToken(ret.data)
+          this.router.navigate(['/']);
+          this.utilService.showMessage(ret.mensagem, false)
+        } else
+          this.utilService.showMessage(ret.mensagem, true)
+      }, (erro) => {
+        this.utilService.showMessage(`Problema ao realizar login no sistema, erro: ${erro.message}`, true)
+      })
+    } catch (error) {
+      this.utilService.showMessage(`Api indisponível ${error}`, true)
+    }
   }
 
-  Header(filtros : string = ""){
+  Header(filtros: string = "") {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.token}`,
-      'filtros' : `${filtros}`
+      'filtros': `${filtros}`
     });
-    
+
     return { headers: headers };
   }
 
-  HeaderForFile(fileName : string){
+  HeaderForFile(fileName: string) {
     const headers = new HttpHeaders({
-      'filename' : fileName,
+      'filename': fileName,
       'Authorization': `Bearer ${this.token}`
     });
     return { headers: headers };
@@ -90,7 +92,7 @@ export class AutenticacaoService {
   getDecodedAccessToken(token: string): any {
     try {
       return Number(jwtDecode<TokenResponse>(token).unique_name[1])
-    } catch(Error) {
+    } catch (Error) {
       return null;
     }
   }
