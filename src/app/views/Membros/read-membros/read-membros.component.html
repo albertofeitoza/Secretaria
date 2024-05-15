@@ -6,11 +6,15 @@
     <a style="position: absolute;">
       Inativos
       <input name="inativos" [(ngModel)]="filtros.inativos" [checked]="filtros.inativos" type="checkbox"
-        (change)="Filtros($event)">
+        (change)="Filtros($event)" (click)="filtros.clicado = 1">
 
       Pré Cadastro
       <input name="precadastro" [(ngModel)]="filtros.precadastro" [checked]="filtros.precadastro" type="checkbox"
-        (change)="Filtros($event)">
+        (change)="Filtros($event)" (click)="filtros.clicado = 2">
+
+      Obreiros
+      <input name="obreiros" [(ngModel)]="filtros.obreiros" [checked]="filtros.obreiros" type="checkbox"
+        (change)="Filtros($event)" (click)="filtros.clicado = 3">
     </a>
 
     <!-- <mat-spinner style="width: 10%;height: 8%;" *ngIf="spinner"> Aguarde! </mat-spinner> -->

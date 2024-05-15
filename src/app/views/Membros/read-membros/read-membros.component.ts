@@ -14,7 +14,7 @@ import { CartarecomendacaoComponent } from '../cartarecomendacao/cartarecomendac
 import { Cartas } from 'src/app/models/Cartas';
 import { FilhosComponent } from '../Modal/filhos/filhos.component';
 import { ControlePresencaComponent } from '../Modal/controle-presenca/controle-presenca.component';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 
 @Injectable()
@@ -67,6 +67,7 @@ export class ReadMembrosComponent implements OnInit {
   buscarMembro() {
     try {
       this.spinner = true
+
       this.serverApi.read(Endpoint.Pessoa)
         .subscribe(response => {
           response = response.sort()
@@ -89,11 +90,17 @@ export class ReadMembrosComponent implements OnInit {
                       : !this.filtros.inativos && this.filtros.precadastro && this.filtros.txtBusca.length > 0
                         ? response.filter(f => f.statusPessoa == 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
 
-                        //Geral
-                        : !this.filtros.inativos && !this.filtros.precadastro && this.filtros.txtBusca.length > 0
-                          ? response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+                        : !this.filtros.inativos && !this.filtros.precadastro && this.filtros.obreiros && this.filtros.txtBusca.length == 0
+                          ? response.filter(f => f.funcao != "Membro" && f.statusPessoa != "Inativo")
 
-                          : response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro');
+                          : !this.filtros.inativos && !this.filtros.precadastro && this.filtros.obreiros && this.filtros.txtBusca.length > 0
+                            ? response.filter(f => f.funcao != 'Membro' && f.statusPessoa != "Inativo" && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+
+                            //Geral
+                            : !this.filtros.inativos && !this.filtros.precadastro && !this.filtros.obreiros && this.filtros.txtBusca.length > 0
+                              ? response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+
+                              : response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro');
 
           this.spinner = false;
 
@@ -184,6 +191,20 @@ export class ReadMembrosComponent implements OnInit {
     if (keyEvent.which === 13 || keyEvent.which === 1 || keyEvent.type == 'change') {
       this.filtros.txtBusca = (<HTMLSelectElement>document.getElementById('txtBusca')).value;
 
+      if (this.filtros.clicado == 1) {
+        this.filtros.precadastro = false
+        this.filtros.obreiros = false
+      } else if (this.filtros.clicado == 2) {
+        this.filtros.inativos = false
+        this.filtros.obreiros = false
+      } else if (this.filtros.clicado == 3) {
+        this.filtros.inativos = false
+        this.filtros.precadastro = false
+      } else {
+        this.filtros.inativos = false
+        this.filtros.precadastro = false
+        this.filtros.obreiros = false
+      }
       this.buscarMembro()
     }
   }
@@ -220,9 +241,9 @@ export class ReadMembrosComponent implements OnInit {
     this.serviceUtil.PopupConfirmacao('', TipoPopup.ComponenteInstancia, FilhosComponent, id, '70%', '80%');
   }
 
-  public JustificarPresenca(id : number): void {
-    
-    
+  public JustificarPresenca(id: number): void {
+
+
     this.serviceUtil.PopupConfirmacao('', TipoPopup.ComponenteInstancia, ControlePresencaComponent, id, '70%', '35%');
-  } 
+  }
 }
