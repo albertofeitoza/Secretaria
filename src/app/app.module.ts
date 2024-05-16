@@ -60,6 +60,7 @@ import { ServiceCenterComponent } from './views/service-center/service-center.co
 import { FilhosComponent } from './views/Membros/Modal/filhos/filhos.component';
 import { FilhosMembrosComponent } from './views/filhos-membros/filhos-membros.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSortModule } from '@angular/material/sort';
 
 registerLocaleData(localePt);
 
@@ -123,7 +124,9 @@ registerLocaleData(localePt);
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressSpinnerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSortModule
+
   ],
   providers: [
     {

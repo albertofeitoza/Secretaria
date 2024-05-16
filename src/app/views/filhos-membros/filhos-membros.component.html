@@ -1,15 +1,26 @@
 <div class="center">
     <div class="mat-elevation-z8">
+        
         <div class="titulo">
             <h2>Cadastro de Filhos / Criança</h2>
         </div>
+
+        <div class="menuInternoGrid">
+            <span style="margin-top: 1px;" class="search" (click)="Filtros($event)">
+                <i class="material-icons">search</i>
+            </span>
+            <input style="margin-top: 1px;" id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)" value="" />
+        </div>
+        <br />
+        <!-- Criar a busca por nome -->
+
         <div style="padding-top: 15px;">
-            <mat-form-field>
+            <mat-form-field style="width: 280px;">
                 <mat-label>Nome</mat-label>
                 <input matInput placeholder="Nome" [(ngModel)]="filho.nome" name="nome">
             </mat-form-field>
 
-            <mat-form-field color="accent" style="width: 213px;">
+            <mat-form-field color="accent" style="width: 170px;">
                 <mat-label>Data de Nascimento</mat-label>
                 <input matInput [matDatepicker]="dataNascimento" [(ngModel)]="filho.dataNascimento"
                     name="dataNascimento">
@@ -17,7 +28,7 @@
                 <mat-datepicker #dataNascimento></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field style="width: 130px;" >
                 <mat-label>É Membro?</mat-label>
                 <mat-select [(value)]="filhoMembro" placeholder="É Membro">
                     <mat-option *ngFor="let sn of simNao" [value]="sn.id">
@@ -45,53 +56,54 @@
             </mat-form-field>
 
             <a>
-                <i class="material-icons" (click)="Adicionar()">save</i>
+                <i style="padding-left: 5px;" class="material-icons" (click)="Adicionar()">save</i>
             </a>
         </div>
     </div>
 </div>
 <br>
 
-<div class="mat-elevation-z8">
-    <table mat-table [dataSource]="filhos" matSort>
+<div class="mat-elevation-z8" style="height:73%; width: 100%;overflow: auto;">
+    <table mat-table [dataSource]="filhos" matSort class="mat-elevation-z8 demo-table">
         <!-- Id Column -->
 
         <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
+       
         <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
-            <mat-cell id="id" *matCellDef="let row">{{row.id}}</mat-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
         </ng-container>
 
         <!-- rol Column -->
         <ng-container matColumnDef="nome">
-            <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>Nome</mat-header-cell >
             <mat-cell id="dataNascimento" *matCellDef="let row">{{row.nome}}</mat-cell>
         </ng-container>
 
         <!-- rol Column -->
         <ng-container matColumnDef="dataNascimento">
-            <mat-header-cell *matHeaderCellDef>Data de Nascimento</mat-header-cell>
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>Data Nasc.</mat-header-cell>
             <mat-cell id="dataNascimento" *matCellDef="let row">{{row.dataNascimento | date : 'dd/MM/yyyy'}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="membro">
-            <mat-header-cell *matHeaderCellDef>É Membro?</mat-header-cell>
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>É Membro?</mat-header-cell>
             <mat-cell mat-cell id="membro" *matCellDef="let row">{{row.membro}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="idPai">
-            <mat-header-cell *matHeaderCellDef>Nome Pai</mat-header-cell>
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>Nome Pai</mat-header-cell>
             <mat-cell mat-cell id="pai" *matCellDef="let row">{{row.idPai}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="idMae">
-            <mat-header-cell *matHeaderCellDef>Nome Mãe</mat-header-cell>
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>Nome Mãe</mat-header-cell>
             <mat-cell mat-cell id="mae" *matCellDef="let row">{{row.idMae}}</mat-cell>
         </ng-container>
 
         <!-- Coluna de Ações -->
         <ng-container matColumnDef="action">
-            <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+            <mat-header-cell mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
             <mat-cell *matCellDef="let row">
 
                 <a (click)="Editar(row.id)" class="delete">

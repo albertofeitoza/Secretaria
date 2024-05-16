@@ -22,10 +22,11 @@ export class FilhosMembrosComponent implements OnInit {
   filho: ViewFilhos = new ViewFilhos();
   contatoSelecionado: 0;
   simNao: any[];
-  filhoMembro : number = 0;
+  filhoMembro: number = 0;
   ListaPai: any[] = new Array();
   ListaMae: any[] = new Array();
-  pessoas : Pessoa[] = new Array()
+  pessoas: Pessoa[] = new Array()
+  txtBusca: string = "";
   Colunas = ['id', 'nome', 'dataNascimento', 'membro', 'idPai', 'idMae', 'action'];
 
   constructor(
@@ -41,18 +42,21 @@ export class FilhosMembrosComponent implements OnInit {
   ngOnInit(): void {
     this.CarregarCombos()
   }
-  
+
   ngAfterViewInit() {
     this.filhos.paginator = this.paginator
     this.filhos.sort = this.sort;
   }
-  
-  private BuscarDados() {
+
+  private BuscarDados(): void {
     this.serviceApi.read(Endpoint.Filhos)
       .subscribe((response: ViewFilhos[]) => {
 
+        const Response = this.txtBusca.length > 0 
+        ? response.filter(f => f.nome.toLowerCase().includes(this.txtBusca.toLowerCase())) : response
+
         let filhos = new Array();
-        response.forEach(element => {
+        Response.forEach(element => {
 
           let filho: ViewFilhos = new ViewFilhos();
 
@@ -60,8 +64,8 @@ export class FilhosMembrosComponent implements OnInit {
           filho.nome = element.nome;
           filho.dataNascimento = element.dataNascimento;
           filho.membro = element.membro ? 'Sim' : 'Não';
-          filho.idPai = this.pessoas?.filter(x => x.id === Number(element.idPai))?.map(x => x.nome)?.toString(); 
-          filho.idMae = this.pessoas?.filter(x => x.id === Number(element.idMae))?.map(x => x.nome)?.toString();
+          filho.idPai = this.pessoas?.filter(x => x.id === Number(element.idPai))?.map(x => x.nome)?.toString() ?? " ";
+          filho.idMae =  this.pessoas?.filter(x => x.id === Number(element.idMae))?.map(x => x.nome)?.toString()?? " " ;
           filhos.push(filho);
         });
         this.filhos.data = filhos;
@@ -77,9 +81,9 @@ export class FilhosMembrosComponent implements OnInit {
   private CarregarComboPaiMae() {
     this.serviceApi.read(Endpoint.Pessoa)
       .subscribe((result: Pessoa[]) => {
-        
+
         this.pessoas = result;
-        
+
         result.forEach(res => {
 
           const extracao = {
@@ -103,13 +107,13 @@ export class FilhosMembrosComponent implements OnInit {
     if (this.filho.nome && this.filho.dataNascimento && this.filhoMembro > 0) {
 
       const body = {
-        id : this.filho.id,
+        id: this.filho.id,
         dataCriacao: new Date,
         nome: this.filho.nome,
         dataNascimento: this.filho.dataNascimento,
-        membro: this.filhoMembro == 1  ? true : false,
-        idPai : this.filho.idPai ? Number(this.filho.idPai) : null,
-        idMae : this.filho.idMae ? Number(this.filho.idMae) : null
+        membro: this.filhoMembro == 1 ? true : false,
+        idPai: this.filho.idPai ? Number(this.filho.idPai) : null,
+        idMae: this.filho.idMae ? Number(this.filho.idMae) : null
       }
 
       this.serviceApi.create(body, Endpoint.Filhos)
@@ -127,9 +131,9 @@ export class FilhosMembrosComponent implements OnInit {
   Editar(id: string) {
 
     this.serviceApi.readById(id, Endpoint.Filhos)
-    .subscribe((result : any) => {
-        if(result){
-          
+      .subscribe((result: any) => {
+        if (result) {
+
           this.filho.id = result.id;
           this.filho.dataNascimento = result.dataNascimento;
           this.filhoMembro = result.membro ? 1 : 2;
@@ -137,20 +141,28 @@ export class FilhosMembrosComponent implements OnInit {
           this.filho.idMae = result.idMae;
           this.filho.idPai = result.idPai;
         }
-    });
+      });
   }
 
   Excluir(id: number) {
 
-    this.serviceApi.create(id, Endpoint.Filhos +'/excluir')
-    .subscribe(() => {
+    this.serviceApi.create(id, Endpoint.Filhos + '/excluir')
+      .subscribe(() => {
         this.serviceUtil.showMessage('Cadastro realizado com sucesso!', false)
         this.BuscarDados();
-    });
+      });
 
   }
 
   FilhoSelecionado(id: number) {
 
+  }
+
+  public Filtros(keyEvent: any): void {
+    if (keyEvent.which === 13 || keyEvent.which === 1) {
+      this.txtBusca = (<HTMLSelectElement>document.getElementById('txtBusca')).value;
+
+      this.BuscarDados();
+    }
   }
 }
