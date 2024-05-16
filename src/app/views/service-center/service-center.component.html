@@ -1,7 +1,7 @@
-<div *ngIf="tipoUsuario === 1 || tipoUsuario === 2" class="row centralizar">
+<div style="display: inline-flex;" *ngIf="tipoUsuario === 1 || tipoUsuario === 2" class="row centralizar">
     Seja Bem vindo ao ServiceCenter.
-    <mat-icon style="padding-left: 3px;" *ngIf="datasource.data.length > 0"  matTooltip="Existem Pendências para serem resolvidas.">info</mat-icon>
-    <mat-icon style="padding-left: 3px;" *ngIf="datasource.data.length == 0"  matTooltip="Não Existem Pendências, parabéns pelo trabalho.">thumb_up_alt</mat-icon>
+    <mat-icon style="padding-left: 3px; padding-top: 3px;" *ngIf="datasource.data.length > 0"  matTooltip="Existem Pendências para serem resolvidas.">info</mat-icon>
+    <mat-icon style="padding-left: 3px; padding-top: 3px;" *ngIf="datasource.data.length == 0"  matTooltip="Não Existem Pendências, parabéns pelo trabalho.">thumb_up_alt</mat-icon>
 </div>
 
 <br />
