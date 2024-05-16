@@ -1,3 +1,37 @@
-<div class="row centralizar">
+<div *ngIf="tipoUsuario === 1 || tipoUsuario === 2" class="row centralizar">
     Seja Bem vindo ao ServiceCenter.
+    <mat-icon style="padding-left: 3px;" *ngIf="datasource.data.length > 0"  matTooltip="Existem Pendências para serem resolvidas.">info</mat-icon>
+    <mat-icon style="padding-left: 3px;" *ngIf="datasource.data.length == 0"  matTooltip="Não Existem Pendências, parabéns pelo trabalho.">thumb_up_alt</mat-icon>
 </div>
+
+<br />
+
+<div *ngIf="datasource.data.length > 0" class="mat-elevation-z4" style="height:73%; width: 100%; overflow: auto;padding-top: 3%;">
+    <table mat-table [dataSource]="datasource" matSort class="mat-elevation-z8 demo-table">
+        <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
+        <!-- Id Column -->
+        <ng-container matColumnDef="id">
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+            <mat-cell mat-cell id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
+        </ng-container>
+        <!-- rol Column -->
+        <ng-container matColumnDef="nomeMembro">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Nome Pessoa</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.nomeMembro}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="departamento">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Departamento</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.departamento}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="nomePendencia">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Erro <mat-icon>info</mat-icon> </mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.nomePendencia}}</mat-cell>
+        </ng-container>
+
+        <mat-row style="height: 10%;" *matRowDef="let row; columns: Colunas;"></mat-row>
+    </table>
+</div>
+<mat-paginator #paginator [pageSize]="8" [pageSizeOptions]="[8, 50, 100]" showFirstLastButtons>
+</mat-paginator>

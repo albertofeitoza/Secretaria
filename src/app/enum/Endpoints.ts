@@ -17,6 +17,7 @@ export enum Endpoint {
     RelatoriosCartas = '/Relatorios/Cartas',
     UploadArquivo = '/File/FotoPerfil',
     RemoverFotoperfil = '/File/FotoPerfilRemover',
+    ServiceCenter = '/ServiceCenter',
     DownloadArquivo = '/File/DownloadArquivo',
     cep = 'https://viacep.com.br/ws/{0}/json',
 
