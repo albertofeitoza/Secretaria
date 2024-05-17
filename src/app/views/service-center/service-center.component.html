@@ -10,9 +10,10 @@
     <table mat-table [dataSource]="datasource" matSort class="mat-elevation-z8 demo-table">
         <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
         <!-- Id Column -->
+        
         <ng-container matColumnDef="id">
-            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
-            <mat-cell mat-cell id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
+            <mat-header-cell style="display: none;" *matHeaderCellDef hidden="true">Id</mat-header-cell>
+            <mat-cell style="display: none;" id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
         </ng-container>
         <!-- rol Column -->
         <ng-container matColumnDef="nomeMembro">
@@ -21,17 +22,16 @@
         </ng-container>
 
         <ng-container matColumnDef="departamento">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Departamento</mat-header-cell>
-            <mat-cell *matCellDef="let row">{{row.departamento}}</mat-cell>
+            <mat-header-cell style="width: 2%;" *matHeaderCellDef mat-sort-header>Departamento</mat-header-cell>
+            <mat-cell style="width: 2%;" *matCellDef="let row">{{row.departamento}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="nomePendencia">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Erro <mat-icon>info</mat-icon> </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Erro</mat-header-cell>
             <mat-cell *matCellDef="let row">{{row.nomePendencia}}</mat-cell>
         </ng-container>
 
         <mat-row style="height: 10%;" *matRowDef="let row; columns: Colunas;"></mat-row>
     </table>
 </div>
-<mat-paginator #paginator [pageSize]="8" [pageSizeOptions]="[8, 50, 100]" showFirstLastButtons>
-</mat-paginator>
+<mat-paginator #paginator [pageSize]="8" [pageSizeOptions]="[8, 50, 100]" showFirstLastButtons></mat-paginator>
