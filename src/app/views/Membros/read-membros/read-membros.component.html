@@ -35,7 +35,8 @@
     <!-- rol Column -->
     <ng-container matColumnDef="rol">
       <th style="width:7%;" mat-header-cell *matHeaderCellDef mat-sort-header>Rol</th>
-      <td style="width:7%;" mat-cell *matCellDef="let row">{{row.rol}}<td>
+      <td style="width:7%;" mat-cell *matCellDef="let row">{{row.rol}}
+      <td>
     </ng-container>
 
     <ng-container matColumnDef="foto">
@@ -73,15 +74,18 @@
 
     <ng-container matColumnDef="action">
       <th style="width: 14%;" mat-header-cell *matHeaderCellDef>Ações</th>
-      <td style="height: 21px;width: 16%;" mat-cell *matCellDef="let row">
+      <td style="height: 21px;width: 18%;" mat-cell *matCellDef="let row">
         <mat-icon matTooltip="Editar Cadastro!" (click)="AtualizarMembro(row.id)">edit</mat-icon>
         <mat-icon matTooltip="Download da ficha de membro!" *ngIf="!filtros.inativos && !filtros.precadastro"
           (click)="ImprimirFichaMembro(row.id)">download</mat-icon>
         <mat-icon matTooltip="Solicitação de Cartas!" *ngIf="!filtros.inativos && !filtros.precadastro"
           (click)="Cartas(row.id)">mail_outline</mat-icon>
-        <mat-icon matTooltip="Filhos!" *ngIf="!filtros.inativos" (click)="Filhos(row.id)">family_restroom</mat-icon>
-        <mat-icon matTooltip="Justificar Presença!" *ngIf="!filtros.inativos"
+        <mat-icon matTooltip="Filhos!" *ngIf="!filtros.inativos && !filtros.precadastro"
+          (click)="Filhos(row.id)">family_restroom</mat-icon>
+        <mat-icon matTooltip="Justificar Presença!" *ngIf="!filtros.inativos && !filtros.precadastro"
           (click)="JustificarPresenca(row.id)">task_alt</mat-icon>
+        <mat-icon matTooltip="Unificar Cadastro!" *ngIf="!filtros.inativos && !filtros.precadastro"
+          (click)="UnificarCadastro(row.id)">join_left</mat-icon>
         <mat-icon matTooltip="Baixa manual de Membro!" *ngIf="!filtros.inativos"
           (click)="ExcluirMembro(row.id)">delete</mat-icon>
       </td>

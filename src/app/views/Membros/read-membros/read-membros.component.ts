@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, Injectable } from '@angular/core';
-import { Pessoa } from 'src/app/models/pessoa';
+import { Pessoa, UniaoCadastro } from 'src/app/models/pessoa';
 import { MatTableDataSource, _MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -14,6 +14,7 @@ import { CartarecomendacaoComponent } from '../cartarecomendacao/cartarecomendac
 import { Cartas } from 'src/app/models/Cartas';
 import { FilhosComponent } from '../Modal/filhos/filhos.component';
 import { ControlePresencaComponent } from '../Modal/controle-presenca/controle-presenca.component';
+import { UnirCadastroComponent } from '../Modal/unir-cadastro/unir-cadastro.component';
 
 @Injectable()
 
@@ -70,35 +71,31 @@ export class ReadMembrosComponent implements OnInit {
         .subscribe(response => {
           response = response.sort()
           this.datasource.data =
-            this.filtros.inativos && !this.filtros.precadastro && this.filtros.txtBusca.length == 0
+
+            this.filtros.inativos && this.filtros.txtBusca.length == 0
               ? response.filter(f => f.statusPessoa == 'Inativo')
 
-              : !this.filtros.inativos && this.filtros.precadastro && this.filtros.txtBusca.length == 0
-                ? response.filter(f => f.statusPessoa == 'PreCadastro')
+              : this.filtros.inativos && this.filtros.txtBusca.length > 0
+                ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
 
-                : this.filtros.inativos && this.filtros.precadastro && this.filtros.txtBusca.length == 0
-                  ? response.filter(f => f.statusPessoa == 'PreCadastro' || f.statusPessoa == 'Inativo')
+                : this.filtros.precadastro && this.filtros.txtBusca.length == 0
+                  ? response.filter(f => f.statusPessoa == 'PreCadastro')
 
-                  : this.filtros.inativos && this.filtros.precadastro && this.filtros.txtBusca.length > 0
-                    ? response.filter(f => f.statusPessoa == 'PreCadastro' || f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+                  : this.filtros.precadastro && this.filtros.txtBusca.length > 0
+                    ? response.filter(f => f.statusPessoa == 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
 
-                    : this.filtros.inativos && !this.filtros.precadastro && this.filtros.txtBusca.length > 0
-                      ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
 
-                      : !this.filtros.inativos && this.filtros.precadastro && this.filtros.txtBusca.length > 0
-                        ? response.filter(f => f.statusPessoa == 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+                    : this.filtros.obreiros && this.filtros.txtBusca.length == 0
+                      ? response.filter(f => f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro")
 
-                        : !this.filtros.inativos && !this.filtros.precadastro && this.filtros.obreiros && this.filtros.txtBusca.length == 0
-                          ? response.filter(f => f.funcao != "Membro" && f.statusPessoa != "Inativo")
+                      : this.filtros.obreiros && this.filtros.txtBusca.length > 0
+                        ? response.filter(f => f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro" && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
 
-                          : !this.filtros.inativos && !this.filtros.precadastro && this.filtros.obreiros && this.filtros.txtBusca.length > 0
-                            ? response.filter(f => f.funcao != 'Membro' && f.statusPessoa != "Inativo" && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+                        : this.filtros.txtBusca.length > 0
+                          ? response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
 
-                            //Geral
-                            : !this.filtros.inativos && !this.filtros.precadastro && !this.filtros.obreiros && this.filtros.txtBusca.length > 0
-                              ? response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+                          : response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro');
 
-                              : response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro');
 
           this.spinner = false;
 
@@ -244,4 +241,29 @@ export class ReadMembrosComponent implements OnInit {
 
     this.serviceUtil.PopupConfirmacao('', TipoPopup.ComponenteInstancia, ControlePresencaComponent, id, '70%', '35%');
   }
+
+  public UnificarCadastro(id: number): void {
+    this.serviceUtil.PopupConfirmacao('', TipoPopup.ComponenteInstancia, UnirCadastroComponent, id, '75%', '95%')
+      .subscribe(result => {
+        if (result) {
+
+          let dados: UniaoCadastro = new UniaoCadastro()
+          dados.idPessoa = id;
+          dados.idRascunho = result?.id;
+          dados.motivo = result?.motivo
+
+          if (id === dados.idRascunho) {
+            this.serviceUtil.showMessage("Escolha uma pessoa diferente para união dos dados!")
+          } else {
+            this.serverApi.create(dados, `${Endpoint.Pessoa}/uniaoCadastro`)
+              .subscribe(() => {
+                this.serviceUtil.showMessage("Cadastros unificados, não é possível desfazer essa operação!")
+              })
+          }
+        }
+      });
+  }
+
+
+
 }

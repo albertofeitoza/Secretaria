@@ -42,3 +42,10 @@ export class ViewFilhos {
   idPai: string;
   idMae: string;
 }
+
+
+export class UniaoCadastro {
+  idPessoa:   number;
+  idRascunho: number;
+  motivo : string;
+}

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 
 
 
@@ -9,12 +10,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./bem-vindo.component.css']
 })
 export class BemVindoComponent implements OnInit {
-
-  constructor() {
+  tipoUsuario : Number = 0;
+  constructor(private auth : AutenticacaoService) {
     
   }
 
   ngOnInit() {
+    this.tipoUsuario = this.auth.tipoUsuarioLogado
   }
 }
 
