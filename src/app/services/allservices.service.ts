@@ -48,8 +48,11 @@ export class AllservicesService<T> {
 
 
   DownloadCartas(dados : Cartas, endpoint: string) : Observable<any> {
-    const url = `${this.environmentUrl + endpoint}?IdPessoa=${dados.idPessoa}&TipoRelatorio=${dados.tipoRelatorio}&Cidade=${dados.cidade}&Estado=${dados.estado}&IgrejaDestino=${dados.igrejaDestino}`
-    return this.http.get(url, { responseType : 'blob', headers : this.loginService.Header().headers} )
+    const url = `${this.environmentUrl + endpoint}?IdPessoa=${dados.idPessoa}
+    &TipoRelatorio=${dados.tipoRelatorio}&Cidade=${dados.cidade}
+    &Estado=${dados.estado}&IgrejaDestino=${dados.igrejaDestino}&IdNovoPastor=${dados.idNovoPastor}&NomeNovoPastor=${dados.nomeNovoPastor}`
+   
+    return this.http.get(url, { responseType : 'blob', headers : this.loginService.Header().headers})
     .pipe(
       map(res => res)
     )

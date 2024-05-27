@@ -53,7 +53,7 @@ export class ReadMembrosComponent implements OnInit {
   }
 
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.datasource.paginator = this.paginator
     this.datasource.sort = this.sort;
   }
@@ -209,22 +209,23 @@ export class ReadMembrosComponent implements OnInit {
     this.serviceUtil.PopupConfirmacao("Informar os dados", TipoPopup.ComponenteInstancia, CartarecomendacaoComponent, id)
       .subscribe(x => {
 
-        if (x.Status) {
-
+        if (x.Status ) {
+       
           let dados: Cartas = new Cartas();
-          dados = x.data;
-          this.spinner = true;
-          this.serverApi.DownloadCartas(dados, Endpoint.RelatoriosCartas)
-            .subscribe(result => {
-
-              this.serviceUtil.showMessage("Aguarde o Download.", false);
-              //this.serviceUtil.Imprimir(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `Carta_${id.toString()}.docx`);
-              this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `Carta${id.toString()}.docx`);
-              this.spinner = false;
-            },
-              (error) => {
-                this.serviceUtil.showMessage("Não foi possível baixar a Carta , verifique o cadastro", true);
-              });
+            dados = x.data;
+     
+            this.spinner = true;
+            this.serverApi.DownloadCartas(dados, Endpoint.RelatoriosCartas)
+              .subscribe(result => {
+  
+                this.serviceUtil.showMessage("Aguarde o Download.", false);
+                this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `Carta${id.toString()}.docx`);
+                this.spinner = false;
+              },
+                (error) => {
+                  this.serviceUtil.showMessage("Não foi possível baixar a Carta , verifique o cadastro", true);
+                });
+          
         }
         else {
           this.serviceUtil.showMessage("Informações ignoradas", false)

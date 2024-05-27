@@ -18,7 +18,9 @@ export class CartarecomendacaoComponent implements OnInit {
   dados: Pessoa = new Pessoa();
   relatorioSelecionado: number = 0;
   comboCartas: any[]
+  PastorIgreja = false;
   dadosSolicitacao: Cartas = new Cartas()
+  pessoas: ViewPessoa[] = new Array()
 
   constructor(private serviceUtil: UtilServiceService,
     public dialogRef: MatDialogRef<CartarecomendacaoComponent>,
@@ -34,14 +36,22 @@ export class CartarecomendacaoComponent implements OnInit {
 
   CarregaCombos() {
     this.comboCartas = this.serviceUtil.TipoCartas()
+    this.BuscaObreiros();
   }
 
   BuscarPessoa() {
     this.serviceApi.readById(this.dialogRef.id, Endpoint.Pessoa)
       .subscribe(p => {
-        this.dados = p.data.pessoa
-
+        this.dados = p.data.pessoa;
+        this.PastorIgreja = p.data.pessoa.id === p.data.igreja.idPastorResponsavel ? true : false;
       })
+  }
+
+  private BuscaObreiros(): void {
+    this.serviceApi.read(Endpoint.Pessoa)
+      .subscribe((result: ViewPessoa[]) => {
+        this.pessoas = result.filter(f => f.funcao != 'Membro' && f.funcao != 'PreCadastro' && f.id != this.dados.id);
+      });
   }
 
   FecharPopup(confirm: boolean) {
@@ -63,6 +73,7 @@ export class CartarecomendacaoComponent implements OnInit {
         this.resposta.Status = true;
         this.dadosSolicitacao.idPessoa = Number(this.dialogRef.id);
         this.dadosSolicitacao.tipoRelatorio = this.relatorioSelecionado;
+        this.dadosSolicitacao.nomeNovoPastor = this.pessoas.filter(x => x.id == this.dadosSolicitacao.idNovoPastor).map(x => x.nome).toString();
         this.resposta.data = this.dadosSolicitacao
         this.dialogRef.close(this.resposta);
       }

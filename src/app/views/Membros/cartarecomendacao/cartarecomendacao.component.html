@@ -30,20 +30,56 @@
             </mat-form-field>
         </div>
 
-        <div *ngIf="relatorioSelecionado >= 15 && relatorioSelecionado <= 16 ">
+        <div *ngIf="relatorioSelecionado >= 15 && relatorioSelecionado <= 16 && !PastorIgreja">
             <mat-form-field>
                 <mat-label>Nome da Igreja Destino</mat-label>
                 <input matInput placeholder="Informe o nome da Igreja Destino"
                     [(ngModel)]="dadosSolicitacao.igrejaDestino" name="igreja">
             </mat-form-field>
         </div>
+
+        <div *ngIf="relatorioSelecionado >= 15 && relatorioSelecionado <= 16 && PastorIgreja">
+
+            <mat-form-field>
+                <mat-label>Nome da Igreja Destino</mat-label>
+                <input matInput placeholder="Nome da Igreja Destino"
+                    [(ngModel)]="dadosSolicitacao.igrejaDestino" name="igreja">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Novo pastor da igreja</mat-label>
+                <mat-select [(value)]="dadosSolicitacao.idNovoPastor" placeholder="Novo pastor da igreja">
+                    <mat-option *ngFor="let pe of pessoas" [value]="pe.id">
+                        {{pe.nome}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
         <br />
 
     </div>
-    <div *ngIf="relatorioSelecionado >= 15 && relatorioSelecionado <= 16 ">
-        <label>
-            Obs:  Em caso de carta de Mudança, a baixa do Membro é automática <br />
+
+    <div *ngIf="relatorioSelecionado >= 15 && relatorioSelecionado <= 16 && PastorIgreja ">
+        <label style="background-color: chartreuse;">
+            Obs: Em caso de Mudança do pastor da igreja, além da baixa automática do cadastro,
+            se faz necessário informar
+            <br />
+            o nome do novo pastor da igreja.
+            <div style="text-align: center;">
+                Tem certeza que quer emitir a carta de mudança ?
+            </div>
+        </label>
+    </div>
+
+
+    <div *ngIf="relatorioSelecionado >= 15 && relatorioSelecionado <= 16 && !PastorIgreja ">
+        <label style="background-color: chartreuse;">
+            Obs: Em caso de carta de Mudança, a baixa do Membro é automática <br />
             e em caso de carta de mudança de Casal a baixa será realizada do casal.
+
+            <div style="text-align: center;">
+                Tem certeza que quer emitir a carta de mudança ?
+            </div>
 
         </label>
     </div>
@@ -53,18 +89,24 @@
                 cancel
             </i>
         </a>
-        <a *ngIf="dadosSolicitacao.cidade != undefined && dadosSolicitacao.estado != undefined && relatorioSelecionado >= 13 && relatorioSelecionado <= 14"
+        <a *ngIf="dadosSolicitacao.cidade && dadosSolicitacao.estado && relatorioSelecionado >= 13 && relatorioSelecionado <= 14"
             (click)="FecharPopup(true)">
             <i class="material-icons icones">
                 thumb_up_alt
             </i>
         </a>
-        <a *ngIf="dadosSolicitacao.igrejaDestino != undefined && relatorioSelecionado >= 15 && relatorioSelecionado <= 16"
+        <a *ngIf="dadosSolicitacao.igrejaDestino && relatorioSelecionado >= 15 && relatorioSelecionado <= 16 && !PastorIgreja"
             (click)="FecharPopup(true)">
             <i class="material-icons icones">
                 thumb_up_alt
             </i>
         </a>
 
+        <a *ngIf="dadosSolicitacao.igrejaDestino && dadosSolicitacao.idNovoPastor > 0 && relatorioSelecionado >= 15 && relatorioSelecionado <= 16 && PastorIgreja"
+            (click)="FecharPopup(true)">
+            <i class="material-icons icones">
+                thumb_up_alt
+            </i>
+        </a>
     </mat-card-content>
 </div>

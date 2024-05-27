@@ -159,7 +159,7 @@ export class CadastroMembrosComponent {
             this.pessoa.cpf = this.pessoa.cpf != undefined ? this.pessoa.cpf.toString() : this.pessoa.cpf
             this.pessoa.rg = this.pessoa.rg != undefined ? this.pessoa.rg.toString() : this.pessoa.rg
             this.pessoa.dataCasamento = this.pessoa.estadoCivil == 1 || this.pessoa.estadoCivil > 4 ? undefined : this.pessoa.dataCasamento
-
+            this.pessoa.igrejaId = this.igreja.id
             //Atualizando dados de Pessoa
             if (this.ValidarPessoa()) {
               this.serverApi.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
