@@ -46,7 +46,7 @@ export class CadastroMembrosComponent {
   foto: FormData = new FormData()
   filtros: Filtros = new Filtros()
   logs: Logs[] = new Array()
-  filhos : ViewFilhos = new ViewFilhos()
+  filhos: ViewFilhos = new ViewFilhos()
   situacaoCache: number = 0
 
   //--------------
@@ -55,7 +55,7 @@ export class CadastroMembrosComponent {
 
   Colunas = ['id', 'ddd', 'telefone', 'celular', 'email', 'action']
   ColunasCargos = ['id', 'cargo', 'noCargoDesde', 'noCargoAte', 'action']
-  ColunasHistoricoObreiro = ['id', 'pastorApresentador', 'pastorRegional', 'local', 'funcao', 'entradaFuncao', 'dataEntradaFuncao', 'dataSaidaFuncao', 'reintegrado', 'reintegradoEm', 'aprovado']
+  ColunasHistoricoObreiro = ['id', 'pastorApresentador', 'pastorRegional', 'local', 'funcao', 'entradaFuncao', 'dataEntradaFuncao', 'dataSaidaFuncao', 'reintegrado', 'reintegradoEm', 'aprovado', 'action']
   colunasLogs = ['data', 'descricao']
 
   // ----------------
@@ -92,15 +92,15 @@ export class CadastroMembrosComponent {
       this.fotoPerfil = "";
       this.serverApi.readById(id.toString(), Endpoint.Pessoa)
         .subscribe(response => {
-          this.pessoa = response.data.pessoa != null ? response.data.pessoa : new Pessoa();
-          this.igreja = response.data.pessoa.igreja != null ? response.data.pessoa.igreja : new igreja();
-          this.endereco = response.data.pessoaEndereco != null ? response.data.pessoaEndereco : this.endereco = new PessoaEndereco();
-          this.contatos = response.data.contatos
+          this.pessoa = response?.data?.pessoa != null ? response?.data?.pessoa : new Pessoa();
+          this.igreja = response?.data?.pessoa?.igreja != null ? response?.data?.pessoa?.igreja : new igreja();
+          this.endereco = response?.data?.pessoaEndereco != null ? response?.data?.pessoaEndereco : this.endereco = new PessoaEndereco();
+          this.contatos = response?.data?.contatos
           this.dadosMembro = response?.data?.dadosMembro != null ? response?.data?.dadosMembro : this.dadosMembro = new DadosMembro()
           this.funcaoMembroCache = response?.data?.dadosMembro?.funcao
           this.situacaoCache = response?.data?.pessoa?.statusPessoa
-          this.cargos = response.data.cargos
-          this.dadosObreiro = response.data?.dadosObreiro != null ? response.data.dadosObreiro : this.dadosObreiro = new DadosObreiro()
+          this.cargos = response?.data?.cargos
+          this.dadosObreiro = response.data?.dadosObreiro != null ? response?.data?.dadosObreiro : this.dadosObreiro = new DadosObreiro()
           this.historicos = response?.data?.historicoObreiro
           this.logs = response?.data?.logs;
           this.filhos = response?.data?.filhos
@@ -291,14 +291,15 @@ export class CadastroMembrosComponent {
     return result;
   }
 
-  AlteraFuncao() {
-    if (this.dadosMembro.funcao > 1 && this.ValidarDadosMembro()) {
+  AlteraFuncao(aprovado: boolean, idHistorico: number = 0) {
 
-      this.serviceUtil.PopupConfirmacao("Informar os dados", TipoPopup.ComponenteInstancia, HistoricoPopupComponent)
-        .subscribe(x => {
+    if (this.ValidarDadosMembro()) {
 
-          if (x.Status) {
-            this.historico = x.data
+      this.serviceUtil.PopupConfirmacao("Informar os dados", TipoPopup.ComponenteInstancia, HistoricoPopupComponent, idHistorico, 'auto', 'auto', false, aprovado)
+        .subscribe(result => {
+
+          if (result && result.Status) {
+            this.historico = result.data
 
             if (this.dadosObreiro.id == 0) {
               this.dadosObreiro.id = 0;
@@ -309,7 +310,6 @@ export class CadastroMembrosComponent {
                   this.dadosObreiro = x;
                   this.historico.dadosObreiroId = x.id
                   this.AdicionarFuncaoObreiro();
-                  this.funcaoMembroCache = x.funcao;
                   this.serviceUtil.showMessage("Obreiro cadastrado com sucesso.", false)
                 });
 
@@ -318,13 +318,17 @@ export class CadastroMembrosComponent {
               this.serviceUtil.showMessage("Obreiro alterado com sucesso.", false)
             }
 
-          }
-          else {
+          } else {
             this.serviceUtil.showMessage("Informações ignoradas", false)
+
             this.dadosMembro.funcao = this.serviceUtil.Funcao().filter(x => x.id == this.funcaoMembroCache)[0].id
           }
         })
     }
+  }
+
+  public AtualizarFuncao(id: number): void {
+    this.AlteraFuncao(true, id);
   }
 
   AlteraSituacao() {
@@ -358,27 +362,12 @@ export class CadastroMembrosComponent {
       this.historico.dadosObreiroId = this.dadosObreiro.id;
       this.historico.funcao = this.dadosMembro.funcao;
 
-
-      this.serverApi.create(this.historico, Endpoint.HistoricoObreiro).subscribe(() => {
-
-        this.serverApi.read(Endpoint.HistoricoObreiro)
-          .subscribe(his => {
-            let retorno = his.filter(x => x.dadosObreiroId == this.dadosObreiro.id);
-            retorno?.forEach(x => {
-              x.reintegrado = x.reintegrado ? "Sim" : "Não"
-              x.aprovado = x.aprovado ? "Sim" : "Não"
-              x.funcao = this.serviceUtil.Funcao().filter(xr => xr.id == x.funcao).map(x => x.value)
-              x.entradaFuncao = this.serviceUtil.EntradaFuncao().filter(ef => ef.id == x.entradaFuncao).map(x => x.value)
-            });
-
-            this.historicos = retorno
-            this.funcaoMembroCache = this.dadosMembro.funcao;
-          })
-      })
-
+      this.serverApi.create(this.historico, Endpoint.HistoricoObreiro)
+        .subscribe(() => {
+          this.BuscarMembro();
+        })
     }
   }
-
 
   processFile(event: any) {
 
@@ -398,16 +387,20 @@ export class CadastroMembrosComponent {
   }
 
   RemoverFoto(idPessoa: any) {
-
-    this.serverApi.readById(idPessoa, Endpoint.RemoverFotoperfil)
-      .subscribe(() => {
-        this.serviceUtil.showMessage("Imagem removida com sucesso!", false);
-        this.BuscarMembro()
-      })
-
-
+    this.serviceUtil.PopupConfirmacao("Deseja excluir a foto de perfil ? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
+      .subscribe(result => {
+        if (result.Status) {
+          this.serverApi.readById(idPessoa, Endpoint.RemoverFotoperfil)
+            .subscribe(() => {
+              this.serviceUtil.showMessage("Imagem removida com sucesso!", false);
+              this.BuscarMembro()
+            })
+        }
+      },
+        (error) => {
+          this.serviceUtil.showMessage("Problema pra excluir a foto do usuário!.", false);
+        });
   }
-
 
   BuscaCep(event: any) {
     try {
@@ -470,14 +463,13 @@ export class CadastroMembrosComponent {
   }
 
   ExcluirContato(id: any) {
-    
-    let body = {id : id,acao : "excluir"};
 
-    this.serverApi.create(body, Endpoint.Contatos+'/Excluir').subscribe(x =>{
+    let body = { id: id, acao: "excluir" };
+
+    this.serverApi.create(body, Endpoint.Contatos + '/Excluir').subscribe(x => {
       this.serviceUtil.showMessage("Contato Excluido com sucesso!")
       this.BuscarContatos()
     });
-      
   }
 
   EditarContato(id: any) {
@@ -522,8 +514,7 @@ export class CadastroMembrosComponent {
 
   ExcluirCargo(id: any) {
 
-
-    let body = {id : id,acao : "excluir"};
+    let body = { id: id, acao: "excluir" };
 
     this.serverApi.create(body, Endpoint.Cargos + "/Excluir")
       .subscribe(x => {
@@ -552,8 +543,4 @@ export class CadastroMembrosComponent {
   AtualizarHistorico(id: any) {
 
   }
-
-
-
-
 }

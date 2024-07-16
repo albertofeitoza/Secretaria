@@ -98,12 +98,12 @@
 
         <mat-form-field>
           <mat-label>CPF Conjuje</mat-label>
-          <input matInput placeholder="CPF Conjuje" [(ngModel)]="pessoa.cpfConjuge" name="cpfConjuge" (keypress)="BuscarConjuje($event)">
+          <input matTooltip="Informe o Cpf e pressione Enter" matInput placeholder="CPF Conjuje" [(ngModel)]="pessoa.cpfConjuge" name="cpfConjuge" (keypress)="BuscarConjuje($event)">
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Nome do Conjuge</mat-label>
-          <input disabled="true" matInput placeholder="Nome do Conjuge" [(ngModel)]="pessoa.nomeConjuge" name="nomeConjuge">
+          <input matInput placeholder="Nome do Conjuge" [(ngModel)]="pessoa.nomeConjuge" name="nomeConjuge">
         </mat-form-field>
 
         <mat-form-field color="accent" style="width: 213px;">
@@ -450,7 +450,7 @@
 
       <mat-form-field>
         <mat-label>Função</mat-label>
-        <mat-select [(value)]="dadosMembro.funcao" (selectionChange)="AlteraFuncao()" placeholder="Função">
+        <mat-select [(value)]="dadosMembro.funcao" (selectionChange)="AlteraFuncao(false)" placeholder="Função">
           <mat-option *ngFor="let ec of funcao" [value]="ec.id">
             {{ec.value}}
           </mat-option>
@@ -626,7 +626,7 @@
     <!-- ocorrencias -->
 
   </mat-expansion-panel>
-  <mat-expansion-panel *ngIf="pessoa.id > 0 && dadosMembro.funcao > 1 && dadosMembro.id > 0" [expanded]="step === 4" (opened)="setStep(4)"
+  <mat-expansion-panel *ngIf="dadosObreiro && historicos.length > 0" [expanded]="step === 4" (opened)="setStep(4)"
     hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -651,7 +651,7 @@
 
         <mat-form-field>
           <mat-label>Frequenta Doutrina/Ensino.</mat-label>
-          <input style="height: 20px; width: 150px;" matInput placeholder="Frequenta Doutrina/Ensino.">
+          <input style="height: 20px; width: 155px;" matInput placeholder="Frequenta Doutrina/Ensino.">
           <input name="frequentaDoutrinaEnsinamento" [(ngModel)]="dadosObreiro.frequentaDoutrinaEnsinamento"
             [checked]="dadosObreiro.frequentaDoutrinaEnsinamento" type="checkbox">
         </mat-form-field>
@@ -676,6 +676,13 @@
           <input name="possuiProtestos" [(ngModel)]="dadosObreiro.cartaoProvisorio"
             [checked]="dadosObreiro.cartaoProvisorio" type="checkbox">
         </mat-form-field>
+       
+        <mat-form-field>
+          <mat-label>Observação</mat-label>
+          <input matInput placeholder="Observação" [(ngModel)]="dadosObreiro.observacao"
+            name="observacao">
+        </mat-form-field>
+
         <br>
       </div>
 
@@ -700,7 +707,7 @@
           </ng-container>
 
           <ng-container matColumnDef="local">
-            <mat-header-cell *matHeaderCellDef>Local</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef>Local Ex: Belém</mat-header-cell>
             <mat-cell id="local" *matCellDef="let row">{{row.local}}</mat-cell>
           </ng-container>
 
@@ -746,6 +753,15 @@
             <mat-header-cell *matHeaderCellDef>Aprovado</mat-header-cell>
             <mat-cell *matCellDef="let row">{{row.aprovado}}</mat-cell>
           </ng-container>
+
+          <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+            
+            <mat-cell *matCellDef="let row">
+              <mat-icon *ngIf="row.aprovado === 'Não'" matTooltip="Editar Historico!" (click)="AtualizarFuncao(row.id)">edit</mat-icon>
+            </mat-cell>
+          </ng-container>
+
 
           <mat-header-row *matHeaderRowDef="ColunasHistoricoObreiro"></mat-header-row>
           <mat-row (click)="HistoricoSelecionado(row.id)" *matRowDef="let row; columns: ColunasHistoricoObreiro;"

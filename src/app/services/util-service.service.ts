@@ -225,7 +225,7 @@ export class UtilServiceService {
 
 
 
-  PopupConfirmacao(mensagem: string, tipo: number, componente: any, Id : any = 0, Width: any = 'auto', Height: any = 'auto', disableClose: boolean = false ) {
+  PopupConfirmacao(mensagem: string, tipo: number, componente: any, Id : any = 0, Width: any = 'auto', Height: any = 'auto', disableClose: boolean = false, status : boolean = false ) {
 
     const dialog = this.dialog.open(componente, {
       id : Id,

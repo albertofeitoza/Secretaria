@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, Injectable } from '@angular/core';
-import { Pessoa, UniaoCadastro } from 'src/app/models/pessoa';
+import { Pessoa, UniaoCadastro, ViewPessoa } from 'src/app/models/pessoa';
 import { MatTableDataSource, _MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -67,44 +67,53 @@ export class ReadMembrosComponent implements OnInit {
     try {
       this.spinner = true
 
-      this.serverApi.read(Endpoint.Pessoa)
-        .subscribe(response => {
-          response = response.sort()
-          this.datasource.data =
+      if (!this.filtros.precadastro) {
 
-            this.filtros.inativos && this.filtros.txtBusca.length == 0
-              ? response.filter(f => f.statusPessoa == 'Inativo')
+        this.serverApi.read(Endpoint.Pessoa)
+          .subscribe((response) => {
+            response = response.sort()
+            this.datasource.data =
 
-              : this.filtros.inativos && this.filtros.txtBusca.length > 0
-                ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+              this.filtros.inativos && this.filtros.txtBusca.length == 0
+                ? response.filter(f => f.statusPessoa == 'Inativo')
 
-                : this.filtros.precadastro && this.filtros.txtBusca.length == 0
-                  ? response.filter(f => f.statusPessoa == 'PreCadastro')
+                : this.filtros.inativos && this.filtros.txtBusca.length > 0
+                  ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
 
-                  : this.filtros.precadastro && this.filtros.txtBusca.length > 0
-                    ? response.filter(f => f.statusPessoa == 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+                  : this.filtros.obreiros && this.filtros.txtBusca.length == 0
+                    ? response.filter(f => f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro")
 
+                    : this.filtros.obreiros && this.filtros.txtBusca.length > 0
+                      ? response.filter(f => f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro" && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
 
-                    : this.filtros.obreiros && this.filtros.txtBusca.length == 0
-                      ? response.filter(f => f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro")
+                      : this.filtros.txtBusca.length > 0
+                        ? response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
 
-                      : this.filtros.obreiros && this.filtros.txtBusca.length > 0
-                        ? response.filter(f => f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro" && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
-
-                        : this.filtros.txtBusca.length > 0
-                          ? response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
-
-                          : response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro');
+                        : response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro');
 
 
-          this.spinner = false;
+            this.spinner = false;
 
-        })
+          })
+
+      } else {
+        this.Precadastro(this.filtros.txtBusca.toLowerCase())
+      }
     } catch (error) {
       this.spinner = false
     }
 
 
+  }
+
+  private Precadastro(filtro: string = "") {
+    this.serverApi.read(`${Endpoint.Pessoa}/preCadastro`)
+      .subscribe(pes => {
+        this.datasource.data =
+          filtro == undefined || filtro == "" ? pes.filter(f => f.statusPessoa == 'PreCadastro') :
+            pes.filter(f => f.statusPessoa == 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+
+      });
   }
 
   cadastroMembro() {
@@ -209,23 +218,19 @@ export class ReadMembrosComponent implements OnInit {
     this.serviceUtil.PopupConfirmacao("Informar os dados", TipoPopup.ComponenteInstancia, CartarecomendacaoComponent, id)
       .subscribe(x => {
 
-        if (x.Status ) {
-       
+        if (x.Status) {
           let dados: Cartas = new Cartas();
-            dados = x.data;
-     
-            this.spinner = true;
-            this.serverApi.DownloadCartas(dados, Endpoint.RelatoriosCartas)
-              .subscribe(result => {
-  
-                this.serviceUtil.showMessage("Aguarde o Download.", false);
-                this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `Carta${id.toString()}.docx`);
-                this.spinner = false;
-              },
-                (error) => {
-                  this.serviceUtil.showMessage("Não foi possível baixar a Carta , verifique o cadastro", true);
-                });
-          
+          dados = x.data;
+          this.spinner = true;
+          this.serverApi.DownloadCartas(dados, Endpoint.RelatoriosCartas)
+            .subscribe(result => {
+              this.serviceUtil.showMessage("Aguarde o Download.", false);
+              this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `Carta${id.toString()}.docx`);
+              this.spinner = false;
+            },
+              (error) => {
+                this.serviceUtil.showMessage("Não foi possível baixar a Carta , verifique o cadastro", true);
+              });
         }
         else {
           this.serviceUtil.showMessage("Informações ignoradas", false)

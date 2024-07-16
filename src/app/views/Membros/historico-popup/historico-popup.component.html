@@ -13,8 +13,8 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Local</mat-label>
-      <input matInput placeholder="Local" [(ngModel)]="historico.local" name="local">
+      <mat-label>Local da Apres. Ex: Belém</mat-label>
+      <input matInput placeholder="Local da Apres. Ex: Belém" [(ngModel)]="historico.local" name="local">
     </mat-form-field>
     
     <mat-form-field color="accent" style="width: 213px;">
@@ -50,9 +50,9 @@
       <mat-datepicker #reintegradoem></mat-datepicker>
     </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Aprovado</mat-label>
-      <input style="height: 20px; width: 150px;" matInput placeholder="Aprovado">
+    <mat-form-field *ngIf="historico.id > 0">
+      <mat-label>Aprovar</mat-label>
+      <input style="height: 20px; width: 150px;" matInput placeholder="Aprovar">
       <input name="aprovado" [(ngModel)]="historico.aprovado" [checked]="historico.aprovado" type="checkbox">
     </mat-form-field>
    

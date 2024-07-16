@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Endpoint } from 'src/app/enum/Endpoints';
 import { DadosObreiro } from 'src/app/models/DadosObreiro';
 import { Historico } from 'src/app/models/HistoricoDoObreiro';
 import { PopupConfirm } from 'src/app/models/dialogConfirm';
+import { AllservicesService } from 'src/app/services/allservices.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 
 @Component({
@@ -20,31 +22,24 @@ export class HistoricoPopupComponent implements OnInit {
   constructor(private serviceUtil : UtilServiceService,
     public dialogRef: MatDialogRef<HistoricoPopupComponent>,
     public dialog: MatDialog,
+    private serverApi: AllservicesService<any>,
 
     ) {}
 
 
 ngOnInit(): void {
   this.entradaFuncao = this.serviceUtil.EntradaFuncao()
+  if(Number(this.dialogRef.id) > 0)
+    this.buscarHistorico(this.dialogRef.id);
+
 }
 
   FecharPopup(confirm: boolean){
   
     if (confirm) {
       if (this.historico.dataEntradaFuncao && this.historico.pastorApresentador && this.historico.pastorRegional && this.historico.entradaFuncao && this.historico.local ) {
-
-        let dados ={
-          pastorApresentador : this.historico.pastorApresentador,
-          pastorRegional : this.historico.pastorRegional,
-          entradaFuncao : this.historico.entradaFuncao,
-          dataEntradaFuncao : this.historico.dataEntradaFuncao,
-          reintegrado : this.historico.reintegrado,
-          reintegradoEm : this.historico.reintegradoEm,
-          aprovado : this.historico.aprovado,
-          local : this.historico.local
-         }
-         this.resposta.Status = true;
-         this.resposta.data = dados
+        this.resposta.Status = true;
+         this.resposta.data = this.historico
          this.dialogRef.close(this.resposta);
       }
       else{
@@ -59,6 +54,13 @@ ngOnInit(): void {
       this.dialogRef.close(this.resposta)
     }
   
+  }
+
+  private buscarHistorico(id: any):void {
+    this.serverApi.readById(id, Endpoint.HistoricoObreiro)
+      .subscribe((result: Historico) => {
+        this.historico = result;
+      });
   }
 
 }
