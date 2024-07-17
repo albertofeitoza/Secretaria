@@ -1,8 +1,8 @@
 export class Filtros {
     inativos: boolean = false;
     txtBusca: string = "";
-    dataInicial: Date = new Date;
-    dataFinal: Date = new Date;
+    dataInicial: string;
+    dataFinal: string;
     precadastro: boolean = false;
     obreiros: boolean = false;
     clicado: number = 0;

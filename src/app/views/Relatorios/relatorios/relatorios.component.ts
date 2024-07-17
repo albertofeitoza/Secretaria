@@ -1,3 +1,4 @@
+import { getLocaleDateFormat } from '@angular/common';
 import {
   OnInit,
   Component,
@@ -26,6 +27,11 @@ export class RelatoriosComponent implements OnInit {
   tipoRelatorio: any[]
   relatorioSelecionado: number = 0;
   nomeRelatorio: string = "";
+
+  exibePeriodo = false;
+  dataInicio = '';
+  dataFim = '';
+
   relatorioAniversario: RelatorioAnivCasamento[] = new Array();
   relatorioAniCasamento: RelatorioAnivCasamento[] = new Array();
   relatorioMembrosAtivos: RelatorioMembrosAtivos[] = new Array()
@@ -60,47 +66,53 @@ export class RelatoriosComponent implements OnInit {
     console.log("onBeforePrint");
   }
 
-  RelatorioSelecionado() {
+
+  public RelatorioSelecionado(): void {
+    this.BuscarRelatorio();
+  }
+
+  private BuscarRelatorio(): void {
     this.imprimir = false;
 
     if (this.relatorioSelecionado > 0)
       this.spinner = true;
 
-    //Exemplo de filtros
-    // let filtros : Filtros = new Filtros()
-    // filtros.dataInicial = new Date("2024-01-01")
-    // filtros.dataFinal = new Date("2024-01-29")
+    let filtros: Filtros = new Filtros()
+    filtros.dataInicial = this.dataInicio;
+    filtros.dataFinal = this.dataFim;
 
-    // let filtro = JSON.stringify(filtros)
+    let filtro = JSON.stringify(filtros)
 
-
-    this.serverApi.readById(this.relatorioSelecionado.toString(), Endpoint.Relatorios, /*filtro*/)
+    this.serverApi.readById(this.relatorioSelecionado.toString(), Endpoint.Relatorios, filtro)
       .subscribe(rel => {
 
         let trataCamposPresenca: RelatorioPresenca[] = new Array()
-        trataCamposPresenca = rel
+        
+        if (this.relatorioSelecionado === 5 || this.relatorioSelecionado === 6 || this.relatorioSelecionado === 7) {
 
-        trataCamposPresenca.forEach(element => {
-          element.janeiro = element.janeiro != null ? "done" : "highlight_off";
-          element.fevereiro = element.fevereiro != null ? "done" : "highlight_off";
-          element.marco = element.marco != null ? "done" : "highlight_off";
-          element.abril = element.abril != null ? "done" : "highlight_off";
-          element.maio = element.maio != null ? "done" : "highlight_off";
-          element.junho = element.junho != null ? "done" : "highlight_off";
-          element.julho = element.julho != null ? "done" : "highlight_off";
-          element.agosto = element.agosto != null ? "done" : "highlight_off";
-          element.setembro = element.setembro != null ? "done" : "highlight_off";
-          element.outubro = element.outubro != null ? "done" : "highlight_off";
-          element.novembro = element.novembro != null ? "done" : "highlight_off";
-          element.dezembro = element.dezembro != null ? "done" : "highlight_off";
+          trataCamposPresenca = rel
 
-        });
+          trataCamposPresenca.forEach(element => {
+            element.janeiro = element.janeiro != null ? "done" : "highlight_off";
+            element.fevereiro = element.fevereiro != null ? "done" : "highlight_off";
+            element.marco = element.marco != null ? "done" : "highlight_off";
+            element.abril = element.abril != null ? "done" : "highlight_off";
+            element.maio = element.maio != null ? "done" : "highlight_off";
+            element.junho = element.junho != null ? "done" : "highlight_off";
+            element.julho = element.julho != null ? "done" : "highlight_off";
+            element.agosto = element.agosto != null ? "done" : "highlight_off";
+            element.setembro = element.setembro != null ? "done" : "highlight_off";
+            element.outubro = element.outubro != null ? "done" : "highlight_off";
+            element.novembro = element.novembro != null ? "done" : "highlight_off";
+            element.dezembro = element.dezembro != null ? "done" : "highlight_off";
 
+          });
+        }
         switch (this.relatorioSelecionado) {
           case 1:
           case 2:
           case 17:
-            this.relatorioMembrosAtivos = rel
+            this.relatorioMembrosAtivos = rel.data
             this.imprimir = true
             this.spinner = false;
             break;
@@ -139,7 +151,10 @@ export class RelatoriosComponent implements OnInit {
             this.spinner = false;
             break;
         }
-      })
+      }, (err) => {
+        this.serviceUtil.showMessage(`Erro ao extrair relatório : ${err.error.message}`, true);
+      });
+
   }
 
   Imprimir(): void {
