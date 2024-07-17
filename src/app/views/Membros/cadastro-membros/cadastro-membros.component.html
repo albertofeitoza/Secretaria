@@ -759,6 +759,7 @@
             
             <mat-cell *matCellDef="let row">
               <mat-icon *ngIf="row.aprovado === 'Não'" matTooltip="Editar Historico!" (click)="AtualizarFuncao(row.id)">edit</mat-icon>
+              <mat-icon *ngIf="row.aprovado === 'Não'" matTooltip="excluir Historico!" (click)="ExcluirHistorico(row.id)">delete</mat-icon>
             </mat-cell>
           </ng-container>
 

@@ -331,6 +331,14 @@ export class CadastroMembrosComponent {
     this.AlteraFuncao(true, id);
   }
 
+  public ExcluirHistorico(id: number): void {
+       this.serverApi.delete(id, Endpoint.HistoricoObreiro)
+       .subscribe(() => {
+          this.serviceUtil.showMessage("Histórico excluído com sucesso.");
+          this.BuscarMembro();
+       });
+  }
+
   AlteraSituacao() {
     if (this.ValidarDadosMembro() && this.situacaoCache == 5 && this.pessoa.statusPessoa < 5 && this.pessoa.id > 0) {
 
@@ -352,8 +360,6 @@ export class CadastroMembrosComponent {
           });
     }
   }
-
-
 
   AdicionarFuncaoObreiro() {
 
