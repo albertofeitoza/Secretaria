@@ -184,6 +184,64 @@ export class UtilServiceService {
   }
 
 
+  Periodo(){
+    let periodo = [];
+    periodo.push({ "id": 0, "value": "Selecione o periodo" });
+    periodo.push({ "id": 1, "value": "Semanal" });
+    periodo.push({ "id": 2, "value": "Mensal" });
+
+    return periodo;
+  }
+
+  MesesDoAno(){
+    let periodo = [];
+    periodo.push({ "id": 0, "value": "Informe o mês" });
+    periodo.push({ "id": 1, "value": "Janeiro" });
+    periodo.push({ "id": 2, "value": "Fevereiro" });
+    periodo.push({ "id": 3, "value": "Março" });
+    periodo.push({ "id": 4, "value": "Abril" });
+    periodo.push({ "id": 5, "value": "Maio" });
+    periodo.push({ "id": 6, "value": "Junho" });
+    periodo.push({ "id": 7, "value": "Julho" });
+    periodo.push({ "id": 8, "value": "Agosto" });
+    periodo.push({ "id": 9, "value": "Setembro" });
+    periodo.push({ "id": 10, "value": "Outubro" });
+    periodo.push({ "id": 11, "value": "Novembro" });
+    periodo.push({ "id": 12, "value": "Dezembro" });
+
+    return periodo;
+  }
+
+  PeriodoCemAnos(){
+    let periodo = [];
+    periodo.push({ "id": 0, "value": "Informe o mês" });
+
+    const anoCorrente = new Date().getFullYear();
+
+    for (let index = 0; index < 100; index++) {
+      const element = index;
+
+
+    }
+    
+    periodo.push({ "id": 0, "value": "Informe o mês" });
+    periodo.push({ "id": 1, "value": "Janeiro" });
+    periodo.push({ "id": 2, "value": "Fevereiro" });
+    periodo.push({ "id": 3, "value": "Março" });
+    periodo.push({ "id": 4, "value": "Abril" });
+    periodo.push({ "id": 5, "value": "Maio" });
+    periodo.push({ "id": 6, "value": "Junho" });
+    periodo.push({ "id": 7, "value": "Julho" });
+    periodo.push({ "id": 8, "value": "Agosto" });
+    periodo.push({ "id": 9, "value": "Setembro" });
+    periodo.push({ "id": 10, "value": "Outubro" });
+    periodo.push({ "id": 11, "value": "Novembro" });
+    periodo.push({ "id": 12, "value": "Dezembro" });
+
+    return periodo;
+  }
+
+
   public TipoCartas() : any {
     let documento = [];
     documento.push({ "id": 0, "value": "Selecione"})

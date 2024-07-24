@@ -1,0 +1,4 @@
+::ng-deep .ajusteColunas{
+    flex: none;
+    width: 350px;
+}

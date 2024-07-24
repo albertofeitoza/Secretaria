@@ -1,6 +1,5 @@
 <h1 style="text-align: left;padding-left: 25px;">Relatórios</h1>
 <div>
-
     <div style="display: flex;" class="row">
         <mat-form-field>
             <mat-select [(value)]="relatorioSelecionado" placeholder="Tipo de Relatório"
@@ -11,26 +10,57 @@
             </mat-select>
         </mat-form-field>
 
+        <mat-form-field *ngIf="exibePeriodoOutros" color="accent" style="width: 213px;">
+            <mat-select [(value)]="filtros.periodoSelecionado" placeholder="Periodo"
+                (selectionChange)="SelecionarPeriodo()">
+                <mat-option *ngFor="let pe of periodo" [value]="pe.id">
+                    {{pe.value}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="exibeMes" color="accent" style="width: 213px;">
+            <mat-select [(value)]="filtros.mesSelecionado" placeholder="Periodo"
+            (selectionChange)="SelecionaMes()">
+                <mat-option *ngFor="let pe of meses" [value]="pe.id">
+                    {{pe.value}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="exibeAno" color="accent" style="width: 213px;">
+            <mat-select [(value)]="filtros.anoSelecionado" placeholder="Selecione o ano"
+            (selectionChange)="SelecionaAno()">
+                <mat-option *ngFor="let ano of anos" [value]="ano">
+                    {{ano}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
         <mat-form-field *ngIf="exibePeriodo" color="accent" style="width: 213px;">
             <mat-label>Data Início</mat-label>
-            <input matInput [matDatepicker]="dataini" [(ngModel)]="dataInicio" name="datainicio">
+            <input matInput [matDatepicker]="dataini" [(ngModel)]="filtros.dataInicial" name="datainicio">
             <mat-datepicker-toggle matIconSuffix [for]="dataini"></mat-datepicker-toggle>
             <mat-datepicker #dataini></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field *ngIf="exibePeriodo" color="accent" style="width: 213px;">
             <mat-label>Data Fim</mat-label>
-            <input matInput [matDatepicker]="dataFinal" [(ngModel)]="dataFim" name="datainicio">
+            <input matInput [matDatepicker]="dataFinal" [(ngModel)]="filtros.dataFinal" name="datainicio">
             <mat-datepicker-toggle matIconSuffix [for]="dataFinal"></mat-datepicker-toggle>
             <mat-datepicker #dataFinal></mat-datepicker>
         </mat-form-field>
+
+        <mat-icon style="padding: 15px;" *ngIf="relatorioSelecionado > 0" matTooltip="solicitar!"
+            (click)="BuscarRelatorio()">search</mat-icon>
 
         <mat-icon style="padding: 15px;" *ngIf="relatorioSelecionado > 0 && imprimir" matTooltip="Imprimir!"
             (click)="Imprimir()">print</mat-icon>
     </div>
 
 
-    <div *ngIf="relatorioSelecionado == 1 || relatorioSelecionado == 2">
+    <div
+        *ngIf="relatorioSelecionado == 1 && relatorioMembrosAtivos.length >  0 || relatorioSelecionado == 2 && relatorioMembrosAtivos.length >  0">
         <span>
             <h1 style="padding-left:25px" *ngIf="relatorioSelecionado == 1">Relatório - Membros Ativos. </h1>
             <h1 style="padding-left:25px" *ngIf="relatorioSelecionado == 2">Relatório - Membros Inativos. </h1>
@@ -63,14 +93,11 @@
                     <mat-cell *matCellDef="let row">{{row.validadeCartaoMembro | date : 'dd/MM/yyyy'}}</mat-cell>
                 </ng-container>
             </table>
-            <div style="text-align: -webkit-center; margin-top: 5%;">
-                <mat-spinner *ngIf="spinner"></mat-spinner>
-            </div>
         </div>
         <h3>Total : {{relatorioMembrosAtivos.length}}</h3>
     </div>
 
-    <div *ngIf="relatorioSelecionado == 3">
+    <div *ngIf="relatorioSelecionado == 3 && relatorioIdosos.length >  0">
         <span>
             <h1 style="padding-left:25px;">Relatório - Idosos </h1>
         </span>
@@ -105,13 +132,13 @@
         <h3>Total : {{relatorioIdosos.length }}</h3>
     </div>
 
-    <div *ngIf="relatorioSelecionado == 4">
+    <div *ngIf="relatorioSelecionado == 4 && totalAniversariantes > 0">
 
         <span>
             <h2 style="padding-left:25px;">Relatório - Aniversariantes</h2>
         </span>
 
-        <div class="mat-elevation-z4" style="height: 140px;overflow: auto;">
+        <div class="mat-elevation-z4" style="height: 300px;overflow: auto;">
 
             <table mat-table [dataSource]="relatorioAniversario" class="mat-elevation-z8 demo-table">
 
@@ -140,15 +167,15 @@
             </div>
         </div>
 
-        <h3>Total : {{totalAniversariantes}}</h3>
+        <h3 style="padding-left:25px;">Total : {{totalAniversariantes}}</h3>
     </div>
 
-    <div *ngIf="relatorioSelecionado == 4">
+    <div *ngIf="relatorioSelecionado == 4 && totalAniversariantesCasamento > 0">
         <hr />
         <span>
-            <h1 style="padding-left:25px;">Relatório - Aniversariantes de casamento. </h1>
+            <h2 style="padding-left:25px;">Relatório - Aniversariantes de casamento. </h2>
         </span>
-        <div class="mat-elevation-z4" style="height: 118px;overflow: auto;">
+        <div class="mat-elevation-z4" style="height: 200px;overflow: auto;">
             <table mat-table [dataSource]="relatorioAniCasamento" class="mat-elevation-z4 demo-table">
 
                 <mat-header-row *matHeaderRowDef="ColunasGridCasamento"></mat-header-row>
@@ -179,113 +206,90 @@
                 <mat-spinner *ngIf="spinner"></mat-spinner>
             </div>
         </div>
-        <h3>Total : {{totalAniversariantesCasamento}}</h3>
+        <h3 style="padding-left:25px;">Total : {{totalAniversariantesCasamento}}</h3>
     </div>
 
-    <div *ngIf="relatorioSelecionado == 5 || relatorioSelecionado == 6 || relatorioSelecionado == 7">
+    <div
+        *ngIf="relatorioSelecionado == 5 && relatorioPresenca.length > 0 || relatorioSelecionado == 6 && relatorioPresenca.length > 0 || relatorioSelecionado == 7 && relatorioPresenca.length > 0">
         <hr />
         <span>
             <h1 style="padding-left:25px;">{{nomeRelatorio}}</h1>
         </span>
 
-        <div class="mat-elevation-z4" style="height: 343px;overflow: auto;">
-            <table mat-table [dataSource]="relatorioPresenca" class="mat-elevation-z4 demo-table ">
+        <div class="mat-elevation-z4" style="height: 500px;overflow: auto;">
+            <table mat-table [dataSource]="relatorioPresenca" class="mat-elevation-z4 demo-table">
 
                 <mat-header-row *matHeaderRowDef="ColunasGridRelatorioCeia"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: ColunasGridRelatorioCeia;"></mat-row>
 
                 <ng-container matColumnDef="nome">
-                    <th style="width:25%;" mat-header-cell *matHeaderCellDef>Nome</th>
-                    <td style="width:25%;" mat-cell *matCellDef="let row">{{row.nome}}</td>
+                    <mat-header-cell *matHeaderCellDef class="ajusteColunas">NOME</mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="ajusteColunas">{{row.nome}}</mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="janeiro">
-                    <th mat-header-cell *matHeaderCellDef>JAN</th>
-                    <td style="padding-left:1.8%;" *matCellDef="let row">
-                        <mat-icon>{{row.janeiro}}</mat-icon>
-                    </td>
+                    <mat-header-cell *matHeaderCellDef>JAN</mat-header-cell>
+                    <mat-cell *matCellDef="let row"><mat-icon>{{row.janeiro}}</mat-icon></mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="fevereiro">
-                    <th mat-header-cell *matHeaderCellDef>FEV</th>
-                    <td style="padding-left:2%;" mat-cell *matCellDef="let row">
-                        <mat-icon>{{row.fevereiro}}</mat-icon>
-                    </td>
+                    <mat-header-cell *matHeaderCellDef>FEV</mat-header-cell>
+                    <mat-cell *matCellDef="let row"><mat-icon>{{row.fevereiro}}</mat-icon></mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="marco">
-                    <th mat-header-cell *matHeaderCellDef>MAR</th>
-                    <td style="padding-left:2%;" mat-cell *matCellDef="let row">
-                        <mat-icon>{{row.marco}}</mat-icon>
-                    </td>
+                    <mat-header-cell *matHeaderCellDef>MAR</mat-header-cell>
+                    <mat-cell *matCellDef="let row"><mat-icon>{{row.marco}}</mat-icon></mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="abril">
-                    <th mat-header-cell *matHeaderCellDef>ABR</th>
-                    <td style="padding-left:2%;" mat-cell *matCellDef="let row">
-                        <mat-icon>{{row.abril}}</mat-icon>
-                    </td>
+                    <mat-header-cell *matHeaderCellDef>ABR</mat-header-cell>
+                    <mat-cell *matCellDef="let row"><mat-icon>{{row.abril}}</mat-icon></mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="maio">
-                    <th mat-header-cell *matHeaderCellDef>MAI</th>
-                    <td style="padding-left:1.5%;" mat-cell *matCellDef="let row">
-                        <mat-icon>{{row.maio}}</mat-icon>
-                    </td>
+                    <mat-header-cell *matHeaderCellDef>MAI</mat-header-cell>
+                    <mat-cell *matCellDef="let row"><mat-icon>{{row.maio}}</mat-icon></mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="junho">
-                    <th mat-header-cell *matHeaderCellDef>JUN</th>
-                    <td style="padding-left:1.5%;" mat-cell *matCellDef="let row">
-                        <mat-icon>{{row.junho}}</mat-icon>
-                    </td>
+                    <mat-header-cell *matHeaderCellDef>JUN</mat-header-cell>
+                    <mat-cell *matCellDef="let row"><mat-icon>{{row.junho}}</mat-icon></mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="julho">
-                    <th mat-header-cell *matHeaderCellDef>JUL</th>
-                    <td style="padding-left:1.5%;" mat-cell *matCellDef="let row">
-                        <mat-icon>{{row.julho}}</mat-icon>
-                    </td>
+                    <mat-header-cell *matHeaderCellDef>JUL</mat-header-cell>
+                    <mat-cell *matCellDef="let row"><mat-icon>{{row.julho}}</mat-icon></mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="agosto">
-                    <th mat-header-cell *matHeaderCellDef>AGO</th>
-                    <td style="padding-left:2%;" mat-cell *matCellDef="let row">
-                        <mat-icon>{{row.agosto}}</mat-icon>
-                    </td>
+                    <mat-header-cell *matHeaderCellDef>AGO</mat-header-cell>
+                    <mat-cell *matCellDef="let row"><mat-icon>{{row.agosto}}</mat-icon></mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="setembro">
-                    <th mat-header-cell *matHeaderCellDef>SET</th>
-                    <td style="padding-left:1.5%;" mat-cell *matCellDef="let row">
-                        <mat-icon>{{row.setembro}}</mat-icon>
-                    </td>
+                    <mat-header-cell *matHeaderCellDef>SET</mat-header-cell>
+                    <mat-cell *matCellDef="let row"><mat-icon>{{row.setembro}}</mat-icon></mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="outubro">
-                    <th mat-header-cell *matHeaderCellDef>OUT</th>
-                    <td style="padding-left:1.5%;" mat-cell *matCellDef="let row">
-                        <mat-icon>{{row.outubro}}</mat-icon>
-                    </td>
+                    <mat-header-cell *matHeaderCellDef>OUT</mat-header-cell>
+                    <mat-cell *matCellDef="let row"><mat-icon>{{row.outubro}}</mat-icon></mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="novembro">
-                    <th mat-header-cell *matHeaderCellDef>NOV</th>
-                    <td style="padding-left:1.5%;" mat-cell *matCellDef="let row">
-                        <mat-icon>{{row.novembro}}</mat-icon>
-                    </td>
+                    <mat-header-cell *matHeaderCellDef>NOV</mat-header-cell>
+                    <mat-cell *matCellDef="let row"><mat-icon>{{row.novembro}}</mat-icon></mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="dezembro">
-                    <th mat-header-cell *matHeaderCellDef>DEZ</th>
-                    <td style="padding-left:1.7%;" mat-cell *matCellDef="let row">
-                        <mat-icon>{{row.dezembro}}</mat-icon>
-                    </td>
+                    <mat-header-cell *matHeaderCellDef>DEZ</mat-header-cell>
+                    <mat-cell *matCellDef="let row"><mat-icon>{{row.dezembro}}</mat-icon></mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="participacao">
-                    <th mat-header-cell *matHeaderCellDef>% Anual</th>
-                    <td style="padding-left:3%;" mat-cell *matCellDef="let row">{{row.participacao}}</td>
+                    <mat-header-cell *matHeaderCellDef>% Anual</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.participacao}}</mat-cell>
                 </ng-container>
             </table>
             <div style="text-align: -webkit-center; margin-top: 5%;">
@@ -297,10 +301,11 @@
 
     <div *ngIf="relatorioSelecionado == 17">
         <span>
-            <h1 style="padding-left:25px;" *ngIf="relatorioSelecionado == 17">Relatório - Batizados </h1>
+            <h1 style="padding-left:25px;" *ngIf="relatorioSelecionado == 17 && relatorioMembrosAtivos.length > 0">
+                Relatório - Batizados </h1>
         </span>
 
-        <div class="mat-elevation-z4" style="height: 355px;overflow: auto;">
+        <div class="mat-elevation-z4" style="height: 600px;overflow: auto;">
             <table mat-table [dataSource]="relatorioMembrosAtivos" class="mat-elevation-z4 demo-table">
                 <mat-header-row *matHeaderRowDef="ColunasGridBatizados"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: ColunasGridBatizados;"></mat-row>
@@ -331,5 +336,15 @@
             </div>
         </div>
         <h3>Total : {{relatorioMembrosAtivos.length}}</h3>
+    </div>
+
+    <div style="text-align: -webkit-center; margin-top: 5%;">
+        <mat-spinner *ngIf="spinner"></mat-spinner>
+    </div>
+
+    <div style="text-align: -webkit-center; margin-top: 5%;">
+        <span>
+            <h3 *ngIf="!mensagemDeretorno" style="padding-left:25px;color: grey;">{{mensagemDeretorno }}</h3>
+        </span>
     </div>
 </div>

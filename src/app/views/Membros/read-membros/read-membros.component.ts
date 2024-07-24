@@ -195,13 +195,13 @@ export class ReadMembrosComponent implements OnInit {
     if (keyEvent.which === 13 || keyEvent.which === 1 || keyEvent.type == 'change') {
       this.filtros.txtBusca = (<HTMLSelectElement>document.getElementById('txtBusca')).value;
 
-      if (this.filtros.clicado == 1) {
+      if (this.filtros.periodoSelecionado == 1) {
         this.filtros.precadastro = false
         this.filtros.obreiros = false
-      } else if (this.filtros.clicado == 2) {
+      } else if (this.filtros.periodoSelecionado == 2) {
         this.filtros.inativos = false
         this.filtros.obreiros = false
-      } else if (this.filtros.clicado == 3) {
+      } else if (this.filtros.periodoSelecionado == 3) {
         this.filtros.inativos = false
         this.filtros.precadastro = false
       } else {

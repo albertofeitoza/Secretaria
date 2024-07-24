@@ -1,9 +1,11 @@
 export class Filtros {
     inativos: boolean = false;
     txtBusca: string = "";
-    dataInicial: string;
-    dataFinal: string;
+    dataInicial: Date;
+    dataFinal: Date;
     precadastro: boolean = false;
     obreiros: boolean = false;
-    clicado: number = 0;
+    periodoSelecionado: number = 0;
+    mesSelecionado: number = 0;
+    anoSelecionado: number = 0;
 }
