@@ -7,7 +7,8 @@ import {
 } from '@angular/core';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { Filtros } from 'src/app/models/Filtros';
-import { RelatorioAnivCasamento, RelatorioIdosos, RelatorioMembrosAtivos, RelatorioPresenca } from 'src/app/models/relatorios';
+import { ViewPessoa } from 'src/app/models/pessoa';
+import { RelatorioAnivCasamento, RelatorioIdosos, RelatorioMembrosAtivos, RelatorioPastores, RelatorioPresenca } from 'src/app/models/relatorios';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 
@@ -27,8 +28,10 @@ export class RelatoriosComponent implements OnInit {
   imprimir: boolean = false
   tipoRelatorio: any[]
   periodo: any[];
-  meses:any[];
-  anos:any[];
+  meses: any[];
+  anos: any[];
+  obreiros: ViewPessoa[];
+  membros: ViewPessoa[];
   relatorioSelecionado: number = 0;
   nomeRelatorio: string = "";
 
@@ -37,11 +40,15 @@ export class RelatoriosComponent implements OnInit {
   exibeMes = false;
   exibeAno = false
   exibePeriodoOutros = false;
+  exibeComboObreiro = false;
+  exibeComboMembros = false;
 
 
   relatorioAniversario: RelatorioAnivCasamento[] = new Array();
   relatorioAniCasamento: RelatorioAnivCasamento[] = new Array();
   relatorioMembrosAtivos: RelatorioMembrosAtivos[] = new Array()
+  relatorioPastores: RelatorioPastores[] = new Array()
+
   relatorioIdosos: RelatorioIdosos[] = new Array()
   relatorioPresenca: RelatorioPresenca[] = new Array()
   spinner: boolean = false
@@ -54,6 +61,8 @@ export class RelatoriosComponent implements OnInit {
   ColunasGridRelatorioIdosos = ['nome', 'endereco', 'ultimaSantaCeia']
   ColunasGridRelatorioCeia = ['nome', 'janeiro', 'fevereiro', 'marco'
     , 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro', 'participacao']
+
+  ColunasGridPastores = ['igreja', 'pastor', 'esposa', 'datainicial', 'membrosinicial', 'membrossaida', 'saldomembros', 'status']
 
   totalAniversariantes: number = 0
   totalAniversariantesCasamento: number = 0
@@ -70,6 +79,13 @@ export class RelatoriosComponent implements OnInit {
     this.periodo = this.serviceUtil.Periodo();
     this.meses = this.serviceUtil.MesesDoAno();
     this.meses = this.serviceUtil.MesesDoAno();
+    this.serverApi.read(Endpoint.Pessoa)
+    .subscribe((pe : ViewPessoa[]) => {
+        if (pe && pe.length > 0){
+          this.membros = pe.filter(x => x.statusPessoa != 'Inativo');
+          this.obreiros = pe.filter(x => x.statusPessoa != 'Inativo' && x.funcao != 'Membro')
+        }
+    });
   }
 
   @HostListener("window:beforeprint", ["$event"])
@@ -92,21 +108,37 @@ export class RelatoriosComponent implements OnInit {
         this.exibePeriodoOutros = true;
         break;
       case 5:
+        this.anos = []
+        this.CarregaComboAnos();
+        this.exibeAno = true;
+        this.exibeComboMembros = true;
+        this.exibeComboObreiro = false;
+        
+      break;
       case 6:
       case 7:
-      case 17:
+        this.anos = []
+        this.CarregaComboAnos();
+        this.exibeAno = true;
+        this.exibeComboObreiro = true;
+        this.exibeComboMembros = false;
+      break;
+        case 17:
         this.anos = []
         this.CarregaComboAnos();
         this.exibeAno = true
         break;
 
+      case 19:
+
+        break;
       default:
         break;
     }
   }
 
   private LimparFiltros(): void {
-    
+
     this.relatorioMembrosAtivos = new Array();
     this.relatorioIdosos = new Array();
     this.relatorioAniversario = new Array();
@@ -114,9 +146,12 @@ export class RelatoriosComponent implements OnInit {
     this.relatorioPresenca = new Array();
     this.exibePeriodo = false;
     this.exibePeriodoOutros = false;
+    this.exibeComboObreiro = false
+    this.exibeComboMembros = false;
     this.exibeMes = false;
     this.exibeAno = false;
     this.filtros.mesSelecionado = 0;
+    this.filtros.pessoaId = 0;
     this.imprimir = false;
 
   }
@@ -126,7 +161,7 @@ export class RelatoriosComponent implements OnInit {
     this.exibeMes = this.filtros.periodoSelecionado > 1 ? true : false;
   }
 
-  public SelecionaMes():void {
+  public SelecionaMes(): void {
     this.imprimir = false;
   }
 
@@ -136,9 +171,9 @@ export class RelatoriosComponent implements OnInit {
 
   private CarregaComboAnos(): void {
     this.serverApi.read(Endpoint.Relatorios + '/comboCeia')
-    .subscribe(result => {
-      this.anos = result;
-    })
+      .subscribe(result => {
+        this.anos = result;
+      })
   }
 
   public BuscarRelatorio(): void {
@@ -146,7 +181,6 @@ export class RelatoriosComponent implements OnInit {
       this.imprimir = false;
       this.exibePeriodo = false;
       this.mensagemDeretorno = '';
-
 
       if (this.ValidacoesRelatorio()) {
         this.spinner = true
@@ -165,18 +199,18 @@ export class RelatoriosComponent implements OnInit {
             trataCamposPresenca = rel.data
 
             trataCamposPresenca.forEach(element => {
-              element.janeiro = element.janeiro != null ? "done" : "highlight_off";
-              element.fevereiro = element.fevereiro != null ? "done" : "highlight_off";
-              element.marco = element.marco != null ? "done" : "highlight_off";
-              element.abril = element.abril != null ? "done" : "highlight_off";
-              element.maio = element.maio != null ? "done" : "highlight_off";
-              element.junho = element.junho != null ? "done" : "highlight_off";
-              element.julho = element.julho != null ? "done" : "highlight_off";
-              element.agosto = element.agosto != null ? "done" : "highlight_off";
-              element.setembro = element.setembro != null ? "done" : "highlight_off";
-              element.outubro = element.outubro != null ? "done" : "highlight_off";
-              element.novembro = element.novembro != null ? "done" : "highlight_off";
-              element.dezembro = element.dezembro != null ? "done" : "highlight_off";
+              element.janeiro = element.janeiro && element.janeiro.split("-")[1] == '' ? "done" : element.janeiro && element.janeiro.split("-")[1] != '' ? 'J' : 'highlight_off';
+              element.fevereiro = element.fevereiro && element.fevereiro.split("-")[1] == '' ? "done" : element.fevereiro && element.fevereiro.split("-")[1] != '' ? 'J' : 'highlight_off';
+              element.marco = element.marco && element.marco.split("-")[1] == '' ? "done" : element.marco && element.marco.split("-")[1] != '' ? 'J' : 'highlight_off';
+              element.abril = element.abril && element.abril.split("-")[1] == '' ? "done" : element.abril && element.abril.split("-")[1] != '' ? 'J' : 'highlight_off';
+              element.maio = element.maio && element.maio.split("-")[1] == '' ? "done" : element.maio && element.maio.split("-")[1] != '' ? 'J' : 'highlight_off';
+              element.junho = element.junho && element.junho.split("-")[1] == '' ? "done" : element.junho && element.junho.split("-")[1] != '' ? 'J' : 'highlight_off';
+              element.julho = element.julho && element.julho.split("-")[1] == '' ? "done" : element.julho && element.julho.split("-")[1] != '' ? 'J' : 'highlight_off';
+              element.agosto = element.agosto && element.agosto.split("-")[1] == '' ? "done" : element.agosto && element.agosto.split("-")[1] != '' ? 'J' : 'highlight_off';
+              element.setembro = element.setembro && element.setembro.split("-")[1] == '' ? "done" : element.setembro && element.setembro.split("-")[1] != '' ? 'J' : 'highlight_off';
+              element.outubro = element.outubro && element.outubro.split("-")[1] == '' ? "done" : element.outubro && element.outubro.split("-")[1] != '' ? 'J' : 'highlight_off';
+              element.novembro = element.novembro && element.novembro.split("-")[1] == '' ? "done" : element.novembro && element.novembro.split("-")[1] != '' ? 'J' : 'highlight_off';
+              element.dezembro = element.dezembro && element.dezembro.split("-")[1] == '' ? "done" : element.dezembro && element.dezembro.split("-")[1] != '' ? 'J' : 'highlight_off';
 
             });
           }
@@ -185,15 +219,15 @@ export class RelatoriosComponent implements OnInit {
             case 2:
             case 17:
               this.relatorioMembrosAtivos = rel.data
-              this.imprimir = true
+              this.imprimir = this.relatorioMembrosAtivos.length > 0 ? true : false;
               this.spinner = false;
-              this.mensagemDeretorno = this.relatorioMembrosAtivos.length === 0 ? '' : 'Não foram encontrado resultados para essa Pesquisa.';
+              this.mensagemDeretorno = this.relatorioMembrosAtivos.length == 0 ? 'Não foram encontrado resultados para essa Pesquisa.' : '';
               break;
             case 3:
               this.relatorioIdosos = rel.data;
-              this.imprimir = true
+              this.imprimir = this.relatorioIdosos.length > 0 ? true : false;
               this.spinner = false;
-              this.mensagemDeretorno = this.relatorioIdosos.length === 0 ? '' : 'Não foram encontrado resultados para essa Pesquisa.';
+              this.mensagemDeretorno = this.relatorioIdosos.length == 0 ? 'Não foram encontrado resultados para essa Pesquisa.' : '';
               break;
             case 4:
               let response: RelatorioAnivCasamento[] = new Array()
@@ -202,31 +236,39 @@ export class RelatoriosComponent implements OnInit {
               this.relatorioAniCasamento = response.filter(x => x.tipoRelatorio == 8)
               this.totalAniversariantes = this.relatorioAniversario.length;
               this.totalAniversariantesCasamento = this.relatorioAniCasamento.length
-              this.imprimir = true
+              this.imprimir = true;
               this.spinner = false
-              this.mensagemDeretorno = this.relatorioAniversario.length === 0 && this.relatorioAniCasamento.length === 0 ? '' : 'Não foram encontrado resultados para essa Pesquisa.';
+              this.mensagemDeretorno = this.relatorioAniversario.length === 0 && this.relatorioAniCasamento.length === 0 ? 'Não foram encontrado resultados para essa Pesquisa.' : '';
               break;
             case 5:
               this.nomeRelatorio = "Relatório - Membros / Participação na Santa Ceia. "
               this.relatorioPresenca = trataCamposPresenca
-              this.imprimir = true
+              this.imprimir = this.relatorioPresenca.length > 0 ? true : false;
               this.spinner = false;
-              this.mensagemDeretorno = this.relatorioPresenca.length === 0 ? '' : 'Não foram encontrado resultados para essa Pesquisa.';
+              this.mensagemDeretorno = this.relatorioPresenca.length === 0 ? 'Não foram encontrado resultados para essa Pesquisa.' : '';
               break
 
             case 6:
               this.nomeRelatorio = "Relatório - Obreiros / Participação de Reunião Local. "
               this.relatorioPresenca = trataCamposPresenca
-              this.imprimir = true
+              this.imprimir = this.relatorioPresenca.length > 0 ? true : false;
               this.spinner = false;
-              this.mensagemDeretorno = this.relatorioPresenca.length === 0 ? '' : 'Não foram encontrado resultados para essa Pesquisa.';
+              this.mensagemDeretorno = this.relatorioPresenca.length === 0 ? 'Não foram encontrado resultados para essa Pesquisa.' : '';
               break
             case 7:
               this.nomeRelatorio = "Relatório - Obreiros / Participação de Reunião na Sede. "
               this.relatorioPresenca = trataCamposPresenca
-              this.imprimir = true
+              this.imprimir = this.relatorioPresenca.length > 0 ? true : false;
               this.spinner = false;
-              this.mensagemDeretorno = this.relatorioPresenca.length === 0 ? '' : 'Não foram encontrado resultados para essa Pesquisa.';
+              this.mensagemDeretorno = this.relatorioPresenca.length === 0 ? 'Não foram encontrado resultados para essa Pesquisa.' : '';
+              break;
+            case 19:
+              this.nomeRelatorio = "Relatório - Transferência de pastores"
+              this.relatorioPastores = rel.data
+              this.imprimir = this.relatorioPastores.length > 0 ?  true: false;
+              this.spinner = false;
+              this.mensagemDeretorno = this.relatorioPastores.length === 0 ? 'Não foram encontrado resultados para essa Pesquisa.' : '';
+
               break;
           }
         }, (err) => {
@@ -248,7 +290,7 @@ export class RelatoriosComponent implements OnInit {
       return false;
     }
 
-    if (this.relatorioSelecionado === 4 && this.filtros.periodoSelecionado === 0 ) {
+    if (this.relatorioSelecionado === 4 && this.filtros.periodoSelecionado === 0) {
       this.serviceUtil.showMessage("Selecione o período.", true);
       this.LimparFiltros();
       this.relatorioSelecionado = 0;
@@ -265,23 +307,16 @@ export class RelatoriosComponent implements OnInit {
     }
 
 
-    if (this.relatorioSelecionado === 5 && this.filtros.anoSelecionado === 0 || 
-        this.relatorioSelecionado === 6 && this.filtros.anoSelecionado === 0 || 
-        this.relatorioSelecionado === 7 && this.filtros.anoSelecionado === 0 || 
-        this.relatorioSelecionado === 17 && this.filtros.anoSelecionado === 0) {
+    if (this.relatorioSelecionado === 5 && this.filtros.anoSelecionado === 0 ||
+      this.relatorioSelecionado === 6 && this.filtros.anoSelecionado === 0 ||
+      this.relatorioSelecionado === 7 && this.filtros.anoSelecionado === 0 ||
+      this.relatorioSelecionado === 17 && this.filtros.anoSelecionado === 0) {
       this.serviceUtil.showMessage("Informe o ano.", true);
       this.LimparFiltros();
       this.relatorioSelecionado = 0;
       this.filtros.periodoSelecionado = 0;
       return false;
     }
-
-
-    // case 5:
-    //   case 6:
-    //   case 7:
-    //   case 17:
-
 
     return true;
   }

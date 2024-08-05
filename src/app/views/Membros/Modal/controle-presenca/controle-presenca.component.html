@@ -22,12 +22,22 @@
             <mat-datepicker #dataPresenca></mat-datepicker>
         </mat-form-field>
 
-        <mat-form-field style="width: 490px;">
+        
+        <mat-form-field color="accent" style="width: 350px;">
+            <mat-select [(value)]="justificativaSelecionada" placeholder="Tipo de Justificativa"
+                (selectionChange)="TipoJustificativa()">
+                <mat-option *ngFor="let pr of tipoJustificativaPresenca" [value]="pr.id">
+                    {{pr.value}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="exibiroutros" style="width: 490px;">
             <mat-label>Motivo</mat-label>
             <input matInput placeholder="Motivo" [(ngModel)]="controlePresenca.motivo" name="motivo">
         </mat-form-field>
 
-        <span *ngIf="tipoPresencaSelecionado > 0 && controlePresenca.data && controlePresenca.motivo "
+        <span *ngIf="tipoPresencaSelecionado > 0 && justificativaSelecionada > 0 "
             style="padding-left: 3px; padding-top: 1.5%;" (click)="Salvar()">
             <mat-icon>save</mat-icon>
         </span>

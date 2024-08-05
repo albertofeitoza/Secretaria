@@ -38,3 +38,14 @@ export class RelatorioPresenca{
     participacao : string
 
 }
+
+export class RelatorioPastores{
+    igreja: string
+    pastor: string
+    esposa: string
+    datainicial: string
+    membrosinicial: string
+    membrossaida: string
+    saldomembros: string
+    status: string
+}

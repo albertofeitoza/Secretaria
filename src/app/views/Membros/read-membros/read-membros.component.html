@@ -76,8 +76,8 @@
       <th style="width: 14%;" mat-header-cell *matHeaderCellDef>Ações</th>
       <td style="height: 21px;width: 18%;" mat-cell *matCellDef="let row">
         <mat-icon matTooltip="Editar Cadastro!" (click)="AtualizarMembro(row.id)">edit</mat-icon>
-        <mat-icon matTooltip="Download da ficha de membro!" *ngIf="!filtros.inativos && !filtros.precadastro"
-          (click)="ImprimirFichaMembro(row.id)">download</mat-icon>
+        <mat-icon matTooltip="Impressão da ficha de membro!" *ngIf="!filtros.inativos && !filtros.precadastro"
+          (click)="ImprimirFichaMembro(row.id)">print</mat-icon>
         <mat-icon matTooltip="Solicitação de Cartas!" *ngIf="!filtros.inativos && !filtros.precadastro"
           (click)="Cartas(row.id)">mail_outline</mat-icon>
         <mat-icon matTooltip="Filhos!" *ngIf="!filtros.inativos && !filtros.precadastro"

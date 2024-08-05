@@ -132,8 +132,10 @@ export class ReadMembrosComponent implements OnInit {
     this.serverApi.DownloadArquivo(id.toString(), Endpoint.RelatoriosFichaMembro)
       .subscribe(result => {
 
-        this.serviceUtil.showMessage("Aguarde o Download.", false);
-        this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `FichaMembro_${id.toString()}.docx`);
+        this.serviceUtil.showMessage("Aguarde a impressão.", false);
+        //this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `FichaMembro_${id.toString()}.docx`);
+
+        this.serviceUtil.Imprimir(result, 'application/pdf')
         this.spinner = false;
       },
         (error) => {
@@ -224,12 +226,12 @@ export class ReadMembrosComponent implements OnInit {
           this.spinner = true;
           this.serverApi.DownloadCartas(dados, Endpoint.RelatoriosCartas)
             .subscribe(result => {
-              this.serviceUtil.showMessage("Aguarde o Download.", false);
-              this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `Carta${id.toString()}.docx`);
+              this.serviceUtil.showMessage("Aguarde a Impressão.", false);
+              this.serviceUtil.Imprimir(result, 'application/pdf')
               this.spinner = false;
             },
               (error) => {
-                this.serviceUtil.showMessage("Não foi possível baixar a Carta , verifique o cadastro", true);
+                this.serviceUtil.showMessage("Não foi possível realizar a impressão , verifique o cadastro", true);
               });
         }
         else {
@@ -243,8 +245,6 @@ export class ReadMembrosComponent implements OnInit {
   }
 
   public JustificarPresenca(id: number): void {
-
-
     this.serviceUtil.PopupConfirmacao('', TipoPopup.ComponenteInstancia, ControlePresencaComponent, id, '70%', '35%');
   }
 

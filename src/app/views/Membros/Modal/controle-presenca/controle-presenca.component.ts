@@ -15,8 +15,12 @@ export class ControlePresencaComponent implements OnInit {
   dados: Pessoa = new Pessoa();
   funcao: number = 0;
   comboTipoPresenca: any[]
+  exibiroutros = false;
   tipoPresencaSelecionado: number = 0;
   controlePresenca: ControlePresenca = new ControlePresenca();
+
+  tipoJustificativaPresenca: any[];
+  justificativaSelecionada = 0;
   constructor(
     private matdialogRef: MatDialogRef<ControlePresencaComponent>,
     private serviceUtil: UtilServiceService,
@@ -40,6 +44,7 @@ export class ControlePresencaComponent implements OnInit {
   }
   private CarregaCombos(): void {
     this.comboTipoPresenca = this.serviceUtil.JustificativaPresenca();
+    this.tipoJustificativaPresenca = this.serviceUtil.TipoJustificativaPresenca();
   }
 
 
@@ -47,20 +52,90 @@ export class ControlePresencaComponent implements OnInit {
     this.controlePresenca.local = this.tipoPresencaSelecionado
     this.controlePresenca.pessoaId = this?.dados?.id
 
+    // Justificar presença de santaCeia
     if (this.tipoPresencaSelecionado === 3) {
-      this.serviceApi.create(this.controlePresenca, `${Endpoint.Pessoa}/controlePresenca`)
-        .subscribe(result => {
-          this.serviceUtil.showMessage("Informações cadastradas com sucesso!")
-        });
-    }
 
-    if (this.tipoPresencaSelecionado > 0 && this.tipoPresencaSelecionado < 3 && this.funcao > 1) {
-      this.serviceApi.create(this.controlePresenca, `${Endpoint.Pessoa}/controlePresenca`)
-        .subscribe(result => {
-          this.serviceUtil.showMessage("Informações cadastradas com sucesso!")
-        });
-    } else {
-      this.serviceUtil.showMessage(`O ${this.dados.nome} não é um obreiro!`);
+
+      if (this.justificativaSelecionada == 3) {
+        this.controlePresenca.motivo = ''
+        this.serviceApi.create(this.controlePresenca, `${Endpoint.Pessoa}/controlePresenca`)
+          .subscribe(result => {
+            return this.serviceUtil.showMessage("Informações cadastradas com sucesso!")
+          });
+      }
+
+      if (this.justificativaSelecionada == 6) {
+
+        if (this.controlePresenca.motivo) {
+          this.serviceApi.create(this.controlePresenca, `${Endpoint.Pessoa}/controlePresenca`)
+            .subscribe(result => {
+              this.serviceUtil.showMessage("Informações cadastradas com sucesso!")
+            });
+        } else {
+          this.serviceUtil.showMessage("Obrigatório informar o motivo!.")
+        }
+      }
+
+      if (this.justificativaSelecionada != 6 && this.justificativaSelecionada != 3) {
+
+        this.controlePresenca.motivo = this.ObterDescricaoJustificativa();
+
+        this.serviceApi.create(this.controlePresenca, `${Endpoint.Pessoa}/controlePresenca`)
+          .subscribe(result => {
+            this.serviceUtil.showMessage("Informações cadastradas com sucesso!")
+          });
+      }
     }
+    // Justificar presença de obreiros
+    if (this.tipoPresencaSelecionado > 0 && this.tipoPresencaSelecionado < 3) {
+
+      if (this.funcao > 1) {
+        if (this.justificativaSelecionada == 3) {
+          this.controlePresenca.motivo = ''
+          this.serviceApi.create(this.controlePresenca, `${Endpoint.Pessoa}/controlePresenca`)
+            .subscribe(result => {
+              return this.serviceUtil.showMessage("Informações cadastradas com sucesso!")
+            });
+        }
+
+        if (this.justificativaSelecionada == 6 && this.controlePresenca.motivo) {
+
+          if (this.controlePresenca.motivo) {
+            this.serviceApi.create(this.controlePresenca, `${Endpoint.Pessoa}/controlePresenca`)
+              .subscribe(result => {
+                return this.serviceUtil.showMessage("Informações cadastradas com sucesso!")
+              });
+          } else {
+            this.serviceUtil.showMessage("Obrigatório informar o motivo!.")
+          }
+        }
+
+        if (this.justificativaSelecionada != 6 && this.justificativaSelecionada != 3) {
+
+          this.controlePresenca.motivo = this.ObterDescricaoJustificativa();
+
+          this.serviceApi.create(this.controlePresenca, `${Endpoint.Pessoa}/controlePresenca`)
+            .subscribe(result => {
+              this.serviceUtil.showMessage("Informações cadastradas com sucesso!")
+            });
+        }
+      } else {
+        this.serviceUtil.showMessage("Não é um obreiro!")
+      }
+    }
+  }
+
+  public TipoJustificativa() {
+
+    if (this.justificativaSelecionada === 6) {
+      this.exibiroutros = true;
+    } else {
+      this.exibiroutros = false;
+      this.controlePresenca.motivo = '';
+    }
+  }
+
+  private ObterDescricaoJustificativa(): string {
+    return this.tipoJustificativaPresenca.filter(x => x.id == this.justificativaSelecionada).map(v => v.value).toString();
   }
 }

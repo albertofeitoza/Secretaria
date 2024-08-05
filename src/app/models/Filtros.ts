@@ -8,4 +8,5 @@ export class Filtros {
     periodoSelecionado: number = 0;
     mesSelecionado: number = 0;
     anoSelecionado: number = 0;
+    pessoaId: number;
 }

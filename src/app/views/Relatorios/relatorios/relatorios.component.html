@@ -1,7 +1,7 @@
 <h1 style="text-align: left;padding-left: 25px;">Relatórios</h1>
 <div>
     <div style="display: flex;" class="row">
-        <mat-form-field>
+        <mat-form-field color="accent" style="width: 350px;">
             <mat-select [(value)]="relatorioSelecionado" placeholder="Tipo de Relatório"
                 (selectionChange)="RelatorioSelecionado()">
                 <mat-option *ngFor="let tr of tipoRelatorio" [value]="tr.id">
@@ -20,8 +20,7 @@
         </mat-form-field>
 
         <mat-form-field *ngIf="exibeMes" color="accent" style="width: 213px;">
-            <mat-select [(value)]="filtros.mesSelecionado" placeholder="Periodo"
-            (selectionChange)="SelecionaMes()">
+            <mat-select [(value)]="filtros.mesSelecionado" placeholder="Periodo" (selectionChange)="SelecionaMes()">
                 <mat-option *ngFor="let pe of meses" [value]="pe.id">
                     {{pe.value}}
                 </mat-option>
@@ -30,7 +29,7 @@
 
         <mat-form-field *ngIf="exibeAno" color="accent" style="width: 213px;">
             <mat-select [(value)]="filtros.anoSelecionado" placeholder="Selecione o ano"
-            (selectionChange)="SelecionaAno()">
+                (selectionChange)="SelecionaAno()">
                 <mat-option *ngFor="let ano of anos" [value]="ano">
                     {{ano}}
                 </mat-option>
@@ -51,6 +50,27 @@
             <mat-datepicker #dataFinal></mat-datepicker>
         </mat-form-field>
 
+
+        <mat-form-field *ngIf="exibeComboObreiro" color="accent" style="width: 400px;">
+            <mat-select [(value)]="filtros.pessoaId" placeholder="Obreiros">
+                <mat-option>Selecione</mat-option>
+                <mat-option *ngFor="let pe of obreiros" [value]="pe.id">
+                    {{pe.nome}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+        <mat-form-field *ngIf="exibeComboMembros" color="accent" style="width: 400px;">
+            <mat-select [(value)]="filtros.pessoaId" placeholder="Membros">
+                <mat-option>Selecione</mat-option>
+                <mat-option *ngFor="let pe of membros" [value]="pe.id">
+                    {{pe.nome}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
         <mat-icon style="padding: 15px;" *ngIf="relatorioSelecionado > 0" matTooltip="solicitar!"
             (click)="BuscarRelatorio()">search</mat-icon>
 
@@ -59,14 +79,13 @@
     </div>
 
 
-    <div
-        *ngIf="relatorioSelecionado == 1 && relatorioMembrosAtivos.length >  0 || relatorioSelecionado == 2 && relatorioMembrosAtivos.length >  0">
+    <div *ngIf="relatorioSelecionado == 1 || relatorioSelecionado == 2 ">
         <span>
             <h1 style="padding-left:25px" *ngIf="relatorioSelecionado == 1">Relatório - Membros Ativos. </h1>
             <h1 style="padding-left:25px" *ngIf="relatorioSelecionado == 2">Relatório - Membros Inativos. </h1>
         </span>
 
-        <div class="mat-elevation-z4" style="height: 355px;overflow: auto;">
+        <div class="mat-elevation-z4" style="height: 600px;overflow: auto;">
             <table mat-table [dataSource]="relatorioMembrosAtivos" class="mat-elevation-z4 demo-table">
                 <mat-header-row *matHeaderRowDef="ColunasGridMembrosAtivos"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: ColunasGridMembrosAtivos;"></mat-row>
@@ -93,20 +112,30 @@
                     <mat-cell *matCellDef="let row">{{row.validadeCartaoMembro | date : 'dd/MM/yyyy'}}</mat-cell>
                 </ng-container>
             </table>
+
+            <div style="text-align: -webkit-center; margin-top: 5%;">
+                <mat-spinner *ngIf="spinner"></mat-spinner>
+            </div>
+
+            <div style="text-align: -webkit-center; margin-top: 5%;">
+                <span>
+                    <h3 *ngIf="mensagemDeretorno" style="padding-left:25px;color: grey;">{{mensagemDeretorno }}</h3>
+                </span>
+            </div>
+
         </div>
         <h3>Total : {{relatorioMembrosAtivos.length}}</h3>
     </div>
 
-    <div *ngIf="relatorioSelecionado == 3 && relatorioIdosos.length >  0">
+    <div *ngIf="relatorioSelecionado == 3">
         <span>
             <h1 style="padding-left:25px;">Relatório - Idosos </h1>
         </span>
-        <div class="mat-elevation-z4" style="height: 125px;overflow: auto;">
+        <div class="mat-elevation-z4" style="height: 600px;overflow: auto;">
             <table mat-table [dataSource]="relatorioIdosos" class="mat-elevation-z4 demo-table">
 
                 <mat-header-row *matHeaderRowDef="ColunasGridRelatorioIdosos"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: ColunasGridRelatorioIdosos;"></mat-row>
-                ['nome', 'endereco', 'ultimaSantaCeia']
 
                 <ng-container matColumnDef="nome">
                     <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
@@ -125,14 +154,21 @@
                 </ng-container>
 
             </table>
+
             <div style="text-align: -webkit-center; margin-top: 5%;">
                 <mat-spinner *ngIf="spinner"></mat-spinner>
+            </div>
+
+            <div style="text-align: -webkit-center; margin-top: 5%;">
+                <span>
+                    <h3 *ngIf="mensagemDeretorno" style="padding-left:25px;color: grey;">{{mensagemDeretorno }}</h3>
+                </span>
             </div>
         </div>
         <h3>Total : {{relatorioIdosos.length }}</h3>
     </div>
 
-    <div *ngIf="relatorioSelecionado == 4 && totalAniversariantes > 0">
+    <div *ngIf="relatorioSelecionado == 4">
 
         <span>
             <h2 style="padding-left:25px;">Relatório - Aniversariantes</h2>
@@ -165,12 +201,18 @@
             <div style="text-align: -webkit-center; margin-top: 5%;">
                 <mat-spinner *ngIf="spinner"></mat-spinner>
             </div>
+
+            <div style="text-align: -webkit-center; margin-top: 5%;">
+                <span>
+                    <h3 *ngIf="mensagemDeretorno" style="padding-left:25px;color: grey;">{{mensagemDeretorno }}</h3>
+                </span>
+            </div>
         </div>
 
         <h3 style="padding-left:25px;">Total : {{totalAniversariantes}}</h3>
     </div>
 
-    <div *ngIf="relatorioSelecionado == 4 && totalAniversariantesCasamento > 0">
+    <div *ngIf="relatorioSelecionado == 4 ">
         <hr />
         <span>
             <h2 style="padding-left:25px;">Relatório - Aniversariantes de casamento. </h2>
@@ -205,18 +247,25 @@
             <div style="text-align: -webkit-center; margin-top: 5%;">
                 <mat-spinner *ngIf="spinner"></mat-spinner>
             </div>
+
+            <div style="text-align: -webkit-center; margin-top: 5%;">
+                <span>
+                    <h3 *ngIf="mensagemDeretorno" style="padding-left:25px;color: grey;">{{mensagemDeretorno }}</h3>
+                </span>
+            </div>
         </div>
         <h3 style="padding-left:25px;">Total : {{totalAniversariantesCasamento}}</h3>
     </div>
 
     <div
-        *ngIf="relatorioSelecionado == 5 && relatorioPresenca.length > 0 || relatorioSelecionado == 6 && relatorioPresenca.length > 0 || relatorioSelecionado == 7 && relatorioPresenca.length > 0">
+        *ngIf="relatorioSelecionado == 5 || relatorioSelecionado == 6 || relatorioSelecionado == 7">
         <hr />
         <span>
             <h1 style="padding-left:25px;">{{nomeRelatorio}}</h1>
         </span>
 
-        <div class="mat-elevation-z4" style="height: 500px;overflow: auto;">
+        <div class="mat-elevation-z4" style="height: 600px;overflow: auto;">
+            
             <table mat-table [dataSource]="relatorioPresenca" class="mat-elevation-z4 demo-table">
 
                 <mat-header-row *matHeaderRowDef="ColunasGridRelatorioCeia"></mat-header-row>
@@ -292,8 +341,15 @@
                     <mat-cell *matCellDef="let row">{{row.participacao}}</mat-cell>
                 </ng-container>
             </table>
+
             <div style="text-align: -webkit-center; margin-top: 5%;">
                 <mat-spinner *ngIf="spinner"></mat-spinner>
+            </div>
+
+            <div style="text-align: -webkit-center; margin-top: 5%;">
+                <span>
+                    <h3 *ngIf="mensagemDeretorno" style="padding-left:25px;color: grey;">{{mensagemDeretorno }}</h3>
+                </span>
             </div>
         </div>
         <h3>Total : {{relatorioPresenca.length}}</h3>
@@ -301,7 +357,7 @@
 
     <div *ngIf="relatorioSelecionado == 17">
         <span>
-            <h1 style="padding-left:25px;" *ngIf="relatorioSelecionado == 17 && relatorioMembrosAtivos.length > 0">
+            <h1 style="padding-left:25px;" *ngIf="relatorioSelecionado == 17">
                 Relatório - Batizados </h1>
         </span>
 
@@ -334,17 +390,80 @@
             <div style="text-align: -webkit-center; margin-top: 5%;">
                 <mat-spinner *ngIf="spinner"></mat-spinner>
             </div>
+
+            <div style="text-align: -webkit-center; margin-top: 5%;">
+                <span>
+                    <h3 *ngIf="mensagemDeretorno" style="padding-left:25px;color: grey;">{{mensagemDeretorno }}</h3>
+                </span>
+            </div>
         </div>
         <h3>Total : {{relatorioMembrosAtivos.length}}</h3>
     </div>
 
-    <div style="text-align: -webkit-center; margin-top: 5%;">
-        <mat-spinner *ngIf="spinner"></mat-spinner>
-    </div>
 
-    <div style="text-align: -webkit-center; margin-top: 5%;">
+    <div *ngIf="relatorioSelecionado == 19">
         <span>
-            <h3 *ngIf="!mensagemDeretorno" style="padding-left:25px;color: grey;">{{mensagemDeretorno }}</h3>
+            <h1 style="padding-left:25px;" *ngIf="relatorioSelecionado == 19 && relatorioPastores.length > 0">
+                Relatório - Pastores </h1>
         </span>
+
+        <div class="mat-elevation-z4" style="height: 600px;overflow: auto;">
+            <table mat-table [dataSource]="relatorioPastores" class="mat-elevation-z4 demo-table">
+                <mat-header-row *matHeaderRowDef="ColunasGridPastores"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ColunasGridPastores;"></mat-row>
+
+                <ng-container matColumnDef="igreja">
+                    <mat-header-cell *matHeaderCellDef>Igreja</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.igreja}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="pastor">
+                    <mat-header-cell *matHeaderCellDef>Pastor</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.pastor}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="esposa">
+                    <mat-header-cell *matHeaderCellDef>Esposa</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.esposa}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="datainicial">
+                    <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data inicial</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.datainicial}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="membrosinicial">
+                    <mat-header-cell *matHeaderCellDef>Membros Inícial</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.membrosinicial}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="membrossaida">
+                    <mat-header-cell *matHeaderCellDef>Membros Saída</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.membrossaida}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="saldomembros">
+                    <mat-header-cell *matHeaderCellDef>Saldo Membros</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.saldomembros}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.status}}</mat-cell>
+                </ng-container>
+                <!-- rol Column -->
+
+            </table>
+            <div style="text-align: -webkit-center; margin-top: 5%;">
+                <mat-spinner *ngIf="spinner"></mat-spinner>
+            </div>
+
+            <div style="text-align: -webkit-center; margin-top: 5%;">
+                <span>
+                    <h3 *ngIf="mensagemDeretorno" style="padding-left:25px;color: grey;">{{mensagemDeretorno }}</h3>
+                </span>
+            </div>
+        </div>
+        <h3>Total : {{relatorioPastores.length}}</h3>
     </div>
 </div>

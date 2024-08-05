@@ -93,7 +93,7 @@ export class CadastroMembrosComponent {
       this.serverApi.readById(id.toString(), Endpoint.Pessoa)
         .subscribe(response => {
           this.pessoa = response?.data?.pessoa != null ? response?.data?.pessoa : new Pessoa();
-          this.igreja = response?.data?.pessoa?.igreja != null ? response?.data?.pessoa?.igreja : new igreja();
+          this.igreja = response?.data?.igreja != null ? response?.data?.igreja : new igreja();
           this.endereco = response?.data?.pessoaEndereco != null ? response?.data?.pessoaEndereco : this.endereco = new PessoaEndereco();
           this.contatos = response?.data?.contatos
           this.dadosMembro = response?.data?.dadosMembro != null ? response?.data?.dadosMembro : this.dadosMembro = new DadosMembro()
@@ -268,6 +268,8 @@ export class CadastroMembrosComponent {
   LimparCampoConjuge() {
     this.pessoa.cpfConjuge = this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 ? this.pessoa.cpfConjuge : "";
     this.pessoa.nomeConjuge = this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 ? this.pessoa.nomeConjuge : "";
+    this.pessoa.dataCasamento = this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 ? this.pessoa.dataCasamento : undefined
+
   }
 
 

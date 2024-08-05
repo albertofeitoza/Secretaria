@@ -171,14 +171,15 @@ export class UtilServiceService {
   TipoRelatorio(){
     let relatorio = [];
     relatorio.push({ "id": 0, "value": "Selecione" })
+    relatorio.push({ "id": 4, "value": "Aniversariantes" })
+    relatorio.push({ "id": 17, "value": "Batizados"})
+    relatorio.push({ "id": 3, "value": "Idosos" })
     relatorio.push({ "id": 1, "value": "Membros Ativos" })
     relatorio.push({ "id": 2, "value": "Membros Inativos" })
-    relatorio.push({ "id": 3, "value": "Idosos" })
-    relatorio.push({ "id": 4, "value": "Aniversariantes" })
-    relatorio.push({ "id": 5, "value": "Santa Ceia" })
-    relatorio.push({ "id": 6, "value": "Reunião Ob. Local"})
-    relatorio.push({ "id": 7, "value": "Reunião Ob. Sede"})
-    relatorio.push({ "id": 17, "value": "Batizados"})
+    relatorio.push({ "id": 5, "value": "Presença em santa Ceia" })
+    relatorio.push({ "id": 6, "value": "Presença em reunião obreiros (Local)"})
+    relatorio.push({ "id": 7, "value": "Presença em reunião obreiros (Sede)"})
+    relatorio.push({ "id": 19, "value": "Transferência de Pastores"})
 
     return relatorio
   }
@@ -259,6 +260,17 @@ export class UtilServiceService {
     presenca.push({ "id": 1, "value": "Reuniao Obreiro Local"})
     presenca.push({ "id": 2, "value": "Reuniao Obreiro Sede"})
     return presenca
+  }
+
+  public TipoJustificativaPresenca() : any {
+    let tipoPresenca = [];
+    tipoPresenca.push({ "id": 3, "value": "Marcar presença"})
+    tipoPresenca.push({ "id": 1, "value": "Justificar presença (Doença)"})
+    tipoPresenca.push({ "id": 2, "value": "Justificar presença (Idoso)"})
+    tipoPresenca.push({ "id": 4, "value": "Justificar presença (Trabalho)"})
+    tipoPresenca.push({ "id": 5, "value": "Justificar presença (Viagem)"})
+    tipoPresenca.push({ "id": 6, "value": "Outros"})
+    return tipoPresenca
   }
 
   TipoUsuario(){

@@ -43,7 +43,7 @@ export class CartarecomendacaoComponent implements OnInit {
     this.serviceApi.readById(this.dialogRef.id, Endpoint.Pessoa)
       .subscribe(p => {
         this.dados = p.data.pessoa;
-        this.PastorIgreja = p.data.pessoa.id === p.data.igreja.idPastorResponsavel ? true : false;
+        this.PastorIgreja = p.data.pessoa.id === p.data.pastor.pessoaId ? true : false;
       })
   }
 
