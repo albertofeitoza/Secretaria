@@ -326,6 +326,7 @@ export class RelatoriosComponent implements OnInit {
     this.serverApi.DownloadArquivo(this.relatorioSelecionado.toString(), Endpoint.DownloadArquivo)
       .subscribe(result => {
         this.serviceUtil.Imprimir(result, 'application/pdf')
+        this.imprimir = false;
       });
   }
 

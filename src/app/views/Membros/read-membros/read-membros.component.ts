@@ -128,7 +128,6 @@ export class ReadMembrosComponent implements OnInit {
   ImprimirFichaMembro(id: number) {
 
     this.spinner = true
-    let confirm: boolean = false;
     this.serverApi.DownloadArquivo(id.toString(), Endpoint.RelatoriosFichaMembro)
       .subscribe(result => {
 
