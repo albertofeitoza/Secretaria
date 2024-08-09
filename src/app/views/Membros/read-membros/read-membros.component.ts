@@ -132,9 +132,9 @@ export class ReadMembrosComponent implements OnInit {
       .subscribe(result => {
 
         this.serviceUtil.showMessage("Aguarde a impressão.", false);
-        //this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `FichaMembro_${id.toString()}.docx`);
+        this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `FichaMembro_${id.toString()}.docx`);
 
-        this.serviceUtil.Imprimir(result, 'application/pdf')
+        //this.serviceUtil.Imprimir(result, 'application/pdf')
         this.spinner = false;
       },
         (error) => {
@@ -226,7 +226,10 @@ export class ReadMembrosComponent implements OnInit {
           this.serverApi.DownloadCartas(dados, Endpoint.RelatoriosCartas)
             .subscribe(result => {
               this.serviceUtil.showMessage("Aguarde a Impressão.", false);
-              this.serviceUtil.Imprimir(result, 'application/pdf')
+              
+              this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `Carta_${id.toString()}.docx`);
+              
+              //this.serviceUtil.Imprimir(result, 'application/pdf')
               this.spinner = false;
             },
               (error) => {
