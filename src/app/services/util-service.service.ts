@@ -18,7 +18,7 @@ export class UtilServiceService {
     private router: Router,
     public overlay: Overlay,
     public dialog: MatDialog
-    ) { }
+  ) { }
 
   showMessage(msg: string, isErro: boolean = false): void {
     this.snackBar.open(msg, 'X', {
@@ -36,8 +36,8 @@ export class UtilServiceService {
     return EMPTY
   }
 
-  convertToBase64(txt: string): string {
-    return btoa(txt);
+  convertToBase64(data: any){
+    return btoa(data);
   }
 
   convertBase64toText(txt: string): string {
@@ -62,9 +62,9 @@ export class UtilServiceService {
     };
   }
 
-  BaixarArquivo(result : any, type : string, nomeArquivo : string ){
+  BaixarArquivo(result : any, type : string, nomeArquivo : string) {
     
-    const blob = new Blob([result], { type: type});
+    const blob = new Blob([result], { type: type });
     var fileURL = URL.createObjectURL(blob);
 
     var a = document.createElement("a");
@@ -125,7 +125,7 @@ export class UtilServiceService {
     statusPessoa.push({ "id": 1, "value": "Em Comunhao" })
     statusPessoa.push({ "id": 2, "value": "Afastado" })
     statusPessoa.push({ "id": 3, "value": "Disciplinado" })
-    statusPessoa.push({ "id": 4, "value": "Excluído da comunhão"})
+    statusPessoa.push({ "id": 4, "value": "Excluído da comunhão" })
 
     return statusPessoa
   }
@@ -162,30 +162,29 @@ export class UtilServiceService {
     entradaFuncao.push({ "id": 3, "value": "Recebido" })
     entradaFuncao.push({ "id": 5, "value": "Ordenado" })
     entradaFuncao.push({ "id": 4, "value": "Reintegrado" })
-    
 
     return entradaFuncao
   }
 
 
-  TipoRelatorio(){
+  TipoRelatorio() {
     let relatorio = [];
     relatorio.push({ "id": 0, "value": "Selecione" })
     relatorio.push({ "id": 4, "value": "Aniversariantes" })
-    relatorio.push({ "id": 17, "value": "Batizados"})
+    relatorio.push({ "id": 17, "value": "Batizados" })
     relatorio.push({ "id": 3, "value": "Idosos" })
     relatorio.push({ "id": 1, "value": "Membros Ativos" })
     relatorio.push({ "id": 2, "value": "Membros Inativos" })
     relatorio.push({ "id": 5, "value": "Presença em santa Ceia" })
-    relatorio.push({ "id": 6, "value": "Presença em reunião obreiros (Local)"})
-    relatorio.push({ "id": 7, "value": "Presença em reunião obreiros (Sede)"})
-    relatorio.push({ "id": 19, "value": "Transferência de Pastores"})
+    relatorio.push({ "id": 6, "value": "Presença em reunião obreiros (Local)" })
+    relatorio.push({ "id": 7, "value": "Presença em reunião obreiros (Sede)" })
+    relatorio.push({ "id": 19, "value": "Transferência de Pastores" })
 
     return relatorio
   }
 
 
-  Periodo(){
+  Periodo() {
     let periodo = [];
     periodo.push({ "id": 0, "value": "Selecione o periodo" });
     periodo.push({ "id": 1, "value": "Semanal" });
@@ -194,7 +193,7 @@ export class UtilServiceService {
     return periodo;
   }
 
-  MesesDoAno(){
+  MesesDoAno() {
     let periodo = [];
     periodo.push({ "id": 0, "value": "Informe o mês" });
     periodo.push({ "id": 1, "value": "Janeiro" });
@@ -213,7 +212,7 @@ export class UtilServiceService {
     return periodo;
   }
 
-  PeriodoCemAnos(){
+  PeriodoCemAnos() {
     let periodo = [];
     periodo.push({ "id": 0, "value": "Informe o mês" });
 
@@ -224,7 +223,7 @@ export class UtilServiceService {
 
 
     }
-    
+
     periodo.push({ "id": 0, "value": "Informe o mês" });
     periodo.push({ "id": 1, "value": "Janeiro" });
     periodo.push({ "id": 2, "value": "Fevereiro" });
@@ -243,49 +242,49 @@ export class UtilServiceService {
   }
 
 
-  public TipoCartas() : any {
+  public TipoCartas(): any {
     let documento = [];
-    documento.push({ "id": 0, "value": "Selecione"})
-    documento.push({ "id": 13, "value": "Carta de Recomendação"})
-    documento.push({ "id": 14, "value": "Carta de Rec.Casal"})
-    documento.push({ "id": 15, "value": "Carta de Mudança"})
-    documento.push({ "id": 16, "value": "Carta de Mud.Casal"})
+    documento.push({ "id": 0, "value": "Selecione" })
+    documento.push({ "id": 13, "value": "Carta de Recomendação" })
+    documento.push({ "id": 14, "value": "Carta de Rec.Casal" })
+    documento.push({ "id": 15, "value": "Carta de Mudança" })
+    documento.push({ "id": 16, "value": "Carta de Mud.Casal" })
     return documento
   }
 
-  public JustificativaPresenca() : any {
+  public JustificativaPresenca(): any {
     let presenca = [];
-    presenca.push({ "id": 0, "value": "Selecione"})
-    presenca.push({ "id": 3, "value": "Santa Ceia"})
-    presenca.push({ "id": 1, "value": "Reuniao Obreiro Local"})
-    presenca.push({ "id": 2, "value": "Reuniao Obreiro Sede"})
+    presenca.push({ "id": 0, "value": "Selecione" })
+    presenca.push({ "id": 3, "value": "Santa Ceia" })
+    presenca.push({ "id": 1, "value": "Reuniao Obreiro Local" })
+    presenca.push({ "id": 2, "value": "Reuniao Obreiro Sede" })
     return presenca
   }
 
-  public TipoJustificativaPresenca() : any {
+  public TipoJustificativaPresenca(): any {
     let tipoPresenca = [];
-    tipoPresenca.push({ "id": 3, "value": "Marcar presença"})
-    tipoPresenca.push({ "id": 1, "value": "Justificar presença (Doença)"})
-    tipoPresenca.push({ "id": 2, "value": "Justificar presença (Idoso)"})
-    tipoPresenca.push({ "id": 4, "value": "Justificar presença (Trabalho)"})
-    tipoPresenca.push({ "id": 5, "value": "Justificar presença (Viagem)"})
-    tipoPresenca.push({ "id": 6, "value": "Outros"})
+    tipoPresenca.push({ "id": 3, "value": "Marcar presença" })
+    tipoPresenca.push({ "id": 1, "value": "Justificar presença (Doença)" })
+    tipoPresenca.push({ "id": 2, "value": "Justificar presença (Idoso)" })
+    tipoPresenca.push({ "id": 4, "value": "Justificar presença (Trabalho)" })
+    tipoPresenca.push({ "id": 5, "value": "Justificar presença (Viagem)" })
+    tipoPresenca.push({ "id": 6, "value": "Outros" })
     return tipoPresenca
   }
 
-  TipoUsuario(){
+  TipoUsuario() {
     let tipoUsuario = [];
     tipoUsuario.push({ "id": 0, "value": "Selecione" })
     tipoUsuario.push({ "id": 2, "value": "Secretario" })
     tipoUsuario.push({ "id": 3, "value": "Membro" })
     tipoUsuario.push({ "id": 4, "value": "Tesoureiro" })
     tipoUsuario.push({ "id": 5, "value": "DepInfantil" })
-  
+
     return tipoUsuario;
-  
+
   }
 
-  SimNao(){
+  SimNao() {
     let simNao = [];
     simNao.push({ "id": 0, "value": "Selecione" })
     simNao.push({ "id": 1, "value": "Sim" })
@@ -295,14 +294,14 @@ export class UtilServiceService {
 
 
 
-  PopupConfirmacao(mensagem: string, tipo: number, componente: any, Id : any = 0, Width: any = 'auto', Height: any = 'auto', disableClose: boolean = false, status : boolean = false ) {
+  PopupConfirmacao(mensagem: string, tipo: number, componente: any, Id: any = 0, Width: any = 'auto', Height: any = 'auto', disableClose: boolean = false, status: boolean = false) {
 
     const dialog = this.dialog.open(componente, {
-      id : Id,
+      id: Id,
       width: Width,
-      height : Height,
-      disableClose : disableClose,
-      data: { mensagem: mensagem, tipo: tipo, data : componente}
+      height: Height,
+      disableClose: disableClose,
+      data: { mensagem: mensagem, tipo: tipo, data: componente }
     });
     return dialog.afterClosed();
   }
