@@ -15,6 +15,8 @@ import { Cartas } from 'src/app/models/Cartas';
 import { FilhosComponent } from '../Modal/filhos/filhos.component';
 import { ControlePresencaComponent } from '../Modal/controle-presenca/controle-presenca.component';
 import { UnirCadastroComponent } from '../Modal/unir-cadastro/unir-cadastro.component';
+import jsPDF from 'jspdf';
+
 
 @Injectable()
 
@@ -67,53 +69,42 @@ export class ReadMembrosComponent implements OnInit {
     try {
       this.spinner = true
 
-      if (!this.filtros.precadastro) {
+      this.serverApi.read(Endpoint.Pessoa)
+        .subscribe((response) => {
+          response = response.sort()
+          this.datasource.data =
 
-        this.serverApi.read(Endpoint.Pessoa)
-          .subscribe((response) => {
-            response = response.sort()
-            this.datasource.data =
+            this.filtros.inativos && this.filtros.txtBusca.length == 0
+              ? response.filter(f => f.statusPessoa == 'Inativo')
 
-              this.filtros.inativos && this.filtros.txtBusca.length == 0
-                ? response.filter(f => f.statusPessoa == 'Inativo')
+              : this.filtros.inativos && this.filtros.txtBusca.length > 0
+                ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.statusPessoa == 'Inativo' && f.rol.toString().includes(this.filtros.txtBusca))
 
-                : this.filtros.inativos && this.filtros.txtBusca.length > 0
-                  ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+                : this.filtros.precadastro && this.filtros.txtBusca.length == 0
+                  ? response.filter(f => f.statusPessoa == 'PreCadastro')
 
-                  : this.filtros.obreiros && this.filtros.txtBusca.length == 0
-                    ? response.filter(f => f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro")
+                  : this.filtros.precadastro && this.filtros.txtBusca.length > 0
+                    ? response.filter(f => f.statusPessoa == 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.statusPessoa == 'PreCadastro' && f.rol.toString().toLowerCase().includes(this.filtros.txtBusca))
 
-                    : this.filtros.obreiros && this.filtros.txtBusca.length > 0
-                      ? response.filter(f => f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro" && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+                    : this.filtros.obreiros && this.filtros.txtBusca.length == 0
+                      ? response.filter(f => f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro")
 
-                      : this.filtros.txtBusca.length > 0
-                        ? response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
+                      : this.filtros.obreiros && this.filtros.txtBusca.length > 0
+                        ? response.filter(f => f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro" && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro" && f.rol.toString().toLowerCase().includes(this.filtros.txtBusca))
 
-                        : response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro');
+                        : !this.filtros.inativos && !this.filtros.obreiros && !this.filtros.precadastro && this.filtros.txtBusca.length == 0
+                          ? response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro')
+                          : response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.rol.toString().toLowerCase().includes(this.filtros.txtBusca.toLowerCase()));
+
+          this.spinner = false;
+        })
 
 
-            this.spinner = false;
-
-          })
-
-      } else {
-        this.Precadastro(this.filtros.txtBusca.toLowerCase())
-      }
     } catch (error) {
       this.spinner = false
     }
 
 
-  }
-
-  private Precadastro(filtro: string = "") {
-    this.serverApi.read(`${Endpoint.Pessoa}/preCadastro`)
-      .subscribe(pes => {
-        this.datasource.data =
-          filtro == undefined || filtro == "" ? pes.filter(f => f.statusPessoa == 'PreCadastro') :
-            pes.filter(f => f.statusPessoa == 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()))
-
-      });
   }
 
   cadastroMembro() {
@@ -132,9 +123,8 @@ export class ReadMembrosComponent implements OnInit {
       .subscribe(result => {
 
         this.serviceUtil.showMessage("Aguarde a impressão.", false);
-        this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `FichaMembro_${id.toString()}.docx`);
 
-        //this.serviceUtil.Imprimir(result, 'application/pdf')
+        this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `FichaMembro${id.toString()}.docx`);
         this.spinner = false;
       },
         (error) => {
@@ -226,10 +216,8 @@ export class ReadMembrosComponent implements OnInit {
           this.serverApi.DownloadCartas(dados, Endpoint.RelatoriosCartas)
             .subscribe(result => {
               this.serviceUtil.showMessage("Aguarde a Impressão.", false);
-              
+
               this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `Carta_${id.toString()}.docx`);
-              
-              //this.serviceUtil.Imprimir(result, 'application/pdf')
               this.spinner = false;
             },
               (error) => {

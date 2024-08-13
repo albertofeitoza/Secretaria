@@ -36,7 +36,7 @@ export class UtilServiceService {
     return EMPTY
   }
 
-  convertToBase64(data: any){
+  convertToBase64(data: any) {
     return btoa(data);
   }
 
@@ -45,25 +45,35 @@ export class UtilServiceService {
 
   }
 
-  Imprimir(result : any, type : string){
-    const blob = new Blob([result], { type: type });
-    var fileURL = URL.createObjectURL(blob);
+  Imprimir(result: any, type: string) {
 
-    let iframe = document.createElement('iframe');
-    document.body.appendChild(iframe);
+    try {
 
-    iframe.style.display = 'none';
-    iframe.src = fileURL;
-    iframe.onload = function () {
-      setTimeout(function () {
-        iframe.focus();
-        iframe.contentWindow?.print();
-      }, 2);
-    };
+
+      const blob = new Blob([result], { type: type });
+      var fileURL = URL.createObjectURL(blob);
+
+      let iframe = document.createElement('iframe');
+      document.body.appendChild(iframe);
+
+      iframe.style.display = 'none';
+      iframe.src = fileURL;
+
+
+      iframe.onload = function () {
+        setTimeout(function () {
+          iframe.focus();
+          iframe.contentWindow?.print();
+        }, 2);
+      };
+
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  BaixarArquivo(result : any, type : string, nomeArquivo : string) {
-    
+  BaixarArquivo(result: any, type: string, nomeArquivo: string) {
+
     const blob = new Blob([result], { type: type });
     var fileURL = URL.createObjectURL(blob);
 

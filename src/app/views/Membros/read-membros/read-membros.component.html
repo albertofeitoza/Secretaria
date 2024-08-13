@@ -16,12 +16,10 @@
       <input name="obreiros" [(ngModel)]="filtros.obreiros" [checked]="filtros.obreiros" type="checkbox"
         (change)="Filtros($event)" (click)="filtros.periodoSelecionado = 3">
     </a>
-
-    <!-- <mat-spinner style="width: 10%;height: 8%;" *ngIf="spinner"> Aguarde! </mat-spinner> -->
     <span style="margin-top: 1px;" class="search" (click)="Filtros($event)">
       <i class="material-icons">search</i>
     </span>
-    <input style="margin-top: 1px;" id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)" value="" />
+    <input style="margin-top: 1px;" id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)" value="" placeholder="pesquisar por NOME ou ROL." />
   </div>
 </div>
 

@@ -58,6 +58,11 @@ export class CartarecomendacaoComponent implements OnInit {
 
     if (confirm) {
 
+      if(this.relatorioSelecionado == 14 && !this.dados.cpfConjuge || this.relatorioSelecionado == 16 && !this.dados.cpfConjuge ){
+        this.serviceUtil.showMessage("Para emissão de carta de recomendação / Mudança para o casal corrigir o cadastro associando o cpf do conjuge.", true)
+        return;
+      }
+
       if (this.relatorioSelecionado == 13) {
 
         this.resposta.Status = true;
