@@ -11,6 +11,7 @@ import { AllservicesService } from 'src/app/services/allservices.service';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 import { PendenciasComponent } from './modal/pendencias/pendencias.component';
+import { PessoasporfuncaoComponent } from './modal/pessoasporfuncao/pessoasporfuncao.component';
 
 @Injectable()
 
@@ -61,14 +62,7 @@ export class ServiceCenterComponent implements OnInit {
       .subscribe((result: ServiceCenter[]) => {
 
         this.departamentos = new Set(result.map(x => x.departamento).sort());
-
         this.servicecenter = result;
-        //result = result.sort()
-
-
-
-        //this.datasource.data = result
-        //this.datasource.sort = this.sort
       });
   }
 
@@ -80,12 +74,13 @@ export class ServiceCenterComponent implements OnInit {
     const dados = this.servicecenter.filter(x => x.departamento.includes(departamento));
     if (dados)
       this.serviceUtil.PopupConfirmacao(departamento, TipoPopup.ComponenteInstancia, PendenciasComponent, 0, 'auto', 'auto', false, false, dados)
-    else
-      this.serviceUtil.showMessage("Não há dados para essa pesquisa.");
   }
 
-  public ExibirPessoas(dado: string): void {
-    //alert(this.pessoas.filter(x => x.funcao == dado && x.statusPessoa != 'Inativo' && x.statusPessoa != "PreCadastro").length)
+  public ExibirPessoas(funcao: string): void {
+    const dados = this.pessoas.filter(x => x.funcao.includes(funcao) && x.statusPessoa != 'Inativo' && x.statusPessoa != "PreCadastro");
+    if (dados)
+      this.serviceUtil.PopupConfirmacao(funcao, TipoPopup.ComponenteInstancia, PessoasporfuncaoComponent, 0, 'auto', 'auto', false, false, dados)
+
   }
 
   public QuantPessoas(funcao: any): number {

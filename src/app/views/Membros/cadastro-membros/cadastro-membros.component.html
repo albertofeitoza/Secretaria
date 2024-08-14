@@ -15,8 +15,10 @@
           alt="Imagem">
         <br>
         <input style="display: none" type="file" accept="image/*" (change)="processFile($event)" #fileInput>
-        <button *ngIf="!this.pessoa.fotoCadastrada" style="margin-right: 60px;" (click)="fileInput.click()">Foto</button>
-        <button *ngIf="this.pessoa.fotoCadastrada" style="margin-right: 60px;" (click)="RemoverFoto(pessoa.id)">Excluir</button>
+        <button *ngIf="!this.pessoa.fotoCadastrada" style="margin-right: 60px;"
+          (click)="fileInput.click()">Foto</button>
+        <button *ngIf="this.pessoa.fotoCadastrada" style="margin-right: 60px;"
+          (click)="RemoverFoto(pessoa.id)">Excluir</button>
       </div>
 
       <div style="padding-top: 15px;">
@@ -37,7 +39,8 @@
 
         <mat-form-field>
           <mat-label>Estado Civil</mat-label>
-          <mat-select [(value)]="pessoa.estadoCivil" placeholder="Estado Civil" (selectionChange)="LimparCampoConjuge()">
+          <mat-select [(value)]="pessoa.estadoCivil" placeholder="Estado Civil"
+            (selectionChange)="LimparCampoConjuge()">
             <mat-option *ngFor="let ec of estCivil" [value]="ec.id">
               {{ec.value}}
             </mat-option>
@@ -98,7 +101,8 @@
 
         <mat-form-field>
           <mat-label>CPF Conjuje</mat-label>
-          <input matTooltip="Informe o Cpf e pressione Enter" matInput placeholder="CPF Conjuje" [(ngModel)]="pessoa.cpfConjuge" name="cpfConjuge" (keypress)="BuscarConjuje($event)">
+          <input matTooltip="Informe o Cpf e pressione Enter" matInput placeholder="CPF Conjuje"
+            [(ngModel)]="pessoa.cpfConjuge" name="cpfConjuge" (keypress)="BuscarConjuje($event)">
         </mat-form-field>
 
         <mat-form-field>
@@ -116,8 +120,7 @@
         <mat-form-field>
           <mat-label>Idoso</mat-label>
           <input style="height: 20px; width: 150px;" matInput placeholder="Idoso">
-          <input name="idoso" [(ngModel)]="pessoa.idoso"
-            [checked]="pessoa.idoso" type="checkbox">
+          <input name="idoso" [(ngModel)]="pessoa.idoso" [checked]="pessoa.idoso" type="checkbox">
         </mat-form-field>
 
         <mat-form-field>
@@ -133,10 +136,11 @@
       </div>
 
     </div>
-    
-    
+
+
     <mat-action-row>
-      <button *ngIf="pessoa.nome && pessoa.id > 0" mat-button color="primary" routerLink="/membros/{{pessoa.nome.split(' ')[0]}}" >Voltar</button>
+      <button *ngIf="pessoa.nome && pessoa.id > 0" mat-button color="primary"
+        routerLink="/membros/{{pessoa.nome.split(' ')[0]}}">Voltar</button>
       <button mat-button color="primary" (click)="Proximo()">Salvar</button>
     </mat-action-row>
 
@@ -304,11 +308,6 @@
         <mat-row (click)="ContatoSelecionado(row.id)" *matRowDef="let row; columns: Colunas;"
           [ngClass]="{'corLinhaGrid' : row.id == contatoSelecionado}"></mat-row>
       </table>
-
-      <!-- <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-        aria-label="Select page of periodic elements">
-      </mat-paginator> -->
-
     </div>
 
     <mat-action-row>
@@ -332,7 +331,8 @@
     <div class="menuInternoGrid">
       <mat-form-field style="padding-left: 17px;">
         <mat-label>ROL</mat-label>
-        <input class="number" required="required" pattern="\d*" matInput placeholder="rol" [(ngModel)]="dadosMembro.rol" name="rol">
+        <input class="number" required="required" pattern="\d*" matInput placeholder="rol" [(ngModel)]="dadosMembro.rol"
+          name="rol">
       </mat-form-field>
 
       <mat-form-field>
@@ -401,7 +401,8 @@
 
       <mat-form-field>
         <mat-label>Batismo no E. Santo Igreja</mat-label>
-        <input matInput placeholder="Batismo no E. Santo Igreja" [(ngModel)]="dadosMembro.batismoESantoIgreja" name="batismoESantoIgreja">
+        <input matInput placeholder="Batismo no E. Santo Igreja" [(ngModel)]="dadosMembro.batismoESantoIgreja"
+          name="batismoESantoIgreja">
       </mat-form-field>
 
       <mat-form-field color="accent" style="width: 213px;">
@@ -459,7 +460,8 @@
 
       <mat-form-field color="accent" style="width: 213px;">
         <mat-label>Mudança Com Carta</mat-label>
-        <input matInput [matDatepicker]="mudancaComcarta" [(ngModel)]="dadosMembro.mudancaComCarta" name="mudancaComCarta">
+        <input matInput [matDatepicker]="mudancaComcarta" [(ngModel)]="dadosMembro.mudancaComCarta"
+          name="mudancaComCarta">
         <mat-datepicker-toggle matIconSuffix [for]="mudancaComcarta"></mat-datepicker-toggle>
         <mat-datepicker #mudancaComcarta></mat-datepicker>
       </mat-form-field>
@@ -478,7 +480,8 @@
 
       <mat-form-field color="accent" style="width: 213px;">
         <mat-label>Mudança Sem Carta</mat-label>
-        <input matInput [matDatepicker]="mudancaSemcarta" [(ngModel)]="dadosMembro.mudancaSemCarta" name="mudancaSemCarta">
+        <input matInput [matDatepicker]="mudancaSemcarta" [(ngModel)]="dadosMembro.mudancaSemCarta"
+          name="mudancaSemCarta">
         <mat-datepicker-toggle matIconSuffix [for]="mudancaSemcarta"></mat-datepicker-toggle>
         <mat-datepicker #mudancaSemcarta></mat-datepicker>
       </mat-form-field>
@@ -492,23 +495,21 @@
 
       <mat-form-field>
         <mat-label>Procedência</mat-label>
-        <input matInput placeholder="Procedência" [(ngModel)]="dadosMembro.procedencia"
-          name="procedencia">
+        <input matInput placeholder="Procedência" [(ngModel)]="dadosMembro.procedencia" name="procedencia">
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Observação</mat-label>
-        <input matInput placeholder="Observação" [(ngModel)]="dadosMembro.observacao"
-          name="observacao">
+        <input matInput placeholder="Observação" [(ngModel)]="dadosMembro.observacao" name="observacao">
       </mat-form-field>
     </div>
-     
+
     <mat-action-row>
       <button mat-button color="warn" (click)="Voltar()">Voltar</button>
       <button mat-button color="primary" (click)="Proximo()">Salvar</button>
     </mat-action-row>
   </mat-expansion-panel>
-   
+
 
   <mat-expansion-panel *ngIf="pessoa.id > 0" [expanded]="step === 5" (opened)="setStep(5)" hideToggle>
     <mat-expansion-panel-header>
@@ -520,7 +521,7 @@
         <mat-icon>map</mat-icon>
       </mat-panel-description>
     </mat-expansion-panel-header>
-    
+
     <!-- Cargos -->
 
     <div class="menuInternoGrid">
@@ -583,11 +584,6 @@
         <mat-row (click)="CargoSelecionado(row.id)" *matRowDef="let row; columns: ColunasCargos;"
           [ngClass]="{'corLinhaGrid' : row.id == cargoSelecionado}"></mat-row>
       </table>
-
-      <!-- <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-        aria-label="Select page of periodic elements">
-      </mat-paginator> -->
-
     </div>
 
   </mat-expansion-panel>
@@ -607,10 +603,11 @@
       <table mat-table [dataSource]="logs" matSort>
 
         <mat-header-row *matHeaderRowDef="colunasLogs"></mat-header-row>
-        
+
         <ng-container matColumnDef="data">
           <th style="width:20%;" mat-header-cell *matHeaderCellDef>Data da Ocorrência</th>
-          <td style="width:20%;" mat-cell id="data" *matCellDef="let row">{{row.data | date : 'dd/MM/yyyy hh:mm:ss'}}</td>
+          <td style="width:20%;" mat-cell id="data" *matCellDef="let row">{{row.data | date : 'dd/MM/yyyy hh:mm:ss'}}
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="descricao">
@@ -676,11 +673,10 @@
           <input name="possuiProtestos" [(ngModel)]="dadosObreiro.cartaoProvisorio"
             [checked]="dadosObreiro.cartaoProvisorio" type="checkbox">
         </mat-form-field>
-       
+
         <mat-form-field>
           <mat-label>Observação</mat-label>
-          <input matInput placeholder="Observação" [(ngModel)]="dadosObreiro.observacao"
-            name="observacao">
+          <input matInput placeholder="Observação" [(ngModel)]="dadosObreiro.observacao" name="observacao">
         </mat-form-field>
 
         <br>
@@ -756,10 +752,12 @@
 
           <ng-container matColumnDef="action">
             <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
-            
+
             <mat-cell *matCellDef="let row">
-              <mat-icon *ngIf="row.aprovado === 'Não'" matTooltip="Editar Historico!" (click)="AtualizarFuncao(row.id)">edit</mat-icon>
-              <mat-icon *ngIf="row.aprovado === 'Não'" matTooltip="excluir Historico!" (click)="ExcluirHistorico(row.id)">delete</mat-icon>
+              <mat-icon *ngIf="row.aprovado === 'Não'" matTooltip="Editar Historico!"
+                (click)="AtualizarFuncao(row.id)">edit</mat-icon>
+              <mat-icon *ngIf="row.aprovado === 'Não'" matTooltip="excluir Historico!"
+                (click)="ExcluirHistorico(row.id)">delete</mat-icon>
             </mat-cell>
           </ng-container>
 
