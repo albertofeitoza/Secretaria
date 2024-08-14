@@ -13,9 +13,7 @@
   height: 80%;
   margin: 30px;
 
-  mat-card-title {
-    text-align: center;
-  }
+  
 }
 
 .infSecretaria {
@@ -24,9 +22,10 @@
   height: 80%;
   margin: 30px;
 
-  mat-card-title {
-    text-align: center;
-  }
+  
+}
+mat-card-title {
+  text-align: center;
 }
 
 .cursor{
