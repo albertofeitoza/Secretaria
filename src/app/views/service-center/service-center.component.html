@@ -2,7 +2,7 @@
     <div style="display: flex;" class="row">
         <div *ngIf="funcoes" class="col-md-3 pr-2">
             <mat-card class="infIgreja">
-                <mat-card-title>Informações da Igreja</mat-card-title>
+                <mat-card-title>Informações da Membresia</mat-card-title>
                 <mat-card-content style="display: ruby-text;">
                     <div style="display: ruby-text;" *ngFor="let func of funcoes">
                         <label class="cursor" (click)="ExibirPessoas(func)">{{func}}: </label>
