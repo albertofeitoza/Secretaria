@@ -1,8 +1,34 @@
 .centralizar {
-    position: absolute;
-    left: 50%;
-    top: 25%;
-    transform: translate(-50%, -50%);
-    min-height: 25%;
-    min-width: 20%;
+  position: absolute;
+  left: 50%;
+  top: 25%;
+  transform: translate(-50%, -50%);
+  min-height: 25%;
+  min-width: 20%;
+}
+
+.infIgreja {
+  background-color: rgb(185, 199, 172);
+  width: 90%;
+  height: 80%;
+  margin: 30px;
+
+  mat-card-title {
+    text-align: center;
   }
+}
+
+.infSecretaria {
+  background-color: rgb(216, 175, 24);
+  width: 90%;
+  height: 80%;
+  margin: 30px;
+
+  mat-card-title {
+    text-align: center;
+  }
+}
+
+.cursor{
+  cursor: pointer;
+}

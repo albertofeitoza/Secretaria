@@ -1,0 +1,32 @@
+<div style="padding: 30px;">
+    <h1>{{titulo}}</h1>
+
+    <div class="mat-elevation-z4" style="height:450px; width: 1000px; overflow: auto;padding-top: 3%;">
+        <table mat-table [dataSource]="datasource" matSort class="mat-elevation-z8 demo-table">
+            <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
+
+            <ng-container matColumnDef="id">
+                <mat-header-cell style="display: none;" *matHeaderCellDef hidden="true">Id</mat-header-cell>
+                <mat-cell style="display: none;" id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="nomeMembro">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Nome Pessoa</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.nomeMembro}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="departamento">
+                <mat-header-cell style="width: 2%;" *matHeaderCellDef mat-sort-header>Departamento</mat-header-cell>
+                <mat-cell style="width: 2%;" *matCellDef="let row">{{row.departamento}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="nomePendencia">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Erro</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.nomePendencia}}</mat-cell>
+            </ng-container>
+
+            <mat-row style="height: 10%;" *matRowDef="let row; columns: Colunas;"></mat-row>
+        </table>
+    </div>
+    <mat-paginator #paginator [pageSize]="8" [pageSizeOptions]="[8]" showFirstLastButtons></mat-paginator>
+</div>

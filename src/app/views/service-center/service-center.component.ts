@@ -3,9 +3,14 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, _MatTableDataSource } from '@angular/material/table';
 import { Endpoint } from 'src/app/enum/Endpoints';
+import { TipoPopup } from 'src/app/enum/TipoPopup';
+import { ViewPessoa } from 'src/app/models/pessoa';
 import { ServiceCenter } from 'src/app/models/ServiceCenter';
+import { PopupConfirmacaoComponent } from 'src/app/popups/popup-confirmacao/popup-confirmacao.component';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
+import { UtilServiceService } from 'src/app/services/util-service.service';
+import { PendenciasComponent } from './modal/pendencias/pendencias.component';
 
 @Injectable()
 
@@ -17,38 +22,73 @@ import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 export class ServiceCenterComponent implements OnInit {
 
   tipoUsuario: Number = 0;
-  Colunas = ['id', 'nomeMembro', 'departamento', 'nomePendencia'];
 
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  datasource = new MatTableDataSource<ServiceCenter>();
+
+
+  servicecenter: ServiceCenter[] = new Array();
+  departamentos: any = new Array();
+  funcoes: any = new Array();
+  totalGeralMembros = 0;
+  pessoas: ViewPessoa[] = new Array();
 
   constructor(
     private auth: AutenticacaoService,
-    private serviceApi: AllservicesService<any>
+    private serviceApi: AllservicesService<any>,
+    private serviceUtil: UtilServiceService
   ) { }
 
   ngOnInit() {
     this.tipoUsuario = this.UsuarioLogado();
+    this.BuscarMembros();
     this.BuscarPendencias();
-  }
-
-  ngAfterViewInit() {
-    this.datasource.paginator = this.paginator
-    this.datasource.sort = this.sort;
   }
 
   private UsuarioLogado(): Number {
     return this.auth.tipoUsuarioLogado
   }
 
-  BuscarPendencias(){
-    this.serviceApi.read(Endpoint.ServiceCenter)
-      .subscribe((result : ServiceCenter[]) => {
-        result = result.sort()
-        this.datasource.data = result
-        this.datasource.sort = this.sort
+  private BuscarMembros(): void {
+    this.serviceApi.read(Endpoint.Pessoa)
+      .subscribe((result: ViewPessoa[]) => {
+        this.pessoas = result;
+        this.funcoes = new Set(result.map(x => x.funcao).sort());
+        this.totalGeralMembros = result.filter(x => x.statusPessoa != 'Inativo' && x.statusPessoa != "PreCadastro").length;
       });
   }
 
+  private BuscarPendencias(): void {
+    this.serviceApi.read(Endpoint.ServiceCenter)
+      .subscribe((result: ServiceCenter[]) => {
+
+        this.departamentos = new Set(result.map(x => x.departamento).sort());
+
+        this.servicecenter = result;
+        //result = result.sort()
+
+
+
+        //this.datasource.data = result
+        //this.datasource.sort = this.sort
+      });
+  }
+
+  public QuantPendencias(departamento: any): number {
+    return this.servicecenter.filter(x => x.departamento.includes(departamento)).length;
+  }
+
+  public ExibirPependencia(departamento: any): void {
+    const dados = this.servicecenter.filter(x => x.departamento.includes(departamento));
+    if (dados)
+      this.serviceUtil.PopupConfirmacao(departamento, TipoPopup.ComponenteInstancia, PendenciasComponent, 0, 'auto', 'auto', false, false, dados)
+    else
+      this.serviceUtil.showMessage("Não há dados para essa pesquisa.");
+  }
+
+  public ExibirPessoas(dado: string): void {
+    //alert(this.pessoas.filter(x => x.funcao == dado && x.statusPessoa != 'Inativo' && x.statusPessoa != "PreCadastro").length)
+  }
+
+  public QuantPessoas(funcao: any): number {
+    return this.pessoas.filter(x => x.funcao.includes(funcao) && x.statusPessoa != 'Inativo' && x.statusPessoa != "PreCadastro").length;
+  }
 }

@@ -107,6 +107,12 @@ export class ReadMembrosComponent implements OnInit {
 
   }
 
+  private Precadastro(filtro: string = "") {
+    this.serverApi.read(`${Endpoint.Pessoa}/preCadastro`)
+      .subscribe(() => {});
+  }
+
+
   cadastroMembro() {
     alert("Novo membro")
   }
@@ -192,6 +198,8 @@ export class ReadMembrosComponent implements OnInit {
       } else if (this.filtros.periodoSelecionado == 2) {
         this.filtros.inativos = false
         this.filtros.obreiros = false
+        this.Precadastro();
+
       } else if (this.filtros.periodoSelecionado == 3) {
         this.filtros.inativos = false
         this.filtros.precadastro = false
