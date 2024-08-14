@@ -63,6 +63,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSortModule } from '@angular/material/sort';
 import { UnirCadastroComponent } from './views/Membros/Modal/unir-cadastro/unir-cadastro.component';
 import { PendenciasComponent } from './views/service-center/modal/pendencias/pendencias.component';
+import { PessoasporfuncaoComponent } from './views/service-center/modal/pessoasporfuncao/pessoasporfuncao.component';
 
 registerLocaleData(localePt);
 
@@ -90,6 +91,7 @@ registerLocaleData(localePt);
     FilhosMembrosComponent,
     UnirCadastroComponent,
     PendenciasComponent,
+    PessoasporfuncaoComponent,
 
 
   ],
