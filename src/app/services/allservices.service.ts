@@ -38,16 +38,16 @@ export class AllservicesService<T> {
       catchError(e => this.utilService.erroHandler(e))
     );
   }
-  DownloadArquivo(id: string, endpoint: string, token: string = "") : Observable<any> {
+  DownloadArquivo(id: string, endpoint: string, token: string = "", filtros: string = "") : Observable<any> {
     const url = `${this.environmentUrl + endpoint}/${id}`
-    return this.http.get(url, { responseType : 'blob', headers : this.loginService.Header().headers} )
+    return this.http.get(url, { responseType : 'blob', headers : this.loginService.Header(filtros).headers} )
     .pipe(
       map(res => res)
     )
   }
 
 
-  DownloadCartas(dados : Cartas, endpoint: string) : Observable<any> {
+  DownloadCartas(dados : Cartas, endpoint: string, filtros : string = "") : Observable<any> {
     
     let url = `${this.environmentUrl + endpoint}?IdPessoa=${dados.idPessoa}&TipoRelatorio=${dados.tipoRelatorio}`;
     
@@ -66,7 +66,7 @@ export class AllservicesService<T> {
     if(dados.nomeNovoPastor)
       url += `${'&NomeNovoPastor=' + dados.nomeNovoPastor}`;
     
-    return this.http.get(url, { responseType : 'blob', headers : this.loginService.Header().headers})
+    return this.http.get(url, { responseType : 'blob', headers : this.loginService.Header(filtros).headers})
     .pipe(
       map(res => res)
     )
@@ -82,7 +82,7 @@ export class AllservicesService<T> {
 
   read(endpoint: string, filtros: string = ""): Observable<T[]> {
     let url = this.environmentUrl + endpoint;
-    return this.http.get<T[]>(`${this.environmentUrl + endpoint}`, this.loginService.Header()).pipe(
+    return this.http.get<T[]>(`${this.environmentUrl + endpoint}`, this.loginService.Header(filtros)).pipe(
       map(obj => obj),
       catchError(e => this.utilService.erroHandler(e))
     );

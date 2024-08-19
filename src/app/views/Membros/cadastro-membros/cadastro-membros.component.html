@@ -545,7 +545,7 @@
       </mat-form-field>
 
       <a>
-        <i class="material-icons" (click)="AdicionarCargo()">add</i>
+        <i class="material-icons" (click)="AdicionarCargo()">save</i>
       </a>
     </div>
     <br>
@@ -576,7 +576,7 @@
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
           <mat-cell *matCellDef="let row">
-            <mat-icon matTooltip="Excluir Cargo!" (click)="ExcluirCargo(row.id)">delete</mat-icon>
+            <mat-icon *ngIf="!row.noCargoAte" matTooltip="editar Cargo!" (click)="EditarCargo(row.id)">edit</mat-icon>
           </mat-cell>
         </ng-container>
 

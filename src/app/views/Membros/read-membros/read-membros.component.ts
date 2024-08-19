@@ -16,6 +16,7 @@ import { FilhosComponent } from '../Modal/filhos/filhos.component';
 import { ControlePresencaComponent } from '../Modal/controle-presenca/controle-presenca.component';
 import { UnirCadastroComponent } from '../Modal/unir-cadastro/unir-cadastro.component';
 import jsPDF from 'jspdf';
+import { TipoRelatorio } from 'src/app/enum/TipoRelatorio';
 
 
 @Injectable()
@@ -109,7 +110,7 @@ export class ReadMembrosComponent implements OnInit {
 
   private Precadastro(filtro: string = "") {
     this.serverApi.read(`${Endpoint.Pessoa}/preCadastro`)
-      .subscribe(() => {});
+      .subscribe(() => { });
   }
 
 
@@ -167,6 +168,23 @@ export class ReadMembrosComponent implements OnInit {
         (error) => {
           this.serviceUtil.showMessage("Problema pra excluir o cadastro!.", false);
         });
+  }
+
+  public HistoricoMembro(id: number): void {
+    this.filtros.pessoaId = id;
+
+    this.serverApi.readById(TipoRelatorio.dadosPessoa.toString(), Endpoint.Relatorios, JSON.stringify(this.filtros))
+      .subscribe(() => {
+        this.serverApi.DownloadArquivo(TipoRelatorio.dadosPessoa.toString(), Endpoint.DownloadArquivo, '', JSON.stringify(this.filtros))
+          .subscribe(result => {
+            this.serviceUtil.Imprimir(result, 'application/pdf');
+          }, err => {
+            this.serviceUtil.showMessage("Erro ao realizar a baixa do histórico da pessoa.")
+          }
+          );
+      }, erro => {
+        this.serviceUtil.showMessage("Erro ao gerar o histórico da pessoa.")
+      });
   }
 
   PessoaSelecionada(id: number) {

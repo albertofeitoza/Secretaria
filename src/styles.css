@@ -139,3 +139,7 @@ body {
 .edit{
     cursor: pointer;
 }
+
+.cursor{
+    cursor: pointer;
+  }

@@ -19,7 +19,8 @@
     <span style="margin-top: 1px;" class="search" (click)="Filtros($event)">
       <i class="material-icons">search</i>
     </span>
-    <input style="margin-top: 1px;" id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)" value="" placeholder="pesquisar por NOME ou ROL." />
+    <input style="margin-top: 1px;" id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)" value=""
+      placeholder="pesquisar por NOME ou ROL." />
   </div>
 </div>
 
@@ -73,19 +74,22 @@
     <ng-container matColumnDef="action">
       <th style="width: 14%;" mat-header-cell *matHeaderCellDef>Ações</th>
       <td style="height: 21px;width: 18%;" mat-cell *matCellDef="let row">
-        <mat-icon matTooltip="Editar Cadastro!" (click)="AtualizarMembro(row.id)">edit</mat-icon>
-        <mat-icon matTooltip="Impressão da ficha de membro!" *ngIf="!filtros.inativos && !filtros.precadastro"
-          (click)="ImprimirFichaMembro(row.id)">print</mat-icon>
-        <mat-icon matTooltip="Solicitação de Cartas!" *ngIf="!filtros.inativos && !filtros.precadastro"
+        <mat-icon class="cursor" matTooltip="Editar Cadastro!" (click)="AtualizarMembro(row.id)">edit</mat-icon>
+        <mat-icon class="cursor" matTooltip="Impressão da ficha de membro!"
+          *ngIf="!filtros.inativos && !filtros.precadastro" (click)="ImprimirFichaMembro(row.id)">print</mat-icon>
+        <mat-icon class="cursor" matTooltip="Solicitação de Cartas!" *ngIf="!filtros.inativos && !filtros.precadastro"
           (click)="Cartas(row.id)">mail_outline</mat-icon>
-        <mat-icon matTooltip="Filhos!" *ngIf="!filtros.inativos && !filtros.precadastro"
+        <mat-icon class="cursor" matTooltip="Filhos!" *ngIf="!filtros.inativos && !filtros.precadastro"
           (click)="Filhos(row.id)">family_restroom</mat-icon>
-        <mat-icon matTooltip="Justificar Presença!" *ngIf="!filtros.inativos && !filtros.precadastro"
+        <mat-icon class="cursor" matTooltip="Justificar Presença!" *ngIf="!filtros.inativos && !filtros.precadastro"
           (click)="JustificarPresenca(row.id)">task_alt</mat-icon>
-        <mat-icon matTooltip="Unificar Cadastro!" *ngIf="!filtros.inativos && !filtros.precadastro"
+        <mat-icon class="cursor" matTooltip="Unificar Cadastro!" *ngIf="!filtros.inativos && !filtros.precadastro"
           (click)="UnificarCadastro(row.id)">join_left</mat-icon>
-        <mat-icon matTooltip="Baixa manual de Membro!" *ngIf="!filtros.inativos"
+        <mat-icon class="cursor" matTooltip="Histórico da Pessoa!" *ngIf="!filtros.precadastro"
+          (click)="HistoricoMembro(row.id)">list_alt</mat-icon>
+        <mat-icon class="cursor" matTooltip="Baixa manual de Membro!" *ngIf="!filtros.inativos"
           (click)="ExcluirMembro(row.id)">delete</mat-icon>
+
       </td>
     </ng-container>
 

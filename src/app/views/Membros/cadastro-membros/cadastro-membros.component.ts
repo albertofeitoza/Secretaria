@@ -334,11 +334,11 @@ export class CadastroMembrosComponent {
   }
 
   public ExcluirHistorico(id: number): void {
-       this.serverApi.delete(id, Endpoint.HistoricoObreiro)
-       .subscribe(() => {
-          this.serviceUtil.showMessage("Histórico excluído com sucesso.");
-          this.BuscarMembro();
-       });
+    this.serverApi.delete(id, Endpoint.HistoricoObreiro)
+      .subscribe(() => {
+        this.serviceUtil.showMessage("Histórico excluído com sucesso.");
+        this.BuscarMembro();
+      });
   }
 
   AlteraSituacao() {
@@ -519,19 +519,10 @@ export class CadastroMembrosComponent {
       this.serviceUtil.showMessage("informar o cargo e a data do cargo ", false)
   }
 
-
-  ExcluirCargo(id: any) {
-
-    let body = { id: id, acao: "excluir" };
-
-    this.serverApi.create(body, Endpoint.Cargos + "/Excluir")
-      .subscribe(x => {
-        this.serviceUtil.showMessage("Cargo Excluido", false);
-
-        var index = this.cargos.indexOf(id);
-        this.cargos.splice(index, 1)
-        let cargosAtualizados = this.cargos.slice()
-        this.cargos = cargosAtualizados;
+  EditarCargo(id: any) {
+    this.serverApi.readById(id.toString(), Endpoint.Cargos)
+      .subscribe((result) => {
+        this.cargo = result.data;
       })
   }
 

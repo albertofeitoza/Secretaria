@@ -80,12 +80,12 @@ export class RelatoriosComponent implements OnInit {
     this.meses = this.serviceUtil.MesesDoAno();
     this.meses = this.serviceUtil.MesesDoAno();
     this.serverApi.read(Endpoint.Pessoa)
-    .subscribe((pe : ViewPessoa[]) => {
-        if (pe && pe.length > 0){
+      .subscribe((pe: ViewPessoa[]) => {
+        if (pe && pe.length > 0) {
           this.membros = pe.filter(x => x.statusPessoa != 'Inativo');
           this.obreiros = pe.filter(x => x.statusPessoa != 'Inativo' && x.funcao != 'Membro')
         }
-    });
+      });
   }
 
   @HostListener("window:beforeprint", ["$event"])
@@ -113,8 +113,8 @@ export class RelatoriosComponent implements OnInit {
         this.exibeAno = true;
         this.exibeComboMembros = true;
         this.exibeComboObreiro = false;
-        
-      break;
+
+        break;
       case 6:
       case 7:
         this.anos = []
@@ -122,8 +122,8 @@ export class RelatoriosComponent implements OnInit {
         this.exibeAno = true;
         this.exibeComboObreiro = true;
         this.exibeComboMembros = false;
-      break;
-        case 17:
+        break;
+      case 17:
         this.anos = []
         this.CarregaComboAnos();
         this.exibeAno = true
@@ -131,6 +131,9 @@ export class RelatoriosComponent implements OnInit {
 
       case 19:
 
+        break;
+      case 20:
+        //Histórico do Membro apenas download
         break;
       default:
         break;
@@ -188,7 +191,6 @@ export class RelatoriosComponent implements OnInit {
         return;
       }
 
-
       this.serverApi.readById(this.relatorioSelecionado.toString(), Endpoint.Relatorios, JSON.stringify(this.filtros))
         .subscribe(rel => {
 
@@ -199,19 +201,18 @@ export class RelatoriosComponent implements OnInit {
             trataCamposPresenca = rel.data
 
             trataCamposPresenca.forEach(element => {
-              element.janeiro = element.janeiro && element.janeiro.split("-")[1] == '' ? "done" : element.janeiro && element.janeiro.split("-")[1] != '' ? 'J' : 'highlight_off';
-              element.fevereiro = element.fevereiro && element.fevereiro.split("-")[1] == '' ? "done" : element.fevereiro && element.fevereiro.split("-")[1] != '' ? 'J' : 'highlight_off';
-              element.marco = element.marco && element.marco.split("-")[1] == '' ? "done" : element.marco && element.marco.split("-")[1] != '' ? 'J' : 'highlight_off';
-              element.abril = element.abril && element.abril.split("-")[1] == '' ? "done" : element.abril && element.abril.split("-")[1] != '' ? 'J' : 'highlight_off';
-              element.maio = element.maio && element.maio.split("-")[1] == '' ? "done" : element.maio && element.maio.split("-")[1] != '' ? 'J' : 'highlight_off';
-              element.junho = element.junho && element.junho.split("-")[1] == '' ? "done" : element.junho && element.junho.split("-")[1] != '' ? 'J' : 'highlight_off';
-              element.julho = element.julho && element.julho.split("-")[1] == '' ? "done" : element.julho && element.julho.split("-")[1] != '' ? 'J' : 'highlight_off';
-              element.agosto = element.agosto && element.agosto.split("-")[1] == '' ? "done" : element.agosto && element.agosto.split("-")[1] != '' ? 'J' : 'highlight_off';
-              element.setembro = element.setembro && element.setembro.split("-")[1] == '' ? "done" : element.setembro && element.setembro.split("-")[1] != '' ? 'J' : 'highlight_off';
-              element.outubro = element.outubro && element.outubro.split("-")[1] == '' ? "done" : element.outubro && element.outubro.split("-")[1] != '' ? 'J' : 'highlight_off';
-              element.novembro = element.novembro && element.novembro.split("-")[1] == '' ? "done" : element.novembro && element.novembro.split("-")[1] != '' ? 'J' : 'highlight_off';
-              element.dezembro = element.dezembro && element.dezembro.split("-")[1] == '' ? "done" : element.dezembro && element.dezembro.split("-")[1] != '' ? 'J' : 'highlight_off';
-
+              element.janeiro = element.janeiro && element.janeiro.includes('P') ? "done" : element.janeiro && element.janeiro.includes('J') ? 'J' : 'highlight_off';
+              element.fevereiro = element.fevereiro  && element.fevereiro.includes('P') ? "done" : element.fevereiro && element.fevereiro.includes('J') ? 'J' : 'highlight_off';
+              element.marco = element.marco  && element.marco.includes('P') ? "done" : element.marco && element.marco.includes('J') ? 'J' : 'highlight_off';
+              element.abril = element.abril  && element.abril.includes('P') ? "done" : element.abril && element.abril.includes('J') ? 'J' : 'highlight_off';
+              element.maio = element.maio  && element.maio.includes('P') ? "done" : element.maio && element.maio.includes('J') ? 'J' : 'highlight_off';
+              element.junho = element.junho  && element.junho.includes('P') ? "done" : element.junho && element.junho.includes('J') ? 'J' : 'highlight_off';
+              element.julho = element.julho  && element.julho.includes('P') ? "done" : element.julho && element.julho.includes('J') ? 'J' : 'highlight_off';
+              element.agosto = element.agosto  && element.agosto.includes('P') ? "done" : element.agosto && element.agosto.includes('J') ? 'J' : 'highlight_off';
+              element.setembro = element.setembro  && element.setembro.includes('P') ? "done" : element.setembro && element.setembro.includes('J') ? 'J' : 'highlight_off';
+              element.outubro = element.outubro  && element.outubro .includes('P') ? "done" : element.outubro && element.outubro.includes('J') ? 'J' : 'highlight_off';
+              element.novembro = element.novembro  && element.novembro.includes('P') ? "done" : element.novembro && element.novembro.includes('J') ? 'J' : 'highlight_off';
+              element.dezembro = element.dezembro  && element.dezembro.includes('P') ? "done" : element.dezembro && element.dezembro.includes('J') ? 'J' : 'highlight_off';
             });
           }
           switch (this.relatorioSelecionado) {
@@ -265,7 +266,7 @@ export class RelatoriosComponent implements OnInit {
             case 19:
               this.nomeRelatorio = "Relatório - Transferência de pastores"
               this.relatorioPastores = rel.data
-              this.imprimir = this.relatorioPastores.length > 0 ?  true: false;
+              this.imprimir = this.relatorioPastores.length > 0 ? true : false;
               this.spinner = false;
               this.mensagemDeretorno = this.relatorioPastores.length === 0 ? 'Não foram encontrado resultados para essa Pesquisa.' : '';
 
@@ -327,7 +328,7 @@ export class RelatoriosComponent implements OnInit {
       .subscribe(result => {
         this.serviceUtil.Imprimir(result, 'application/pdf')
       });
-      this.imprimir = false;
+    this.imprimir = false;
   }
 
   BaixarArquivo() {
