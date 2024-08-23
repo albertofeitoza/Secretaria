@@ -34,7 +34,7 @@ export class IgrejaComponent implements OnInit {
   }
 
   public EditarIgreja(id: number): void {
-    this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, AdicionarIgrejaComponent, id, '25%', '30%')
+    this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, AdicionarIgrejaComponent, id, 'auto', 'auto')
       .subscribe(() => {
         this.BuscarIgrejas();
       });
@@ -48,7 +48,7 @@ export class IgrejaComponent implements OnInit {
   }
 
   public CadastrarIgreja(): void {
-    this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, AdicionarIgrejaComponent, 0, '25%', '30%')
+    this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, AdicionarIgrejaComponent, 0, 'auto', 'auto')
       .subscribe(() => {
         this.BuscarIgrejas();
       });
@@ -60,11 +60,11 @@ export class IgrejaComponent implements OnInit {
 
 
   public Usuarios(element: any): void {
-    this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, UsuariosComponent, element.id, '50%', '70%', false, false, element);
+    this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, UsuariosComponent, element.id, 'auto', 'auto', false, false, element);
   }
   
   
   public Pastores(element: any): void {
-    this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, PastoresComponent, element.id, '50%', '70%', false, false, element);
+    this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, PastoresComponent, element.id, 'auto', 'auto', false, false, element);
   }
 }

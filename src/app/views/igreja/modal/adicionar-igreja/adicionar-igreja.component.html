@@ -1,27 +1,29 @@
 <div class="center">
     <div class="row col-md-6">
         <h3 style="text-align: center;">Cadastro de Igreja</h3>
-        <div class="rol">
-            <mat-form-field>
-                <mat-label>Nome Igreja</mat-label>
-                <input matInput placeholder="Nome Igreja" [(ngModel)]="igreja.nome" name="nome">
-            </mat-form-field>
+        <div style="padding-right: 15px;">
+            <div class="rol">
+                <mat-form-field>
+                    <mat-label>Nome Igreja</mat-label>
+                    <input matInput placeholder="Nome Igreja" [(ngModel)]="igreja.nome" name="nome">
+                </mat-form-field>
 
-            <mat-form-field>
-                <mat-label>CNPJ</mat-label>
-                <input matInput placeholder="Cnpj" [(ngModel)]="igreja.cnpj" name="cnpj">
-            </mat-form-field>
-        </div>
-        <div class="rol">
-            <mat-form-field>
-                <mat-label>Estado</mat-label>
-                <input matInput placeholder="Estado" [(ngModel)]="igreja.estado" name="estado">
-            </mat-form-field>
+                <mat-form-field>
+                    <mat-label>CNPJ</mat-label>
+                    <input matInput placeholder="Cnpj" [(ngModel)]="igreja.cnpj" name="cnpj">
+                </mat-form-field>
+            </div>
+            <div class="rol">
+                <mat-form-field>
+                    <mat-label>Estado</mat-label>
+                    <input matInput placeholder="Estado" [(ngModel)]="igreja.estado" name="estado">
+                </mat-form-field>
 
-            <mat-form-field>
-                <mat-label>Cidade</mat-label>
-                <input matInput placeholder="cidade" [(ngModel)]="igreja.cidade" name="nome">
-            </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Cidade</mat-label>
+                    <input matInput placeholder="cidade" [(ngModel)]="igreja.cidade" name="nome">
+                </mat-form-field>
+            </div>
         </div>
     </div>
     <div class="rigth">
