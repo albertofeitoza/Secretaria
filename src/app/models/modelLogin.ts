@@ -1,5 +1,5 @@
 export class login {
-    dominio! : string
-    usuario! : string
-    senha!: string
+    dominio!: number;
+    usuario!: string;
+    senha!: string;
 }

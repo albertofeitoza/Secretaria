@@ -2,10 +2,20 @@
     <mat-card class="centralizar">
         <form class="classform">
             <mat-card-title><i class="material-icons">account_circle</i></mat-card-title>
-            <mat-form-field>
+            <!-- <mat-form-field>
                 <input matInput placeholder="dominio" [(ngModel)]="sessao.dominio" name="name" placeholder="Igreja">
+            </mat-form-field> -->
 
+
+            <mat-form-field>
+                <mat-label>Igreja</mat-label>
+                <mat-select [(value)]="sessao.dominio" placeholder="dominio">
+                    <mat-option *ngFor="let ig of igrejas" [value]="ig.id">
+                        {{ig.nome}}
+                    </mat-option>
+                </mat-select>
             </mat-form-field>
+
 
             <mat-form-field>
                 <input matInput placeholder="login" [(ngModel)]="sessao.usuario" name="name" placeholder="login">
@@ -20,13 +30,13 @@
         </form>
 
         <div style="padding-left: 15px;padding-bottom: 15px;">
-            <button *ngIf="sessao.dominio && sessao.usuario && sessao.senha" class="button" mat-raised-button
+            <button *ngIf="sessao.usuario && sessao.senha" class="button" mat-raised-button
                 (click)="login($event)" color="primary">
                 Login
             </button>
 
-            <button style="float: right;" class="button" mat-raised-button
-                (click)="EsqueciSenha($event)" color="primary">
+            <button style="float: right;" class="button" mat-raised-button (click)="EsqueciSenha($event)"
+                color="primary">
                 Esqueci a senha
             </button>
         </div>
@@ -38,29 +48,42 @@
 <div *ngIf="esqueciSenha">
 
     <mat-card class="centralizar">
-        
+
         <form class="classform">
             <mat-card-title><i class="material-icons">account_circle</i></mat-card-title>
+
+            <mat-form-field>
+                <mat-label>Igreja</mat-label>
+                <mat-select [(value)]="dadosResetSenha.dominio" placeholder="dominio">
+                    <mat-option *ngFor="let ig of igrejas" [value]="ig.id">
+                        {{ig.nome}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
             <mat-form-field *ngIf="sequenciaTelaReset == 1">
-                <input matInput placeholder="Informe o CPF" [(ngModel)]="dadosResetSenha.cpf" name="name" placeholder="Informe o CPF">
+                <input matInput placeholder="Informe o CPF" [(ngModel)]="dadosResetSenha.cpf" name="name"
+                    placeholder="Informe o CPF">
             </mat-form-field>
 
             <mat-form-field *ngIf="sequenciaTelaReset == 2">
-                <input matInput placeholder="Informe o Token" [(ngModel)]="dadosResetSenha.token" name="Token" placeholder="Informe o Token">
+                <input matInput placeholder="Informe o Token" [(ngModel)]="dadosResetSenha.token" name="Token"
+                    placeholder="Informe o Token">
             </mat-form-field>
 
             <mat-form-field *ngIf="sequenciaTelaReset == 2">
-                <input matInput placeholder="Nova Senha" [(ngModel)]="dadosResetSenha.novaSenha" type="password" name="novasenha" placeholder="Nova Senha">
+                <input matInput placeholder="Nova Senha" [(ngModel)]="dadosResetSenha.novaSenha" type="password"
+                    name="novasenha" placeholder="Nova Senha">
             </mat-form-field>
 
             <mat-form-field *ngIf="sequenciaTelaReset == 2">
-                <input matInput placeholder="Confirme Nova Senha" [(ngModel)]="dadosResetSenha.novaSenhaConfirm" type="password" name="confirmenovasenha" placeholder="Confirme Nova Senha">
+                <input matInput placeholder="Confirme Nova Senha" [(ngModel)]="dadosResetSenha.novaSenhaConfirm"
+                    type="password" name="confirmenovasenha" placeholder="Confirme Nova Senha">
             </mat-form-field>
         </form>
 
         <div style="padding-left: 15px;padding-bottom: 15px;">
-            <button class="button" mat-raised-button
-                (click)="EnviaDados($event)" color="primary">
+            <button class="button" mat-raised-button (click)="EnviaDados($event)" color="primary">
                 {{InfBotao}}
             </button>
         </div>

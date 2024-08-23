@@ -24,8 +24,7 @@ export class LoginComponent {
   sequenciaTelaReset: number = 1;
   InfBotao: string = "Enviar CPF";
   dadosResetSenha: ResetSenha = new ResetSenha()
-
-  teste: any[] = new Array()
+  igrejas: any[] = new Array();
 
   constructor(
     private auth: AutenticacaoService,
@@ -41,9 +40,17 @@ export class LoginComponent {
     this.auth.autenticado.subscribe(response => {
       this.isLoggedIn = response
     })
-    this.sessao.dominio = "Sistema";
-    this.sessao.usuario = "admin"
-    this.sessao.senha = "@adminRoot2024"
+    this.BuscarIgrejas();
+  }
+
+
+  public BuscarIgrejas(): any {
+    this.serverApi.read(Endpoint.Token + `/comboDominio`)
+      .subscribe(result => {
+        this.igrejas = result
+      })
+
+
   }
 
   login(event: any) {
