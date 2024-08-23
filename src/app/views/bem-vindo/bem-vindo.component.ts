@@ -16,7 +16,7 @@ export class BemVindoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tipoUsuario = this.auth.tipoUsuarioLogado
+    this.tipoUsuario = this.auth.dadosUsuario.TipoUsuarioLogado;
   }
 }
 

@@ -37,23 +37,20 @@ export class LoginComponent {
   }
 
   ngOnInit() {
+    this.sessao = new login()
     this.auth.autenticado.subscribe(response => {
       this.isLoggedIn = response
     })
-    this.sessao = new login()
-    this.sessao.dominio = "Ferrazopolis";
+    this.sessao.dominio = "Sistema";
+    this.sessao.usuario = "admin"
+    this.sessao.senha = "@adminRoot2024"
   }
 
   login(event: any) {
-    try {
-      if (event.which === 13 || event.which == 1) {
-       this.auth.Autenticado(this.sessao)
-      }  
-    } catch (error) {
-      this.serviceUtil.showMessage(`${error}`,true)
+
+    if (event.which === 13 || event.which == 1) {
+      this.auth.Autenticado(this.sessao)
     }
-    
-    
   }
 
   EsqueciSenha(event: any) {
@@ -72,7 +69,7 @@ export class LoginComponent {
             this.dadosResetSenha.sequencia = response.data.data.sequencia
           }
           else
-            this.serviceUtil.showMessage(response.data.mensagem, true)  
+            this.serviceUtil.showMessage(response.data.mensagem, true)
         })
     }
 

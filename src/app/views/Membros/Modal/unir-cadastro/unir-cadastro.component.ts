@@ -9,6 +9,7 @@ import { Filtros } from 'src/app/models/Filtros';
 import { Pessoa } from 'src/app/models/pessoa';
 import { PopupConfirmacaoComponent } from 'src/app/popups/popup-confirmacao/popup-confirmacao.component';
 import { AllservicesService } from 'src/app/services/allservices.service';
+import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 
 @Component({
@@ -31,7 +32,8 @@ export class UnirCadastroComponent implements OnInit {
   constructor(
     private matdialogRef: MatDialogRef<UnirCadastroComponent>,
     private serviceUtil: UtilServiceService,
-    private serverApi: AllservicesService<any>
+    private serverApi: AllservicesService<any>,
+    private auth : AutenticacaoService
 
   ) {
 
@@ -59,7 +61,7 @@ export class UnirCadastroComponent implements OnInit {
     try {
       this.spinner = true
 
-      this.serverApi.read(Endpoint.Pessoa)
+      this.serverApi.read(Endpoint.Pessoa + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
         .subscribe(response => {
           response = response.sort()
           this.datasource.data =

@@ -1,0 +1,46 @@
+<a style="padding-left: 15px;" (click)="CadastrarIgreja()">
+  <i class="material-icons">add_circle_outline</i>
+</a>
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="igrejas" matSort>
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+      <mat-cell id="id" *matCellDef="let row">{{row.id}}</mat-cell>
+    </ng-container>
+    <!-- rol Column -->
+    <ng-container matColumnDef="nome">
+      <mat-header-cell *matHeaderCellDef>Nome da Igreja</mat-header-cell>
+      <mat-cell id="cargo" *matCellDef="let row">{{row.nome}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="cnpj">
+      <mat-header-cell *matHeaderCellDef>CNPJ</mat-header-cell>
+      <mat-cell id="cnpj" *matCellDef="let row">{{row.cnpj | number}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="estado">
+      <mat-header-cell *matHeaderCellDef>Estado</mat-header-cell>
+      <mat-cell id="estado" *matCellDef="let row">{{row.estado}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="cidade">
+      <mat-header-cell *matHeaderCellDef>Cidade</mat-header-cell>
+      <mat-cell id="cidade" *matCellDef="let row">{{row.cidade}}</mat-cell>
+    </ng-container>
+
+    <!-- Coluna de Ações -->
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-icon class="icon" matTooltip="Alterar Cadastro!" (click)="EditarIgreja(row.id)">edit</mat-icon>
+        <mat-icon class="icon" matTooltip="usuários!" (click)="Usuarios(row)">groups</mat-icon>
+        <mat-icon class="icon" matTooltip="Pastores!" (click)="Pastores(row)">people</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="ColunasIgreja"></mat-header-row>
+    <mat-row (click)="LinhaSelecionada(row.id)" *matRowDef="let row; columns: ColunasIgreja;"
+      [ngClass]="{'corLinhaGrid' : row.id == linhaSelecionada}"></mat-row>
+  </table>
+</div>

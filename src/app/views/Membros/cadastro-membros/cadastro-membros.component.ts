@@ -18,6 +18,7 @@ import { TipoPopup } from 'src/app/enum/TipoPopup';
 import { HistoricoPopupComponent } from '../historico-popup/historico-popup.component';
 import { igreja } from 'src/app/models/Igreja';
 import { PopupConfirmacaoComponent } from 'src/app/popups/popup-confirmacao/popup-confirmacao.component';
+import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 
 @Component({
   selector: 'app-cadastro-membros',
@@ -73,9 +74,8 @@ export class CadastroMembrosComponent {
     private serviceUtil: UtilServiceService,
     private serverApi: AllservicesService<any>,
     private servicoCep: AllservicesService<Cep>,
-    private activatedRoute: ActivatedRoute
-
-
+    private activatedRoute: ActivatedRoute, 
+    private auth: AutenticacaoService
   ) { }
 
   ngOnInit() {
@@ -84,7 +84,6 @@ export class CadastroMembrosComponent {
     this.BuscarMembro()
 
   }
-
   BuscarMembro() {
     const id = Number(this.activatedRoute.snapshot.params['id']);
 
@@ -132,7 +131,7 @@ export class CadastroMembrosComponent {
 
   Salvar(step: number) {
 
-    if (this.ValidaCpf(this.pessoa.cpf)) {
+    if (this.serviceUtil.ValidaCpf(this.pessoa.cpf)) {
 
       switch (step) {
         case 0:
@@ -143,12 +142,12 @@ export class CadastroMembrosComponent {
                 this.pessoa.cpf = this.pessoa.cpf != undefined ? this.pessoa.cpf.toString() : this.pessoa.cpf
                 this.pessoa.rg = this.pessoa.rg != undefined ? this.pessoa.rg.toString() : this.pessoa.rg
                 this.pessoa.dataCasamento = this.pessoa.estadoCivil == 1 || this.pessoa.estadoCivil > 4 ? undefined : this.pessoa.dataCasamento
-                this.pessoa.igrejaId = this.igreja.id
+                this.pessoa.igrejaId = Number(this.auth.dadosUsuario.IgrejaLogada)
                 //salvar dados de Pessoa
                 this.serverApi.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
                   this.step++;
                   this.pessoa = x
-                  this.serviceUtil.showMessage("cadastro realizado");
+                  this.serviceUtil.showMessage("Cadastro realizado");
                 });
 
               } else
@@ -223,7 +222,7 @@ export class CadastroMembrosComponent {
       if (this.pessoa.cpf == this.pessoa.cpfConjuge)
         return this.serviceUtil.showMessage(`O CPF informado é mesmo do  ${this.pessoa.nome}.`, true);
 
-      if (this.ValidaCpf(this.pessoa.cpfConjuge)) {
+      if (this.serviceUtil.ValidaCpf(this.pessoa.cpfConjuge)) {
         this.serverApi.readById(this.pessoa.cpfConjuge, Endpoint.BuscaPorCpf).subscribe(response => {
           if (response.code == 200) {
             this.pessoa.nomeConjuge = response.data.nome
@@ -379,7 +378,7 @@ export class CadastroMembrosComponent {
 
   processFile(event: any) {
 
-    if (event.target.files && event.target.files[0] && this.ValidaCpf(this.pessoa.cpf)) {
+    if (event.target.files && event.target.files[0] && this.serviceUtil.ValidaCpf(this.pessoa.cpf)) {
 
       const file = <File>event.target.files[0];
       const formData: FormData = new FormData();
@@ -433,23 +432,23 @@ export class CadastroMembrosComponent {
     }
   }
 
-  ValidaCpf(cpfEntrada: string): boolean {
+  // public ValidaCpf(cpfEntrada: string): boolean {
 
-    if (cpfEntrada) {
+  //   if (cpfEntrada) {
 
-      let numeroCpf = ("00000000000" + cpfEntrada).slice(-11);
+  //     let numeroCpf = ("00000000000" + cpfEntrada).slice(-11);
 
-      if (!cpf.isValid(numeroCpf)) {
-        this.serviceUtil.showMessage("Cpf Inválido", false)
-        return false
+  //     if (!cpf.isValid(numeroCpf)) {
+  //       this.serviceUtil.showMessage("Cpf Inválido", false)
+  //       return false
 
-      } else
-        return true
-    }
-    else
-      this.serviceUtil.showMessage("Informe o Cpf", false)
-    return false
-  }
+  //     } else
+  //       return true
+  //   }
+  //   else
+  //     this.serviceUtil.showMessage("Informe o Cpf", false)
+  //   return false
+  // }
 
   AdicionarContato() {
 

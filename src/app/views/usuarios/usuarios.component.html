@@ -1,5 +1,5 @@
 <div style="padding-left: 17px;padding-top: 1%;">
-    <div>
+    <!-- <div>
         <mat-form-field>
             <mat-label>Informe o CPF</mat-label>
             <input matInput placeholder="CPF" [(ngModel)]="cpf" name="cpf" (keypress)="Filtros($event)">
@@ -8,23 +8,88 @@
         <span class="search" (click)="Filtros($event)">
             <i class="material-icons">search</i>
         </span>
+    </div> -->
+
+
+    <div style="padding-top: 15px;" class="row col-md-10 pl-2 pr-2">
+        <div class="row ">
+            <h1 style="padding-left: 10px;">Cadastro de usuário</h1>
+            <a style="padding-left: 15px;" (click)="CadastrarNovoUsuario()">
+                <i class="material-icons">add_circle_outline</i>
+            </a>
+            <br />
+
+            <mat-form-field>
+                <mat-label>Nome</mat-label>
+                <input [disabled]="bloquearCampos" matInput placeholder="Nome" [(ngModel)]="pessoa.nome" name="nome">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>CPF</mat-label>
+                <input [disabled]="bloquearCampos" class="number" matInput placeholder="CPF" [(ngModel)]="pessoa.cpf"
+                    name="cpf">
+            </mat-form-field>
+
+            <mat-form-field color="accent" style="width: 213px;">
+                <mat-label>Data Nascimento</mat-label>
+                <input [disabled]="bloquearCampos" matInput [matDatepicker]="dataNascimento"
+                    [(ngModel)]="pessoa.dataNascimento" name="dataNascimento">
+                <mat-datepicker-toggle matIconSuffix [for]="dataNascimento"></mat-datepicker-toggle>
+                <mat-datepicker #dataNascimento></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Grau de Instrução</mat-label>
+                <mat-select [disabled]="bloquearCampos" [(value)]="pessoa.grauInstrucao" placeholder="Grau Instrução">
+                    <mat-option *ngFor="let i of instrucao" [value]="i.id">
+                        {{i.value}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field>
+                <mat-label>Sexo</mat-label>
+                <mat-select [disabled]="bloquearCampos" [(value)]="pessoa.sexo" placeholder="Sexo">
+                    <mat-option *ngFor="let s of sexo" [value]="s.id">
+                        {{s.value}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matTooltip="informar email válido ese email será usado para reset de senha" type="email" matInput
+                    placeholder="Email" [(ngModel)]="contato.email" name="senha">
+            </mat-form-field>
+        </div>
+
     </div>
+    <div style="padding-left: 15px; padding-right: 30px;">
+        <hr />
+    </div>
+    <!-- Dados de Acesso  -->
 
-    <div>
+    <div class="row">
 
-        <mat-form-field>
-            <mat-label>Nome</mat-label>
-            <input matInput placeholder="Nome do Usuário" [(ngModel)]="pessoa.nome" name="nomeUsuario">
-        </mat-form-field>
+        <!-- Dados de login no sistema -->
+        <h1 style="padding-left: 10px;">Dados de acesso</h1>
 
         <mat-form-field>
             <mat-label>Usuario</mat-label>
             <input matInput placeholder="Usuário" [(ngModel)]="usuario.nomeUsuario" name="Usuario">
         </mat-form-field>
 
+
         <mat-form-field>
             <mat-label>Senha</mat-label>
             <input type="password" matInput placeholder="Senha" [(ngModel)]="usuario.senha" name="senha">
+        </mat-form-field>
+
+        <mat-form-field *ngIf="usuario.id > 0">
+            <mat-label>Ativo</mat-label>
+            <input style="height: 20px; width: 150px;" matInput placeholder="Ativo">
+            <input name="ativo" [(ngModel)]="usuario.ativo" [checked]="usuario.ativo" type="checkbox">
         </mat-form-field>
 
         <mat-form-field>
@@ -36,15 +101,15 @@
             </mat-select>
         </mat-form-field>
 
-        <span class="search" (click)="SalvarUsuario()">
-            <i class="material-icons">add</i>
+        <span *ngIf="pessoa.nome && pessoa.cpf && pessoa.dataNascimento && pessoa.grauInstrucao && pessoa.sexo 
+            && contato.email && usuario.nomeUsuario && usuario.tipoUsuario" (click)="SalvarUsuario()">
+            <i class="material-icons">save</i>
         </span>
-
     </div>
+</div>
 
-
-
-    <div class="mat-elevation-z4" style="height:73%; width: 100%;overflow: auto;">
+<div style="padding-left: 25px;">
+    <div class="mat-elevation-z4" style="height:35%; width: 96%;overflow: auto;">
 
         <mat-spinner *ngIf="spinner"></mat-spinner>
 
@@ -52,28 +117,32 @@
             <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
             <!-- Id Column -->
             <ng-container matColumnDef="id">
-                <th mat-header-cell style="display: none;" *matHeaderCellDef hidden="true">Id</th>
-                <td mat-cell style="display: none;" id="idPessoa" *matCellDef="let row">{{row.id}}</td>
+                <mat-header-cell style="display: none;" *matHeaderCellDef hidden="true">Id</mat-header-cell>
+                <mat-cell style="display: none;" id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
             </ng-container>
             <!-- rol Column -->
             <ng-container matColumnDef="nomeUsuario">
-                <th style="width:25%;" mat-header-cell *matHeaderCellDef>Nome Usuário</th>
-                <td style="width:25%;" mat-cell *matCellDef="let row">{{row.nomeUsuario}}
-                <td>
+                <mat-header-cell *matHeaderCellDef>Nome Usuário</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.nomeUsuario}}</mat-cell>
             </ng-container>
 
             <!-- Name Column -->
-            <ng-container matColumnDef="dominio">
-                <th style="width:25%;" mat-header-cell *matHeaderCellDef>Igreja</th>
-                <td style="width: 25%;" mat-cell *matCellDef="let row">{{row.dominio}}</td>
+            <ng-container matColumnDef="tipoUsuario">
+                <mat-header-cell *matHeaderCellDef>Tipo de Usuário</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.tipoUsuario}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="ativo">
+                <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                <mat-cell *matCellDef="let row"><mat-icon>{{row.ativo ? 'lock_open' : 'lock'}}</mat-icon></mat-cell>
             </ng-container>
 
             <!-- Coluna de Ações -->
             <ng-container matColumnDef="action">
-                <th style="width: auto" mat-header-cell *matHeaderCellDef>Ações</th>
-                <td style="padding-left: 3.5%; height: 21px;width: 25;" mat-cell *matCellDef="let row">
+                <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+                <mat-cell *matCellDef="let row">
                     <mat-icon matTooltip="Editar Cadastro!" (click)="BuscarUsuarioPorId(row.id)">edit</mat-icon>
-                </td>
+                </mat-cell>
             </ng-container>
 
             <mat-row style="height: 10%;" (click)="LinhaSelecionada(row.id)" *matRowDef="let row; columns: Colunas;"

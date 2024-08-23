@@ -115,31 +115,51 @@ body {
     background: aqua;
 }
 
-.formataCheck{
+.formataCheck {
     height: 20px;
     width: 150px;
 }
 
-.msg-sucess{
+.msg-sucess {
 
     background-color: #27a745;
     color: #fff;
 }
 
-.msg-error{
+.msg-error {
 
     background-color: #e36e6b;
     color: #fff;
 }
 
-.delete{
+.delete {
     cursor: pointer;
 }
 
-.edit{
+.edit {
     cursor: pointer;
 }
 
-.cursor{
+.cursor {
     cursor: pointer;
-  }
+}
+
+.center{
+    text-align: center;
+    padding-top: 15px;
+}
+
+.left{
+    text-align: left;
+    padding: 15px;
+}
+
+.rigth{
+    text-align: end;
+    padding: 15px;
+}
+
+.icon{
+    padding: 8px;
+}
+

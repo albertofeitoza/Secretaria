@@ -64,6 +64,10 @@ import { MatSortModule } from '@angular/material/sort';
 import { UnirCadastroComponent } from './views/Membros/Modal/unir-cadastro/unir-cadastro.component';
 import { PendenciasComponent } from './views/service-center/modal/pendencias/pendencias.component';
 import { PessoasporfuncaoComponent } from './views/service-center/modal/pessoasporfuncao/pessoasporfuncao.component';
+import { IgrejaComponent } from './views/igreja/igreja.component';
+import { AdicionarIgrejaComponent } from './views/igreja/modal/adicionar-igreja/adicionar-igreja.component';
+import { PastoresComponent } from './views/igreja/modal/pastores/pastores.component';
+import { OrganogramaComponent } from './views/organograma/organograma.component';
 
 registerLocaleData(localePt);
 
@@ -92,6 +96,10 @@ registerLocaleData(localePt);
     UnirCadastroComponent,
     PendenciasComponent,
     PessoasporfuncaoComponent,
+    IgrejaComponent,
+    AdicionarIgrejaComponent,
+    PastoresComponent,
+    OrganogramaComponent,
 
 
   ],

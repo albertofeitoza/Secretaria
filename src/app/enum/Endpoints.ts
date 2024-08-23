@@ -1,7 +1,9 @@
 export enum Endpoint {
     Token = '/Token',
     ResetSenha = '/Token/resetSenha',
+    Igreja = '/Igreja',
     Usuario = '/Usuarios',
+    Pastores = '/Pastores',
     Pessoa = '/Pessoa',
     Membros = '/Membros',
     Filhos = '/Filhos',

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Overlay } from '@angular/cdk/overlay';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar'
+import { cnpj, cpf } from 'cpf-cnpj-validator';
 
 @Injectable({
   providedIn: 'root'
@@ -315,4 +316,44 @@ export class UtilServiceService {
     });
     return dialog.afterClosed();
   }
+
+
+
+  public ValidaCpf(cpfEntrada: string): boolean {
+
+    if (cpfEntrada) {
+
+      let numeroCpf = ("00000000000" + cpfEntrada).slice(-11);
+
+      if (!cpf.isValid(numeroCpf)) {
+        this.showMessage("Cpf Inválido", false)
+        return false
+
+      } else
+        return true
+    }
+    else
+      this.showMessage("Informe o Cpf", false)
+    return false
+  }
+
+
+  public ValidaCNPJ(CnpjEntrada: string): boolean {
+
+    if (CnpjEntrada) {
+
+      let numeroCpf = ("00000000000000" + CnpjEntrada).slice(-14);
+
+      if (!cnpj.isValid(numeroCpf)) {
+        this.showMessage("cnpj Inválido", false)
+        return false
+
+      } else
+        return true
+    }
+    else
+      this.showMessage("Informe o CNPJ", false)
+    return false
+  }
+
 }

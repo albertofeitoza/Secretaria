@@ -1,0 +1,107 @@
+<div style="padding-top: 15px;" class="row col-md-10 pl-2 pr-2">
+    <div class="row ">
+        <h1 style="padding-left: 10px;">Cadastro de Pastores</h1>
+
+        <div *ngIf="datasource.length === 0">
+            <mat-form-field>
+                <mat-label>Nome</mat-label>
+                <input matInput placeholder="Nome" [(ngModel)]="pessoa.nome" name="nome">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>CPF</mat-label>
+                <input class="number" matInput placeholder="CPF" [(ngModel)]="pessoa.cpf" name="cpf">
+            </mat-form-field>
+
+            <mat-form-field color="accent" style="width: 213px;">
+                <mat-label>Data Nascimento</mat-label>
+                <input matInput [matDatepicker]="dataNascimento" [(ngModel)]="pessoa.dataNascimento"
+                    name="dataNascimento">
+                <mat-datepicker-toggle matIconSuffix [for]="dataNascimento"></mat-datepicker-toggle>
+                <mat-datepicker #dataNascimento></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Grau de Instrução</mat-label>
+                <mat-select [(value)]="pessoa.grauInstrucao" placeholder="Grau Instrução">
+                    <mat-option *ngFor="let i of instrucao" [value]="i.id">
+                        {{i.value}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div class="row">
+                <mat-form-field>
+                    <mat-label>Sexo</mat-label>
+                    <mat-select [(value)]="pessoa.sexo" placeholder="Sexo">
+                        <mat-option *ngFor="let s of sexo" [value]="s.id">
+                            {{s.value}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Quantidade de Membros</mat-label>
+                    <input type="number" matInput placeholder="Quantidade de Membros"
+                        [(ngModel)]="pastor.qantidadeMembosEntrada" name="quantMembros">
+                </mat-form-field>
+
+                <a class="left" *ngIf="pessoa.nome && pessoa.cpf && pessoa.dataNascimento 
+                        && pessoa.grauInstrucao && pessoa.sexo && pastor.qantidadeMembosEntrada"
+                    (click)="CadastroPastor()">
+                    <i class="material-icons">add_circle_outline</i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="mat-elevation-z4" style="height: 400px;overflow: auto;">
+
+        <table mat-table [dataSource]="datasource" class="mat-elevation-z4 demo-table">
+            <mat-header-row *matHeaderRowDef="ColunasGridPastores"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ColunasGridPastores;"></mat-row>
+
+            <ng-container matColumnDef="pastor">
+                <mat-header-cell *matHeaderCellDef>Pastor</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.pastor}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="datainicial">
+                <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data inicial</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.datainicial | date: 'dd/MM/yyyy'}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="membrosinicial">
+                <mat-header-cell *matHeaderCellDef>Membros Inícial</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.membrosinicial}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="membrossaida">
+                <mat-header-cell *matHeaderCellDef>Membros Saída</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.membrossaida}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="saldomembros">
+                <mat-header-cell *matHeaderCellDef>Saldo Membros</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.saldomembros}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.status ? 'Atual' : '---'}}</mat-cell>
+            </ng-container>
+            <!-- rol Column -->
+
+        </table>
+        <div style="text-align: -webkit-center; margin-top: 5%;">
+            <mat-spinner *ngIf="spinner"></mat-spinner>
+        </div>
+
+        <div style="text-align: -webkit-center; margin-top: 5%;">
+            <span>
+                <h3 *ngIf="mensagemDeretorno" style="padding-left:25px;color: grey;">{{mensagemDeretorno }}</h3>
+            </span>
+        </div>
+    </div>

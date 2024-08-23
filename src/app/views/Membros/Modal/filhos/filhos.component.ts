@@ -7,6 +7,7 @@ import { map } from 'rxjs';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { Pessoa, ViewFilhos } from 'src/app/models/pessoa';
 import { AllservicesService } from 'src/app/services/allservices.service';
+import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 
 @Component({
@@ -33,21 +34,18 @@ export class FilhosComponent implements OnInit {
   constructor(
     private serviceUtil: UtilServiceService,
     private serviceApi: AllservicesService<any>,
-    private matdialogRef: MatDialogRef<FilhosComponent>
+    private matdialogRef: MatDialogRef<FilhosComponent>,
+    private auth : AutenticacaoService
   ) {
 
   }
 
   ngOnInit(): void {
-
-    this.BuscarFilhos(this.idResponsavel);
-
     this.CarregarCombos()
     this.BuscarDados();
-
   }
   private BuscarDados() {
-    this.serviceApi.read(Endpoint.Filhos)
+    this.serviceApi.read(Endpoint.Filhos + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}` )
       .subscribe((response: ViewFilhos[]) => {
 
 
@@ -77,7 +75,7 @@ export class FilhosComponent implements OnInit {
   }
 
   private BuscarPessoa() {
-    this.serviceApi.read(Endpoint.Pessoa)
+    this.serviceApi.read(Endpoint.Pessoa + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe(x => {
         this.pai = x;
         this.mae = x;
@@ -88,8 +86,4 @@ export class FilhosComponent implements OnInit {
 
   }
 
-  private BuscarFilhos(id: number) {
-
-
-  }
 }

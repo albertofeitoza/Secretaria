@@ -1,0 +1,26 @@
+.alinhar {
+  display: ruby-text;
+}
+
+.centralizar{
+  text-align: center;
+  padding: 20px;
+}
+
+
+.ajusteInterno {
+  background-color: #42e142;
+  height: 50px;
+  width: 140px;
+  border-radius: 6%;
+  text-align: center;
+  margin-right: 40px;
+  
+
+}
+
+.hrVertical {
+  height: 30px;
+  border-left: 1px solid;
+  color: rgba(36, 204, 182, 0.726);
+}

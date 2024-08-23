@@ -9,4 +9,5 @@ export class Filtros {
     mesSelecionado: number = 0;
     anoSelecionado: number = 0;
     pessoaId: number;
+    igrejaId : number;
 }

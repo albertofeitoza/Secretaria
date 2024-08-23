@@ -11,6 +11,7 @@ import { OfertasComponent } from './views/ofertas/ofertas.component';
 import { UsuariosComponent } from './views/usuarios/usuarios.component';
 import { FilhosComponent } from './views/Membros/Modal/filhos/filhos.component';
 import { FilhosMembrosComponent } from './views/filhos-membros/filhos-membros.component';
+import { IgrejaComponent } from './views/igreja/igreja.component';
 
 const routes: Routes = [
   {path : '', component: BemVindoComponent},
@@ -23,6 +24,7 @@ const routes: Routes = [
   {path: "relatorios", component: RelatoriosComponent},
   {path: "ofertas", component: OfertasComponent},
   {path: "usuarios", component: UsuariosComponent},
+  {path: "igreja", component: IgrejaComponent},
   {path: "filhos", component: FilhosMembrosComponent},
 ];
 

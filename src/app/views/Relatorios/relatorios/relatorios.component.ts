@@ -10,6 +10,7 @@ import { Filtros } from 'src/app/models/Filtros';
 import { ViewPessoa } from 'src/app/models/pessoa';
 import { RelatorioAnivCasamento, RelatorioIdosos, RelatorioMembrosAtivos, RelatorioPastores, RelatorioPresenca } from 'src/app/models/relatorios';
 import { AllservicesService } from 'src/app/services/allservices.service';
+import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 
 @Component({
@@ -68,7 +69,8 @@ export class RelatoriosComponent implements OnInit {
   totalAniversariantesCasamento: number = 0
 
   constructor(private serviceUtil: UtilServiceService,
-    private serverApi: AllservicesService<any>
+    private serverApi: AllservicesService<any>,
+    private auth: AutenticacaoService
   ) { }
 
   ngOnInit() {
@@ -79,7 +81,7 @@ export class RelatoriosComponent implements OnInit {
     this.periodo = this.serviceUtil.Periodo();
     this.meses = this.serviceUtil.MesesDoAno();
     this.meses = this.serviceUtil.MesesDoAno();
-    this.serverApi.read(Endpoint.Pessoa)
+    this.serverApi.read(Endpoint.Pessoa + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((pe: ViewPessoa[]) => {
         if (pe && pe.length > 0) {
           this.membros = pe.filter(x => x.statusPessoa != 'Inativo');
@@ -155,6 +157,7 @@ export class RelatoriosComponent implements OnInit {
     this.exibeAno = false;
     this.filtros.mesSelecionado = 0;
     this.filtros.pessoaId = 0;
+    this.filtros.igrejaId = 0;
     this.imprimir = false;
 
   }
@@ -184,6 +187,7 @@ export class RelatoriosComponent implements OnInit {
       this.imprimir = false;
       this.exibePeriodo = false;
       this.mensagemDeretorno = '';
+      this.filtros.igrejaId = this.auth.dadosUsuario.IgrejaLogada
 
       if (this.ValidacoesRelatorio()) {
         this.spinner = true

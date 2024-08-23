@@ -1,8 +1,8 @@
 export class igreja {
-    id: number = 1;
-    nome: string = "Ferrazópolis";
-    cnpj: string = "5916231300199"
-    estado: string = "SP"
-    cidade: string = "São Bernardo do Campo"
+    id: number;
+    nome: string;
+    cnpj: string;
+    estado: string;
+    cidade: string;
 }
 

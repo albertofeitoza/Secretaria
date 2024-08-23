@@ -7,6 +7,7 @@ import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UtilServiceService } from './util-service.service';
 import { Cartas } from '../models/Cartas';
+import { Filtros } from '../models/Filtros';
 
 @Injectable({
   providedIn: 'root'
@@ -88,8 +89,14 @@ export class AllservicesService<T> {
     );
   }
 
-  readById(id: string, endpoint: string, filtros: string = ""): Observable<T> {
-    const url = `${this.environmentUrl + endpoint}/${id}`
+  readById(id: string, endpoint: string, filtros: string = "", igreja: number = 0): Observable<T> {
+    
+    let url = `${this.environmentUrl + endpoint}/${id}`;
+    
+    if(igreja > 0){
+      url = `${url}/${igreja}` 
+    }
+    
 
     return this.http.get<T>(url, this.loginService.Header(filtros)).pipe(
       map(obj => obj),

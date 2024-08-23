@@ -3,17 +3,29 @@
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false">
 
-    <mat-nav-list *ngIf="tipoUsuario === 1">
+    <mat-nav-list *ngIf="PermissaoMenus().TipoUsuarioLogado === 1">
       <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
       <a mat-list-item routerLink="/filhos"><mat-icon style="padding-right: 2px;">family_restroom</mat-icon>Crianças</a>
       <a mat-list-item routerLink="/membros"><i class="material-icons">people</i> Membros</a>
       <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i> Ofertas</a>
       <a mat-list-item routerLink="/relatorios"><i class="material-icons">assignment</i>Relatórios</a>
-      <a mat-list-item routerLink="/usuarios"><i class="material-icons">account_box</i>Usuários</a>
+
+
+      <!-- <a mat-list-item routerLink="/usuarios"><i class="material-icons">account_box</i>Usuários</a> -->
+
+
+      <a mat-list-item [matMenuTriggerFor]="menu"><i class="material-icons">settings</i> Configurações</a>
+      <mat-menu #menu="matMenu">
+        <a mat-menu-item>
+          <a mat-list-item routerLink="/igreja"><i class="material-icons">church</i>Igreja</a>
+        </a>
+      </mat-menu>
+
+
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
     </mat-nav-list>
 
-    <mat-nav-list *ngIf="tipoUsuario === 2">
+    <mat-nav-list *ngIf="PermissaoMenus().TipoUsuarioLogado === 2">
       <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
       <a mat-list-item routerLink="/filhos"><mat-icon style="padding-right: 2px;">family_restroom</mat-icon>Crianças</a>
       <a mat-list-item routerLink="/membros"><i class="material-icons">people</i> Membros</a>
@@ -21,18 +33,18 @@
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
     </mat-nav-list>
 
-    <mat-nav-list *ngIf="tipoUsuario === 3">
+    <mat-nav-list *ngIf="PermissaoMenus().TipoUsuarioLogado === 3">
       <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
     </mat-nav-list>
 
-    <mat-nav-list *ngIf="tipoUsuario === 4">
+    <mat-nav-list *ngIf="PermissaoMenus().TipoUsuarioLogado === 4">
       <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
       <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i> Ofertas</a>
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
     </mat-nav-list>
 
-    <mat-nav-list *ngIf="tipoUsuario === 5">
+    <mat-nav-list *ngIf="PermissaoMenus().TipoUsuarioLogado === 5">
       <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
       <a mat-list-item routerLink="/filhos"><mat-icon style="padding-right: 2px;">family_restroom</mat-icon>Crianças</a>
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
@@ -41,7 +53,7 @@
   <mat-sidenav-content style="margin-left: {{width}}">
     <mat-toolbar color="primary">
       <mat-icon matTooltip="Navegar!" (click)="Menu()">sync_alt</mat-icon>
-      </mat-toolbar>
+    </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -24,8 +24,6 @@ export class ServiceCenterComponent implements OnInit {
 
   tipoUsuario: Number = 0;
 
-
-
   servicecenter: ServiceCenter[] = new Array();
   departamentos: any = new Array();
   funcoes: any = new Array();
@@ -39,17 +37,14 @@ export class ServiceCenterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.tipoUsuario = this.UsuarioLogado();
+    this.tipoUsuario = this.auth.dadosUsuario.TipoUsuarioLogado;
     this.BuscarMembros();
     this.BuscarPendencias();
   }
-
-  private UsuarioLogado(): Number {
-    return this.auth.tipoUsuarioLogado
-  }
+  
 
   private BuscarMembros(): void {
-    this.serviceApi.read(Endpoint.Pessoa)
+    this.serviceApi.read(Endpoint.Pessoa +`/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: ViewPessoa[]) => {
         this.pessoas = result;
         this.funcoes = new Set(result.map(x => x.funcao).sort());
@@ -58,7 +53,7 @@ export class ServiceCenterComponent implements OnInit {
   }
 
   private BuscarPendencias(): void {
-    this.serviceApi.read(Endpoint.ServiceCenter)
+    this.serviceApi.read(Endpoint.ServiceCenter + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: ServiceCenter[]) => {
 
         this.departamentos = new Set(result.map(x => x.departamento).sort());

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { Pessoa, ViewFilhos } from 'src/app/models/pessoa';
 import { AllservicesService } from 'src/app/services/allservices.service';
+import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 
 @Component({
@@ -33,7 +34,8 @@ export class FilhosMembrosComponent implements OnInit {
 
     private serviceUtil: UtilServiceService,
     private serviceApi: AllservicesService<any>,
-    private router: Router
+    private router: Router,
+    private auth : AutenticacaoService
 
   ) {
 
@@ -49,7 +51,7 @@ export class FilhosMembrosComponent implements OnInit {
   }
 
   private BuscarDados(): void {
-    this.serviceApi.read(Endpoint.Filhos)
+    this.serviceApi.read(Endpoint.Filhos + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}` )
       .subscribe((response: ViewFilhos[]) => {
 
         const Response = this.txtBusca.length > 0 
@@ -79,7 +81,7 @@ export class FilhosMembrosComponent implements OnInit {
   }
 
   private CarregarComboPaiMae() {
-    this.serviceApi.read(Endpoint.Pessoa)
+    this.serviceApi.read(Endpoint.Pessoa + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: Pessoa[]) => {
 
         this.pessoas = result;
@@ -113,7 +115,8 @@ export class FilhosMembrosComponent implements OnInit {
         dataNascimento: this.filho.dataNascimento,
         membro: this.filhoMembro == 1 ? true : false,
         idPai: this.filho.idPai ? Number(this.filho.idPai) : null,
-        idMae: this.filho.idMae ? Number(this.filho.idMae) : null
+        idMae: this.filho.idMae ? Number(this.filho.idMae) : null,
+        igrejaId : this.auth.dadosUsuario.IgrejaLogada
       }
 
       this.serviceApi.create(body, Endpoint.Filhos)

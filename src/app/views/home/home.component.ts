@@ -12,8 +12,7 @@ import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 export class HomeComponent {
   private breakpointObserver = inject(BreakpointObserver);
 
-  tipoUsuario : Number = 0
-  width  = "200px;"
+  width = "200px;"
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -21,30 +20,27 @@ export class HomeComponent {
       shareReplay()
     );
 
-    constructor(private auth : AutenticacaoService)
-    {}
+  constructor(private auth: AutenticacaoService) { }
 
+  ngOnInit() {
 
-      ngOnInit(){
-        this.PermissaoMenus()
-      }
+  }
 
-    logoof(){
-      this.auth.logoof()
+  logoof() {
+    this.auth.logoof()
+  }
 
-    }
+  PermissaoMenus() {
+    return this.auth.dadosUsuario;
+  }
 
-    PermissaoMenus(){
-      this.tipoUsuario = this.auth.tipoUsuarioLogado
-    }
+  Menu() {
 
-    Menu(){
-      
-      let menu = 
-        this.width.includes("200px;") ? 
-          this.width = "57px;" : 
-            this.width.includes("57px;") ? 
-              this.width = "200px;" : this.width = "200px;"
-      return menu;
-    }
+    let menu =
+      this.width.includes("200px;") ?
+        this.width = "57px;" :
+        this.width.includes("57px;") ?
+          this.width = "200px;" : this.width = "200px;"
+    return menu;
+  }
 }

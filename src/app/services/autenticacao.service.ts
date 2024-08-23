@@ -11,6 +11,7 @@ import { ApiResponse } from '../models/ApiResponse';
 import { JwtDecodeOptions, JwtHeader, JwtPayload, jwtDecode } from 'jwt-decode';
 import { TokenResponse } from '../models/token';
 import { Observable } from 'rxjs';
+import { DadosLogados } from '../models/Usuario';
 
 
 @Injectable({
@@ -20,7 +21,8 @@ export class AutenticacaoService {
 
   autenticado = new EventEmitter<boolean>();
   token = new EventEmitter<string>();
-  public tipoUsuarioLogado: Number = 0;
+  dadosUsuario: DadosLogados = new DadosLogados();
+
 
   environmentUrl = ''
   sair: string = "";
@@ -35,12 +37,8 @@ export class AutenticacaoService {
   }
 
   Autenticado(sessao: login) {
-    try {
-      this.logoof()
-      this.loginSistema(sessao, Endpoint.Token)
-    } catch (error) {
-      console.log(error);
-    }
+    this.logoof()
+    this.loginSistema(sessao, Endpoint.Token)
   }
 
   logoof() {
@@ -49,26 +47,24 @@ export class AutenticacaoService {
     this.token = new EventEmitter<string>()
   }
 
-  loginSistema(T: login, endpoint: string) {
-    try {
-      this.http.post<ApiResponse>(this.environmentUrl + endpoint, T,).pipe(
+  loginSistema(sessao: login, endpoint: string) {
+
+    this.http.post<ApiResponse>(this.environmentUrl + endpoint, sessao)
+      .pipe(
         map(obj => obj),
-        catchError(e => this.utilService.erroHandler(e)),
-      ).subscribe(ret => {
-        if (ret.code === 200) {
-          this.token = ret.data;
+        catchError(e => this.utilService.erroHandler(this.utilService.showMessage("Api Indisponível", true))),
+      )
+      .subscribe(result => {
+        if (result.code === 200) {
+          this.token = result.data;
           this.autenticado.emit(true);
-          this.tipoUsuarioLogado = this.getDecodedAccessToken(ret.data)
+          this.getDecodedAccessToken(result.data)
           this.router.navigate(['/']);
-          this.utilService.showMessage(ret.mensagem, false)
-        } else
-          this.utilService.showMessage(ret.mensagem, true)
-      }, (erro) => {
-        this.utilService.showMessage(`Problema ao realizar login no sistema, erro: ${erro.message}`, true)
-      })
-    } catch (error) {
-      this.utilService.showMessage(`Api indisponível ${error}`, true)
-    }
+          this.utilService.showMessage(result.mensagem, false)
+        } else {
+          this.utilService.showMessage(result.mensagem, true)
+        }
+      });
   }
 
   Header(filtros: string = "") {
@@ -89,12 +85,10 @@ export class AutenticacaoService {
     return { headers: headers };
   }
 
-  getDecodedAccessToken(token: string): any {
-    try {
-      return Number(jwtDecode<TokenResponse>(token).unique_name[1])
-    } catch (Error) {
-      return null;
-    }
+  private getDecodedAccessToken(token: string): void {
+    this.dadosUsuario.LoginSistema = jwtDecode<TokenResponse>(token).unique_name[0];
+    this.dadosUsuario.TipoUsuarioLogado = Number(jwtDecode<TokenResponse>(token).unique_name[1]);
+    this.dadosUsuario.NomeUsuarioLogado = jwtDecode<TokenResponse>(token).unique_name[2];
+    this.dadosUsuario.IgrejaLogada = Number(jwtDecode<TokenResponse>(token).unique_name[3]);
   }
-
 }

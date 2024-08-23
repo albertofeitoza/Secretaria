@@ -6,15 +6,22 @@ export class Usuario {
   senha: string;
   biometria: string;
   sessao: string;
-  tipoUsuario : number
+  tipoUsuario: string;
+  ativo: boolean;
 }
 
-export class ResetSenha
-{
-  cpf : string
-  token : string
-  novaSenha : string
-  novaSenhaConfirm : string
-  idUsuario : number
-  sequencia : number = 1
+export class ResetSenha {
+  cpf: string;
+  token: string;
+  novaSenha: string;
+  novaSenhaConfirm: string;
+  idUsuario: number;
+  sequencia: number = 1;
+}
+
+export class DadosLogados {
+  NomeUsuarioLogado: string;
+  LoginSistema: string = "";
+  TipoUsuarioLogado: number;
+  IgrejaLogada: number;
 }

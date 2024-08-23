@@ -17,6 +17,7 @@ import { ControlePresencaComponent } from '../Modal/controle-presenca/controle-p
 import { UnirCadastroComponent } from '../Modal/unir-cadastro/unir-cadastro.component';
 import jsPDF from 'jspdf';
 import { TipoRelatorio } from 'src/app/enum/TipoRelatorio';
+import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 
 
 @Injectable()
@@ -43,7 +44,9 @@ export class ReadMembrosComponent implements OnInit {
     private serverApi: AllservicesService<any>,
     private serviceUtil: UtilServiceService,
     private route: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute, 
+    private auth : AutenticacaoService
+
   ) {
 
   }
@@ -70,7 +73,7 @@ export class ReadMembrosComponent implements OnInit {
     try {
       this.spinner = true
 
-      this.serverApi.read(Endpoint.Pessoa)
+      this.serverApi.read(Endpoint.Pessoa +`/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
         .subscribe((response) => {
           response = response.sort()
           this.datasource.data =
@@ -109,7 +112,7 @@ export class ReadMembrosComponent implements OnInit {
   }
 
   private Precadastro(filtro: string = "") {
-    this.serverApi.read(`${Endpoint.Pessoa}/preCadastro`)
+    this.serverApi.read(`${Endpoint.Pessoa}/preCadastro/${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe(() => { });
   }
 
@@ -172,6 +175,7 @@ export class ReadMembrosComponent implements OnInit {
 
   public HistoricoMembro(id: number): void {
     this.filtros.pessoaId = id;
+    this.filtros.igrejaId = this.auth.dadosUsuario.IgrejaLogada;
 
     this.serverApi.readById(TipoRelatorio.dadosPessoa.toString(), Endpoint.Relatorios, JSON.stringify(this.filtros))
       .subscribe(() => {
