@@ -3,15 +3,17 @@
         <div *ngIf="funcoes" class="col-md-3 pr-2">
             <mat-card class="infIgreja">
                 <mat-card-title>Informações da Membresia</mat-card-title>
-                <mat-card-content style="display: ruby-text;">
+                <mat-card-content style="display: grid;">
                     <div style="display: ruby-text;" *ngFor="let func of funcoes">
                         <label class="cursor" (click)="ExibirPessoas(func)">{{func}}: </label>
-                        <label>{{QuantPessoas(func)}}</label><br>
+                        <label>{{QuantPessoas(func)}}</label>
+                        <br>
                     </div>
                     <br>
                     <div style="display: ruby-text;">
                         <b><label>Total: </label></b>
-                        <b><label>{{totalGeralMembros}}</label></b><br>
+                        <b><label>{{totalGeralMembros}}</label></b>
+                        <br>
                     </div>
                 </mat-card-content>
             </mat-card>
@@ -19,16 +21,17 @@
         <div *ngIf="servicecenter.length > 0" class="col-md-3 pr-2">
             <mat-card class="infSecretaria">
                 <mat-card-title>Pendências da Secretária</mat-card-title>
-                <mat-card-content>
+                <mat-card-content style="display: grid;">
 
                     <div style="display: ruby-text;" *ngFor="let dep of departamentos">
                         <label class="cursor" (click)="ExibirPependencia(dep)">{{dep}}: </label>
-                        <label>{{QuantPendencias(dep)}}</label><br>
+                        <label>{{QuantPendencias(dep)}}</label><br> 
                     </div>
                     <br>
                     <div style="display: ruby-text;">
                         <b><label>Total: </label></b>
-                        <b><label>{{servicecenter.length}}</label></b><br>
+                        <b><label>{{servicecenter.length}}</label></b>
+                        <br>
                     </div>
                 </mat-card-content>
             </mat-card>
