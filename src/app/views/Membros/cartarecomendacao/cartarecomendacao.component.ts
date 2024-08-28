@@ -5,6 +5,7 @@ import { Cartas } from 'src/app/models/Cartas';
 import { PopupConfirm } from 'src/app/models/dialogConfirm';
 import { Pessoa, ViewPessoa } from 'src/app/models/pessoa';
 import { AllservicesService } from 'src/app/services/allservices.service';
+import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 
 @Component({
@@ -25,9 +26,9 @@ export class CartarecomendacaoComponent implements OnInit {
   constructor(private serviceUtil: UtilServiceService,
     public dialogRef: MatDialogRef<CartarecomendacaoComponent>,
     public dialog: MatDialog,
-    private serviceApi: AllservicesService<any>) {
-
-  }
+    private serviceApi: AllservicesService<any>,
+    private auth : AutenticacaoService
+  ){  }
 
   ngOnInit() {
     this.BuscarPessoa();
@@ -43,14 +44,14 @@ export class CartarecomendacaoComponent implements OnInit {
     this.serviceApi.readById(this.dialogRef.id, Endpoint.Pessoa)
       .subscribe(p => {
         this.dados = p.data.pessoa;
-        this.PastorIgreja = p.data.pessoa.id === p.data.pastor.pessoaId ? true : false;
+        this.PastorIgreja = p.data.pessoa.id === p.data.igreja.pastores[0].pessoaId ? true : false;
       })
   }
 
   private BuscaObreiros(): void {
-    this.serviceApi.read(Endpoint.Pessoa)
+    this.serviceApi.read(Endpoint.Pessoa + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: ViewPessoa[]) => {
-        this.pessoas = result.filter(f => f.funcao != 'Membro' && f.funcao != 'PreCadastro' && f.id != this.dados.id);
+        this.pessoas = result.filter(f => f.funcao != 'Membro' && f.funcao != 'PreCadastro' && f.statusPessoa != 'Inativo' && f.id != this.dados.id);
       });
   }
 
@@ -60,6 +61,11 @@ export class CartarecomendacaoComponent implements OnInit {
 
       if(this.relatorioSelecionado == 14 && !this.dados.cpfConjuge || this.relatorioSelecionado == 16 && !this.dados.cpfConjuge ){
         this.serviceUtil.showMessage("Para emissão de carta de recomendação / Mudança para o casal corrigir o cadastro associando o cpf do conjuge.", true)
+        return;
+      }
+
+      if(this.relatorioSelecionado === 15 && this.PastorIgreja){
+        this.serviceUtil.showMessage('Para emissão de carta de Mudança do pastor selecionar a opção "Carta de Mudança Casal."', true)
         return;
       }
 

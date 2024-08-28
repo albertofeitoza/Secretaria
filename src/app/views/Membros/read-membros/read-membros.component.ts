@@ -44,8 +44,8 @@ export class ReadMembrosComponent implements OnInit {
     private serverApi: AllservicesService<any>,
     private serviceUtil: UtilServiceService,
     private route: Router,
-    private activatedRoute: ActivatedRoute, 
-    private auth : AutenticacaoService
+    private activatedRoute: ActivatedRoute,
+    private auth: AutenticacaoService
 
   ) {
 
@@ -73,7 +73,7 @@ export class ReadMembrosComponent implements OnInit {
     try {
       this.spinner = true
 
-      this.serverApi.read(Endpoint.Pessoa +`/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
+      this.serverApi.read(Endpoint.Pessoa + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
         .subscribe((response) => {
           response = response.sort()
           this.datasource.data =
@@ -144,33 +144,44 @@ export class ReadMembrosComponent implements OnInit {
 
   ExcluirMembro(id: number) {
 
-    this.serviceUtil.PopupConfirmacao("Deseja Excluir o Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
-      .subscribe(result => {
-        if (result.Status) {
+    this.serverApi.readById(id.toString(), Endpoint.Pessoa)
+      .subscribe(res => {
+        if (res.data.igreja.pastores[0].pessoaId === id) {
+          this.serviceUtil.showMessage("O pastor da Igreja não pode ser excluido, emita a carta de mudança!.", false);
+          return
+        } else {
+          this.serviceUtil.PopupConfirmacao("Deseja Excluir o Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
+            .subscribe(result => {
+              if (result.Status) {
 
-          let pessoa: Pessoa = new Pessoa();
-          pessoa.id = id;
-          pessoa.nome = result.Motivo
-          pessoa.dataCriacao = new Date
-          pessoa.cpf = "0"
-          pessoa.estadoCivil = 1
-          pessoa.dataNascimento = new Date
-          pessoa.grauInstrucao = 1
-          pessoa.sexo = 1
-          pessoa.statusPessoa = 5
-          pessoa.fotoCadastrada = false,
-            pessoa.idoso = false
+                let pessoa: Pessoa = new Pessoa();
+                pessoa.id = id;
+                pessoa.nome = result.Motivo
+                pessoa.dataCriacao = new Date
+                pessoa.cpf = "0"
+                pessoa.estadoCivil = 1
+                pessoa.dataNascimento = new Date
+                pessoa.grauInstrucao = 1
+                pessoa.sexo = 1
+                pessoa.statusPessoa = 5
+                pessoa.fotoCadastrada = false,
+                  pessoa.idoso = false
 
-          this.serverApi.create(pessoa, Endpoint.Pessoa)
-            .subscribe(response => {
-              this.serviceUtil.showMessage("Membro excluído com sucesso!.", false);
-              this.buscarMembro()
-            })
+                this.serverApi.create(pessoa, Endpoint.Pessoa)
+                  .subscribe(response => {
+                    this.serviceUtil.showMessage("Membro excluído com sucesso!.", false);
+                    this.buscarMembro()
+                  })
+              }
+            },
+              (error) => {
+                this.serviceUtil.showMessage("Problema pra excluir o cadastro!.", false);
+              });
         }
-      },
-        (error) => {
-          this.serviceUtil.showMessage("Problema pra excluir o cadastro!.", false);
-        });
+
+      })
+
+
   }
 
   public HistoricoMembro(id: number): void {

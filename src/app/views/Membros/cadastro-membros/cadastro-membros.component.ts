@@ -74,7 +74,7 @@ export class CadastroMembrosComponent {
     private serviceUtil: UtilServiceService,
     private serverApi: AllservicesService<any>,
     private servicoCep: AllservicesService<Cep>,
-    private activatedRoute: ActivatedRoute, 
+    private activatedRoute: ActivatedRoute,
     private auth: AutenticacaoService
   ) { }
 
@@ -137,7 +137,7 @@ export class CadastroMembrosComponent {
         case 0:
           if (this.ValidarPessoa() && this.pessoa.id == 0) {
 
-            this.serverApi.readById(this.pessoa.cpf, Endpoint.BuscaPorCpf).subscribe(response => {
+            this.serverApi.readById(this.pessoa.cpf, Endpoint.BuscaPorCpf, '', this.auth.dadosUsuario.IgrejaLogada).subscribe(response => {
               if (response.code != 200) {
                 this.pessoa.cpf = this.pessoa.cpf != undefined ? this.pessoa.cpf.toString() : this.pessoa.cpf
                 this.pessoa.rg = this.pessoa.rg != undefined ? this.pessoa.rg.toString() : this.pessoa.rg
@@ -190,6 +190,10 @@ export class CadastroMembrosComponent {
         case 3:
           if (this.ValidarDadosMembro() && this.pessoa.id > 0) {
             this.dadosMembro.pessoaId = this.pessoa.id;
+
+            if (this.dadosMembro.id === 0)
+              this.dadosMembro.funcao = 1;
+
             this.serverApi.create(this.dadosMembro, Endpoint.Membros)
               .subscribe(x => {
                 this.dadosMembro = x
@@ -220,10 +224,14 @@ export class CadastroMembrosComponent {
     if (keyEvent.which == 13) {
 
       if (this.pessoa.cpf == this.pessoa.cpfConjuge)
-        return this.serviceUtil.showMessage(`O CPF informado é mesmo do  ${this.pessoa.nome}.`, true);
+        return this.serviceUtil.showMessage(`O CPF informado é mesmo da pessoa ${this.pessoa.nome}.`, true);
+
+      if (this.pessoa.estadoCivil >= 1 && this.pessoa.estadoCivil < 5 && !this.pessoa.dataCasamento)
+        return this.serviceUtil.showMessage(`Para pesquisar o conjuge se faz necessário alterar o estado civil e informar a data de casamento.`, true);
+
 
       if (this.serviceUtil.ValidaCpf(this.pessoa.cpfConjuge)) {
-        this.serverApi.readById(this.pessoa.cpfConjuge, Endpoint.BuscaPorCpf).subscribe(response => {
+        this.serverApi.readById(this.pessoa.cpfConjuge, Endpoint.BuscaPorCpf, '', this.auth.dadosUsuario.IgrejaLogada).subscribe(response => {
           if (response.code == 200) {
             this.pessoa.nomeConjuge = response.data.nome
           } else
@@ -294,38 +302,36 @@ export class CadastroMembrosComponent {
 
   AlteraFuncao(aprovado: boolean, idHistorico: number = 0) {
 
-    if (this.ValidarDadosMembro()) {
 
-      this.serviceUtil.PopupConfirmacao("Informar os dados", TipoPopup.ComponenteInstancia, HistoricoPopupComponent, idHistorico, 'auto', 'auto', false, aprovado)
-        .subscribe(result => {
+    this.serviceUtil.PopupConfirmacao("Informar os dados", TipoPopup.ComponenteInstancia, HistoricoPopupComponent, idHistorico, 'auto', 'auto', false, aprovado)
+      .subscribe(result => {
 
-          if (result && result.Status) {
-            this.historico = result.data
+        if (result && result.Status) {
+          this.historico = result.data
 
-            if (this.dadosObreiro.id == 0) {
-              this.dadosObreiro.id = 0;
-              this.dadosObreiro.pessoaId = this.pessoa.id;
+          if (this.dadosObreiro.id == 0) {
+            this.dadosObreiro.id = 0;
+            this.dadosObreiro.pessoaId = this.pessoa.id;
 
-              this.serverApi.create(this.dadosObreiro, Endpoint.Obreiro)
-                .subscribe(x => {
-                  this.dadosObreiro = x;
-                  this.historico.dadosObreiroId = x.id
-                  this.AdicionarFuncaoObreiro();
-                  this.serviceUtil.showMessage("Obreiro cadastrado com sucesso.", false)
-                });
-
-            } else {
-              this.AdicionarFuncaoObreiro();
-              this.serviceUtil.showMessage("Obreiro alterado com sucesso.", false)
-            }
+            this.serverApi.create(this.dadosObreiro, Endpoint.Obreiro)
+              .subscribe(x => {
+                this.dadosObreiro = x;
+                this.historico.dadosObreiroId = x.id
+                this.AdicionarFuncaoObreiro();
+                this.serviceUtil.showMessage("Obreiro cadastrado com sucesso.", false)
+              });
 
           } else {
-            this.serviceUtil.showMessage("Informações ignoradas", false)
-
-            this.dadosMembro.funcao = this.serviceUtil.Funcao().filter(x => x.id == this.funcaoMembroCache)[0].id
+            this.AdicionarFuncaoObreiro();
+            this.serviceUtil.showMessage("Obreiro alterado com sucesso.", false)
           }
-        })
-    }
+
+        } else {
+          this.serviceUtil.showMessage("Informações ignoradas", false)
+
+          this.dadosMembro.funcao = this.serviceUtil.Funcao().filter(x => x.id == this.funcaoMembroCache)[0].id
+        }
+      })
   }
 
   public AtualizarFuncao(id: number): void {

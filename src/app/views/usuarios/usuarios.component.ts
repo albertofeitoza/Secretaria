@@ -59,7 +59,7 @@ export class UsuariosComponent {
     if (keyEvent.which == 13 || keyEvent.which == 1) {
 
       if (this.cpf) {
-        this.serverApi.readById(this.cpf, Endpoint.BuscaPorCpf).subscribe(res => {
+        this.serverApi.readById(this.cpf, Endpoint.BuscaPorCpf, '', this.auth.dadosUsuario.IgrejaLogada).subscribe(res => {
           if (res.code == 200)
             this.pessoa = res.data;
           else
