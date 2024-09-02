@@ -339,7 +339,7 @@ export class CadastroMembrosComponent {
   }
 
   public ExcluirHistorico(id: number): void {
-    this.serverApi.delete(id, Endpoint.HistoricoObreiro)
+    this.serverApi.create(id, Endpoint.HistoricoObreiro + `/excluir/${id}` )
       .subscribe(() => {
         this.serviceUtil.showMessage("Histórico excluído com sucesso.");
         this.BuscarMembro();
