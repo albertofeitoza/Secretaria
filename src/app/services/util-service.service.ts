@@ -1,7 +1,6 @@
-import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { Observable, EMPTY, catchError, map } from 'rxjs';
-import { Component, EventEmitter, Injectable } from '@angular/core';
-import { AbstractControl, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Observable, EMPTY } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Overlay } from '@angular/cdk/overlay';
 import { MatDialog } from '@angular/material/dialog';
@@ -50,7 +49,6 @@ export class UtilServiceService {
 
     try {
 
-
       const blob = new Blob([result], { type: type });
       var fileURL = URL.createObjectURL(blob);
 
@@ -74,7 +72,6 @@ export class UtilServiceService {
   }
 
   BaixarArquivo(result: any, type: string, nomeArquivo: string) {
-
     const blob = new Blob([result], { type: type });
     var fileURL = URL.createObjectURL(blob);
 
@@ -82,7 +79,6 @@ export class UtilServiceService {
     a.href = fileURL;
     a.download = nomeArquivo == undefined ? blob.text.name : nomeArquivo
     a.click();
-
   }
 
   EstCivil() {
@@ -190,6 +186,7 @@ export class UtilServiceService {
     relatorio.push({ "id": 6, "value": "Presença em reunião obreiros (Local)" })
     relatorio.push({ "id": 7, "value": "Presença em reunião obreiros (Sede)" })
     relatorio.push({ "id": 19, "value": "Transferência de Pastores" })
+    relatorio.push({ "id": 21, "value": "Apresentacao de Crianças" })
 
     return relatorio
   }
@@ -357,3 +354,7 @@ export class UtilServiceService {
   }
 
 }
+function saveAs(blob: Blob, arg1: string) {
+  throw new Error('Function not implemented.');
+}
+

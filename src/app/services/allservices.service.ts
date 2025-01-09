@@ -40,7 +40,7 @@ export class AllservicesService<T> {
     );
   }
   DownloadArquivo(id: string, endpoint: string, token: string = "", filtros: string = "") : Observable<any> {
-    const url = `${this.environmentUrl + endpoint}/${id}`
+    const url = id != '' ? `${this.environmentUrl + endpoint}/${id}` : `${this.environmentUrl + endpoint}`
     return this.http.get(url, { responseType : 'blob', headers : this.loginService.Header(filtros).headers} )
     .pipe(
       map(res => res)

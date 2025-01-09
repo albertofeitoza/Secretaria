@@ -1,3 +1,4 @@
+import { saveAs } from 'file-saver';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,6 +9,7 @@ import { Pessoa, ViewFilhos } from 'src/app/models/pessoa';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
+import { ModalSelecionaLiderComponent } from './modal/modal-seleciona-lider/modal-seleciona-lider.component';
 
 @Component({
   selector: 'app-filhos-membros',
@@ -32,10 +34,10 @@ export class FilhosMembrosComponent implements OnInit {
 
   constructor(
 
-    private serviceUtil: UtilServiceService,
+    private servico: UtilServiceService,
     private serviceApi: AllservicesService<any>,
     private router: Router,
-    private auth : AutenticacaoService
+    private auth: AutenticacaoService
 
   ) {
 
@@ -51,11 +53,11 @@ export class FilhosMembrosComponent implements OnInit {
   }
 
   private BuscarDados(): void {
-    this.serviceApi.read(Endpoint.Filhos + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}` )
+    this.serviceApi.read(Endpoint.Filhos + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((response: ViewFilhos[]) => {
 
-        const Response = this.txtBusca.length > 0 
-        ? response.filter(f => f.nome.toLowerCase().includes(this.txtBusca.toLowerCase())) : response
+        const Response = this.txtBusca.length > 0
+          ? response.filter(f => f.nome.toLowerCase().includes(this.txtBusca.toLowerCase())) : response
 
         let filhos = new Array();
         Response.forEach(element => {
@@ -67,16 +69,19 @@ export class FilhosMembrosComponent implements OnInit {
           filho.dataNascimento = element.dataNascimento;
           filho.membro = element.membro ? 'Sim' : 'Não';
           filho.idPai = this.pessoas?.filter(x => x.id === Number(element.idPai))?.map(x => x.nome)?.toString() ?? " ";
-          filho.idMae =  this.pessoas?.filter(x => x.id === Number(element.idMae))?.map(x => x.nome)?.toString()?? " " ;
+          filho.idMae = this.pessoas?.filter(x => x.id === Number(element.idMae))?.map(x => x.nome)?.toString() ?? " ";
           filhos.push(filho);
         });
         this.filhos.data = filhos;
-        this.filhos.sort = this.sort
+
+        this.filhos.paginator = this.paginator
+        this.filhos.sort = this.sort;
+
       })
   }
 
   private async CarregarCombos() {
-    this.simNao = this.serviceUtil.SimNao()
+    this.simNao = this.servico.SimNao()
     this.CarregarComboPaiMae()
   }
 
@@ -116,18 +121,18 @@ export class FilhosMembrosComponent implements OnInit {
         membro: this.filhoMembro == 1 ? true : false,
         idPai: this.filho.idPai ? Number(this.filho.idPai) : null,
         idMae: this.filho.idMae ? Number(this.filho.idMae) : null,
-        igrejaId : this.auth.dadosUsuario.IgrejaLogada
+        igrejaId: this.auth.dadosUsuario.IgrejaLogada
       }
 
       this.serviceApi.create(body, Endpoint.Filhos)
         .subscribe(x => {
-          this.serviceUtil.showMessage('Cadastro realizado com sucesso!', false)
+          this.servico.showMessage('Cadastro realizado com sucesso!', false)
           this.CarregarComboPaiMae();
           this.filho = new ViewFilhos()
         });
 
     } else {
-      this.serviceUtil.showMessage('Obrigatório os campos, Nome, Data de Nascimento e se é Membro', false)
+      this.servico.showMessage('Obrigatório os campos, Nome, Data de Nascimento e se é Membro', false)
     }
   }
 
@@ -151,7 +156,7 @@ export class FilhosMembrosComponent implements OnInit {
 
     this.serviceApi.create(id, Endpoint.Filhos + '/excluir')
       .subscribe(() => {
-        this.serviceUtil.showMessage('Cadastro realizado com sucesso!', false)
+        this.servico.showMessage('Cadastro realizado com sucesso!', false)
         this.BuscarDados();
       });
 
@@ -167,5 +172,42 @@ export class FilhosMembrosComponent implements OnInit {
 
       this.BuscarDados();
     }
+  }
+
+  public EmissaoCertificado(row: ViewFilhos): void {
+
+    //Abrir popup pra capturar os dados
+
+    let nomePai = this.pessoas?.filter(x => x.id === Number(row.idPai))?.map(x => x.nome)?.toString() ?? " ";
+    let nomeMae = this.pessoas?.filter(x => x.id === Number(row.idMae))?.map(x => x.nome)?.toString() ?? " ";
+
+    if (nomePai)
+      row.idPai = nomePai;
+
+    if (nomeMae)
+      row.idMae = nomeMae;
+
+
+    this.servico.PopupConfirmacao("", 0, ModalSelecionaLiderComponent, 0, 'auto', 'auto', true, false, row)
+      .subscribe(result => {
+
+        if (result.status) {
+          const url = `/Certificados?IdPessoa=${0}&IdCrianca=${row.id}&TipoRelatorio=${21}&NomePai=${result.NomePai}&NomeMae=${result.NomeMae}&LiderDepartamento=${result.NomeLider}`
+
+          this.serviceApi.DownloadArquivo('', Endpoint.Relatorios + `${url}`,)
+            .subscribe((result: Blob) => {
+
+              this.servico.showMessage("Aguarde a impressão.", false);
+              this.servico.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `CertificadoCrianca${row.id.toString()}.docx`);
+            },
+              (error) => {
+                this.servico.showMessage("Não foi possível baixar o certificado, verifique o cadastro", true);
+              });
+        } else
+          this.servico.showMessage("impressão ignorada.", true);
+
+
+      })
+
   }
 }

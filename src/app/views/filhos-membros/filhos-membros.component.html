@@ -63,15 +63,15 @@
 </div>
 <br>
 
-<div class="mat-elevation-z8" style="height:73%; width: 100%;overflow: auto;">
+<div  class="mat-elevation-z4" style="height:auto; width: 98%;overflow: auto;padding-left: 15px; padding-right: 15px;">
     <table mat-table [dataSource]="filhos" matSort class="mat-elevation-z8 demo-table">
         <!-- Id Column -->
 
         <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
        
         <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
-            <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
+            <mat-header-cell hidden="true" *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+            <mat-cell hidden="true" *matCellDef="let row">{{row.id}}</mat-cell>
         </ng-container>
 
         <!-- rol Column -->
@@ -106,15 +106,21 @@
             <mat-header-cell mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
             <mat-cell *matCellDef="let row">
 
-                <a (click)="Editar(row.id)" class="delete">
+                <a matTooltip="Editar Cadastro"(click)="Editar(row.id)" class="delete">
                     <i class="material-icons">
                         edit
                     </i>
                 </a>
 
-                <a (click)="Excluir(row.id)" class="delete">
+                <a matTooltip="Exclusão de Cadastro" (click)="Excluir(row.id)" class="delete ">
                     <i class="material-icons">
                         delete
+                    </i>
+                </a>
+
+                <a matTooltip="Emissão de certificado de apresetação" (click)="EmissaoCertificado(row)" class="delete ">
+                    <i class="material-icons">
+                        redeem
                     </i>
                 </a>
             </mat-cell>
@@ -125,5 +131,5 @@
         </mat-row>
     </table>
 </div>
-<mat-paginator #paginator [pageSizeOptions]="[7]" showFirstLastButtons>
+<mat-paginator #paginator [pageSize]="11" [pageSizeOptions]="[11]" showFirstLastButtons>
 </mat-paginator>
