@@ -36,6 +36,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatExpansionModule } from '@angular/material/expansion'
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core'
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 //configurar a app para português
 import localePt from '@angular/common/locales/pt';
@@ -141,7 +142,8 @@ registerLocaleData(localePt);
     MatNativeDateModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
-    MatSortModule
+    MatSortModule, 
+    MatAutocompleteModule
 
   ],
   providers: [

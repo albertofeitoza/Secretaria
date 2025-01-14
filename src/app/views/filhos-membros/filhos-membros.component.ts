@@ -76,6 +76,7 @@ export class FilhosMembrosComponent implements OnInit {
 
         this.filhos.paginator = this.paginator
         this.filhos.sort = this.sort;
+        this.paginator._intl.itemsPerPageLabel = "Itens por página";
 
       })
   }

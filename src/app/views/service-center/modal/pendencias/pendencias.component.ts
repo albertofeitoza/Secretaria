@@ -32,6 +32,7 @@ export class PendenciasComponent implements OnInit {
   ngAfterViewInit() {
     this.datasource.paginator = this.paginator
     this.datasource.sort = this.sort;
+    this.paginator._intl.itemsPerPageLabel = "Itens por página";
   }
 
   private CarregarTela(): void {

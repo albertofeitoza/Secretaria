@@ -24,7 +24,7 @@
   </div>
 </div>
 
-<div class="mat-elevation-z4" style="height:73%; width: 100%;overflow: auto;">
+<div class="mat-elevation-z4" style="height:74%; width: 100%;overflow: auto;">
   <table mat-table [dataSource]="datasource" matSort class="mat-elevation-z8 demo-table">
     <!-- Id Column -->
     <ng-container matColumnDef="id">
@@ -98,5 +98,5 @@
       [ngClass]="{'corLinhaGrid' : row.id == pessoaSelecionada}"></mat-row>
   </table>
 </div>
-<mat-paginator #paginator [pageSize]="8" [pageSizeOptions]="[8]" showFirstLastButtons>
+<mat-paginator #paginator [pageSize]="13" [pageSizeOptions]="[13]" showFirstLastButtons>
 </mat-paginator>

@@ -1,6 +1,6 @@
 <div class="left">
     <div class="mat-elevation-z8">
-        
+
         <div class="titulo">
             <h2>Cadastro de Filhos / Crianças</h2>
         </div>
@@ -9,7 +9,8 @@
             <span style="margin-top: 1px;" class="search" (click)="Filtros($event)">
                 <i class="material-icons">search</i>
             </span>
-            <input style="margin-top: 1px;" id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)" value="" />
+            <input style="margin-top: 1px;" id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)"
+                value="" />
         </div>
         <br />
         <!-- Criar a busca por nome -->
@@ -28,7 +29,7 @@
                 <mat-datepicker #dataNascimento></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field style="width: 130px;" >
+            <mat-form-field style="width: 130px;">
                 <mat-label>É Membro?</mat-label>
                 <mat-select [(value)]="filhoMembro" placeholder="É Membro">
                     <mat-option *ngFor="let sn of simNao" [value]="sn.id">
@@ -61,14 +62,13 @@
         </div>
     </div>
 </div>
-<br>
 
-<div  class="mat-elevation-z4" style="height:auto; width: 98%;overflow: auto;padding-left: 15px; padding-right: 15px;">
+<div class="mat-elevation-z4" style="height:auto; width: 98%;overflow: auto;padding-left: 15px; padding-right: 15px;">
     <table mat-table [dataSource]="filhos" matSort class="mat-elevation-z8 demo-table">
         <!-- Id Column -->
 
         <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
-       
+
         <ng-container matColumnDef="id">
             <mat-header-cell hidden="true" *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
             <mat-cell hidden="true" *matCellDef="let row">{{row.id}}</mat-cell>
@@ -76,7 +76,7 @@
 
         <!-- rol Column -->
         <ng-container matColumnDef="nome">
-            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>Nome</mat-header-cell >
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>Nome</mat-header-cell>
             <mat-cell id="dataNascimento" *matCellDef="let row">{{row.nome}}</mat-cell>
         </ng-container>
 
@@ -106,7 +106,7 @@
             <mat-header-cell mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
             <mat-cell *matCellDef="let row">
 
-                <a matTooltip="Editar Cadastro"(click)="Editar(row.id)" class="delete">
+                <a matTooltip="Editar Cadastro" (click)="Editar(row.id)" class="delete">
                     <i class="material-icons">
                         edit
                     </i>
