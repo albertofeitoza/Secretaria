@@ -1,3 +1,5 @@
+import { map } from 'rxjs';
+import { igreja } from 'src/app/models/Igreja';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Endpoint } from 'src/app/enum/Endpoints';
@@ -40,25 +42,32 @@ export class PastoresComponent implements OnInit {
 
     this.spinner = true;
 
-    this.serverApi.read(Endpoint.Pastores + `/estabelecimento/${this.matdialogRef.id}`)
+    // this.serverApi.readById(Endpoint.Igreja + `/estabelecimento/${this.matdialogRef.id}`)
+    //   .subscribe(result => {
+
+    this.serverApi.readById(this.matdialogRef.id.toString(), Endpoint.Igreja)
       .subscribe(result => {
 
         this.datasource = new Array();
 
-        result.forEach((x) => {
+        let pastores: Pastor[] = result.data.pastores
+        let pessoas:Pessoa[] = result.data.pessoas
+
+         pastores.forEach(x => {
 
           let pastor: RelatorioPastores = new RelatorioPastores();
-          pastor.pastor = x.pessoa.nome;
-          pastor.esposa = x.pessoa.nomeConjuge;
-          pastor.datainicial = x.dataEntrada;
-          pastor.membrosinicial = x.qantidadeMembosEntrada;
-          pastor.membrossaida = x.qantidadeMembosSaida;
-          pastor.saldomembros = x.diferencaMembrosSaida;
-          pastor.status = x.ativo;
+          pastor.pastor = pessoas.filter(fi => fi.id == x.pessoaId).map(p => p.nome)[0]
+          pastor.esposa = pessoas.filter(fi => fi.id == x.pessoaId).map(p => p.nomeConjuge)[0];
+          pastor.datainicial = x.dataEntrada.toString();
+          pastor.membrosinicial = x.qantidadeMembosEntrada.toString();
+          pastor.membrossaida = x.qantidadeMembosSaida.toString();
+          pastor.saldomembros = x.diferencaMembrosSaida.toString();
+          pastor.status = x.ativo ? 'Atual' : 'Anterior';
 
           this.datasource.push(pastor);
 
         });
+
         this.spinner = false;
       });
   }

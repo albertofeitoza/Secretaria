@@ -11,25 +11,35 @@ import { UtilServiceService } from 'src/app/services/util-service.service';
   styleUrls: ['./adicionar-igreja.component.css']
 })
 export class AdicionarIgrejaComponent implements OnInit {
-
+  
   igreja: igreja = new igreja();
+  listaIgrejas: igreja[] = new Array();
+  tipoIgreja: any[] = new Array();
+  tipoIgrejaEscolhida = 0;
 
   constructor(
     private matdialogRef: MatDialogRef<AdicionarIgrejaComponent>,
     private serviceApi: AllservicesService<any>,
-    private serviceUtil: UtilServiceService
+    private serviceUtil: UtilServiceService,
+    private servico: UtilServiceService
   ) { }
 
   ngOnInit(): void {
-    this.BuscarIgreja();
+    this.igreja.id = 0;
+    this.BuscarIgrejaPorId();
+    this.CarregarCombo();
   }
 
 
   public AdicionarIgreja(): void {
 
+    if (this.listaIgrejas.length > 0 && this.igreja.igrejaMae === 0)
+      return this.serviceUtil.showMessage("Informe a igreja mãe!")
+
     if (this.igreja.cnpj.length <= 11) {
 
       if (this.serviceUtil.ValidaCpf(this.igreja.cnpj)) {
+
         this.serviceApi.create(this.igreja, Endpoint.Igreja).subscribe(() => {
 
           if (this.igreja.id > 0)
@@ -61,18 +71,43 @@ export class AdicionarIgrejaComponent implements OnInit {
     this.serviceApi.readById(id.toString(), Endpoint.Igreja)
       .subscribe((result) => {
         this.igreja = result.data;
+
       }, err => {
         this.serviceUtil.showMessage(`Erro ao buscar os dados da Igreja ${err.error.message}';
       } `)
       });
   }
 
-  private BuscarIgreja(): void {
+  private BuscarIgrejaPorId(): void {
     if (Number(this.matdialogRef.id) > 0)
       this.serviceApi.readById(this.matdialogRef.id.toString(), Endpoint.Igreja)
         .subscribe((result) => {
+          
+          this.tipoIgrejaEscolhida = result.data.igrejaMae === 0 ? 0 : 1;
           this.igreja = result.data;
+          
+          if (this.tipoIgrejaEscolhida == 1)
+            this.BuscarIgrejas()
+
         })
   }
 
+  private CarregarCombo(): void {
+    this.tipoIgreja = this.servico.TipoIgreja();
+
+  }
+
+  public BuscarIgrejas(): void {
+
+    if (this.tipoIgrejaEscolhida > 0) {
+      this.serviceApi.read(Endpoint.Igreja + `/estabelecimento/${0}`)
+        .subscribe((result: igreja[]) => {
+          this.listaIgrejas = result
+        })
+    }
+  }
+
+  FecharPopup() {
+    this.matdialogRef.close();
+  }
 }

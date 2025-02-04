@@ -40,18 +40,18 @@ export class LoginComponent {
     this.auth.autenticado.subscribe(response => {
       this.isLoggedIn = response
     })
-    this.BuscarIgrejas();
+    // this.BuscarIgrejas();
   }
 
 
-  public BuscarIgrejas(): any {
-    this.serverApi.read(Endpoint.Token + `/comboDominio`)
-      .subscribe(result => {
-        this.igrejas = result
-      })
+  // public BuscarIgrejas(): any {
+  //   this.serverApi.read(Endpoint.Token + `/comboDominio`)
+  //     .subscribe(result => {
+  //       this.igrejas = result
+  //     })
 
 
-  }
+  // }
 
   login(event: any) {
 

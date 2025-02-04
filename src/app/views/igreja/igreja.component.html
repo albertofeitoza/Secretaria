@@ -11,8 +11,14 @@
     <!-- rol Column -->
     <ng-container matColumnDef="nome">
       <mat-header-cell *matHeaderCellDef>Nome da Igreja</mat-header-cell>
-      <mat-cell id="cargo" *matCellDef="let row">{{row.nome}}</mat-cell>
+      <mat-cell id="igreja" *matCellDef="let row">{{row.nome}}</mat-cell>
     </ng-container>
+
+    <ng-container matColumnDef="nomeIgrejaMae">
+      <mat-header-cell *matHeaderCellDef>Igreja Mãe</mat-header-cell>
+      <mat-cell id="igreja" *matCellDef="let row">{{row.nomeIgrejaMae}}</mat-cell>
+    </ng-container>
+
 
     <ng-container matColumnDef="cnpj">
       <mat-header-cell *matHeaderCellDef>CNPJ</mat-header-cell>
@@ -29,13 +35,18 @@
       <mat-cell id="cidade" *matCellDef="let row">{{row.cidade}}</mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+      <mat-cell id="cidade" *matCellDef="let row"><mat-icon>{{row.status ? 'lock_open' : 'lock'}}</mat-icon></mat-cell>
+    </ng-container>
+
     <!-- Coluna de Ações -->
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <mat-icon class="icon" matTooltip="Alterar Cadastro!" (click)="EditarIgreja(row.id)">edit</mat-icon>
-        <mat-icon class="icon" matTooltip="usuários!" (click)="Usuarios(row)">groups</mat-icon>
-        <mat-icon class="icon" matTooltip="Pastores!" (click)="Pastores(row)">people</mat-icon>
+        <mat-icon class="icon cursor" matTooltip="Alterar Cadastro!" (click)="EditarIgreja(row.id)">edit</mat-icon>
+        <mat-icon class="icon cursor" matTooltip="Pastores!" (click)="Pastores(row)">people</mat-icon>
+        <mat-icon class="icon cursor" matTooltip="usuários!" (click)="Usuarios(row)">groups</mat-icon>
       </mat-cell>
     </ng-container>
 

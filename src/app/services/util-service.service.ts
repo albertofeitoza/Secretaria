@@ -186,7 +186,6 @@ export class UtilServiceService {
     relatorio.push({ "id": 6, "value": "Presença em reunião obreiros (Local)" })
     relatorio.push({ "id": 7, "value": "Presença em reunião obreiros (Sede)" })
     relatorio.push({ "id": 19, "value": "Transferência de Pastores" })
-    relatorio.push({ "id": 21, "value": "Apresentacao de Crianças" })
 
     return relatorio
   }
@@ -300,7 +299,13 @@ export class UtilServiceService {
     return simNao;
   }
 
-
+  TipoIgreja() {
+    let tipoIgreja = [];
+    tipoIgreja.push({ "id": 0, "value": "Sede" })
+    tipoIgreja.push({ "id": 1, "value": "Subsede" })
+    tipoIgreja.push({ "id": 2, "value": "Congregacao" })
+    return tipoIgreja;
+  }
 
   PopupConfirmacao(mensagem: string, tipo: number, componente: any, Id: any = 0, Width: any = 'auto', Height: any = 'auto', disableClose: boolean = false, status: boolean = false, dados: any = null) {
 

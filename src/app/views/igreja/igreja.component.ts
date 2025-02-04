@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { TipoPopup } from 'src/app/enum/TipoPopup';
-import { igreja } from 'src/app/models/Igreja';
+import { igreja, ViewIgreja } from 'src/app/models/Igreja';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 import { UsuariosComponent } from '../usuarios/usuarios.component';
@@ -18,15 +18,15 @@ export class IgrejaComponent implements OnInit {
 
 
 
-  igrejas: igreja[] = new Array();
+  igrejas: ViewIgreja[] = new Array();
   igreja: igreja = new igreja();
-  ColunasIgreja = ['id', 'nome', 'estado', 'cidade', 'action'];
+  ColunasIgreja = ['id', 'nome', 'nomeIgrejaMae', 'estado', 'cidade', 'status', 'action'];
   linhaSelecionada = 0;
 
   constructor(
     private serviceApi: AllservicesService<any>,
     private serviceUtil: UtilServiceService,
-    private auth : AutenticacaoService
+    private auth: AutenticacaoService
   ) { }
 
   ngOnInit(): void {
@@ -36,6 +36,7 @@ export class IgrejaComponent implements OnInit {
   public EditarIgreja(id: number): void {
     this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, AdicionarIgrejaComponent, id, 'auto', 'auto')
       .subscribe(() => {
+
         this.BuscarIgrejas();
       });
   }
@@ -43,7 +44,22 @@ export class IgrejaComponent implements OnInit {
   public BuscarIgrejas(): void {
     this.serviceApi.read(Endpoint.Igreja + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: igreja[]) => {
-        this.igrejas = result;
+        this.igrejas = new Array();
+        result.forEach(igr => {
+
+          let viewIgreja: ViewIgreja = new ViewIgreja()
+          viewIgreja.id = igr.id
+          viewIgreja.nome = igr.nome;
+          viewIgreja.nomeIgrejaMae = result.filter(x => x.id === igr.igrejaMae).map(x => x.nome)[0];
+          viewIgreja.cnpj = igr.cnpj;
+          viewIgreja.estado = igr.estado;
+          viewIgreja.cidade = igr.cidade;
+          viewIgreja.igrejaMae = igr.igrejaMae;
+          viewIgreja.status = igr.status;
+
+          this.igrejas.push(viewIgreja)
+        });
+        this.igrejas = [...this.igrejas];
       });
   }
 
@@ -62,9 +78,9 @@ export class IgrejaComponent implements OnInit {
   public Usuarios(element: any): void {
     this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, UsuariosComponent, element.id, 'auto', 'auto', false, false, element);
   }
-  
-  
+
+
   public Pastores(element: any): void {
-    this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, PastoresComponent, element.id, 'auto', 'auto', false, false, element);
+    this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, PastoresComponent, element.id, '80%', 'auto', false, false, element);
   }
 }
