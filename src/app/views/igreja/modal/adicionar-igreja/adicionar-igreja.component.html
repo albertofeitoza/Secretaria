@@ -48,6 +48,13 @@
             </div>
 
             <div style="text-align: left;" class="row">
+
+                <mat-form-field>
+                    <mat-label>Domínio</mat-label>
+                    <input matInput placeholder="Dominio - campo usado na tela de Login" [(ngModel)]="igreja.dominio"
+                        name="dominio">
+                </mat-form-field>
+
                 <mat-form-field *ngIf="igreja.id > 0">
                     <mat-label>Ativo</mat-label>
                     <input style="height: 20px; width: 150px;" matInput placeholder="Ativo">

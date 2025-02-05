@@ -19,6 +19,11 @@
       <mat-cell id="igreja" *matCellDef="let row">{{row.nomeIgrejaMae}}</mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="dominio">
+      <mat-header-cell matTooltip="Esse Campo é usado na tela de Login" *matHeaderCellDef>Dominio</mat-header-cell>
+      <mat-cell id="igreja" *matCellDef="let row">{{row.dominio}}</mat-cell>
+    </ng-container>
+
 
     <ng-container matColumnDef="cnpj">
       <mat-header-cell *matHeaderCellDef>CNPJ</mat-header-cell>

@@ -20,7 +20,7 @@ export class IgrejaComponent implements OnInit {
 
   igrejas: ViewIgreja[] = new Array();
   igreja: igreja = new igreja();
-  ColunasIgreja = ['id', 'nome', 'nomeIgrejaMae', 'estado', 'cidade', 'status', 'action'];
+  ColunasIgreja = ['id', 'nome', 'nomeIgrejaMae', 'dominio', 'estado', 'cidade', 'status', 'action'];
   linhaSelecionada = 0;
 
   constructor(
@@ -56,6 +56,7 @@ export class IgrejaComponent implements OnInit {
           viewIgreja.cidade = igr.cidade;
           viewIgreja.igrejaMae = igr.igrejaMae;
           viewIgreja.status = igr.status;
+          viewIgreja.dominio = igr.dominio;
 
           this.igrejas.push(viewIgreja)
         });

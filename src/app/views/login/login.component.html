@@ -3,19 +3,8 @@
         <form class="classform">
             <mat-card-title><i class="material-icons">account_circle</i></mat-card-title>
             <mat-form-field>
-                <input matInput placeholder="dominio" [(ngModel)]="sessao.dominio" name="name" placeholder="Igreja">
+                <input matInput placeholder="dominio" [(ngModel)]="sessao.dominio" name="name" placeholder="Domínio">
             </mat-form-field>
-
-
-            <!-- <mat-form-field>
-                <mat-label>Igreja</mat-label>
-                <mat-select [(value)]="sessao.dominio" placeholder="dominio">
-                    <mat-option *ngFor="let ig of igrejas" [value]="ig.id">
-                        {{ig.nome}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field> -->
-
 
             <mat-form-field>
                 <input matInput placeholder="login" [(ngModel)]="sessao.usuario" name="name" placeholder="login">

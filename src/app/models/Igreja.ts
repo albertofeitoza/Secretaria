@@ -6,6 +6,7 @@ export class igreja {
     cidade: string;
     igrejaMae: number = 0;
     status: boolean;
+    dominio: string
 }
 
 export class ViewIgreja {
@@ -17,4 +18,5 @@ export class ViewIgreja {
     cidade: string;
     igrejaMae: number = 0;
     status: boolean;
+    dominio: string;
 }
