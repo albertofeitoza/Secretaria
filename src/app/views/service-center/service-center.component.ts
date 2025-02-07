@@ -29,6 +29,7 @@ export class ServiceCenterComponent implements OnInit {
   funcoes: any = new Array();
   totalGeralMembros = 0;
   pessoas: ViewPessoa[] = new Array();
+  igrejasDoCampo: any[] = new Array();
 
   constructor(
     private auth: AutenticacaoService,

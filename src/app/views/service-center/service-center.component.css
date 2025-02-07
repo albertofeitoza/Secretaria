@@ -9,18 +9,16 @@
 
 .infIgreja {
   background-color: rgb(185, 199, 172);
-  width: 90%;
-  height: 80%;
-  margin: 30px;
-
-  
+  width: 150px;
+  height: 180px;
+  margin-top: 15%;
 }
 
 .infSecretaria {
   background-color: rgb(216, 175, 24);
-  width: 90%;
-  height: 80%;
-  margin: 30px;
+  width: 150px;
+  height: 180px;
+  margin-top: 15%;
 
   
 }
