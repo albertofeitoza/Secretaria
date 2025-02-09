@@ -79,7 +79,6 @@ export class UsuariosComponent {
       this.pessoa.statusPessoa = 0;
       this.contato.id = 0;
       this.contato.ddd = 11;
-      this.usuario.dominio = this.matdialogRef._containerInstance._config.data.dadosTela.nome;
       this.usuario.ativo = true;
 
       this.serverApi.readById(this.pessoa.cpf, Endpoint.BuscaPorCpf, '', Number(this.matdialogRef.id)).subscribe(response => {
@@ -95,8 +94,8 @@ export class UsuariosComponent {
             this.ValidarUsuario(result, true);
           });
         } else {
-          this.ValidarContato(response, false);
-          this.ValidarUsuario(response, false);
+          this.ValidarContato(response.data, false);
+          this.ValidarUsuario(response.data, false);
         }
       });
     } else {

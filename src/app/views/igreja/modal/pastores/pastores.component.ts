@@ -88,7 +88,7 @@ export class PastoresComponent implements OnInit {
           this.CadastrarPastor(result, true);
         });
       } else {
-        this.CadastrarPastor(response, false);
+        this.CadastrarPastor(response.data, false);
       }
     });
 
@@ -98,8 +98,8 @@ export class PastoresComponent implements OnInit {
   private CadastrarPastor(pessoa: any, acao: boolean): void {
 
     this.pastor.id = 0;
-    this.pastor.pessoaId = pessoa.data.id;
-    this.pastor.igrejaId = Number(this.matdialogRef.id);
+    this.pastor.pessoaId = pessoa.id;
+    this.pastor.igrejaId = Number(pessoa.igrejaId );
     this.pastor.dataEntrada = new Date;
     this.pastor.qantidadeMembosEntrada = this.pastor.qantidadeMembosEntrada;
     this.pastor.qantidadeMembosSaida = 0;
