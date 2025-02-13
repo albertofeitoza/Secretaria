@@ -104,7 +104,6 @@ registerLocaleData(localePt);
     OrganogramaComponent,
     ModalSelecionaLiderComponent,
 
-
   ],
   imports: [
     BrowserModule,
@@ -144,7 +143,6 @@ registerLocaleData(localePt);
     MatTooltipModule,
     MatSortModule, 
     MatAutocompleteModule
-
   ],
   providers: [
     {

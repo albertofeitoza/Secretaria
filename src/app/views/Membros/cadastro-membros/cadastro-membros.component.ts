@@ -108,7 +108,7 @@ export class CadastroMembrosComponent {
           this.historicos = response?.data?.historicoObreiro
           this.logs = response?.data?.logs;
           this.filhos = response?.data?.filhos
-          this.pessoa.fotoCadastrada ? this.fotoPerfil = `./assets/imagens/${response.data.pessoa.cpf.trim()}.jpg` : ""
+          this.fotoPerfil = this.pessoa.fotoCadastrada ? `./assets/imagens/${this.pessoa.id}_${response.data.pessoa.cpf.trim()}.jpg` :  `./assets/imagens/sem-foto.jpg.jpg`
         })
     }
   }
@@ -156,23 +156,37 @@ export class CadastroMembrosComponent {
                   this.serviceUtil.showMessage("Cadastro realizado");
                 });
 
-              } else
-                this.serviceUtil.showMessage(`Já existe cadastro para esse CPF : ${this.pessoa.cpf}`, true)
+              } else {
+                const igreja = response?.data?.nome?.split(';');
+                this.serviceUtil.showMessage(`Já existe cadastro para o CPF informado : ${this.pessoa.cpf} Nome: ${igreja[0]} ${igreja[1]} `, true)
+              }
+
             });
           }
           else {
+
             this.pessoa.cpf = this.pessoa.cpf != undefined ? this.pessoa.cpf.toString() : this.pessoa.cpf
             this.pessoa.rg = this.pessoa.rg != undefined ? this.pessoa.rg.toString() : this.pessoa.rg
             this.pessoa.dataCasamento = this.pessoa.estadoCivil == 1 || this.pessoa.estadoCivil > 4 ? undefined : this.pessoa.dataCasamento
             this.pessoa.igrejaId = this.igreja.id
             //Atualizando dados de Pessoa
             if (this.ValidarPessoa()) {
-              this.serverApi.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
-                this.step++;
-                this.pessoa = x
-                this.serviceUtil.showMessage(`Dados atualizados`, false)
 
-              });
+              this.serverApi.readById(this.pessoa.cpf, Endpoint.BuscaPorCpf, '', this.igrejaSelecionada)
+                .subscribe(response => {
+
+                  if (response.code != 200) {
+                    this.serverApi.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
+                      this.step++;
+                      this.pessoa = x
+                      this.serviceUtil.showMessage(`Dados atualizados`, false)
+
+                    });
+                  } else {
+                    const igreja = response?.data?.nome?.split(';');
+                    this.serviceUtil.showMessage(`Já existe cadastro para o CPF informado: ${this.pessoa.cpf} Nome: ${igreja[0]} ${igreja[1]} `, true)
+                  }
+                });
             }
 
           }
@@ -396,7 +410,7 @@ export class CadastroMembrosComponent {
       const formData: FormData = new FormData();
       formData.append('image', file)
 
-      this.serverApi.EnviarArquivoServidor(formData, Endpoint.UploadArquivo, this.pessoa.cpf)
+      this.serverApi.EnviarArquivoServidor(formData, Endpoint.UploadArquivo, this.pessoa.cpf, this.pessoa.id)
         .subscribe(x => {
           event.target.files = undefined
           this.serviceUtil.showMessage("Imagem importada com sucesso!", false);

@@ -25,23 +25,13 @@
   <div class="col">
 
     <div style="display: flex;">
-
       <mat-select style="appearance: outline;" [(value)]="igrejaSelecionada" (selectionChange)="AlterarBuscaIgreja()"
         placeholder="Igreja">
-        <mat-option [value]="0">Matriz</mat-option>
+        <mat-option [value]="0">Voltar</mat-option>
         <mat-option *ngFor="let li of listaIgrejas" [value]="li.id">
           {{li.nome}}
         </mat-option>
       </mat-select>
-
-      <!-- <mat-select style="padding-left: 20px;" [(value)]="igrejaSelecionada"
-        placeholder="Subsede / Congregação" (selectionChange)="AlterarBuscaIgreja()">
-        <mat-option *ngFor="let igf of listaIgrejaFilhas" [value]="igf.id">
-          {{igf.nome}}
-          <hr />
-        </mat-option>
-      </mat-select> -->
-
     </div>
 
   </div>

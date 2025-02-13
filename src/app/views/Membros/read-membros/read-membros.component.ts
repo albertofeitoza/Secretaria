@@ -1,3 +1,4 @@
+import { cpf } from 'cpf-cnpj-validator';
 import { Component, ViewChild, OnInit, Injectable } from '@angular/core';
 import { Pessoa, UniaoCadastro, ViewPessoa } from 'src/app/models/pessoa';
 import { MatTableDataSource, _MatTableDataSource } from '@angular/material/table';
@@ -18,8 +19,10 @@ import { UnirCadastroComponent } from '../Modal/unir-cadastro/unir-cadastro.comp
 import jsPDF from 'jspdf';
 import { TipoRelatorio } from 'src/app/enum/TipoRelatorio';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
-import { map } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
+
 import { TodasAsIgrejas } from 'src/app/models/Igreja';
+import { of } from 'rxjs';
 
 
 @Injectable()
@@ -44,6 +47,8 @@ export class ReadMembrosComponent implements OnInit {
   datasource = new MatTableDataSource<Pessoa>();
 
   listaIgrejas: TodasAsIgrejas[] = new Array();
+
+  // listaIgrejas$ : Observable<TodasAsIgrejas[]>;
 
   constructor(
     private serverApi: AllservicesService<any>,
@@ -72,7 +77,7 @@ export class ReadMembrosComponent implements OnInit {
   private CarregaCombo(): void {
     this.serverApi.read(Endpoint.Igreja + `/igrejasFilhas/${this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada || this.igrejaSelecionada === 0 ? this.auth.dadosUsuario.IgrejaLogada : this.igrejaSelecionada}`)
       .subscribe((result: TodasAsIgrejas[]) => {
-        this.listaIgrejas = result;
+        this.listaIgrejas = result; 
       })
   }
 
@@ -99,9 +104,6 @@ export class ReadMembrosComponent implements OnInit {
   buscarMembro() {
     try {
       this.spinner = true
-
-      const idIgrejas = new Array();
-
 
       this.serverApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada || this.igrejaSelecionada === 0 ? this.auth.dadosUsuario.IgrejaLogada : this.igrejaSelecionada}`)
         .subscribe((response) => {

@@ -26,8 +26,8 @@ export class AllservicesService<T> {
     this.environmentUrl = environment.BASE_URL
   }
 
-  EnviarArquivoServidor(T: any, endpoint: string, fileName: string): Observable<T> {
-    let headers = this.loginService.HeaderForFile(fileName).headers;
+  EnviarArquivoServidor(T: any, endpoint: string, fileName: string, idPessoa: number): Observable<T> {
+    let headers = this.loginService.HeaderForFile(fileName, idPessoa).headers;
     const uploadReq = new HttpRequest('POST', this.environmentUrl + endpoint, T,
       {
         reportProgress: true,

@@ -12,6 +12,7 @@ import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 import { PendenciasComponent } from './modal/pendencias/pendencias.component';
 import { PessoasporfuncaoComponent } from './modal/pessoasporfuncao/pessoasporfuncao.component';
+import { TodasAsIgrejas } from 'src/app/models/Igreja';
 
 @Injectable()
 
@@ -29,7 +30,7 @@ export class ServiceCenterComponent implements OnInit {
   funcoes: any = new Array();
   totalGeralMembros = 0;
   pessoas: ViewPessoa[] = new Array();
-  igrejasDoCampo: any[] = new Array();
+  igrejasDoCampo: TodasAsIgrejas[] = new Array();
 
   constructor(
     private auth: AutenticacaoService,
@@ -39,13 +40,14 @@ export class ServiceCenterComponent implements OnInit {
 
   ngOnInit() {
     this.tipoUsuario = this.auth.dadosUsuario.TipoUsuarioLogado;
+    this.auth.dadosUsuario.IgrejaSelecionada = this.auth.dadosUsuario.IgrejaLogada;
     this.BuscarMembros();
     this.BuscarPendencias();
   }
-  
+
 
   private BuscarMembros(): void {
-    this.serviceApi.read(Endpoint.Pessoa +`/estabelecimento?igreja=${this.auth.dadosUsuario.IgrejaLogada}`)
+    this.serviceApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: ViewPessoa[]) => {
         this.pessoas = result;
         this.funcoes = new Set(result.map(x => x.funcao).sort());

@@ -77,9 +77,10 @@ export class AutenticacaoService {
     return { headers: headers };
   }
 
-  HeaderForFile(fileName: string) {
+  HeaderForFile(fileName: string, idPessoa: number) {
     const headers = new HttpHeaders({
       'filename': fileName,
+      'idPessoa' :  idPessoa,
       'Authorization': `Bearer ${this.token}`
     });
     return { headers: headers };
