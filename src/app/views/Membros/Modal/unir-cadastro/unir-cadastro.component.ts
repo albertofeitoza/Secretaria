@@ -62,7 +62,7 @@ export class UnirCadastroComponent implements OnInit {
     try {
       this.spinner = true
 
-      this.serverApi.read(Endpoint.Pessoa + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
+      this.serverApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.auth.dadosUsuario.IgrejaSelecionada == 0 ? this.auth.dadosUsuario.IgrejaLogada : this.auth.dadosUsuario.IgrejaSelecionada }`)
         .subscribe(response => {
           response = response.sort()
           this.datasource.data =

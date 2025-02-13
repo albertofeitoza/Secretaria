@@ -25,4 +25,5 @@ export class DadosLogados {
   LoginSistema: string = "";
   TipoUsuarioLogado: number;
   IgrejaLogada: number;
+  IgrejaSelecionada: number = 0;
 }

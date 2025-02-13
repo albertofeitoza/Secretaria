@@ -66,6 +66,9 @@ export class AllservicesService<T> {
 
     if(dados.nomeNovoPastor)
       url += `${'&NomeNovoPastor=' + dados.nomeNovoPastor}`;
+
+  if(dados.idIgrejaInterna > 0)
+    url += `${'&IdIgrejaInterna=' + dados.idIgrejaInterna}`
     
     return this.http.get(url, { responseType : 'blob', headers : this.loginService.Header(filtros).headers})
     .pipe(

@@ -1,3 +1,4 @@
+import { PopperOptions } from './../../../../node_modules/popper.js/index.d';
 import { Component, OnInit } from '@angular/core';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { TipoPopup } from 'src/app/enum/TipoPopup';
@@ -34,7 +35,7 @@ export class IgrejaComponent implements OnInit {
   }
 
   public EditarIgreja(id: number): void {
-    this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, AdicionarIgrejaComponent, id, 'auto', 'auto')
+    this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, AdicionarIgrejaComponent, id, '35%', '50%')
       .subscribe(() => {
 
         this.BuscarIgrejas();
@@ -42,6 +43,9 @@ export class IgrejaComponent implements OnInit {
   }
 
   public BuscarIgrejas(): void {
+    
+    //refazer o Array
+    
     this.serviceApi.read(Endpoint.Igreja + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: igreja[]) => {
         this.igrejas = new Array();
@@ -65,7 +69,7 @@ export class IgrejaComponent implements OnInit {
   }
 
   public CadastrarIgreja(): void {
-    this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, AdicionarIgrejaComponent, 0, 'auto', 'auto')
+    this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, AdicionarIgrejaComponent, 0, '35%', '50%')
       .subscribe(() => {
         this.BuscarIgrejas();
       });
@@ -83,5 +87,9 @@ export class IgrejaComponent implements OnInit {
 
   public Pastores(element: any): void {
     this.serviceUtil.PopupConfirmacao("", TipoPopup.ComponenteInstancia, PastoresComponent, element.id, '80%', 'auto', false, false, element);
+  }
+
+  public Excluir(element: any) : void {
+    
   }
 }

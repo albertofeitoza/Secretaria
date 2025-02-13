@@ -18,6 +18,8 @@ import { UnirCadastroComponent } from '../Modal/unir-cadastro/unir-cadastro.comp
 import jsPDF from 'jspdf';
 import { TipoRelatorio } from 'src/app/enum/TipoRelatorio';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
+import { map } from 'rxjs';
+import { TodasAsIgrejas } from 'src/app/models/Igreja';
 
 
 @Injectable()
@@ -35,10 +37,13 @@ export class ReadMembrosComponent implements OnInit {
   filtros: Filtros = new Filtros()
   spinner: boolean = false
   Colunas = ['id', 'rol', 'foto', 'nome', 'dataNascimento', 'funcao', 'statusPessoa', 'action']
+  igrejaSelecionada = 0;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   datasource = new MatTableDataSource<Pessoa>();
+
+  listaIgrejas: TodasAsIgrejas[] = new Array();
 
   constructor(
     private serverApi: AllservicesService<any>,
@@ -55,7 +60,28 @@ export class ReadMembrosComponent implements OnInit {
     if (this.activatedRoute.snapshot.params['nome'] != null)
       this.filtros.txtBusca = this.activatedRoute.snapshot.params['nome'];
 
+    this.igrejaSelecionada = this.auth.dadosUsuario.IgrejaLogada;
+    this.auth.dadosUsuario.IgrejaSelecionada = this.auth.dadosUsuario.IgrejaLogada;
+
     this.buscarMembro()
+    this.CarregaCombo();
+
+
+  }
+
+  private CarregaCombo(): void {
+    this.serverApi.read(Endpoint.Igreja + `/igrejasFilhas/${this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada || this.igrejaSelecionada === 0 ? this.auth.dadosUsuario.IgrejaLogada : this.igrejaSelecionada}`)
+      .subscribe((result: TodasAsIgrejas[]) => {
+        this.listaIgrejas = result;
+      })
+  }
+
+  public AlterarBuscaIgreja(): void {
+
+    this.auth.dadosUsuario.IgrejaSelecionada = this.igrejaSelecionada;
+    this.buscarMembro();
+    this.CarregaCombo();
+
   }
 
 
@@ -74,9 +100,13 @@ export class ReadMembrosComponent implements OnInit {
     try {
       this.spinner = true
 
-      this.serverApi.read(Endpoint.Pessoa + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
+      const idIgrejas = new Array();
+
+
+      this.serverApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada || this.igrejaSelecionada === 0 ? this.auth.dadosUsuario.IgrejaLogada : this.igrejaSelecionada}`)
         .subscribe((response) => {
           response = response.sort()
+
           this.datasource.data =
 
             this.filtros.inativos && this.filtros.txtBusca.length == 0
@@ -113,7 +143,7 @@ export class ReadMembrosComponent implements OnInit {
   }
 
   private Precadastro(filtro: string = "") {
-    this.serverApi.read(`${Endpoint.Pessoa}/preCadastro/${this.auth.dadosUsuario.IgrejaLogada}`)
+    this.serverApi.read(`${Endpoint.Pessoa}/preCadastro?igreja=${this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada || this.igrejaSelecionada === 0 ? this.auth.dadosUsuario.IgrejaLogada : this.igrejaSelecionada}`)
       .subscribe(() => { });
   }
 
@@ -187,7 +217,7 @@ export class ReadMembrosComponent implements OnInit {
 
   public HistoricoMembro(id: number): void {
     this.filtros.pessoaId = id;
-    this.filtros.igrejaId = this.auth.dadosUsuario.IgrejaLogada;
+    this.filtros.igrejaId = this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada || this.igrejaSelecionada === 0 ? this.auth.dadosUsuario.IgrejaLogada : this.igrejaSelecionada;
 
     this.serverApi.readById(TipoRelatorio.dadosPessoa.toString(), Endpoint.Relatorios, JSON.stringify(this.filtros))
       .subscribe(() => {
@@ -198,7 +228,7 @@ export class ReadMembrosComponent implements OnInit {
             this.serviceUtil.showMessage("Erro ao realizar a baixa do histórico da pessoa.")
           }
           );
-      }, erro => {
+      }, (erro) => {
         this.serviceUtil.showMessage("Erro ao gerar o histórico da pessoa.")
       });
   }
@@ -254,6 +284,7 @@ export class ReadMembrosComponent implements OnInit {
         if (x.Status) {
           let dados: Cartas = new Cartas();
           dados = x.data;
+          
           this.spinner = true;
           this.serverApi.DownloadCartas(dados, Endpoint.RelatoriosCartas)
             .subscribe(result => {

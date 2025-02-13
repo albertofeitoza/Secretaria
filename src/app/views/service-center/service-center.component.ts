@@ -45,7 +45,7 @@ export class ServiceCenterComponent implements OnInit {
   
 
   private BuscarMembros(): void {
-    this.serviceApi.read(Endpoint.Pessoa +`/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
+    this.serviceApi.read(Endpoint.Pessoa +`/estabelecimento?igreja=${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: ViewPessoa[]) => {
         this.pessoas = result;
         this.funcoes = new Set(result.map(x => x.funcao).sort());

@@ -20,3 +20,9 @@ export class ViewIgreja {
     status: boolean;
     dominio: string;
 }
+
+export class TodasAsIgrejas{
+    id: number;
+    nome: string;
+    idMae: number;
+}

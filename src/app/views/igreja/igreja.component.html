@@ -49,9 +49,10 @@
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <mat-icon class="icon cursor" matTooltip="Alterar Cadastro!" (click)="EditarIgreja(row.id)">edit</mat-icon>
-        <mat-icon class="icon cursor" matTooltip="Pastores!" (click)="Pastores(row)">people</mat-icon>
-        <mat-icon class="icon cursor" matTooltip="usuários!" (click)="Usuarios(row)">groups</mat-icon>
+        <mat-icon class="cursor" matTooltip="Alterar Cadastro!" (click)="EditarIgreja(row.id)">edit</mat-icon>
+        <mat-icon class="cursor" matTooltip="Pastores!" (click)="Pastores(row)">people</mat-icon>
+        <mat-icon class="cursor" matTooltip="usuários!" (click)="Usuarios(row)">groups</mat-icon>
+        <mat-icon class="cursor" matTooltip="Excluir!" (click)="Excluir(row)">delete</mat-icon>
       </mat-cell>
     </ng-container>
 

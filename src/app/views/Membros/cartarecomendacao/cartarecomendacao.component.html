@@ -7,7 +7,7 @@
     <br />
     <hr />
     <div style="display: flex; padding: 15px;">
-        <mat-form-field>
+        <mat-form-field style="width:300px">
             <mat-label>Informe o Tipo de documento</mat-label>
             <mat-select [(value)]="relatorioSelecionado" placeholder="Tipo de documento">
                 <mat-option *ngFor="let cmb of comboCartas" [value]="cmb.id">
@@ -42,8 +42,8 @@
 
             <mat-form-field>
                 <mat-label>Nome da Igreja Destino</mat-label>
-                <input matInput placeholder="Nome da Igreja Destino"
-                    [(ngModel)]="dadosSolicitacao.igrejaDestino" name="igreja">
+                <input matInput placeholder="Nome da Igreja Destino" [(ngModel)]="dadosSolicitacao.igrejaDestino"
+                    name="igreja">
             </mat-form-field>
 
             <mat-form-field>
@@ -83,6 +83,27 @@
 
         </label>
     </div>
+
+
+    <div style="padding-left: 15px;" *ngIf="relatorioSelecionado >= 22 && relatorioSelecionado <= 23 && !PastorIgreja">
+
+        <mat-form-field style="width:300px">
+            <mat-label>Igreja destino</mat-label>
+            <mat-select [(value)]="idIgrejaSelecionada" placeholder="Selecione a Igreja destino">
+                <mat-option *ngFor="let ig of igrejas" [value]="ig.id">
+                    {{ig.nome}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div style="text-align: center;">
+            A carta de Mudança interna, altera o membro de igreja, <br />
+            Após a alteração apenas o secretário da outra igreja pode alterar. <br />
+            Deseja realmente emitir a carta?
+        </div>
+    </div>
+    <br />
+
     <mat-card-content class="alinhar">
         <a (click)="FecharPopup(false)">
             <i class="material-icons">
@@ -103,6 +124,13 @@
         </a>
 
         <a *ngIf="dadosSolicitacao.igrejaDestino && dadosSolicitacao.idNovoPastor > 0 && relatorioSelecionado >= 15 && relatorioSelecionado <= 16 && PastorIgreja"
+            (click)="FecharPopup(true)">
+            <i class="material-icons icones">
+                thumb_up_alt
+            </i>
+        </a>
+
+        <a *ngIf="idIgrejaSelecionada > 0 && relatorioSelecionado >= 22 && relatorioSelecionado <= 23 && !PastorIgreja"
             (click)="FecharPopup(true)">
             <i class="material-icons icones">
                 thumb_up_alt

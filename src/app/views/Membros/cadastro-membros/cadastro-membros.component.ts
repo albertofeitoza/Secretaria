@@ -49,6 +49,7 @@ export class CadastroMembrosComponent {
   logs: Logs[] = new Array()
   filhos: ViewFilhos = new ViewFilhos()
   situacaoCache: number = 0
+  igrejaSelecionada = 0;
 
   //--------------
   contatos: contatos[] = new Array()
@@ -79,6 +80,10 @@ export class CadastroMembrosComponent {
   ) { }
 
   ngOnInit() {
+
+    this.igrejaSelecionada = this.auth.dadosUsuario.IgrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada || this.auth.dadosUsuario.IgrejaSelecionada === 0 ?
+      this.auth.dadosUsuario.IgrejaLogada : this.auth.dadosUsuario.IgrejaSelecionada;
+
     this.CarregarCombos()
     this.setStep(0)
     this.BuscarMembro()
@@ -133,16 +138,17 @@ export class CadastroMembrosComponent {
 
     if (this.serviceUtil.ValidaCpf(this.pessoa.cpf)) {
 
+
       switch (step) {
         case 0:
           if (this.ValidarPessoa() && this.pessoa.id == 0) {
 
-            this.serverApi.readById(this.pessoa.cpf, Endpoint.BuscaPorCpf, '', this.auth.dadosUsuario.IgrejaLogada).subscribe(response => {
+            this.serverApi.readById(this.pessoa.cpf, Endpoint.BuscaPorCpf, '', this.igrejaSelecionada).subscribe(response => {
               if (response.code != 200) {
                 this.pessoa.cpf = this.pessoa.cpf != undefined ? this.pessoa.cpf.toString() : this.pessoa.cpf
                 this.pessoa.rg = this.pessoa.rg != undefined ? this.pessoa.rg.toString() : this.pessoa.rg
                 this.pessoa.dataCasamento = this.pessoa.estadoCivil == 1 || this.pessoa.estadoCivil > 4 ? undefined : this.pessoa.dataCasamento
-                this.pessoa.igrejaId = Number(this.auth.dadosUsuario.IgrejaLogada)
+                this.pessoa.igrejaId = Number(this.igrejaSelecionada)
                 //salvar dados de Pessoa
                 this.serverApi.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
                   this.step++;
@@ -339,7 +345,7 @@ export class CadastroMembrosComponent {
   }
 
   public ExcluirHistorico(id: number): void {
-    this.serverApi.create(id, Endpoint.HistoricoObreiro + `/excluir/${id}` )
+    this.serverApi.create(id, Endpoint.HistoricoObreiro + `/excluir/${id}`)
       .subscribe(() => {
         this.serviceUtil.showMessage("Histórico excluído com sucesso.");
         this.BuscarMembro();

@@ -81,7 +81,7 @@ export class RelatoriosComponent implements OnInit {
     this.periodo = this.serviceUtil.Periodo();
     this.meses = this.serviceUtil.MesesDoAno();
     this.meses = this.serviceUtil.MesesDoAno();
-    this.serverApi.read(Endpoint.Pessoa + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
+    this.serverApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.auth.dadosUsuario.IgrejaSelecionada > 0 ? this.auth.dadosUsuario.IgrejaSelecionada : this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((pe: ViewPessoa[]) => {
         if (pe && pe.length > 0) {
           this.membros = pe.filter(x => x.statusPessoa != 'Inativo');
@@ -187,7 +187,7 @@ export class RelatoriosComponent implements OnInit {
       this.imprimir = false;
       this.exibePeriodo = false;
       this.mensagemDeretorno = '';
-      this.filtros.igrejaId = this.auth.dadosUsuario.IgrejaLogada
+      this.filtros.igrejaId = this.auth.dadosUsuario.IgrejaSelecionada > 0 ? this.auth.dadosUsuario.IgrejaSelecionada :  this.auth.dadosUsuario.IgrejaLogada
 
       if (this.ValidacoesRelatorio()) {
         this.spinner = true

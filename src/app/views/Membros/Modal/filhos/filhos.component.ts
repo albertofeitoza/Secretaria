@@ -75,7 +75,7 @@ export class FilhosComponent implements OnInit {
   }
 
   private BuscarPessoa() {
-    this.serviceApi.read(Endpoint.Pessoa + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
+    this.serviceApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe(x => {
         this.pai = x;
         this.mae = x;

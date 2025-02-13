@@ -6,5 +6,5 @@ export class Cartas{
     igrejaDestino : string;
     idNovoPastor : number;
     nomeNovoPastor : string;
-
+    idIgrejaInterna: number;
 }

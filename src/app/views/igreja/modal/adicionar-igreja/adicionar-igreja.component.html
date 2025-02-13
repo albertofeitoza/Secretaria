@@ -1,69 +1,59 @@
 <div class="center">
-    <div class="row col-md-6">
-        <h3 style="text-align: center;">{{igreja.id > 0 ? 'Editar cadastro de Igreja' : 'Cadastro de Igreja'}} </h3>
+    <div class="row col-md-12">
         <div style="padding-right: 15px;">
-            <div class="rol">
-                <mat-form-field>
-                    <mat-label>Nome Igreja</mat-label>
-                    <input matInput placeholder="Nome Igreja" [(ngModel)]="igreja.nome" name="nome">
-                </mat-form-field>
+            <h3>{{igreja.id > 0 ? 'Editar cadastro de Igreja' : 'Cadastro de Igreja'}} </h3>
+            <mat-form-field>
+                <mat-label>Nome Igreja</mat-label>
+                <input matInput placeholder="Nome Igreja" [(ngModel)]="igreja.nome" name="nome">
+            </mat-form-field>
 
-                <mat-form-field>
-                    <mat-label>CNPJ</mat-label>
-                    <input matInput placeholder="Cnpj" [(ngModel)]="igreja.cnpj" name="cnpj">
-                </mat-form-field>
-            </div>
-            <div class="rol">
-                <mat-form-field>
-                    <mat-label>Estado</mat-label>
-                    <input matInput placeholder="Estado" [(ngModel)]="igreja.estado" name="estado">
-                </mat-form-field>
+            <mat-form-field>
+                <mat-label>CNPJ</mat-label>
+                <input matInput placeholder="Cnpj" [(ngModel)]="igreja.cnpj" name="cnpj">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Estado</mat-label>
+                <input matInput placeholder="Estado" [(ngModel)]="igreja.estado" name="estado">
+            </mat-form-field>
 
-                <mat-form-field>
-                    <mat-label>Cidade</mat-label>
-                    <input matInput placeholder="cidade" [(ngModel)]="igreja.cidade" name="nome">
-                </mat-form-field>
+            <mat-form-field>
+                <mat-label>Cidade</mat-label>
+                <input matInput placeholder="cidade" [(ngModel)]="igreja.cidade" name="nome">
+            </mat-form-field>
 
-            </div>
-            <div class="row">
+            <mat-form-field>
+                <mat-label>Tipo de Igreja</mat-label>
+                <mat-select [(value)]="tipoIgrejaEscolhida" placeholder="Tipo de Igreja"
+                    (selectionChange)="BuscarIgrejas()">
+                    <mat-option *ngFor="let ti of tipoIgreja" [value]="ti.id">
+                        {{ti.value}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
 
-                <mat-form-field>
-                    <mat-label>Tipo de Igreja</mat-label>
-                    <mat-select [(value)]="tipoIgrejaEscolhida" placeholder="Tipo de Igreja"
-                        (selectionChange)="BuscarIgrejas()">
-                        <mat-option *ngFor="let ti of tipoIgreja" [value]="ti.id">
-                            {{ti.value}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+            <mat-form-field>
+                <mat-label>Igreja Mãe</mat-label>
+                <mat-select id="igrejamae" [(value)]="igreja.igrejaMae" placeholder="Selecione a Igreja">
+                    <mat-option *ngFor="let ig of listaIgrejas" [value]="ig.id">
+                        {{ig.nome}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
 
-                <mat-form-field>
-                    <mat-label>Igreja Mãe</mat-label>
-                    <mat-select id="igrejamae" [(value)]="igreja.igrejaMae" placeholder="Selecione a Igreja">
-                        <mat-option *ngFor="let ig of listaIgrejas" [value]="ig.id">
-                            {{ig.nome}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+            <mat-form-field>
+                <mat-label>Domínio</mat-label>
+                <input matInput placeholder="Dominio - campo usado na tela de Login" [(ngModel)]="igreja.dominio"
+                    name="dominio">
+            </mat-form-field>
 
-            <div style="text-align: left;" class="row">
-
-                <mat-form-field>
-                    <mat-label>Domínio</mat-label>
-                    <input matInput placeholder="Dominio - campo usado na tela de Login" [(ngModel)]="igreja.dominio"
-                        name="dominio">
-                </mat-form-field>
-
-                <mat-form-field *ngIf="igreja.id > 0">
-                    <mat-label>Ativo</mat-label>
-                    <input style="height: 20px; width: 150px;" matInput placeholder="Ativo">
-                    <input name="ativo" [(ngModel)]="igreja.status" [checked]="igreja.status" type="checkbox">
-                </mat-form-field>
-            </div>
+            <mat-form-field *ngIf="igreja.id > 0">
+                <mat-label>Ativo</mat-label>
+                <input style="height: 20px; width: 150px;" matInput placeholder="Ativo">
+                <input name="ativo" [(ngModel)]="igreja.status" [checked]="igreja.status" type="checkbox">
+            </mat-form-field>
         </div>
     </div>
-    <div class="rigth">
+    <div style="padding-right: 15%;" class="rigth">
         <a>
             <i style="padding-right: 30px;" class="material-icons cursor" (click)="FecharPopup()">logout</i>
             <i class="material-icons cursor" (click)="AdicionarIgreja()">save</i>

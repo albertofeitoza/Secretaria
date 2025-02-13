@@ -254,8 +254,10 @@ export class UtilServiceService {
     documento.push({ "id": 0, "value": "Selecione" })
     documento.push({ "id": 13, "value": "Carta de Recomendação" })
     documento.push({ "id": 14, "value": "Carta de Rec.Casal" })
-    documento.push({ "id": 15, "value": "Carta de Mudança" })
-    documento.push({ "id": 16, "value": "Carta de Mud.Casal" })
+    documento.push({ "id": 22, "value": "Carta de Mud Interna." })
+    documento.push({ "id": 23, "value": "Carta de Mud Interna Casal" })
+    documento.push({ "id": 15, "value": "Carta de Mud Externa" })
+    documento.push({ "id": 16, "value": "Carta de Mud Externa Casal" })
     return documento
   }
 
