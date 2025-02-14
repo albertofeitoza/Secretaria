@@ -80,7 +80,7 @@ export class UnirCadastroComponent implements OnInit {
   }
 
   public SelecionarMembro(id: number): void {
-    this.serviceUtil.PopupConfirmacao("Deseja Realmente unir esse cadastro ? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
+    this.serviceUtil.Popup("Deseja Realmente unir esse cadastro ? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
       .subscribe(result => {
         if (result.Status) {
 

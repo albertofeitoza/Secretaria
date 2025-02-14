@@ -71,13 +71,13 @@ export class ServiceCenterComponent implements OnInit {
   public ExibirPependencia(departamento: any): void {
     const dados = this.servicecenter.filter(x => x.departamento.includes(departamento));
     if (dados)
-      this.serviceUtil.PopupConfirmacao(departamento, TipoPopup.ComponenteInstancia, PendenciasComponent, 0, 'auto', 'auto', false, false, dados)
+      this.serviceUtil.Popup(departamento, TipoPopup.ComponenteInstancia, PendenciasComponent, 0, 'auto', 'auto', false, false, dados)
   }
 
   public ExibirPessoas(funcao: string): void {
     const dados = this.pessoas.filter(x => x.funcao.includes(funcao) && x.statusPessoa != 'Inativo' && x.statusPessoa != "PreCadastro");
     if (dados)
-      this.serviceUtil.PopupConfirmacao(funcao, TipoPopup.ComponenteInstancia, PessoasporfuncaoComponent, 0, 'auto', 'auto', false, false, dados)
+      this.serviceUtil.Popup(funcao, TipoPopup.ComponenteInstancia, PessoasporfuncaoComponent, 0, 'auto', 'auto', false, false, dados)
 
   }
 

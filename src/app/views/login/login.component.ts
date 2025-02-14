@@ -25,13 +25,10 @@ export class LoginComponent {
   InfBotao: string = "Enviar CPF";
   dadosResetSenha: ResetSenha = new ResetSenha()
   igrejas: any[] = new Array();
-
   constructor(
     private auth: AutenticacaoService,
     private serviceUtil: UtilServiceService,
-    private serverApi: AllservicesService<any>,
-    private route: Router
-  ) {
+    private serverApi: AllservicesService<any>  ) {
 
   }
 
@@ -109,5 +106,10 @@ export class LoginComponent {
 
   AlterarSenha() {
 
+  }
+
+  Registrar(): void {
+   //this.serviceUtil.Popup()
+    
   }
 }

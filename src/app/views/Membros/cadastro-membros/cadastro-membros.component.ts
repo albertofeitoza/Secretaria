@@ -323,7 +323,7 @@ export class CadastroMembrosComponent {
   AlteraFuncao(aprovado: boolean, idHistorico: number = 0) {
 
 
-    this.serviceUtil.PopupConfirmacao("Informar os dados", TipoPopup.ComponenteInstancia, HistoricoPopupComponent, idHistorico, 'auto', 'auto', false, aprovado)
+    this.serviceUtil.Popup("Informar os dados", TipoPopup.ComponenteInstancia, HistoricoPopupComponent, idHistorico, 'auto', 'auto', false, aprovado)
       .subscribe(result => {
 
         if (result && result.Status) {
@@ -369,7 +369,7 @@ export class CadastroMembrosComponent {
   AlteraSituacao() {
     if (this.ValidarDadosMembro() && this.situacaoCache == 5 && this.pessoa.statusPessoa < 5 && this.pessoa.id > 0) {
 
-      this.serviceUtil.PopupConfirmacao("Informe o Motivo da Reativação do Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
+      this.serviceUtil.Popup("Informe o Motivo da Reativação do Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
         .subscribe(result => {
           if (result.Status) {
             let guardaNome = this.pessoa.nome;
@@ -420,7 +420,7 @@ export class CadastroMembrosComponent {
   }
 
   RemoverFoto(idPessoa: any) {
-    this.serviceUtil.PopupConfirmacao("Deseja excluir a foto de perfil ? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
+    this.serviceUtil.Popup("Deseja excluir a foto de perfil ? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
       .subscribe(result => {
         if (result.Status) {
           this.serverApi.readById(idPessoa, Endpoint.RemoverFotoperfil)

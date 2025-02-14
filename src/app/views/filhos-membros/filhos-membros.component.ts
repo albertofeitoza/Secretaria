@@ -190,7 +190,7 @@ export class FilhosMembrosComponent implements OnInit {
       row.idMae = nomeMae;
 
 
-    this.servico.PopupConfirmacao("", 0, ModalSelecionaLiderComponent, 0, 'auto', 'auto', true, false, row)
+    this.servico.Popup("", 0, ModalSelecionaLiderComponent, 0, 'auto', 'auto', true, false, row)
       .subscribe(result => {
 
         if (result.status) {

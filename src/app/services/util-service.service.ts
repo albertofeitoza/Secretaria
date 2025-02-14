@@ -309,7 +309,7 @@ export class UtilServiceService {
     return tipoIgreja;
   }
 
-  PopupConfirmacao(mensagem: string, tipo: number, componente: any, Id: any = 0, Width: any = 'auto', Height: any = 'auto', disableClose: boolean = false, status: boolean = false, dados: any = null) {
+  Popup(mensagem: string, tipo: number, componente: any, Id: any = 0, Width: any = 'auto', Height: any = 'auto', disableClose: boolean = false, status: boolean = false, dados: any = null) {
 
     const dialog = this.dialog.open(componente, {
       id: Id,

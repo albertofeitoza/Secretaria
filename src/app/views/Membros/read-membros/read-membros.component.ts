@@ -183,7 +183,7 @@ export class ReadMembrosComponent implements OnInit {
           this.serviceUtil.showMessage("O pastor da Igreja não pode ser excluido, emita a carta de mudança!.", false);
           return
         } else {
-          this.serviceUtil.PopupConfirmacao("Deseja Excluir o Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
+          this.serviceUtil.Popup("Deseja Excluir o Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
             .subscribe(result => {
               if (result.Status) {
 
@@ -280,7 +280,7 @@ export class ReadMembrosComponent implements OnInit {
 
   Cartas(id: number) {
 
-    this.serviceUtil.PopupConfirmacao("Informar os dados", TipoPopup.ComponenteInstancia, CartarecomendacaoComponent, id)
+    this.serviceUtil.Popup("Informar os dados", TipoPopup.ComponenteInstancia, CartarecomendacaoComponent, id)
       .subscribe(x => {
 
         if (x.Status) {
@@ -306,15 +306,15 @@ export class ReadMembrosComponent implements OnInit {
   }
 
   Filhos(id: number) {
-    this.serviceUtil.PopupConfirmacao('', TipoPopup.ComponenteInstancia, FilhosComponent, id, '70%', '80%');
+    this.serviceUtil.Popup('', TipoPopup.ComponenteInstancia, FilhosComponent, id, '70%', '80%');
   }
 
   public JustificarPresenca(id: number): void {
-    this.serviceUtil.PopupConfirmacao('', TipoPopup.ComponenteInstancia, ControlePresencaComponent, id, '70%', '35%');
+    this.serviceUtil.Popup('', TipoPopup.ComponenteInstancia, ControlePresencaComponent, id, '70%', '35%');
   }
 
   public UnificarCadastro(id: number): void {
-    this.serviceUtil.PopupConfirmacao('', TipoPopup.ComponenteInstancia, UnirCadastroComponent, id, '75%', '95%')
+    this.serviceUtil.Popup('', TipoPopup.ComponenteInstancia, UnirCadastroComponent, id, '75%', '95%')
       .subscribe(result => {
         if (result) {
 
