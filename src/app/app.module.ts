@@ -70,6 +70,7 @@ import { AdicionarIgrejaComponent } from './views/igreja/modal/adicionar-igreja/
 import { PastoresComponent } from './views/igreja/modal/pastores/pastores.component';
 import { OrganogramaComponent } from './views/organograma/organograma.component';
 import { ModalSelecionaLiderComponent } from './views/filhos-membros/modal/modal-seleciona-lider/modal-seleciona-lider.component';
+import { CadastreSeComponent } from './views/cadastre-se/cadastre-se.component';
 
 registerLocaleData(localePt);
 
@@ -103,6 +104,7 @@ registerLocaleData(localePt);
     PastoresComponent,
     OrganogramaComponent,
     ModalSelecionaLiderComponent,
+    CadastreSeComponent,
 
   ],
   imports: [

@@ -16,7 +16,7 @@ export class AdicionarIgrejaComponent implements OnInit {
   igreja: igreja = new igreja();
   listaIgrejas: igreja[] = new Array();
   tipoIgreja: any[] = new Array();
-  tipoIgrejaEscolhida = 0;
+  //tipoIgrejaEscolhida = 0;
 
   constructor(
     private matdialogRef: MatDialogRef<AdicionarIgrejaComponent>,
@@ -90,11 +90,10 @@ export class AdicionarIgrejaComponent implements OnInit {
     if (Number(this.matdialogRef.id) > 0)
       this.serviceApi.readById(this.matdialogRef.id.toString(), Endpoint.Igreja)
         .subscribe((result) => {
-
-          this.tipoIgrejaEscolhida = result.data.igrejaMae === 0 ? 0 : 1;
+          
           this.igreja = result.data;
 
-          if (this.tipoIgrejaEscolhida == 1)
+          if (this.igreja.tipoIgreja == 1)
             this.BuscarIgrejas()
 
         })
@@ -107,8 +106,8 @@ export class AdicionarIgrejaComponent implements OnInit {
 
   public BuscarIgrejas(): void {
 
-    if (this.tipoIgrejaEscolhida > 0) {
-      this.serviceApi.read(Endpoint.Igreja + `/estabelecimento/${0}`)
+    if (this.igreja.tipoIgreja > 1) {
+      this.serviceApi.read(Endpoint.Igreja + `/estabelecimento/${this.igreja.id}`)
         .subscribe((result: igreja[]) => {
           this.listaIgrejas = result
         })

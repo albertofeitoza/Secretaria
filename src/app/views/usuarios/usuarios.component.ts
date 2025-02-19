@@ -106,8 +106,8 @@ export class UsuariosComponent {
 
   private ValidarContato(pessoa: any, acao: boolean): void {
 
+    this.contato.pessoaId = pessoa.id;
     if (acao) {
-      this.contato.pessoaId = pessoa.id;
       this.serverApi.create(this.contato, Endpoint.Contatos)
         .subscribe(() => { this.BuscaUsuarios(); })
     } else {
@@ -118,8 +118,8 @@ export class UsuariosComponent {
 
   private ValidarUsuario(dados: any, acao: boolean): void {
 
+    this.usuario.pessoaId = dados.id;
     if (acao) {
-      this.usuario.pessoaId = dados.id;
       this.serverApi.create(this.usuario, Endpoint.Usuario)
         .subscribe(() => { this.BuscaUsuarios(); });
     } else {

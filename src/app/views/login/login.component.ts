@@ -7,6 +7,8 @@ import { Pessoa } from 'src/app/models/pessoa';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
+import { OrganogramaComponent } from '../organograma/organograma.component';
+import { CadastreSeComponent } from '../cadastre-se/cadastre-se.component';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +30,7 @@ export class LoginComponent {
   constructor(
     private auth: AutenticacaoService,
     private serviceUtil: UtilServiceService,
-    private serverApi: AllservicesService<any>  ) {
+    private serverApi: AllservicesService<any>) {
 
   }
 
@@ -109,7 +111,6 @@ export class LoginComponent {
   }
 
   Registrar(): void {
-   //this.serviceUtil.Popup()
-    
+    this.serviceUtil.Popup('Bem Vindo!', 0, CadastreSeComponent, 0, 'auto', 'auto', true);
   }
 }

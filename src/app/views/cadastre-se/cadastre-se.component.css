@@ -1,0 +1,24 @@
+::ng-deep .mat-form-field {
+    width: 212px;
+    padding: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.example-headers-align .mat-mdc-form-field+.mat-mdc-form-field {
+    margin-left: 8px;
+}
+
+.number {
+    font-variant-numeric: normal;
+}
+
+ 
+  .button {
+    margin: 20px 15px 0 0;
+    margin-right: 15px;
+  
+  }

@@ -108,7 +108,7 @@ export class CadastroMembrosComponent {
           this.historicos = response?.data?.historicoObreiro
           this.logs = response?.data?.logs;
           this.filhos = response?.data?.filhos
-          this.fotoPerfil = this.pessoa.fotoCadastrada ? `./assets/imagens/${this.pessoa.id}_${response.data.pessoa.cpf.trim()}.jpg` :  `./assets/imagens/sem-foto.jpg.jpg`
+          this.fotoPerfil = this.pessoa.fotoCadastrada ? `./assets/imagens/${this.pessoa.id}_${response.data.pessoa.cpf.trim()}.jpg` : `./assets/imagens/sem-foto.jpg.jpg`
         })
     }
   }
@@ -150,6 +150,9 @@ export class CadastroMembrosComponent {
                 this.pessoa.dataCasamento = this.pessoa.estadoCivil == 1 || this.pessoa.estadoCivil > 4 ? undefined : this.pessoa.dataCasamento
                 this.pessoa.igrejaId = Number(this.igrejaSelecionada)
                 //salvar dados de Pessoa
+                if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+                  return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
+
                 this.serverApi.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
                   this.step++;
                   this.pessoa = x
@@ -175,13 +178,18 @@ export class CadastroMembrosComponent {
               this.serverApi.readById(this.pessoa.cpf, Endpoint.BuscaPorCpf, '', this.igrejaSelecionada)
                 .subscribe(response => {
 
-                  if (response.code != 200) {
-                    this.serverApi.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
-                      this.step++;
-                      this.pessoa = x
-                      this.serviceUtil.showMessage(`Dados atualizados`, false)
+                  if (response.code == 200 && this.pessoa.cpf === response.data.cpf) {
 
-                    });
+                    if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+                      return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
+
+                    this.serverApi.create(this.pessoa, Endpoint.Pessoa,)
+                      .subscribe(x => {
+                        this.step++;
+                        this.pessoa = x
+                        this.serviceUtil.showMessage(`Dados atualizados`, false)
+
+                      });
                   } else {
                     const igreja = response?.data?.nome?.split(';');
                     this.serviceUtil.showMessage(`Já existe cadastro para o CPF informado: ${this.pessoa.cpf} Nome: ${igreja[0]} ${igreja[1]} `, true)
@@ -198,6 +206,9 @@ export class CadastroMembrosComponent {
             this.endereco.pessoaId = this.pessoa.id;
 
             //Salvar Endereço
+            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+              return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
+
             this.serverApi.create(this.endereco, Endpoint.Enderecos)
               .subscribe(x => {
                 this.endereco = x
@@ -214,6 +225,9 @@ export class CadastroMembrosComponent {
             if (this.dadosMembro.id === 0)
               this.dadosMembro.funcao = 1;
 
+            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+              return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
+
             this.serverApi.create(this.dadosMembro, Endpoint.Membros)
               .subscribe(x => {
                 this.dadosMembro = x
@@ -226,6 +240,9 @@ export class CadastroMembrosComponent {
 
           if (this.pessoa.id > 0) {
             this.dadosObreiro.pessoaId = this.pessoa.id;
+
+            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+              return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
 
             this.serverApi.create(this.dadosObreiro, Endpoint.Obreiro)
               .subscribe(x => {
@@ -333,6 +350,9 @@ export class CadastroMembrosComponent {
             this.dadosObreiro.id = 0;
             this.dadosObreiro.pessoaId = this.pessoa.id;
 
+            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+              return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
+
             this.serverApi.create(this.dadosObreiro, Endpoint.Obreiro)
               .subscribe(x => {
                 this.dadosObreiro = x;
@@ -359,6 +379,10 @@ export class CadastroMembrosComponent {
   }
 
   public ExcluirHistorico(id: number): void {
+
+    if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+      return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
+
     this.serverApi.create(id, Endpoint.HistoricoObreiro + `/excluir/${id}`)
       .subscribe(() => {
         this.serviceUtil.showMessage("Histórico excluído com sucesso.");
@@ -374,6 +398,9 @@ export class CadastroMembrosComponent {
           if (result.Status) {
             let guardaNome = this.pessoa.nome;
             this.pessoa.nome = result.Motivo;
+
+            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+              return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
 
             this.serverApi.create(this.pessoa, Endpoint.Pessoa)
               .subscribe(response => {
@@ -394,6 +421,9 @@ export class CadastroMembrosComponent {
 
       this.historico.dadosObreiroId = this.dadosObreiro.id;
       this.historico.funcao = this.dadosMembro.funcao;
+
+      if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+        return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
 
       this.serverApi.create(this.historico, Endpoint.HistoricoObreiro)
         .subscribe(() => {
@@ -484,6 +514,9 @@ export class CadastroMembrosComponent {
       this.contato.telefone = Number(this.contato.telefone.toString().length > 9 ? this.contato.telefone.toString().substring(0, 9) : this.contato.telefone)
       this.contato.celular = Number(this.contato.celular.toString().length > 9 ? this.contato.celular.toString().substring(0, 9) : this.contato.celular)
 
+      if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+        return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
+
       this.serverApi.create(this.contato, Endpoint.Contatos)
         .subscribe(x => {
           this.contato = new contatos()
@@ -498,6 +531,9 @@ export class CadastroMembrosComponent {
   ExcluirContato(id: any) {
 
     let body = { id: id, acao: "excluir" };
+
+    if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+      return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
 
     this.serverApi.create(body, Endpoint.Contatos + '/Excluir').subscribe(x => {
       this.serviceUtil.showMessage("Contato Excluido com sucesso!")
@@ -530,6 +566,10 @@ export class CadastroMembrosComponent {
 
       if (this.pessoa.id > 0) {
         this.cargo.pessoaId = this.pessoa.id;
+
+        if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+          return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
+
         this.serverApi.create(this.cargo, Endpoint.Cargos)
           .subscribe(() => {
             this.cargo = new Cargos()

@@ -161,6 +161,13 @@ export class UtilServiceService {
     return funcao
   }
 
+  FuncaoTelaCadastro() {
+    let funcao = [];
+    funcao.push({ "id": 0, "value": "selecione" })
+    funcao.push({ "id": 1, "value": "Membro" })
+    return funcao
+  }
+
   EntradaFuncao() {
     let entradaFuncao = [];
     entradaFuncao.push({ "id": 0, "value": "selecione" })
@@ -303,20 +310,21 @@ export class UtilServiceService {
 
   TipoIgreja() {
     let tipoIgreja = [];
-    tipoIgreja.push({ "id": 0, "value": "Sede" })
-    tipoIgreja.push({ "id": 1, "value": "Subsede" })
-    tipoIgreja.push({ "id": 2, "value": "Congregacao" })
+    tipoIgreja.push({ "id": 0, "value": "Selecione"})
+    tipoIgreja.push({ "id": 1, "value": "Sede" })
+    tipoIgreja.push({ "id": 2, "value": "Subsede" })
+    tipoIgreja.push({ "id": 3, "value": "Congregacao" })
     return tipoIgreja;
   }
 
-  Popup(mensagem: string, tipo: number, componente: any, Id: any = 0, Width: any = 'auto', Height: any = 'auto', disableClose: boolean = false, status: boolean = false, dados: any = null) {
+  Popup(mensagem: string, tipo: number, componente: any, Id: any = 0, Width: any = 'auto', Height: any = 'auto', disableClose: boolean = false, status: boolean = false, dados: any = null, motivo: boolean = true) {
 
     const dialog = this.dialog.open(componente, {
       id: Id,
       width: Width,
       height: Height,
       disableClose: disableClose,
-      data: { mensagem: mensagem, tipo: tipo, data: componente, dadosTela: dados }
+      data: { mensagem: mensagem, tipo: tipo, data: componente, dadosTela: dados, motivo: motivo }
     });
     return dialog.afterClosed();
   }
