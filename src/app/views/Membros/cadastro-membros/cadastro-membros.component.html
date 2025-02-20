@@ -1,142 +1,147 @@
-<mat-accordion class="example-headers-align">
+<mat-accordion style="background-color: honeydew;" class="example-headers-align">
   <mat-expansion-panel *ngIf="step >= 0" [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <h2>Dados Pessoais</h2>
+        <h2>Informações Pessoais</h2>
       </mat-panel-title>
       <mat-panel-description>
         Nome, Rg, Cpf etc...
       </mat-panel-description>
     </mat-expansion-panel-header>
     <div class="mat-elevation-z8">
+      <div class="row">
+        <div class="col-md-11" style="padding-top: 15px;">
+          <mat-form-field style="padding-left: 17px;">
+            <mat-label>Nome</mat-label>
+            <input matInput placeholder="Obrigatório" [(ngModel)]="pessoa.nome" name="nome">
+          </mat-form-field>
 
-      <div *ngIf="pessoa.id > 0" style="float: right;padding-top: 15px;">
-        <img *ngIf="pessoa.fotoCadastrada" style="width: 80px; height: 110px;padding-right: 50px;" src="{{fotoPerfil}}"
-          alt="Imagem">
-        <br>
-        <input style="display: none" type="file" accept="image/*" (change)="processFile($event)" #fileInput>
-        <button *ngIf="!this.pessoa.fotoCadastrada" style="margin-right: 60px;"
-          (click)="fileInput.click()">Foto</button>
-        <button *ngIf="this.pessoa.fotoCadastrada" style="margin-right: 60px;"
-          (click)="RemoverFoto(pessoa.id)">Excluir</button>
+          <mat-form-field>
+            <mat-label>RG</mat-label>
+            <input matInput placeholder="RG" [(ngModel)]="pessoa.rg" name="RG">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>CPF</mat-label>
+            <input class="number" matInput placeholder="CPF" [(ngModel)]="pessoa.cpf" name="cpf">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Estado Civil</mat-label>
+            <mat-select [(value)]="pessoa.estadoCivil" placeholder="Estado Civil"
+              (selectionChange)="LimparCampoConjuge()">
+              <mat-option *ngFor="let ec of estCivil" [value]="ec.id">
+                {{ec.value}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field color="accent" style="width: 213px;">
+            <mat-label>Data Nascimento</mat-label>
+            <input matInput [matDatepicker]="dataNascimento" [(ngModel)]="pessoa.dataNascimento" name="dataNascimento">
+            <mat-datepicker-toggle matIconSuffix [for]="dataNascimento"></mat-datepicker-toggle>
+            <mat-datepicker #dataNascimento></mat-datepicker>
+          </mat-form-field>
+
+
+          <mat-form-field>
+            <mat-label>Profissão</mat-label>
+            <input matInput placeholder="Profissão" [(ngModel)]="pessoa.profissao" name="profissao">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Grau de Instrução</mat-label>
+            <mat-select [(value)]="pessoa.grauInstrucao" placeholder="Grau Instrução">
+              <mat-option *ngFor="let i of instrucao" [value]="i.id">
+                {{i.value}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Sexo</mat-label>
+            <mat-select [(value)]="pessoa.sexo" placeholder="Sexo">
+              <mat-option *ngFor="let s of sexo" [value]="s.id">
+                {{s.value}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+          <mat-form-field>
+            <mat-label>Situação</mat-label>
+            <mat-select [(value)]="pessoa.statusPessoa" placeholder="Situação" (selectionChange)="AlteraSituacao()">
+              <mat-option *ngFor="let sp of statusPessoa" [value]="sp.id">
+                {{sp.value}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Naturalidade</mat-label>
+            <input matInput placeholder="Naturalidade" [(ngModel)]="pessoa.naturalidade" name="naturalidade">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Naturalidade-Estado</mat-label>
+            <input matInput placeholder="Naturalidade-Estado" [(ngModel)]="pessoa.naturalidadeEstado"
+              name="naturalidadeEstado">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>CPF Conjuje</mat-label>
+            <input matTooltip="Informe o Cpf e pressione Enter" matInput placeholder="CPF Conjuje"
+              [(ngModel)]="pessoa.cpfConjuge" name="cpfConjuge" (keypress)="BuscarConjuje($event)">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Nome do Conjuge</mat-label>
+            <input matInput placeholder="Nome do Conjuge" [(ngModel)]="pessoa.nomeConjuge" name="nomeConjuge">
+          </mat-form-field>
+
+          <mat-form-field color="accent" style="width: 213px;">
+            <mat-label>Data Casamento</mat-label>
+            <input matInput [matDatepicker]="dataCasamento" [(ngModel)]="pessoa.dataCasamento" name="dataCasamento">
+            <mat-datepicker-toggle matSuffix [for]="dataCasamento"></mat-datepicker-toggle>
+            <mat-datepicker #dataCasamento></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Idoso</mat-label>
+            <input style="height: 20px; width: 150px;" matInput placeholder="Idoso">
+            <input name="idoso" [(ngModel)]="pessoa.idoso" [checked]="pessoa.idoso" type="checkbox">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Nome do Pai</mat-label>
+            <input matInput placeholder="Nome do Pai" [(ngModel)]="pessoa.nomePai" name="nomePai">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Nome da Mãe</mat-label>
+            <input matInput placeholder="Nome da Mãe" [(ngModel)]="pessoa.nomeMae" name="nomeMae">
+          </mat-form-field>
+
+        </div>
+        <div class="col-md-1">
+          <div class="classDivBorda">
+            <div>
+              <img *ngIf="pessoa.id > 0" class="classImagem" src="{{fotoPerfil}}" alt="Imagem">
+              <br>
+            </div>
+            <div style="padding-top: 10px;">
+              <input style="display: none" type="file" accept="image/*" (change)="processFile($event)" #fileInput>
+              <button mat-button color="primary" *ngIf="!this.pessoa.fotoCadastrada" style="margin-right: 60px;"
+                (click)="fileInput.click()">Foto</button>
+              <button mat-button color="primary" *ngIf="this.pessoa.fotoCadastrada" style="margin-right: 60px;"
+                (click)="RemoverFoto(pessoa.id)">Excluir</button>
+            </div>
+          </div>
+
+        </div>
+
       </div>
-
-      <div style="padding-top: 15px;">
-        <mat-form-field style="padding-left: 17px;">
-          <mat-label>Nome</mat-label>
-          <input matInput placeholder="Obrigatório" [(ngModel)]="pessoa.nome" name="nome">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>RG</mat-label>
-          <input matInput placeholder="RG" [(ngModel)]="pessoa.rg" name="RG">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>CPF</mat-label>
-          <input class="number" matInput placeholder="CPF" [(ngModel)]="pessoa.cpf" name="cpf">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Estado Civil</mat-label>
-          <mat-select [(value)]="pessoa.estadoCivil" placeholder="Estado Civil"
-            (selectionChange)="LimparCampoConjuge()">
-            <mat-option *ngFor="let ec of estCivil" [value]="ec.id">
-              {{ec.value}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field color="accent" style="width: 213px;">
-          <mat-label>Data Nascimento</mat-label>
-          <input matInput [matDatepicker]="dataNascimento" [(ngModel)]="pessoa.dataNascimento" name="dataNascimento">
-          <mat-datepicker-toggle matIconSuffix [for]="dataNascimento"></mat-datepicker-toggle>
-          <mat-datepicker #dataNascimento></mat-datepicker>
-        </mat-form-field>
-
-
-        <mat-form-field>
-          <mat-label>Profissão</mat-label>
-          <input matInput placeholder="Profissão" [(ngModel)]="pessoa.profissao" name="profissao">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Grau de Instrução</mat-label>
-          <mat-select [(value)]="pessoa.grauInstrucao" placeholder="Grau Instrução">
-            <mat-option *ngFor="let i of instrucao" [value]="i.id">
-              {{i.value}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Sexo</mat-label>
-          <mat-select [(value)]="pessoa.sexo" placeholder="Sexo">
-            <mat-option *ngFor="let s of sexo" [value]="s.id">
-              {{s.value}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-
-        <mat-form-field>
-          <mat-label>Situação</mat-label>
-          <mat-select [(value)]="pessoa.statusPessoa" placeholder="Situação" (selectionChange)="AlteraSituacao()">
-            <mat-option *ngFor="let sp of statusPessoa" [value]="sp.id">
-              {{sp.value}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Naturalidade</mat-label>
-          <input matInput placeholder="Naturalidade" [(ngModel)]="pessoa.naturalidade" name="naturalidade">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Naturalidade-Estado</mat-label>
-          <input matInput placeholder="Naturalidade-Estado" [(ngModel)]="pessoa.naturalidadeEstado"
-            name="naturalidadeEstado">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>CPF Conjuje</mat-label>
-          <input matTooltip="Informe o Cpf e pressione Enter" matInput placeholder="CPF Conjuje"
-            [(ngModel)]="pessoa.cpfConjuge" name="cpfConjuge" (keypress)="BuscarConjuje($event)">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Nome do Conjuge</mat-label>
-          <input matInput placeholder="Nome do Conjuge" [(ngModel)]="pessoa.nomeConjuge" name="nomeConjuge">
-        </mat-form-field>
-
-        <mat-form-field color="accent" style="width: 213px;">
-          <mat-label>Data Casamento</mat-label>
-          <input matInput [matDatepicker]="dataCasamento" [(ngModel)]="pessoa.dataCasamento" name="dataCasamento">
-          <mat-datepicker-toggle matSuffix [for]="dataCasamento"></mat-datepicker-toggle>
-          <mat-datepicker #dataCasamento></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Idoso</mat-label>
-          <input style="height: 20px; width: 150px;" matInput placeholder="Idoso">
-          <input name="idoso" [(ngModel)]="pessoa.idoso" [checked]="pessoa.idoso" type="checkbox">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Nome do Pai</mat-label>
-          <input matInput placeholder="Nome do Pai" [(ngModel)]="pessoa.nomePai" name="nomePai">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Nome da Mãe</mat-label>
-          <input matInput placeholder="Nome da Mãe" [(ngModel)]="pessoa.nomeMae" name="nomeMae">
-        </mat-form-field>
-
-      </div>
-
     </div>
-
 
     <mat-action-row>
       <button *ngIf="pessoa.nome && pessoa.id > 0" mat-button color="primary"
@@ -320,10 +325,10 @@
   <mat-expansion-panel *ngIf="pessoa.id > 0" [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <h2>Dados do Membro</h2>
+        <h2>Informações do Membro</h2>
       </mat-panel-title>
       <mat-panel-description>
-        Aqui consta os dados do Membro que se refere a Igreja.
+        Aqui consta as informações do membro que se refere a Igreja.
         <mat-icon>map</mat-icon>
       </mat-panel-description>
     </mat-expansion-panel-header>
@@ -755,7 +760,7 @@
 
             <mat-cell *matCellDef="let row">
               <mat-icon *ngIf="row.aprovado === 'Não'" matTooltip="Editar Historico!"
-                (click)="AtualizarFuncao(row.id)">edit</mat-icon>
+                (click)="AtualizarFuncao(row.id, true)">edit</mat-icon>
               <mat-icon *ngIf="row.aprovado === 'Não'" matTooltip="excluir Historico!"
                 (click)="ExcluirHistorico(row.id)">delete</mat-icon>
             </mat-cell>

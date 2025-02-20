@@ -208,11 +208,6 @@ export class CadastreSeComponent implements OnInit {
 
   Salvar(step: number) {
 
-    //   sedeSelecionada: TodasAsIgrejas = new TodasAsIgrejas();
-    // subSedeSelecionada: TodasAsIgrejas = new TodasAsIgrejas();
-    // congregacaoSelecionada: TodasAsIgrejas = new TodasAsIgrejas();
-
-
     if (!this.sedeSelecionada)
       return this.service.showMessage("Selecione a Sede!.", true);
 
@@ -255,7 +250,6 @@ export class CadastreSeComponent implements OnInit {
               .subscribe((result: ApiResponse) => {
                 if (result.code === 200) {
                   this.service.showMessage("Cadastro enviado com sucesso!.", false);
-
 
                   //implementar a proxima tela envio de documentos
                   this.service.showMessage("Cadastro enviado com sucesso!.", false);
@@ -382,6 +376,9 @@ export class CadastreSeComponent implements OnInit {
   }
 
   public Confirmar(): void {
+    
+
+    
     if (this.sedeSelecionada)
       this.confirmar = true;
   }

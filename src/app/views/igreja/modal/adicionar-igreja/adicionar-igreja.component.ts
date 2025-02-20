@@ -93,7 +93,7 @@ export class AdicionarIgrejaComponent implements OnInit {
           
           this.igreja = result.data;
 
-          if (this.igreja.tipoIgreja == 1)
+          if (this.igreja.tipoIgreja > 1)
             this.BuscarIgrejas()
 
         })
@@ -107,7 +107,7 @@ export class AdicionarIgrejaComponent implements OnInit {
   public BuscarIgrejas(): void {
 
     if (this.igreja.tipoIgreja > 1) {
-      this.serviceApi.read(Endpoint.Igreja + `/estabelecimento/${this.igreja.id}`)
+      this.serviceApi.read(Endpoint.Igreja + `/estabelecimento/${this.igreja.igrejaMae}`)
         .subscribe((result: igreja[]) => {
           this.listaIgrejas = result
         })

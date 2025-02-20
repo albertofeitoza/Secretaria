@@ -16,7 +16,7 @@ export class ResetSenha {
   novaSenhaConfirm: string;
   idUsuario: number;
   sequencia: number = 1;
-  dominio: number;
+  dominio: string;
   
 }
 

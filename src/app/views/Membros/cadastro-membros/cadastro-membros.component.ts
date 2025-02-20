@@ -108,7 +108,7 @@ export class CadastroMembrosComponent {
           this.historicos = response?.data?.historicoObreiro
           this.logs = response?.data?.logs;
           this.filhos = response?.data?.filhos
-          this.fotoPerfil = this.pessoa.fotoCadastrada ? `./assets/imagens/${this.pessoa.id}_${response.data.pessoa.cpf.trim()}.jpg` : `./assets/imagens/sem-foto.jpg.jpg`
+          this.fotoPerfil = this.pessoa.fotoCadastrada ? `./assets/imagens/${this.pessoa.id}_${response.data.pessoa.cpf.trim()}.jpg` : `./assets/imagens/sem-foto.jpg`
         })
     }
   }
@@ -339,43 +339,46 @@ export class CadastroMembrosComponent {
 
   AlteraFuncao(aprovado: boolean, idHistorico: number = 0) {
 
+    if (this.dadosMembro.funcao > 1 || aprovado && idHistorico > 0) {
 
-    this.serviceUtil.Popup("Informar os dados", TipoPopup.ComponenteInstancia, HistoricoPopupComponent, idHistorico, 'auto', 'auto', false, aprovado)
-      .subscribe(result => {
+      this.serviceUtil.Popup("Informar os dados", TipoPopup.ComponenteInstancia, HistoricoPopupComponent, idHistorico, 'auto', 'auto', false, aprovado)
+        .subscribe(result => {
 
-        if (result && result.Status) {
-          this.historico = result.data
+          if (result && result.Status) {
+            this.historico = result.data
 
-          if (this.dadosObreiro.id == 0) {
-            this.dadosObreiro.id = 0;
-            this.dadosObreiro.pessoaId = this.pessoa.id;
+            if (this.dadosObreiro.id == 0) {
+              this.dadosObreiro.id = 0;
+              this.dadosObreiro.pessoaId = this.pessoa.id;
 
-            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
-              return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
+              if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+                return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
 
-            this.serverApi.create(this.dadosObreiro, Endpoint.Obreiro)
-              .subscribe(x => {
-                this.dadosObreiro = x;
-                this.historico.dadosObreiroId = x.id
-                this.AdicionarFuncaoObreiro();
-                this.serviceUtil.showMessage("Obreiro cadastrado com sucesso.", false)
-              });
+              this.serverApi.create(this.dadosObreiro, Endpoint.Obreiro)
+                .subscribe(x => {
+                  this.dadosObreiro = x;
+                  this.historico.dadosObreiroId = x.id
+                  this.AdicionarFuncaoObreiro();
+                  this.serviceUtil.showMessage("Obreiro cadastrado com sucesso.", false)
+                });
+
+            } else {
+              this.AdicionarFuncaoObreiro();
+              this.serviceUtil.showMessage("Obreiro alterado com sucesso.", false)
+            }
 
           } else {
-            this.AdicionarFuncaoObreiro();
-            this.serviceUtil.showMessage("Obreiro alterado com sucesso.", false)
+            this.serviceUtil.showMessage("Informações ignoradas", false)
+
+            this.dadosMembro.funcao = this.serviceUtil.Funcao().filter(x => x.id == this.funcaoMembroCache)[0].id
           }
-
-        } else {
-          this.serviceUtil.showMessage("Informações ignoradas", false)
-
-          this.dadosMembro.funcao = this.serviceUtil.Funcao().filter(x => x.id == this.funcaoMembroCache)[0].id
-        }
-      })
+        })
+    }
   }
 
-  public AtualizarFuncao(id: number): void {
-    this.AlteraFuncao(true, id);
+  public AtualizarFuncao(id: number, alterarfuncao: boolean = false): void {
+
+    this.AlteraFuncao(alterarfuncao, id);
   }
 
   public ExcluirHistorico(id: number): void {

@@ -2,7 +2,7 @@
 <div style="text-align: end; padding-right: 50px;" >
     <button style="float: right;" class="button" mat-raised-button (click)="Registrar()"
     color="primary">
-    CADASTRE-SE
+    NOVO MEMBRO
 </button>
 </div>
 
@@ -50,12 +50,7 @@
             <mat-card-title><i class="material-icons">account_circle</i></mat-card-title>
 
             <mat-form-field>
-                <mat-label>Igreja</mat-label>
-                <mat-select [(value)]="dadosResetSenha.dominio" placeholder="dominio">
-                    <mat-option *ngFor="let ig of igrejas" [value]="ig.id">
-                        {{ig.nome}}
-                    </mat-option>
-                </mat-select>
+                <input matInput placeholder="dominio" [(ngModel)]="dadosResetSenha.dominio" name="name" placeholder="Domínio">
             </mat-form-field>
 
             <mat-form-field *ngIf="sequenciaTelaReset == 1">

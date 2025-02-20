@@ -53,7 +53,7 @@ export class FilhosMembrosComponent implements OnInit {
   }
 
   private BuscarDados(): void {
-    this.serviceApi.read(Endpoint.Filhos + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
+    this.serviceApi.read(Endpoint.Filhos + `/estabelecimento/${this.auth.dadosUsuario.IgrejaSelecionada > 0 ? this.auth.dadosUsuario.IgrejaSelecionada : this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((response: ViewFilhos[]) => {
 
         const Response = this.txtBusca.length > 0
@@ -87,7 +87,7 @@ export class FilhosMembrosComponent implements OnInit {
   }
 
   private CarregarComboPaiMae() {
-    
+
     this.serviceApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: Pessoa[]) => {
 

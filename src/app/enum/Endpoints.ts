@@ -22,5 +22,4 @@ export enum Endpoint {
     ServiceCenter = '/ServiceCenter',
     DownloadArquivo = '/File/DownloadArquivo',
     cep = 'https://viacep.com.br/ws/{0}/json',
-
 }

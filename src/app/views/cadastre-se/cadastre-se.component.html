@@ -1,4 +1,4 @@
-<div style="background-color: honeydew;">
+<div style="background-color: honeydew; overflow-y: scroll;">
     <div style="text-align: right; padding: 20px;">
         <a (click)="FecharPopup()">
             <mat-icon>cancel</mat-icon>
@@ -23,7 +23,7 @@
         <hr />
 
         <div *ngIf="!confirmar">
-            
+
             <div>
                 <mat-select style="width: 300px;" [(value)]="sedeSelecionada"
                     (selectionChange)="breadcrumbs = sedeSelecionada.nome; BuscarSubsede(sedeSelecionada)"
@@ -32,9 +32,6 @@
                         {{ig.nome}}
                     </mat-option>
                 </mat-select>
-
-                <!-- <mat-icon style="padding-top:11px;font-size: 18px;padding-left: 10px;" matTooltip="Procurar Subsede"
-                    (click)="BuscarSubsede(sedeSelecionada)">search</mat-icon> -->
                 <hr />
             </div>
 
@@ -46,10 +43,6 @@
                         {{ig.nome}}
                     </mat-option>
                 </mat-select>
-
-                <!-- <mat-icon style="padding-top:11px;font-size: 18px;padding-left: 10px;"
-                    matTooltip="Procurar Congregações"
-                    (click)="BuscarCongregacoes(subSedeSelecionada)">search</mat-icon> -->
                 <hr />
             </div>
 
@@ -69,12 +62,11 @@
         </div>
     </div>
 
-
     <div *ngIf="confirmar">
 
         <mat-accordion style="background-color: honeydew;" class="example-headers-align">
 
-            <mat-expansion-panel style="border-radius: 10px;" *ngIf="step === 0" [expanded]="step === 0"
+            <mat-expansion-panel style="border-radius: 10px;overflow: auto;" *ngIf="step === 0" [expanded]="step === 0"
                 (opened)="setStep(0)" hideToggle>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
@@ -125,9 +117,6 @@
                                     <mat-datepicker #dataNascimento></mat-datepicker>
                                 </mat-form-field>
 
-                                <!-- </div> -->
-
-                                <!-- <div class="col"> -->
                                 <mat-form-field appearance="outline" color="accent">
                                     <mat-label>Profissão</mat-label>
                                     <input matInput placeholder="Profissão" [(ngModel)]="pessoa.profissao"
@@ -163,9 +152,7 @@
                                     <input matInput placeholder="Naturalidade-Estado"
                                         [(ngModel)]="pessoa.naturalidadeEstado" name="naturalidadeEstado">
                                 </mat-form-field>
-                                <!-- </div> -->
-                                <!-- 
-                        <div class="col"> -->
+                              
                                 <mat-form-field appearance="outline" color="accent">
                                     <mat-label>CPF Conjuje</mat-label>
                                     <input matTooltip="Informe o Cpf e pressione Enter" matInput
@@ -197,9 +184,7 @@
                                     <input matInput placeholder="Nome da Mãe" [(ngModel)]="pessoa.nomeMae"
                                         name="nomeMae">
                                 </mat-form-field>
-                                <!-- </div>
-
-                        <div class="col"> -->
+                              
                                 <mat-form-field appearance="outline" color="accent">
                                     <mat-label>Idoso</mat-label>
                                     <input style="height: 20px; width: 150px;" matInput placeholder="Idoso">
@@ -283,8 +268,9 @@
                         </div>
                     </div>
                 </div>
-                <mat-action-row *ngIf="pessoa.pessoaEndereco.cep > 0 && pessoa.pessoaEndereco.estado && pessoa.pessoaEndereco.cidade 
-        && pessoa.pessoaEndereco.bairro && pessoa.pessoaEndereco.rua && pessoa.pessoaEndereco.numero ">
+                <mat-action-row *ngIf="pessoa.pessoaEndereco.cep > 0 && pessoa.pessoaEndereco.estado 
+                                        && pessoa.pessoaEndereco.cidade && pessoa.pessoaEndereco.bairro 
+                                        && pessoa.pessoaEndereco.rua && pessoa.pessoaEndereco.numero ">
                     <button mat-button color="warn" (click)="Voltar()">Voltar</button>
                     <button mat-button color="primary" (click)="Proximo()">Próximo</button>
                 </mat-action-row>
@@ -303,8 +289,6 @@
                     </mat-panel-description>
                 </mat-expansion-panel-header>
 
-                <!-- Grid com os contatos -->
-
                 <div class="menuInternoGrid">
                     <div class="mat-elevation-z8">
                         <div style="padding-top: 15px;">
@@ -316,13 +300,13 @@
 
                             <mat-form-field>
                                 <mat-label>Telefone</mat-label>
-                                <input class="number" maxlength="9" matInput placeholder="Telefone"
+                                <input class="number" maxlength="9" matInput placeholder="Telefone" [required]="true"
                                     [(ngModel)]="contato.telefone" name="telefone">
                             </mat-form-field>
 
                             <mat-form-field>
                                 <mat-label>Celular</mat-label>
-                                <input class="number" maxlength="9" matInput placeholder="Celular"
+                                <input class="number" maxlength="9" matInput placeholder="Celular" [required]="true"
                                     [(ngModel)]="contato.celular" name="celular">
                             </mat-form-field>
 
@@ -342,15 +326,12 @@
 
                 <div class="mat-elevation-z8">
                     <table mat-table [dataSource]="pessoa.contatos" matSort>
-                        <!-- Id Column -->
-
-                        <!-- rol Column -->
+                      
                         <ng-container matColumnDef="ddd">
                             <mat-header-cell *matHeaderCellDef>DDD</mat-header-cell>
                             <mat-cell id="ddd" *matCellDef="let row">{{row.ddd}}</mat-cell>
                         </ng-container>
 
-                        <!-- rol Column -->
                         <ng-container matColumnDef="telefone">
                             <mat-header-cell *matHeaderCellDef>Telefone</mat-header-cell>
                             <mat-cell id="telefone" *matCellDef="let row">{{row.telefone}}</mat-cell>
@@ -360,14 +341,12 @@
                             <mat-header-cell *matHeaderCellDef>Celular</mat-header-cell>
                             <mat-cell mat-cell id="celular" *matCellDef="let row">{{row.celular}}</mat-cell>
                         </ng-container>
-
-                        <!-- Name Column -->
+                        
                         <ng-container matColumnDef="email">
                             <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
                             <mat-cell *matCellDef="let row">{{row.email}}</mat-cell>
                         </ng-container>
 
-                        <!-- Coluna de Ações -->
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
                             <mat-cell *matCellDef="let row">
@@ -405,7 +384,7 @@
                         <mat-icon>map</mat-icon>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
-                <!-- dados Membro -->
+
                 <div class="col">
                     <mat-form-field style="padding-left: inherit;" appearance="outline" color="accent">
                         <mat-label>ROL</mat-label>
@@ -445,7 +424,7 @@
                         <input name="fezDiscipulado" [(ngModel)]="pessoa.dadosMembro.fezDiscipulado"
                             [checked]="pessoa.dadosMembro.fezDiscipulado" type="checkbox">
                     </mat-form-field>
-                    <!-- data referencia -->
+
                     <mat-form-field appearance="outline" color="accent" style="width: 220px;">
                         <mat-label>Data Batismo Águas</mat-label>
                         <input matInput [matDatepicker]="batismoAguas" [(ngModel)]="pessoa.dadosMembro.batismoAguas"

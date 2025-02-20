@@ -26,7 +26,7 @@ export class LoginComponent {
   sequenciaTelaReset: number = 1;
   InfBotao: string = "Enviar CPF";
   dadosResetSenha: ResetSenha = new ResetSenha()
-  igrejas: any[] = new Array();
+  // igrejas: any[] = new Array();
   constructor(
     private auth: AutenticacaoService,
     private serviceUtil: UtilServiceService,
