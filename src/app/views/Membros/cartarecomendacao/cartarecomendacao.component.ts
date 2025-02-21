@@ -52,7 +52,7 @@ export class CartarecomendacaoComponent implements OnInit {
   }
 
   private BuscaObreiros(): void {
-    this.serviceApi.read(Endpoint.Pessoa + `/estabelecimento/igreja=${this.auth.dadosUsuario.IgrejaLogada}`)
+    this.serviceApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: ViewPessoa[]) => {
         this.pessoas = result.filter(f => f.funcao != 'Membro' && f.funcao != 'PreCadastro' && f.statusPessoa != 'Inativo' && f.id != this.dados.id);
       });
@@ -61,7 +61,7 @@ export class CartarecomendacaoComponent implements OnInit {
   private BuscarIgrejas(): void {
     this.serviceApi.read(Endpoint.Igreja + `/todasIgrejasDesdeSede/${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: TodasAsIgrejas[]) => {
-       
+
         this.igrejas = [...result];
       });
 
@@ -77,8 +77,8 @@ export class CartarecomendacaoComponent implements OnInit {
         return;
       }
 
-      if (this.relatorioSelecionado === 15 && this.PastorIgreja) {
-        this.serviceUtil.showMessage('Para emissão de carta de Mudança do pastor selecionar a opção "Carta de Mudança Casal."', true)
+      if (this.relatorioSelecionado === 15 && this.PastorIgreja || this.relatorioSelecionado === 22 && this.PastorIgreja) {
+        this.serviceUtil.showMessage('Para emissão de carta de Mudança do pastor selecionar a opção "Carta de Mudança Casal. interna ou externa"', true)
         return;
       }
 
@@ -90,7 +90,7 @@ export class CartarecomendacaoComponent implements OnInit {
         this.resposta.data = this.dadosSolicitacao
         this.dialogRef.close(this.resposta);
       }
-      
+
       if (this.relatorioSelecionado == 14 && this.dados.estadoCivil == 1) {
         this.serviceUtil.showMessage("Uma pessoa solteiro(a) não pode emitir uma carta de recomendação de casal", true)
       }
@@ -110,8 +110,4 @@ export class CartarecomendacaoComponent implements OnInit {
     }
 
   }
-
-
-
-
 }

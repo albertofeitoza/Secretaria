@@ -90,41 +90,35 @@ export class UsuariosComponent {
           this.serverApi.create(this.pessoa, Endpoint.Pessoa).subscribe(result => {
             this.pessoa = result
             this.contato.pessoaId = result.id
-            this.ValidarContato(result, true);
-            this.ValidarUsuario(result, true);
+            this.CadastrarContato(result, true);
+            this.CadastrarUsuario(result, true);
           });
         } else {
-          this.ValidarContato(response.data, false);
-          this.ValidarUsuario(response.data, false);
+          const igreja = response?.data?.nome?.split(';');
+          this.utilService.showMessage(`Já existe cadastro para o CPF informado : ${this.pessoa.cpf} Nome: ${igreja[0]} ${igreja[1]}, solicite a transferência `, true)
         }
       });
-    } else {
-      this.ValidarContato(this.pessoa, false);
-      this.ValidarUsuario(this.pessoa, false);
     }
   }
 
-  private ValidarContato(pessoa: any, acao: boolean): void {
+  private CadastrarContato(pessoa: any, acao: boolean): void {
 
     this.contato.pessoaId = pessoa.id;
-    if (acao) {
-      this.serverApi.create(this.contato, Endpoint.Contatos)
-        .subscribe(() => { this.BuscaUsuarios(); })
-    } else {
-      this.serverApi.create(this.contato, Endpoint.Contatos)
-        .subscribe(() => { this.BuscaUsuarios(); })
-    }
+
+    this.serverApi.create(this.contato, Endpoint.Contatos)
+      .subscribe(() => {
+        this.BuscaUsuarios();
+      });
   }
 
-  private ValidarUsuario(dados: any, acao: boolean): void {
+  private CadastrarUsuario(dados: any, acao: boolean): void {
 
     this.usuario.pessoaId = dados.id;
     if (acao) {
       this.serverApi.create(this.usuario, Endpoint.Usuario)
-        .subscribe(() => { this.BuscaUsuarios(); });
-    } else {
-      this.serverApi.create(this.usuario, Endpoint.Usuario)
-        .subscribe(() => { this.BuscaUsuarios(); })
+        .subscribe(() => {
+          this.BuscaUsuarios();
+        });
     }
   }
 

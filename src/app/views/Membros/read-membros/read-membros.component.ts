@@ -198,11 +198,10 @@ export class ReadMembrosComponent implements OnInit {
                 pessoa.sexo = 1
                 pessoa.statusPessoa = 5
                 pessoa.fotoCadastrada = false,
-                  pessoa.idoso = false
-
+                pessoa.idoso = false
                 this.serverApi.create(pessoa, Endpoint.Pessoa)
                   .subscribe(response => {
-                    this.serviceUtil.showMessage("Membro excluído com sucesso!.", false);
+                    this.serviceUtil.showMessage("Membro inativado com sucesso!.", false);
                     this.buscarMembro()
                   })
               }

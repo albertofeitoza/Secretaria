@@ -43,9 +43,7 @@ export class IgrejaComponent implements OnInit {
   }
 
   public BuscarIgrejas(): void {
-    
     //refazer o Array
-    
     this.serviceApi.read(Endpoint.Igreja + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: igreja[]) => {
         this.igrejas = new Array();
@@ -89,7 +87,4 @@ export class IgrejaComponent implements OnInit {
     this.serviceUtil.Popup("", TipoPopup.ComponenteInstancia, PastoresComponent, element.id, '80%', 'auto', false, false, element);
   }
 
-  public Excluir(element: any) : void {
-    
-  }
 }

@@ -59,7 +59,7 @@
 
     </div>
 
-    <div *ngIf="relatorioSelecionado >= 15 && relatorioSelecionado <= 16 && PastorIgreja ">
+    <div *ngIf="relatorioSelecionado >= 15 && relatorioSelecionado <= 16 && PastorIgreja">
         <label style="background-color: chartreuse;">
             Obs: Em caso de Mudança do pastor da igreja, além da baixa automática do cadastro,
             se faz necessário informar
@@ -102,6 +102,46 @@
             Deseja realmente emitir a carta?
         </div>
     </div>
+
+    <div style="padding-left: 15px; text-align: left;"
+        *ngIf="relatorioSelecionado >= 22 && relatorioSelecionado <= 23 && PastorIgreja">
+
+        <div>
+
+            <mat-form-field style="width:300px">
+                <mat-label>Igreja destino</mat-label>
+                <mat-select [(value)]="idIgrejaSelecionada" placeholder="Selecione a Igreja destino">
+                    <mat-option *ngFor="let ig of igrejas" [value]="ig.id">
+                        {{ig.nome}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br />
+            <mat-form-field style="width:300px">
+                <mat-label>Novo pastor da igreja</mat-label>
+                <mat-select [(value)]="dadosSolicitacao.idNovoPastor" placeholder="Novo pastor da igreja">
+                    <mat-option *ngFor="let pe of pessoas" [value]="pe.id">
+                        {{pe.nome}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br />
+            <label style="background-color: chartreuse; padding-left: 15px;">
+                Obs: Em caso de Mudança interna do pastor <br />
+                da igreja, o cadastro vai automaticamente <br />
+                pra outra igreja como pré cadastro.       <br />
+                Obrigatório selecionar o novo pastor da   <br />
+                igreja.
+                <div style="text-align: left;">
+                    Tem certeza que quer emitir a <br />
+                    carta de mudança ?
+                </div>
+            </label>
+        </div>
+    </div>
+
+
+
     <br />
 
     <mat-card-content class="alinhar">
@@ -131,6 +171,13 @@
         </a>
 
         <a *ngIf="idIgrejaSelecionada > 0 && relatorioSelecionado >= 22 && relatorioSelecionado <= 23 && !PastorIgreja"
+            (click)="FecharPopup(true)">
+            <i class="material-icons icones">
+                thumb_up_alt
+            </i>
+        </a>
+
+        <a *ngIf="idIgrejaSelecionada > 0 && relatorioSelecionado >= 22 && relatorioSelecionado <= 23 && dadosSolicitacao.idNovoPastor > 0 && PastorIgreja"
             (click)="FecharPopup(true)">
             <i class="material-icons icones">
                 thumb_up_alt
