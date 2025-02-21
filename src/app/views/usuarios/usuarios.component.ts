@@ -1,9 +1,9 @@
+import { Pessoa } from './../../models/pessoa';
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { Usuario } from 'src/app/models/Usuario';
 import { contatos } from 'src/app/models/contato';
-import { Pessoa } from 'src/app/models/pessoa';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
@@ -87,15 +87,29 @@ export class UsuariosComponent {
           this.pessoa.rg = this.pessoa.rg != undefined ? this.pessoa.rg.toString() : this.pessoa.rg
           this.pessoa.dataCasamento = this.pessoa.estadoCivil == 1 || this.pessoa.estadoCivil > 4 ? undefined : this.pessoa.dataCasamento
           this.pessoa.igrejaId = Number(this.matdialogRef.id)
-          this.serverApi.create(this.pessoa, Endpoint.Pessoa).subscribe(result => {
-            this.pessoa = result
-            this.contato.pessoaId = result.id
-            this.CadastrarContato(result, true);
-            this.CadastrarUsuario(result, true);
-          });
+
+          this.serverApi.create(this.pessoa, Endpoint.Pessoa)
+            .subscribe(result => {
+              this.pessoa = result
+              this.contato.pessoaId = result.id
+              this.CadastrarContato(result, true);
+              this.CadastrarUsuario(result, true);
+            });
         } else {
-          const igreja = response?.data?.nome?.split(';');
-          this.utilService.showMessage(`Já existe cadastro para o CPF informado : ${this.pessoa.cpf} Nome: ${igreja[0]} ${igreja[1]}, solicite a transferência `, true)
+
+          if (response.data.igrejaId == Number(this.matdialogRef.id)) {
+
+            this.CadastrarContato(response.data, true);
+            this.CadastrarUsuario(response.data, true);
+            this.BuscaUsuarios();
+
+          } else {
+
+            const igreja = response?.data?.nome?.split(';');
+            this.utilService.showMessage(`Já existe cadastro para o CPF informado : ${this.pessoa.cpf} Nome: ${igreja[0]} ${igreja[1]}, solicite a transferência `, true)
+
+          }
+
         }
       });
     }
@@ -106,20 +120,16 @@ export class UsuariosComponent {
     this.contato.pessoaId = pessoa.id;
 
     this.serverApi.create(this.contato, Endpoint.Contatos)
-      .subscribe(() => {
-        this.BuscaUsuarios();
-      });
+      .subscribe(() => { });
   }
 
   private CadastrarUsuario(dados: any, acao: boolean): void {
 
     this.usuario.pessoaId = dados.id;
-    if (acao) {
-      this.serverApi.create(this.usuario, Endpoint.Usuario)
-        .subscribe(() => {
-          this.BuscaUsuarios();
-        });
-    }
+
+    this.serverApi.create(this.usuario, Endpoint.Usuario)
+      .subscribe(() => { });
+
   }
 
   public CadastrarNovoUsuario(): void {
