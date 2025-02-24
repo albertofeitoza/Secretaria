@@ -445,7 +445,7 @@ export class CadastroMembrosComponent {
 
       this.serverApi.EnviarArquivoServidor(formData, Endpoint.UploadArquivo, this.pessoa.cpf, this.pessoa.id)
         .subscribe(x => {
-          event.target.files = undefined
+          //event.target.files = undefined
           this.serviceUtil.showMessage("Imagem importada com sucesso!", false);
           this.BuscarMembro()
         })
