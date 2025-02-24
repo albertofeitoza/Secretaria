@@ -89,7 +89,7 @@ export class CadastreSeComponent implements OnInit {
     this.confirmar = false
     this.serverApi.read(Endpoint.Token + `/igrejasMatrizes/`)
       .subscribe((result: TodasAsIgrejas[]) => {
-        this.sede = result;
+        this.sede = result.filter(s => s.tipoIgreja === 1);
       })
 
   }
@@ -99,7 +99,7 @@ export class CadastreSeComponent implements OnInit {
     if (igreja.id > 0) {
       this.serverApi.read(Endpoint.Token + `/igrejasFilhas/${igreja.id}`)
         .subscribe((result: TodasAsIgrejas[]) => {
-          this.subsede = result.filter(s => this.sedeSelecionada.id != s.id);
+          this.subsede = result.filter(s => this.sedeSelecionada.id != s.id && s.tipoIgreja === 2);
 
 
           this.pessoa.statusPessoa = 0;
@@ -126,7 +126,7 @@ export class CadastreSeComponent implements OnInit {
     if (igreja.id > 0) {
       this.serverApi.read(Endpoint.Token + `/igrejasFilhas/${igreja.id}`)
         .subscribe((result: TodasAsIgrejas[]) => {
-          this.congregacoes = result.filter(s => this.sedeSelecionada.id != s.id && this.subSedeSelecionada.id != s.id);
+          this.congregacoes = result.filter(s => this.sedeSelecionada.id != s.id && this.subSedeSelecionada.id != s.id && s.tipoIgreja === 3);
 
           this.pessoa.statusPessoa = 0;
           this.pessoa.dadosMembro.congregacao =
