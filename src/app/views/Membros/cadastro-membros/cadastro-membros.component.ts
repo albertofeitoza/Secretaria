@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { Cep } from 'src/app/models/Cep';
 import { DadosMembro } from 'src/app/models/DadosMembro';
@@ -26,7 +26,7 @@ import { AutenticacaoService } from 'src/app/services/autenticacao.service';
   styleUrls: ['./cadastro-membros.component.css']
 })
 
-export class CadastroMembrosComponent {
+export class CadastroMembrosComponent implements OnDestroy {
   contatoSelecionado = 0
   cargoSelecionado = 0
   logSelecionado = 0
@@ -89,6 +89,13 @@ export class CadastroMembrosComponent {
     this.BuscarMembro()
 
   }
+
+  ngOnDestroy(): void {
+    this.serverApi;
+    console.log()
+  }
+  
+
   BuscarMembro() {
     const id = Number(this.activatedRoute.snapshot.params['id']);
 
@@ -109,7 +116,12 @@ export class CadastroMembrosComponent {
           this.logs = response?.data?.logs;
           this.filhos = response?.data?.filhos
           this.fotoPerfil = this.pessoa.fotoCadastrada ? `./assets/imagens/${this.pessoa.id}_${response.data.pessoa.cpf.trim()}.jpg` : `./assets/imagens/sem-foto.jpg`
+        
+          
+
         })
+       
+        
     }
   }
   CarregarCombos() {

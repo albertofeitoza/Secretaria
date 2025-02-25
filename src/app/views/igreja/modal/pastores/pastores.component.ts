@@ -100,7 +100,7 @@ export class PastoresComponent implements OnInit {
     this.pastor.id = 0;
     this.pastor.pessoaId = pessoa.id;
     this.pastor.igrejaId = Number(pessoa.igrejaId );
-    this.pastor.dataEntrada = new Date;
+    this.pastor.dataEntrada = this.pessoa.dataCriacao
     this.pastor.qantidadeMembosEntrada = this.pastor.qantidadeMembosEntrada;
     this.pastor.qantidadeMembosSaida = 0;
     this.pastor.diferencaMembrosSaida = 0;

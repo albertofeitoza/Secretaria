@@ -21,6 +21,13 @@
             <mat-datepicker #dataNascimento></mat-datepicker>
         </mat-form-field>
 
+        <mat-form-field color="accent" style="width: 213px;">
+            <mat-label>Data da Posse</mat-label>
+            <input matInput [matDatepicker]="dataPosse" [(ngModel)]="pessoa.dataCriacao" name="dataPosse">
+            <mat-datepicker-toggle matIconSuffix [for]="dataPosse"></mat-datepicker-toggle>
+            <mat-datepicker #dataPosse></mat-datepicker>
+        </mat-form-field>
+
         <mat-form-field>
             <mat-label>Grau de Instrução</mat-label>
             <mat-select [(value)]="pessoa.grauInstrucao" placeholder="Grau Instrução">
@@ -66,7 +73,7 @@
             </ng-container>
 
             <ng-container matColumnDef="datainicial">
-                <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data inicial</mat-header-cell>
+                <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data da posse</mat-header-cell>
                 <mat-cell *matCellDef="let row">{{row.datainicial | date: 'dd/MM/yyyy'}}</mat-cell>
             </ng-container>
 

@@ -94,6 +94,7 @@ export class UsuariosComponent {
               this.contato.pessoaId = result.id
               this.CadastrarContato(result, true);
               this.CadastrarUsuario(result, true);
+              this.BuscaUsuarios();
             });
         } else {
 
@@ -112,6 +113,9 @@ export class UsuariosComponent {
 
         }
       });
+    }else {
+      this.CadastrarUsuario(this.pessoa, true);
+      this.BuscaUsuarios();
     }
   }
 
