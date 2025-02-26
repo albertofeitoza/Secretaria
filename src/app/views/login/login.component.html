@@ -24,6 +24,12 @@
                     (keypress)="login($event)">
 
             </mat-form-field>
+
+            <mat-form-field *ngIf="primeiroAcesso">
+                <input matInput placeholder="Nova Senha" [(ngModel)]="sessao.novaSenha" type="password" name="senha"
+                    (keypress)="login($event)">
+
+            </mat-form-field>
         </form>
 
         <div style="padding-left: 15px;padding-bottom: 15px;">

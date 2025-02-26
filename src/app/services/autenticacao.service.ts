@@ -20,6 +20,7 @@ import { DadosLogados } from '../models/Usuario';
 export class AutenticacaoService {
 
   autenticado = new EventEmitter<boolean>();
+  primeiroAcesso = new EventEmitter<boolean>();
   token = new EventEmitter<string>();
   dadosUsuario: DadosLogados = new DadosLogados();
 
@@ -56,12 +57,20 @@ export class AutenticacaoService {
       )
       .subscribe(result => {
         if (result.code === 200) {
+
+          this.primeiroAcesso.emit(false);
           this.token = result.data;
           this.autenticado.emit(true);
           this.getDecodedAccessToken(result.data)
           this.router.navigate(['/']);
           this.utilService.showMessage(result.mensagem, false)
-        } else {
+
+        } else if (result.code === 203) {
+
+          this.primeiroAcesso.emit(true);
+
+        }
+        else {
           this.utilService.showMessage(result.mensagem, true)
         }
       });
@@ -80,7 +89,7 @@ export class AutenticacaoService {
   HeaderForFile(fileName: string, idPessoa: number) {
     const headers = new HttpHeaders({
       'filename': fileName,
-      'idpessoa' :  idPessoa,
+      'idpessoa': idPessoa,
       'Authorization': `Bearer ${this.token}`
     });
     return { headers: headers };

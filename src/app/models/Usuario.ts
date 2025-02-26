@@ -7,6 +7,7 @@ export class Usuario {
   sessao: string;
   tipoUsuario: string;
   ativo: boolean;
+  primeiroAcesso: boolean;
 }
 
 export class ResetSenha {

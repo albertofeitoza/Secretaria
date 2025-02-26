@@ -26,6 +26,7 @@ export class LoginComponent {
   sequenciaTelaReset: number = 1;
   InfBotao: string = "Enviar CPF";
   dadosResetSenha: ResetSenha = new ResetSenha()
+  primeiroAcesso = false;
   // igrejas: any[] = new Array();
   constructor(
     private auth: AutenticacaoService,
@@ -36,9 +37,16 @@ export class LoginComponent {
 
   ngOnInit() {
     this.sessao = new login()
-    this.auth.autenticado.subscribe(response => {
-      this.isLoggedIn = response
-    })
+    
+    this.auth.autenticado
+      .subscribe(response => {
+        this.isLoggedIn = response
+      })
+
+    this.auth.primeiroAcesso
+      .subscribe(response => {
+        this.primeiroAcesso = response
+      })
 
   }
 
