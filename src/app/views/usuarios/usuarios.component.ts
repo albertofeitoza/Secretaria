@@ -130,7 +130,7 @@ export class UsuariosComponent {
   private CadastrarUsuario(dados: any, acao: boolean): void {
 
     this.usuario.pessoaId = dados.id;
-
+    this.usuario.primeiroAcesso = this.usuario.senha ? true : false;
     this.serverApi.create(this.usuario, Endpoint.Usuario)
       .subscribe(() => { });
 
