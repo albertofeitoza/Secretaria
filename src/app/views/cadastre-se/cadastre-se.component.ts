@@ -253,7 +253,7 @@ export class CadastreSeComponent implements OnInit {
 
                   //implementar a proxima tela envio de documentos
                   this.service.showMessage("Cadastro enviado com sucesso!.", false);
-                  //this.step++; 
+                  this.dialogRef.close();
                   
                 }
               }, (err) => {

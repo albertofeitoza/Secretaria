@@ -1,19 +1,16 @@
-<div style="background-color: honeydew; overflow-y: scroll;">
-    <div style="text-align: right; padding: 20px;">
+<div style="background-color: honeydew; overflow-y: scroll;height: 100%; width: 100%;">
+    <div style="text-align: right; padding-right: 20px;padding-top: 20px;">
         <a (click)="FecharPopup()">
             <mat-icon>cancel</mat-icon>
         </a>
     </div>
 
-    <div style="text-align: left;padding : 50px;">
-
-        <label style="font-weight: 600; text-transform: uppercase">IGREJA SELECIONADA</label>
-        <hr />
+    <div style="text-align: left; padding-left: 2%;">
 
         <div style="display: ruby-text;" class="row">
 
             <div class="col-md-9" style="font-weight: 600; text-transform: uppercase">
-                {{breadcrumbs}}
+                IGREJA SELECIONADA : {{breadcrumbs}}
             </div>
             <div *ngIf="confirmar" class="col-md-3" style="text-align: end;">
                 <button style="margin: 0px;" class=" button" mat-raised-button color="primary"
@@ -25,7 +22,7 @@
         <div *ngIf="!confirmar">
 
             <div>
-                <mat-select style="width: 300px;" [(value)]="sedeSelecionada"
+                <mat-select style="width: 98%;" [(value)]="sedeSelecionada"
                     (selectionChange)="breadcrumbs = sedeSelecionada.nome; BuscarSubsede(sedeSelecionada)"
                     placeholder="Selecione a Sede">
                     <mat-option *ngFor="let ig of sede" [value]="ig">
@@ -36,7 +33,7 @@
             </div>
 
             <div *ngIf="subsede.length > 0">
-                <mat-select style="width: 300px;" [(value)]="subSedeSelecionada"
+                <mat-select style="width: 98%;" [(value)]="subSedeSelecionada"
                     (selectionChange)="breadcrumbs = breadcrumbs + '   >   ' + subSedeSelecionada.nome; BuscarCongregacoes(subSedeSelecionada)"
                     placeholder="Selecione a SubSede">
                     <mat-option *ngFor="let ig of subsede" [value]="ig">
@@ -47,7 +44,7 @@
             </div>
 
             <div *ngIf="congregacoes.length > 0">
-                <mat-select style="width: 300px;" [(value)]="congregacaoSelecionada"
+                <mat-select style="width: 98%;" [(value)]="congregacaoSelecionada"
                     (selectionChange)="breadcrumbs = breadcrumbs + '   >   ' + congregacaoSelecionada.nome"
                     placeholder="Selecione a Congregação">
                     <mat-option *ngFor="let ig of congregacoes" [value]="ig">
@@ -62,7 +59,7 @@
         </div>
     </div>
 
-    <div *ngIf="confirmar">
+    <div *ngIf="confirmar" class="col-md-12">
 
         <mat-accordion style="background-color: honeydew;" class="example-headers-align">
 

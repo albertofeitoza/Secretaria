@@ -3,6 +3,9 @@
     padding: 0;
 }
 
+::ng-deep .mat-mdc-dialog-surface mdc-dialog__surface{
+    background-color: honeydew;
+}
 .example-headers-align .mat-expansion-panel-header-description {
     justify-content: space-between;
     align-items: center;

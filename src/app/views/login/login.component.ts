@@ -119,6 +119,6 @@ export class LoginComponent {
   }
 
   Registrar(): void {
-    this.serviceUtil.Popup('Bem Vindo!', 0, CadastreSeComponent, 0, 'auto', 'auto', true);
+    this.serviceUtil.Popup('Bem Vindo!', 0, CadastreSeComponent, 0, '100%', '100%', true);
   }
 }
