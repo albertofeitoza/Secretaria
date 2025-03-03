@@ -6,6 +6,7 @@ import { Overlay } from '@angular/cdk/overlay';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { cnpj, cpf } from 'cpf-cnpj-validator';
+import DateDiff from 'date-diff';
 
 @Injectable({
   providedIn: 'root'
@@ -310,7 +311,7 @@ export class UtilServiceService {
 
   TipoIgreja() {
     let tipoIgreja = [];
-    tipoIgreja.push({ "id": 0, "value": "Selecione"})
+    tipoIgreja.push({ "id": 0, "value": "Selecione" })
     tipoIgreja.push({ "id": 1, "value": "Sede" })
     tipoIgreja.push({ "id": 2, "value": "Subsede" })
     tipoIgreja.push({ "id": 3, "value": "Congregacao" })
@@ -334,6 +335,9 @@ export class UtilServiceService {
   public ValidaCpf(cpfEntrada: string): boolean {
 
     if (cpfEntrada) {
+
+
+      cpfEntrada = cpfEntrada.replace(/\D/g, '') // remove tudo que não é numero
 
       let numeroCpf = ("00000000000" + cpfEntrada).slice(-11);
 
@@ -368,8 +372,20 @@ export class UtilServiceService {
     return false
   }
 
-}
-function saveAs(blob: Blob, arg1: string) {
-  throw new Error('Function not implemented.');
-}
+  public SubtractYears(date: Date): number {
 
+    var date1 = new Date; 
+    var date2 = new Date(date);
+
+    var diff = new DateDiff(date1, date2);
+
+    // diff.years(); // ===> 1.9
+    // diff.months(); // ===> 23
+    // diff.days(); // ===> 699
+    // diff.weeks(); // ===> 99.9
+    // diff.hours(); // ===> 16776
+    // diff.minutes(); // ===> 1006560
+    // diff.seconds(); // ===> 60393600
+    return diff.years()
+  }
+}

@@ -50,7 +50,8 @@ export class CadastroMembrosComponent implements OnDestroy {
   filhos: ViewFilhos = new ViewFilhos()
   situacaoCache: number = 0
   igrejaSelecionada = 0;
-
+  idade = 0;
+  idadeCasado = 0
   //--------------
   contatos: contatos[] = new Array()
   contato: contatos = new contatos();
@@ -94,7 +95,7 @@ export class CadastroMembrosComponent implements OnDestroy {
     this.serverApi;
     console.log()
   }
-  
+
 
   BuscarMembro() {
     const id = Number(this.activatedRoute.snapshot.params['id']);
@@ -116,12 +117,13 @@ export class CadastroMembrosComponent implements OnDestroy {
           this.logs = response?.data?.logs;
           this.filhos = response?.data?.filhos
           this.fotoPerfil = this.pessoa.fotoCadastrada ? `./assets/imagens/${this.pessoa.id}_${response.data.pessoa.cpf.trim()}.jpg` : `./assets/imagens/sem-foto.jpg`
-        
-          
+
+          this.idade =  this.serviceUtil.SubtractYears(this.pessoa.dataNascimento ? this.pessoa.dataNascimento : new Date)
+          this.idadeCasado =  this.serviceUtil.SubtractYears(this.pessoa.dataCasamento ? this.pessoa.dataCasamento : new Date)
 
         })
-       
-        
+
+
     }
   }
   CarregarCombos() {

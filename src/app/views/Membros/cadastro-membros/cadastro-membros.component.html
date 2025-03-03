@@ -38,9 +38,13 @@
 
           <mat-form-field color="accent" style="width: 213px;">
             <mat-label>Data Nascimento</mat-label>
+            <mat-label style="font-weight: 600; padding-left: 25px;font-size: 18px;">{{idade}} Anos</mat-label>
             <input matInput [matDatepicker]="dataNascimento" [(ngModel)]="pessoa.dataNascimento" name="dataNascimento">
+
             <mat-datepicker-toggle matIconSuffix [for]="dataNascimento"></mat-datepicker-toggle>
             <mat-datepicker #dataNascimento></mat-datepicker>
+
+
           </mat-form-field>
 
 
@@ -101,6 +105,7 @@
 
           <mat-form-field color="accent" style="width: 213px;">
             <mat-label>Data Casamento</mat-label>
+            <mat-label style="font-weight: 600; padding-left: 25px;font-size: 18px;">{{idadeCasado}} Anos</mat-label>
             <input matInput [matDatepicker]="dataCasamento" [(ngModel)]="pessoa.dataCasamento" name="dataCasamento">
             <mat-datepicker-toggle matSuffix [for]="dataCasamento"></mat-datepicker-toggle>
             <mat-datepicker #dataCasamento></mat-datepicker>
