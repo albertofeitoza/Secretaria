@@ -7,6 +7,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { cnpj, cpf } from 'cpf-cnpj-validator';
 import DateDiff from 'date-diff';
+import * as CryptoJS from 'crypto-js';
+
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +43,7 @@ export class UtilServiceService {
     return btoa(data);
   }
 
-  convertBase64toText(txt: string): string {
+  convertBase64toText(txt: string) {
     return atob(txt);
 
   }
@@ -387,5 +389,29 @@ export class UtilServiceService {
     // diff.minutes(); // ===> 1006560
     // diff.seconds(); // ===> 60393600
     return diff.years()
+  }
+  
+  //To encrypt input data
+  public encrypt(text: any): string {
+
+    let key = 'password';
+
+    return CryptoJS.AES.encrypt(text, key).toString();
+  }
+
+  public decrypt(text: any) {
+
+    try {
+
+      let key = 'password';
+
+
+      var bytes = CryptoJS.AES.decrypt(text, key);
+      var originalText = bytes.toString(CryptoJS.enc.Utf8);
+      return originalText
+
+    } catch (error) {
+      return error;
+    }
   }
 }

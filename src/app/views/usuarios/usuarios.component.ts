@@ -92,16 +92,16 @@ export class UsuariosComponent {
             .subscribe(result => {
               this.pessoa = result
               this.contato.pessoaId = result.id
-              this.CadastrarContato(result, true);
-              this.CadastrarUsuario(result, true);
+              this.CadastrarContato(result);
+              this.CadastrarUsuario(result);
               this.BuscaUsuarios();
             });
         } else {
 
           if (response.data.igrejaId == Number(this.matdialogRef.id)) {
 
-            this.CadastrarContato(response.data, true);
-            this.CadastrarUsuario(response.data, true);
+            this.CadastrarContato(response.data);
+            this.CadastrarUsuario(response.data);
             this.BuscaUsuarios();
 
           } else {
@@ -114,12 +114,12 @@ export class UsuariosComponent {
         }
       });
     }else {
-      this.CadastrarUsuario(this.pessoa, true);
+      this.CadastrarUsuario(this.pessoa);
       this.BuscaUsuarios();
     }
   }
 
-  private CadastrarContato(pessoa: any, acao: boolean): void {
+  private CadastrarContato(pessoa: any): void {
 
     this.contato.pessoaId = pessoa.id;
 
@@ -127,12 +127,14 @@ export class UsuariosComponent {
       .subscribe(() => { });
   }
 
-  private CadastrarUsuario(dados: any, acao: boolean): void {
+  private CadastrarUsuario(dados: any): void {
 
     this.usuario.pessoaId = dados.id;
     this.usuario.primeiroAcesso = this.usuario.senha ? true : false;
     this.serverApi.create(this.usuario, Endpoint.Usuario)
-      .subscribe(() => { });
+      .subscribe(() => {
+        this.utilService.showMessage(`${this.usuario.id == 0 ? 'Usuário Cadastrado!' : 'Dados Alterados com sucesso'} `, false)
+       });
 
   }
 
