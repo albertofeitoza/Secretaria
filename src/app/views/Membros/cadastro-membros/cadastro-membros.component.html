@@ -23,7 +23,7 @@
 
           <mat-form-field>
             <mat-label>CPF</mat-label>
-            <input class="number" matInput placeholder="CPF" [(ngModel)]="pessoa.cpf" name="cpf">
+            <input [disabled]="pessoa.id > 0 ? true : false" class="number" matInput placeholder="CPF" [(ngModel)]="pessoa.cpf" name="cpf">
           </mat-form-field>
 
           <mat-form-field>
@@ -36,7 +36,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field color="accent" style="width: 213px;">
+          <mat-form-field color="accent" style="width: 220px;">
             <mat-label>Data Nascimento</mat-label>
             <mat-label style="font-weight: 600; padding-left: 25px;font-size: 18px;">{{pessoa.dataNascimento != null && idade > 0 ? idade +
               ' Anos' : ''}} </mat-label>
@@ -79,13 +79,13 @@
           </mat-form-field>
 
           <mat-form-field>
-            <mat-label>Naturalidade</mat-label>
-            <input matInput placeholder="Naturalidade" [(ngModel)]="pessoa.naturalidade" name="naturalidade">
+            <mat-label>Cidade onde nasceu</mat-label>
+            <input matInput placeholder="Cidade onde nasceu" [(ngModel)]="pessoa.naturalidade" name="naturalidade">
           </mat-form-field>
 
           <mat-form-field>
-            <mat-label>Naturalidade-Estado</mat-label>
-            <input matInput placeholder="Naturalidade-Estado" [(ngModel)]="pessoa.naturalidadeEstado"
+            <mat-label>Estado onde nasceu</mat-label>
+            <input matInput placeholder="Estado onde nasceu" [(ngModel)]="pessoa.naturalidadeEstado"
               name="naturalidadeEstado">
           </mat-form-field>
 
@@ -100,7 +100,7 @@
             <input matInput placeholder="Nome do Conjuge" [(ngModel)]="pessoa.nomeConjuge" name="nomeConjuge">
           </mat-form-field>
 
-          <mat-form-field color="accent" style="width: 213px;">
+          <mat-form-field color="accent" style="width: 220px;">
             <mat-label>Data Casamento</mat-label>
             <mat-label style="font-weight: 600; padding-left: 5px;font-size: 14px;">{{pessoa.dataCasamento != null && idadeCasado > 0 ?
               idadeCasado + ' Anos de Casado' : '' }}</mat-label>
@@ -253,7 +253,7 @@
           </mat-form-field>
 
           <a>
-            <i class="material-icons" (click)="AdicionarContato()">add</i>
+            <i class="material-icons cursor" (click)="AdicionarContato()">add</i>
           </a>
         </div>
       </div>
@@ -374,7 +374,7 @@
           type="checkbox">
       </mat-form-field>
       <!-- data referencia -->
-      <mat-form-field color="accent" style="width: 213px;">
+      <mat-form-field color="accent" style="width: 220px;">
         <mat-label>Data Batismo Águas</mat-label>
         <input matInput [matDatepicker]="batismoAguas" [(ngModel)]="dadosMembro.batismoAguas" name="batismoAguas">
         <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
@@ -400,8 +400,8 @@
           name="batismoAguasEstado">
       </mat-form-field>
 
-      <mat-form-field color="accent" style="width: 213px;">
-        <mat-label>Data do Batismo no E. Santo</mat-label>
+      <mat-form-field color="accent" style="width: 220px;">
+        <mat-label>Batismo no Esp. Santo</mat-label>
         <input matInput [matDatepicker]="batismoESanto" [(ngModel)]="dadosMembro.batismoESanto" name="batismoESanto">
         <mat-datepicker-toggle matIconSuffix [for]="batismoESanto"></mat-datepicker-toggle>
         <mat-datepicker #batismoESanto></mat-datepicker>
@@ -413,7 +413,7 @@
           name="batismoESantoIgreja">
       </mat-form-field>
 
-      <mat-form-field color="accent" style="width: 213px;">
+      <mat-form-field color="accent" style="width: 220px;">
         <mat-label>Membro Desde</mat-label>
         <input matInput [matDatepicker]="membroDesde" [(ngModel)]="dadosMembro.membroDesde" name="membroDesde">
         <mat-datepicker-toggle matIconSuffix [for]="membroDesde"></mat-datepicker-toggle>
@@ -421,7 +421,7 @@
       </mat-form-field>
 
 
-      <mat-form-field color="accent" style="width: 213px;">
+      <mat-form-field color="accent" style="width: 220px;">
         <mat-label>Validade Cartão Membro</mat-label>
         <input matInput [matDatepicker]="validadeCartaoMembro" [(ngModel)]="dadosMembro.validadeCartaoMembro"
           name="validadeCartaoMembro">
@@ -466,7 +466,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field color="accent" style="width: 213px;">
+      <mat-form-field color="accent" style="width: 220px;">
         <mat-label>Mudança Com Carta</mat-label>
         <input matInput [matDatepicker]="mudancaComcarta" [(ngModel)]="dadosMembro.mudancaComCarta"
           name="mudancaComCarta">
@@ -486,7 +486,7 @@
           name="mudancaComCartaIgrejaEstado">
       </mat-form-field>
 
-      <mat-form-field color="accent" style="width: 213px;">
+      <mat-form-field color="accent" style="width: 220px;">
         <mat-label>Mudança Sem Carta</mat-label>
         <input matInput [matDatepicker]="mudancaSemcarta" [(ngModel)]="dadosMembro.mudancaSemCarta"
           name="mudancaSemCarta">
@@ -494,7 +494,7 @@
         <mat-datepicker #mudancaSemcarta></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field color="accent" style="width: 213px;">
+      <mat-form-field color="accent" style="width: 220px;">
         <mat-label>Data Comunhão</mat-label>
         <input matInput [matDatepicker]="dataComunhao" [(ngModel)]="dadosMembro.comunhao" name="comunhao">
         <mat-datepicker-toggle matIconSuffix [for]="dataComunhao"></mat-datepicker-toggle>
@@ -538,7 +538,7 @@
         <input matInput placeholder="Novo Cargo" [(ngModel)]="cargo.cargo" name="cargo">
       </mat-form-field>
 
-      <mat-form-field color="accent" style="width: 213px;">
+      <mat-form-field color="accent" style="width: 220px;">
         <mat-label>Data do Cargo</mat-label>
         <input matInput [matDatepicker]="noCargoDesde" [(ngModel)]="cargo.noCargoDesde" name="noCargoDesde">
         <mat-datepicker-toggle matIconSuffix [for]="noCargoDesde"></mat-datepicker-toggle>
@@ -655,14 +655,14 @@
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Frequenta Doutrina/Ensino.</mat-label>
+          <mat-label>Freq. Doutrina/Ensino.</mat-label>
           <input style="height: 20px; width: 155px;" matInput placeholder="Frequenta Doutrina/Ensino.">
           <input name="frequentaDoutrinaEnsinamento" [(ngModel)]="dadosObreiro.frequentaDoutrinaEnsinamento"
             [checked]="dadosObreiro.frequentaDoutrinaEnsinamento" type="checkbox">
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Possui Cheque S.Fundo?</mat-label>
+          <mat-label>Cheque S.Fundo?</mat-label>
           <input style="height: 20px; width: 150px;" matInput placeholder="Possui Cheque S.Fundo?">
           <input name="possuiChequeSemFundos" [(ngModel)]="dadosObreiro.possuiChequeSemFundos"
             [checked]="dadosObreiro.possuiChequeSemFundos" type="checkbox">
@@ -676,7 +676,7 @@
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Cartão Provisório</mat-label>
+          <mat-label>Cartão Provisório?</mat-label>
           <input style="height: 20px; width: 150px;" matInput placeholder="Cartão Provisório?">
           <input name="possuiProtestos" [(ngModel)]="dadosObreiro.cartaoProvisorio"
             [checked]="dadosObreiro.cartaoProvisorio" type="checkbox">

@@ -118,8 +118,8 @@ export class CadastroMembrosComponent implements OnDestroy {
           this.filhos = response?.data?.filhos
           this.fotoPerfil = this.pessoa.fotoCadastrada ? `./assets/imagens/${this.pessoa.id}_${response.data.pessoa.cpf.trim()}.jpg` : `./assets/imagens/sem-foto.jpg`
 
-          this.idade =  this.serviceUtil.SubtractYears(this.pessoa.dataNascimento ? this.pessoa.dataNascimento : new Date)
-          this.idadeCasado =  this.serviceUtil.SubtractYears(this.pessoa.dataCasamento ? this.pessoa.dataCasamento : new Date)
+          this.idade = this.serviceUtil.SubtractYears(this.pessoa.dataNascimento ? this.pessoa.dataNascimento : new Date)
+          this.idadeCasado = this.serviceUtil.SubtractYears(this.pessoa.dataCasamento ? this.pessoa.dataCasamento : new Date)
 
         })
 
@@ -300,8 +300,8 @@ export class CadastroMembrosComponent implements OnDestroy {
           this.pessoa.grauInstrucao < 1 || this.pessoa.grauInstrucao == undefined ? this.serviceUtil.showMessage("Selecione --> Grau de Instrução") :
             this.pessoa.sexo < 1 || this.pessoa.sexo == undefined ? this.serviceUtil.showMessage("Selecione --> Sexo ") :
               this.pessoa.statusPessoa < 1 || this.pessoa.statusPessoa == undefined ? this.serviceUtil.showMessage("Selecione --> Situação ") :
-                this.pessoa.naturalidade == undefined ? this.serviceUtil.showMessage("Informe --> Naturalidade") :
-                  this.pessoa.naturalidadeEstado == undefined ? this.serviceUtil.showMessage("Informe --> Naturalidade Estado") :
+                this.pessoa.naturalidade == undefined ? this.serviceUtil.showMessage("Informe --> Cidade onde nasceu") :
+                  this.pessoa.naturalidadeEstado == undefined ? this.serviceUtil.showMessage("Informe --> Estado onde nasceu") :
                     this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.dataCasamento == undefined ? this.serviceUtil.showMessage("Informe a Data de Casamento.") :
                       this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.cpfConjuge == "" ? this.serviceUtil.showMessage("Informe o CPF do Cônjuje e pressione enter.") :
                         result = true
@@ -334,17 +334,17 @@ export class CadastroMembrosComponent implements OnDestroy {
   ValidarDadosMembro(): boolean {
     let result: boolean = false;
     this.dadosMembro.rol == undefined ? this.serviceUtil.showMessage("Informe --> Nº Rol ") :
-      this.dadosMembro.congregacao == undefined ? this.serviceUtil.showMessage("Informe a --> Congregação") :
-        this.dadosMembro.regional == undefined ? this.serviceUtil.showMessage("Informe --> Regional") :
-          this.dadosMembro.batismoAguas == undefined ? this.serviceUtil.showMessage("Informe a data de --> Batismo nas Águas") :
-            this.dadosMembro.batismoAguasIgreja == undefined ? this.serviceUtil.showMessage("Informe a Igreja --> Batismo nas Águas") :
-              this.dadosMembro.batismoAguasCidade == undefined ? this.serviceUtil.showMessage("Informe a Cidade --> Onde foi batizado") :
-                this.dadosMembro.batismoAguasEstado == undefined ? this.serviceUtil.showMessage("Informe o Estado --> Onde foi batizado") :
-                  this.dadosMembro.membroDesde == undefined ? this.serviceUtil.showMessage("Informe --> Membro Desde") :
-                    this.dadosMembro.validadeCartaoMembro == undefined ? this.serviceUtil.showMessage("Informe a data --> Validade do cartão de Membro") :
-                      this.dadosMembro.funcao == undefined || this.dadosMembro.funcao < 1 ? this.serviceUtil.showMessage("Selecione a Função --> Função") :
-                        this.dadosMembro.cursoTeologico > 0 && this.dadosMembro.cursoTeologicoOndeCursou == undefined ? this.serviceUtil.showMessage("Informe onde cursou Teologia.") :
-                          this.dadosMembro.funcao < this.funcaoMembroCache ? this.serviceUtil.showMessage("A função não pode ser rebaixada") :
+      this.dadosMembro.congregacao == undefined && this.pessoa.id > 0 ? this.serviceUtil.showMessage("Informe a --> Congregação") :
+        this.dadosMembro.regional == undefined && this.pessoa.id > 0 ? this.serviceUtil.showMessage("Informe --> Regional") :
+          this.dadosMembro.batismoAguas == undefined && this.pessoa.id > 0 ? this.serviceUtil.showMessage("Informe a data de --> Batismo nas Águas") :
+            this.dadosMembro.batismoAguasIgreja == undefined && this.pessoa.id > 0 ? this.serviceUtil.showMessage("Informe a Igreja --> Batismo nas Águas") :
+              this.dadosMembro.batismoAguasCidade == undefined && this.pessoa.id > 0 ? this.serviceUtil.showMessage("Informe a Cidade --> Onde foi batizado") :
+                this.dadosMembro.batismoAguasEstado == undefined && this.pessoa.id > 0 ? this.serviceUtil.showMessage("Informe o Estado --> Onde foi batizado") :
+                  this.dadosMembro.membroDesde == undefined && this.pessoa.id > 0 ? this.serviceUtil.showMessage("Informe --> Membro Desde") :
+                    this.dadosMembro.validadeCartaoMembro == undefined && this.pessoa.id > 0 ? this.serviceUtil.showMessage("Informe a data --> Validade do cartão de Membro") :
+                      this.dadosMembro.funcao == undefined && this.pessoa.id > 0 || this.dadosMembro.funcao < 1 && this.pessoa.id > 0 ? this.serviceUtil.showMessage("Selecione a Função --> Função") :
+                        this.dadosMembro.cursoTeologico > 0 && this.dadosMembro.cursoTeologicoOndeCursou == undefined && this.pessoa.id > 0 ? this.serviceUtil.showMessage("Informe onde cursou Teologia.") :
+                          this.dadosMembro.funcao < this.funcaoMembroCache && this.pessoa.id > 0 ? this.serviceUtil.showMessage("A função não pode ser rebaixada") :
                             this.dadosMembro.funcao > this.funcaoMembroCache && this.dadosMembro.funcao - this.funcaoMembroCache > 1 ? this.serviceUtil.showMessage("Função Inválida deve ser adicionada uma por vez!.") :
                               this.dadosMembro.id == 0 && this.dadosMembro.funcao > 1 ? this.serviceUtil.showMessage("No Primeiro cadastro do Membro ele deve ser atribuido a função Membro.") :
                                 result = true

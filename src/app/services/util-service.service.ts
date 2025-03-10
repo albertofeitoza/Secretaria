@@ -87,13 +87,13 @@ export class UtilServiceService {
   EstCivil() {
     let estCivil = []
     estCivil.push({ "id": 0, "value": "Selecione" })
-    estCivil.push({ "id": 1, "value": "Solteiro" })
-    estCivil.push({ "id": 2, "value": "Primeiro Casamento" })
-    estCivil.push({ "id": 3, "value": "Segundo Casamento Viuvo" })
-    estCivil.push({ "id": 4, "value": "Segundo Casamento Divorciado" })
-    estCivil.push({ "id": 5, "value": "Viuvo" })
-    estCivil.push({ "id": 6, "value": "Separado" })
-    estCivil.push({ "id": 7, "value": "Divorciado" })
+    estCivil.push({ "id": 1, "value": "Solteiro(a)" })
+    estCivil.push({ "id": 2, "value": "1º Casamento" })
+    estCivil.push({ "id": 3, "value": "2º Casamento Viuvo(a)" })
+    estCivil.push({ "id": 4, "value": "2º Casamento Divorciado(a)" })
+    estCivil.push({ "id": 5, "value": "Viuvo(a)" })
+    estCivil.push({ "id": 6, "value": "Separado(a)" })
+    estCivil.push({ "id": 7, "value": "Divorciado(a)" })
 
     return estCivil
   }
@@ -105,12 +105,12 @@ export class UtilServiceService {
     grauInstrucao.push({ "id": 0, "value": "Selecione" })
     grauInstrucao.push({ "id": 1, "value": "Analfabeto" })
     grauInstrucao.push({ "id": 2, "value": "Ensino Fundamental" })
-    grauInstrucao.push({ "id": 3, "value": "Primeiro Grau Completo" })
-    grauInstrucao.push({ "id": 4, "value": "Primeiro Grau InCompleto" })
-    grauInstrucao.push({ "id": 5, "value": "Segundo Grau Completo" })
-    grauInstrucao.push({ "id": 6, "value": "Segundo Grau InCompleto" })
+    grauInstrucao.push({ "id": 3, "value": "1º Grau Completo" })
+    grauInstrucao.push({ "id": 4, "value": "1º Grau InCompleto" })
+    grauInstrucao.push({ "id": 5, "value": "2º Grau Completo" })
+    grauInstrucao.push({ "id": 6, "value": "2º Grau InCompleto" })
     grauInstrucao.push({ "id": 7, "value": "Superior Completo" })
-    grauInstrucao.push({ "id": 8, "value": "Superior InCompleto" })
+    grauInstrucao.push({ "id": 8, "value": "Superior Incompleto" })
     grauInstrucao.push({ "id": 9, "value": "Mestrado" })
 
     return grauInstrucao;
@@ -156,8 +156,8 @@ export class UtilServiceService {
     funcao.push({ "id": 0, "value": "selecione" })
     funcao.push({ "id": 1, "value": "Membro" })
     funcao.push({ "id": 2, "value": "Cooperador" })
-    funcao.push({ "id": 3, "value": "Diacono" })
-    funcao.push({ "id": 4, "value": "Presbitero" })
+    funcao.push({ "id": 3, "value": "Diácono" })
+    funcao.push({ "id": 4, "value": "Presbítero" })
     funcao.push({ "id": 5, "value": "Evangelista" })
     funcao.push({ "id": 6, "value": "Pastor" })
 
@@ -229,34 +229,34 @@ export class UtilServiceService {
     return periodo;
   }
 
-  PeriodoCemAnos() {
-    let periodo = [];
-    periodo.push({ "id": 0, "value": "Informe o mês" });
+  // PeriodoCemAnos() {
+  //   let periodo = [];
+  //   periodo.push({ "id": 0, "value": "Informe o mês" });
 
-    const anoCorrente = new Date().getFullYear();
+  //   const anoCorrente = new Date().getFullYear();
 
-    for (let index = 0; index < 100; index++) {
-      const element = index;
+  //   for (let index = 0; index < 100; index++) {
+  //     const element = index;
 
 
-    }
+  //   }
 
-    periodo.push({ "id": 0, "value": "Informe o mês" });
-    periodo.push({ "id": 1, "value": "Janeiro" });
-    periodo.push({ "id": 2, "value": "Fevereiro" });
-    periodo.push({ "id": 3, "value": "Março" });
-    periodo.push({ "id": 4, "value": "Abril" });
-    periodo.push({ "id": 5, "value": "Maio" });
-    periodo.push({ "id": 6, "value": "Junho" });
-    periodo.push({ "id": 7, "value": "Julho" });
-    periodo.push({ "id": 8, "value": "Agosto" });
-    periodo.push({ "id": 9, "value": "Setembro" });
-    periodo.push({ "id": 10, "value": "Outubro" });
-    periodo.push({ "id": 11, "value": "Novembro" });
-    periodo.push({ "id": 12, "value": "Dezembro" });
+  //   periodo.push({ "id": 0, "value": "Informe o mês" });
+  //   periodo.push({ "id": 1, "value": "Janeiro" });
+  //   periodo.push({ "id": 2, "value": "Fevereiro" });
+  //   periodo.push({ "id": 3, "value": "Março" });
+  //   periodo.push({ "id": 4, "value": "Abril" });
+  //   periodo.push({ "id": 5, "value": "Maio" });
+  //   periodo.push({ "id": 6, "value": "Junho" });
+  //   periodo.push({ "id": 7, "value": "Julho" });
+  //   periodo.push({ "id": 8, "value": "Agosto" });
+  //   periodo.push({ "id": 9, "value": "Setembro" });
+  //   periodo.push({ "id": 10, "value": "Outubro" });
+  //   periodo.push({ "id": 11, "value": "Novembro" });
+  //   periodo.push({ "id": 12, "value": "Dezembro" });
 
-    return periodo;
-  }
+  //   return periodo;
+  // }
 
 
   public TipoCartas(): any {
@@ -376,7 +376,7 @@ export class UtilServiceService {
 
   public SubtractYears(date: Date): number {
 
-    var date1 = new Date; 
+    var date1 = new Date;
     var date2 = new Date(date);
 
     var diff = new DateDiff(date1, date2);
@@ -390,7 +390,7 @@ export class UtilServiceService {
     // diff.seconds(); // ===> 60393600
     return diff.years()
   }
-  
+
   //To encrypt input data
   public encrypt(text: any): string {
 
