@@ -9,9 +9,9 @@ import { CadastroMembrosComponent } from './views/Membros/cadastro-membros/cadas
 import { UpdateMembroComponent } from './views/Membros/update-membro/update-membro.component';
 import { OfertasComponent } from './views/ofertas/ofertas.component';
 import { UsuariosComponent } from './views/usuarios/usuarios.component';
-import { FilhosComponent } from './views/Membros/Modal/filhos/filhos.component';
 import { FilhosMembrosComponent } from './views/filhos-membros/filhos-membros.component';
 import { IgrejaComponent } from './views/igreja/igreja.component';
+import { FinanceiroReadComponent } from './views/Financeiro/financeiro-read/financeiro-read.component';
 
 const routes: Routes = [
   {path : '', component: BemVindoComponent},
@@ -26,6 +26,9 @@ const routes: Routes = [
   {path: "usuarios", component: UsuariosComponent},
   {path: "igreja", component: IgrejaComponent},
   {path: "filhos", component: FilhosMembrosComponent},
+  {path: "financeiro", component: FinanceiroReadComponent}
+
+  
 ];
 
 @NgModule({

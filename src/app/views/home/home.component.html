@@ -6,13 +6,10 @@
     <mat-nav-list *ngIf="PermissaoMenus().TipoUsuarioLogado === 1">
       <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
       <a mat-list-item routerLink="/filhos"><mat-icon style="padding-right: 2px;">family_restroom</mat-icon>Crianças</a>
+      <a mat-list-item routerLink="/financeiro"><i class="material-icons">payments</i>Financeiro</a>
       <a mat-list-item routerLink="/membros"><i class="material-icons">people</i> Membros</a>
       <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i> Ofertas</a>
       <a mat-list-item routerLink="/relatorios"><i class="material-icons">assignment</i>Relatórios</a>
-
-
-      <!-- <a mat-list-item routerLink="/usuarios"><i class="material-icons">account_box</i>Usuários</a> -->
-
 
       <a mat-list-item [matMenuTriggerFor]="menu"><i class="material-icons">settings</i> Configurações</a>
       <mat-menu #menu="matMenu">
@@ -20,14 +17,13 @@
           <a mat-list-item routerLink="/igreja"><i class="material-icons">church</i>Igreja</a>
         </a>
       </mat-menu>
-
-
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
     </mat-nav-list>
 
     <mat-nav-list *ngIf="PermissaoMenus().TipoUsuarioLogado === 2">
       <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
       <a mat-list-item routerLink="/filhos"><mat-icon style="padding-right: 2px;">family_restroom</mat-icon>Crianças</a>
+      <a mat-list-item routerLink="/financeiro"><i class="material-icons">payments</i>Pagamentos</a>
       <a mat-list-item routerLink="/membros"><i class="material-icons">people</i> Membros</a>
       <a mat-list-item routerLink="/relatorios"><i class="material-icons">assignment</i>Relatórios</a>
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
