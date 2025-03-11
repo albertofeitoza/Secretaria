@@ -152,6 +152,8 @@ export class CadastroMembrosComponent implements OnDestroy {
 
     if (this.serviceUtil.ValidaCpf(this.pessoa.cpf)) {
 
+      this.pessoa.cpf = this.pessoa.cpf.replace(/\D/g, '');
+      this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
 
       switch (step) {
         case 0:
@@ -273,6 +275,11 @@ export class CadastroMembrosComponent implements OnDestroy {
   BuscarConjuje(keyEvent: any) {
 
     if (keyEvent.which == 13) {
+      this.pessoa.cpf = this.pessoa.cpf.replace(/\D/g, '');
+      this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
+
+      this.pessoa.cpfConjuge = this.pessoa.cpf.replace(/\D/g, '');
+      this.pessoa.cpfConjuge = ("00000000000" + this.pessoa.cpfConjuge).slice(-11);
 
       if (this.pessoa.cpf == this.pessoa.cpfConjuge)
         return this.serviceUtil.showMessage(`O CPF informado é mesmo da pessoa ${this.pessoa.nome}.`, true);
@@ -450,7 +457,10 @@ export class CadastroMembrosComponent implements OnDestroy {
   }
 
   processFile(event: any) {
-
+    
+    this.pessoa.cpf = this.pessoa.cpf.replace(/\D/g, '');
+    this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
+    
     if (event.target.files && event.target.files[0] && this.serviceUtil.ValidaCpf(this.pessoa.cpf)) {
 
       const file = <File>event.target.files[0];

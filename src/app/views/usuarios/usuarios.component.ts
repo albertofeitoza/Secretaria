@@ -80,6 +80,9 @@ export class UsuariosComponent {
       this.contato.id = 0;
       this.contato.ddd = 11;
       this.usuario.ativo = true;
+      
+      this.pessoa.cpf = this.pessoa.cpf.replace(/\D/g, '');
+      this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
 
       this.serverApi.readById(this.pessoa.cpf, Endpoint.BuscaPorCpf, '', Number(this.matdialogRef.id)).subscribe(response => {
         if (response.code != 200) {

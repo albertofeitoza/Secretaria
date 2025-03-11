@@ -53,6 +53,7 @@ export class CadastreSeComponent implements OnInit {
   sexo: any[]
   cursoTeoligico: any[]
   funcao: any[]
+  spinner = false;
 
   constructor(
     private service: UtilServiceService,
@@ -176,6 +177,9 @@ export class CadastreSeComponent implements OnInit {
 
   processFile(event: any) {
 
+    this.pessoa.cpf = this.pessoa.cpf.replace(/\D/g, '');
+    this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
+
     if (event.target.files && event.target.files[0] && this.service.ValidaCpf(this.pessoa.cpf)) {
 
       const file = <File>event.target.files[0];
@@ -209,6 +213,9 @@ export class CadastreSeComponent implements OnInit {
 
 
   Salvar(step: number) {
+
+    this.pessoa.cpf = this.pessoa.cpf.replace(/\D/g, '');
+    this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
 
     if (!this.sedeSelecionada)
       return this.service.showMessage("Selecione a Sede!.", true);
@@ -248,17 +255,22 @@ export class CadastreSeComponent implements OnInit {
         case 3:
 
           if (this.ValidarDadosMembro()) {
+            this.spinner = true;
             this.serverApi.create(this.pessoa, Endpoint.Token + `/precadastro/`)
               .subscribe((result: ApiResponse) => {
                 if (result.code === 200) {
                   this.service.showMessage("Cadastro enviado com sucesso!.", false);
+                  
+                  this.spinner = false;
 
                   //implementar a proxima tela envio de documentos
                   this.service.showMessage("Cadastro enviado com sucesso!.", false);
                   this.dialogRef.close();
 
+
                 }
               }, (err) => {
+                this.spinner = false;
                 this.service.showMessage(`${err?.error?.message}`, false);
               })
           }
@@ -271,7 +283,7 @@ export class CadastreSeComponent implements OnInit {
 
   public BuscaCep(event: any) {
     try {
-      if (event.which == 13 || event.which == 9) {
+      if (event.which == 13 || event.which == 9 || event.which == 1) {
 
         this.servicoCep.buscarExterna(Endpoint.cep.replace('{0}', this.pessoa.pessoaEndereco.cep.toString().padStart(8, '0')))
           .subscribe(ret => {

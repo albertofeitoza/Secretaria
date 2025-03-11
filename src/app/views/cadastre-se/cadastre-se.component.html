@@ -221,10 +221,14 @@
 
                                 <mat-form-field style="padding-left: inherit;" appearance="outline" color="accent">
                                     <mat-label>CEP</mat-label>
-                                    <input class="number" matInput maxlength="8" placeholder="Informe o CEP"
-                                        [(ngModel)]="pessoa.pessoaEndereco.cep" name="cep"
-                                        (keydown)="BuscaCep($event)">
+                                    <div style="display: flex;">
+                                        <input class="number" matInput maxlength="8" placeholder="Informe o CEP"
+                                            [(ngModel)]="pessoa.pessoaEndereco.cep" name="cep"
+                                            (keydown)="BuscaCep($event)">
+                                        <mat-icon (click)="BuscaCep($event)">search</mat-icon>
+                                    </div>
                                 </mat-form-field>
+
 
                                 <mat-form-field appearance="outline" color="accent">
                                     <mat-label>Estado</mat-label>
@@ -382,7 +386,7 @@
                     </mat-panel-description>
                 </mat-expansion-panel-header>
 
-                <div class="col">
+                <div *ngIf="!spinner" class="col">
                     <mat-form-field style="padding-left: inherit;" appearance="outline" color="accent">
                         <mat-label>ROL</mat-label>
                         <input class="number" required="required" pattern="\d*" matInput placeholder="rol"
@@ -462,7 +466,7 @@
                             [(ngModel)]="pessoa.dadosMembro.batismoESantoIgreja" name="batismoESantoIgreja">
                     </mat-form-field>
 
-                  
+
                     <mat-form-field appearance="outline" color="accent">
                         <mat-label>Curso Teológico</mat-label>
                         <mat-select [(value)]="pessoa.dadosMembro.cursoTeologico" placeholder="Curso Teológico">
@@ -527,10 +531,13 @@
                             name="procedencia">
                     </mat-form-field>
                 </div>
+                <div style="text-align: -webkit-center;">
+                    <mat-spinner *ngIf="spinner"></mat-spinner>
+                </div>
 
                 <mat-action-row>
                     <button mat-button color="warn" (click)="Voltar()">Voltar</button>
-                    <button mat-button color="primary" (click)="Proximo()">Salvar</button>
+                    <button [disabled]="spinner" mat-button color="primary" (click)="Proximo()">Salvar</button>
                 </mat-action-row>
             </mat-expansion-panel>
 
