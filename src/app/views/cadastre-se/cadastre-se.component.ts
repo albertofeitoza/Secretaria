@@ -250,6 +250,9 @@ export class CadastreSeComponent implements OnInit {
           this.step++;
           break;
         case 2:
+          if (this.pessoa.contatos.length == 0) {
+            return this.service.showMessage("Cadastrar pelo menos um contato!.", false);
+          }
           this.step++;
           break;
         case 3:
@@ -260,7 +263,7 @@ export class CadastreSeComponent implements OnInit {
               .subscribe((result: ApiResponse) => {
                 if (result.code === 200) {
                   this.service.showMessage("Cadastro enviado com sucesso!.", false);
-                  
+
                   this.spinner = false;
 
                   //implementar a proxima tela envio de documentos

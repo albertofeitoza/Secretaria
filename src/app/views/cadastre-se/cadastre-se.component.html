@@ -313,7 +313,7 @@
 
                             <mat-form-field>
                                 <mat-label>Email</mat-label>
-                                <input matInput placeholder="Email" [(ngModel)]="contato.email" name="email">
+                                <input type="email" matInput placeholder="Email" [(ngModel)]="contato.email" name="email" pattern=".+@example\.com">
                             </mat-form-field>
 
                             <a>
