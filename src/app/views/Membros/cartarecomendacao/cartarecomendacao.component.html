@@ -7,7 +7,7 @@
     <br />
     <hr />
     <div style="display: flex; padding: 15px;">
-        <mat-form-field style="width:300px">
+        <mat-form-field style="width:300px" appearance="outline">
             <mat-label>Informe o Tipo de documento</mat-label>
             <mat-select [(value)]="relatorioSelecionado" placeholder="Tipo de documento">
                 <mat-option *ngFor="let cmb of comboCartas" [value]="cmb.id">
@@ -17,13 +17,13 @@
         </mat-form-field>
 
         <div *ngIf="relatorioSelecionado >= 13 && relatorioSelecionado <= 14 ">
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Cidade Destino</mat-label>
                 <input matInput placeholder="Informe a cidade Destino" [(ngModel)]="dadosSolicitacao.cidade"
                     name="Cidade">
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Estado Destino</mat-label>
                 <input matInput placeholder="Informe Estado Destino" [(ngModel)]="dadosSolicitacao.estado"
                     name="estado">
@@ -31,7 +31,7 @@
         </div>
 
         <div *ngIf="relatorioSelecionado >= 15 && relatorioSelecionado <= 16 && !PastorIgreja">
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Nome da Igreja Destino</mat-label>
                 <input matInput placeholder="Informe o nome da Igreja Destino"
                     [(ngModel)]="dadosSolicitacao.igrejaDestino" name="igreja">
@@ -40,13 +40,13 @@
 
         <div *ngIf="relatorioSelecionado >= 15 && relatorioSelecionado <= 16 && PastorIgreja">
 
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Nome da Igreja Destino</mat-label>
                 <input matInput placeholder="Nome da Igreja Destino" [(ngModel)]="dadosSolicitacao.igrejaDestino"
                     name="igreja">
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Novo pastor da igreja</mat-label>
                 <mat-select [(value)]="dadosSolicitacao.idNovoPastor" placeholder="Novo pastor da igreja">
                     <mat-option *ngFor="let pe of pessoas" [value]="pe.id">
@@ -87,7 +87,7 @@
 
     <div style="padding-left: 15px;" *ngIf="relatorioSelecionado >= 22 && relatorioSelecionado <= 23 && !PastorIgreja">
 
-        <mat-form-field style="width:300px">
+        <mat-form-field style="width:300px" appearance="outline">
             <mat-label>Igreja destino</mat-label>
             <mat-select [(value)]="idIgrejaSelecionada" placeholder="Selecione a Igreja destino">
                 <mat-option *ngFor="let ig of igrejas" [value]="ig.id">
@@ -108,7 +108,7 @@
 
         <div>
 
-            <mat-form-field style="width:300px">
+            <mat-form-field style="width:300px" appearance="outline">
                 <mat-label>Igreja destino</mat-label>
                 <mat-select [(value)]="idIgrejaSelecionada" placeholder="Selecione a Igreja destino">
                     <mat-option *ngFor="let ig of igrejas" [value]="ig.id">
@@ -117,7 +117,7 @@
                 </mat-select>
             </mat-form-field>
             <br />
-            <mat-form-field style="width:300px">
+            <mat-form-field style="width:300px" appearance="outline">
                 <mat-label>Novo pastor da igreja</mat-label>
                 <mat-select [(value)]="dadosSolicitacao.idNovoPastor" placeholder="Novo pastor da igreja">
                     <mat-option *ngFor="let pe of pessoas" [value]="pe.id">

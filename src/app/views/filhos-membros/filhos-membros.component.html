@@ -16,12 +16,12 @@
         <!-- Criar a busca por nome -->
 
         <div style="padding-top: 15px;">
-            <mat-form-field style="width: 280px;">
+            <mat-form-field style="width: 280px;" appearance="outline">
                 <mat-label>Nome</mat-label>
                 <input matInput placeholder="Nome" [(ngModel)]="filho.nome" name="nome">
             </mat-form-field>
 
-            <mat-form-field color="accent" style="width: 170px;">
+            <mat-form-field color="accent" style="width: 170px;" appearance="outline">
                 <mat-label>Data de Nascimento</mat-label>
                 <input matInput [matDatepicker]="dataNascimento" [(ngModel)]="filho.dataNascimento"
                     name="dataNascimento">
@@ -29,7 +29,7 @@
                 <mat-datepicker #dataNascimento></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field style="width: 130px;">
+            <mat-form-field style="width: 130px;" appearance="outline">
                 <mat-label>É Membro?</mat-label>
                 <mat-select [(value)]="filhoMembro" placeholder="É Membro">
                     <mat-option *ngFor="let sn of simNao" [value]="sn.id">
@@ -38,7 +38,7 @@
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Pai</mat-label>
                 <mat-select id="pai" [(value)]="filho.idPai" placeholder="Selecione o Pai">
                     <mat-option *ngFor="let p of ListaPai" [value]="p.id">
@@ -47,7 +47,7 @@
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Mãe</mat-label>
                 <mat-select id="mae" [(value)]="filho.idMae" placeholder="Selecione a Mãe">
                     <mat-option *ngFor="let m of ListaMae" [value]="m.id">

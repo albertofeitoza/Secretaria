@@ -72,6 +72,8 @@ export class CadastroMembrosComponent implements OnDestroy {
   funcao: any[]
   entradaFuncao: any[]
 
+  spinner = false;
+
   constructor(
     private serviceUtil: UtilServiceService,
     private serverApi: AllservicesService<any>,
@@ -157,8 +159,8 @@ export class CadastroMembrosComponent implements OnDestroy {
 
       switch (step) {
         case 0:
+          this.spinner = true;
           if (this.ValidarPessoa() && this.pessoa.id == 0) {
-
             this.serverApi.readById(this.pessoa.cpf, Endpoint.BuscaPorCpf, '', this.igrejaSelecionada).subscribe(response => {
               if (response.code != 200) {
                 this.pessoa.cpf = this.pessoa.cpf != undefined ? this.pessoa.cpf.toString() : this.pessoa.cpf
@@ -166,16 +168,21 @@ export class CadastroMembrosComponent implements OnDestroy {
                 this.pessoa.dataCasamento = this.pessoa.estadoCivil == 1 || this.pessoa.estadoCivil > 4 ? undefined : this.pessoa.dataCasamento
                 this.pessoa.igrejaId = Number(this.igrejaSelecionada)
                 //salvar dados de Pessoa
-                if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+                if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada) {
+                  this.spinner = false;
                   return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
+                }
+
 
                 this.serverApi.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
                   this.step++;
+                  this.spinner = false;
                   this.pessoa = x
                   this.serviceUtil.showMessage("Cadastro realizado");
                 });
 
               } else {
+                this.spinner = false;
                 const igreja = response?.data?.nome?.split(';');
                 this.serviceUtil.showMessage(`Já existe cadastro para o CPF informado : ${this.pessoa.cpf} Nome: ${igreja[0]} ${igreja[1]} `, true)
               }
@@ -196,17 +203,22 @@ export class CadastroMembrosComponent implements OnDestroy {
 
                   if (response.code == 200 && this.pessoa.cpf === response.data.cpf) {
 
-                    if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+                    if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada) {
+                      this.spinner = false;
                       return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
+                    }
+
 
                     this.serverApi.create(this.pessoa, Endpoint.Pessoa,)
                       .subscribe(x => {
+                        this.spinner = false;
                         this.step++;
                         this.pessoa = x
                         this.serviceUtil.showMessage(`Dados atualizados`, false)
 
                       });
                   } else {
+                    this.spinner = false;
                     const igreja = response?.data?.nome?.split(';');
                     this.serviceUtil.showMessage(`Já existe cadastro para o CPF informado: ${this.pessoa.cpf} Nome: ${igreja[0]} ${igreja[1]} `, true)
                   }
@@ -214,58 +226,76 @@ export class CadastroMembrosComponent implements OnDestroy {
             }
 
           }
+          this.spinner = false;
           break;
         case 1:
-
+          this.spinner = true;
           if (this.ValidarEndereco() && this.pessoa.id > 0) {
 
             this.endereco.pessoaId = this.pessoa.id;
 
             //Salvar Endereço
-            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
-              return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
+            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada) {
+              this.spinner = false;
+              return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.")
+            };
 
             this.serverApi.create(this.endereco, Endpoint.Enderecos)
               .subscribe(x => {
                 this.endereco = x
+                this.spinner = false;
                 this.step++
                 this.serviceUtil.showMessage("Endereço salvo", true);
               })
           }
+          this.spinner = false;
           break;
         case 2:
         case 3:
+          this.spinner = true;
           if (this.ValidarDadosMembro() && this.pessoa.id > 0) {
+
             this.dadosMembro.pessoaId = this.pessoa.id;
 
             if (this.dadosMembro.id === 0)
               this.dadosMembro.funcao = 1;
 
-            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada) {
+              this.spinner = false;
               return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
+            }
+
 
             this.serverApi.create(this.dadosMembro, Endpoint.Membros)
               .subscribe(x => {
                 this.dadosMembro = x
+                this.spinner = false;
                 this.step++
+              }, (err) => {
+                this.spinner = false;
               })
           }
+          this.spinner = false;
           break;
 
         case 4:
-
+          this.spinner = true;
           if (this.pessoa.id > 0) {
             this.dadosObreiro.pessoaId = this.pessoa.id;
 
-            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada) {
+              this.spinner = false;
               return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
+            }
 
             this.serverApi.create(this.dadosObreiro, Endpoint.Obreiro)
               .subscribe(x => {
                 this.dadosObreiro = x;
+                this.spinner = false;
                 this.serviceUtil.showMessage("Dados de obreiro salvo com suecsso!", true);
               });
           }
+          this.spinner = false;
           break;
         default:
           break;
@@ -274,11 +304,12 @@ export class CadastroMembrosComponent implements OnDestroy {
   }
   BuscarConjuje(keyEvent: any) {
 
-    if (keyEvent.which == 13) {
+    if (keyEvent.which == 13 || keyEvent.which == 9 || keyEvent.which == 1) {
+
       this.pessoa.cpf = this.pessoa.cpf.replace(/\D/g, '');
       this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
 
-      this.pessoa.cpfConjuge = this.pessoa.cpf.replace(/\D/g, '');
+      this.pessoa.cpfConjuge = this.pessoa.cpfConjuge.replace(/\D/g, '');
       this.pessoa.cpfConjuge = ("00000000000" + this.pessoa.cpfConjuge).slice(-11);
 
       if (this.pessoa.cpf == this.pessoa.cpfConjuge)
@@ -291,7 +322,7 @@ export class CadastroMembrosComponent implements OnDestroy {
       if (this.serviceUtil.ValidaCpf(this.pessoa.cpfConjuge)) {
         this.serverApi.readById(this.pessoa.cpfConjuge, Endpoint.BuscaPorCpf, '', this.auth.dadosUsuario.IgrejaLogada).subscribe(response => {
           if (response.code == 200) {
-            this.pessoa.nomeConjuge = response.data.nome
+            this.pessoa.nomeConjuge = response.data.nome;
           } else
             this.serviceUtil.showMessage(`${response.mensagem}, verifique o cadastro da esposa antes de prosseguir.`, true)
         });
@@ -457,10 +488,10 @@ export class CadastroMembrosComponent implements OnDestroy {
   }
 
   processFile(event: any) {
-    
+
     this.pessoa.cpf = this.pessoa.cpf.replace(/\D/g, '');
     this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
-    
+
     if (event.target.files && event.target.files[0] && this.serviceUtil.ValidaCpf(this.pessoa.cpf)) {
 
       const file = <File>event.target.files[0];

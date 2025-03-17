@@ -1,7 +1,7 @@
 <h1 style="text-align: left;padding-left: 25px;">Relatórios</h1>
 <div>
-    <div style="display: flex;" class="row">
-            <mat-form-field color="accent" style="width: 350px;">
+    <div style="display: flex;padding-left: 15px;"  class="row">
+            <mat-form-field color="accent" style="width: 350px;"  appearance="outline">
                 <mat-select [(value)]="relatorioSelecionado" placeholder="Tipo de Relatório"
                     (selectionChange)="RelatorioSelecionado()">
                     <mat-option *ngFor="let tr of tipoRelatorio" [value]="tr.id">
@@ -10,7 +10,7 @@
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field *ngIf="exibePeriodoOutros" color="accent" style="width: 213px;">
+            <mat-form-field *ngIf="exibePeriodoOutros" color="accent" style="width: 213px;" appearance="outline">
                 <mat-select [(value)]="filtros.periodoSelecionado" placeholder="Periodo"
                     (selectionChange)="SelecionarPeriodo()">
                     <mat-option *ngFor="let pe of periodo" [value]="pe.id">
@@ -19,7 +19,7 @@
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field *ngIf="exibeMes" color="accent" style="width: 213px;">
+            <mat-form-field *ngIf="exibeMes" color="accent" style="width: 213px;" appearance="outline">
                 <mat-select [(value)]="filtros.mesSelecionado" placeholder="Periodo" (selectionChange)="SelecionaMes()">
                     <mat-option *ngFor="let pe of meses" [value]="pe.id">
                         {{pe.value}}
@@ -27,7 +27,7 @@
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field *ngIf="exibeAno" color="accent" style="width: 213px;">
+            <mat-form-field *ngIf="exibeAno" color="accent" style="width: 213px;" appearance="outline">
                 <mat-select [(value)]="filtros.anoSelecionado" placeholder="Selecione o ano"
                     (selectionChange)="SelecionaAno()">
                     <mat-option *ngFor="let ano of anos" [value]="ano">
@@ -36,14 +36,14 @@
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field *ngIf="exibePeriodo" color="accent" style="width: 213px;">
+            <mat-form-field *ngIf="exibePeriodo" color="accent" style="width: 213px;" appearance="outline">
                 <mat-label>Data Início</mat-label>
                 <input matInput [matDatepicker]="dataini" [(ngModel)]="filtros.dataInicial" name="datainicio">
                 <mat-datepicker-toggle matIconSuffix [for]="dataini"></mat-datepicker-toggle>
                 <mat-datepicker #dataini></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field *ngIf="exibePeriodo" color="accent" style="width: 213px;">
+            <mat-form-field *ngIf="exibePeriodo" color="accent" style="width: 213px;" appearance="outline">
                 <mat-label>Data Fim</mat-label>
                 <input matInput [matDatepicker]="dataFinal" [(ngModel)]="filtros.dataFinal" name="datainicio">
                 <mat-datepicker-toggle matIconSuffix [for]="dataFinal"></mat-datepicker-toggle>
@@ -51,7 +51,7 @@
             </mat-form-field>
 
 
-            <mat-form-field *ngIf="exibeComboObreiro" color="accent" style="width: 400px;">
+            <mat-form-field *ngIf="exibeComboObreiro" color="accent" style="width: 400px;" appearance="outline">
                 <mat-select [(value)]="filtros.pessoaId" placeholder="Obreiros">
                     <mat-option>Selecione</mat-option>
                     <mat-option *ngFor="let pe of obreiros" [value]="pe.id">
@@ -61,7 +61,7 @@
             </mat-form-field>
 
 
-            <mat-form-field *ngIf="exibeComboMembros" color="accent" style="width: 400px;">
+            <mat-form-field *ngIf="exibeComboMembros" color="accent" style="width: 400px;" appearance="outline">
                 <mat-select [(value)]="filtros.pessoaId" placeholder="Membros">
                     <mat-option>Selecione</mat-option>
                     <mat-option *ngFor="let pe of membros" [value]="pe.id">
