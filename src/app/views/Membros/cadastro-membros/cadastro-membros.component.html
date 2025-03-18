@@ -9,24 +9,25 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <div class="mat-elevation-z8">
-      <div class="row">
+      <div *ngIf="!spinner" class="row">
         <div class="col-md-11" style="padding-top: 15px;">
-          <mat-form-field style="padding-left: 17px;">
+          <mat-form-field style="padding-left: 17px;" appearance="outline">
             <mat-label>Nome</mat-label>
             <input matInput placeholder="Obrigatório" [(ngModel)]="pessoa.nome" name="nome">
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>RG</mat-label>
             <input matInput placeholder="RG" [(ngModel)]="pessoa.rg" name="RG">
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>CPF</mat-label>
-            <input class="number" matInput placeholder="CPF" [(ngModel)]="pessoa.cpf" name="cpf">
+            <input [disabled]="pessoa.id > 0 ? true : false" class="number" matInput placeholder="CPF"
+              [(ngModel)]="pessoa.cpf" name="cpf">
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>Estado Civil</mat-label>
             <mat-select [(value)]="pessoa.estadoCivil" placeholder="Estado Civil"
               (selectionChange)="LimparCampoConjuge()">
@@ -36,21 +37,22 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field color="accent" style="width: 213px;">
+          <mat-form-field color="accent" style="width: 220px;" appearance="outline">
             <mat-label>Data Nascimento</mat-label>
-            <mat-label style="font-weight: 600; padding-left: 25px;font-size: 18px;">{{pessoa.dataNascimento != null && idade > 0 ? idade +
+            <mat-label style="font-weight: 600; padding-left: 25px;font-size: 18px;">{{pessoa.dataNascimento != null &&
+              idade > 0 ? idade +
               ' Anos' : ''}} </mat-label>
             <input matInput [matDatepicker]="dataNascimento" [(ngModel)]="pessoa.dataNascimento" name="dataNascimento">
             <mat-datepicker-toggle matIconSuffix [for]="dataNascimento"></mat-datepicker-toggle>
             <mat-datepicker #dataNascimento></mat-datepicker>
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>Profissão</mat-label>
             <input matInput placeholder="Profissão" [(ngModel)]="pessoa.profissao" name="profissao">
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>Grau de Instrução</mat-label>
             <mat-select [(value)]="pessoa.grauInstrucao" placeholder="Grau Instrução">
               <mat-option *ngFor="let i of instrucao" [value]="i.id">
@@ -59,7 +61,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>Sexo</mat-label>
             <mat-select [(value)]="pessoa.sexo" placeholder="Sexo">
               <mat-option *ngFor="let s of sexo" [value]="s.id">
@@ -69,7 +71,7 @@
           </mat-form-field>
 
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>Situação</mat-label>
             <mat-select [(value)]="pessoa.statusPessoa" placeholder="Situação" (selectionChange)="AlteraSituacao()">
               <mat-option *ngFor="let sp of statusPessoa" [value]="sp.id">
@@ -78,49 +80,54 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field>
-            <mat-label>Naturalidade</mat-label>
-            <input matInput placeholder="Naturalidade" [(ngModel)]="pessoa.naturalidade" name="naturalidade">
+          <mat-form-field appearance="outline">
+            <mat-label>Cidade onde nasceu</mat-label>
+            <input matInput placeholder="Cidade onde nasceu" [(ngModel)]="pessoa.naturalidade" name="naturalidade">
           </mat-form-field>
 
-          <mat-form-field>
-            <mat-label>Naturalidade-Estado</mat-label>
-            <input matInput placeholder="Naturalidade-Estado" [(ngModel)]="pessoa.naturalidadeEstado"
+          <mat-form-field appearance="outline">
+            <mat-label>Estado onde nasceu</mat-label>
+            <input matInput placeholder="Estado onde nasceu" [(ngModel)]="pessoa.naturalidadeEstado"
               name="naturalidadeEstado">
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>CPF Conjuje</mat-label>
-            <input matTooltip="Informe o Cpf e pressione Enter" matInput placeholder="CPF Conjuje"
-              [(ngModel)]="pessoa.cpfConjuge" name="cpfConjuge" (keypress)="BuscarConjuje($event)">
+            <div style="display: flex;">
+              <input matTooltip="CPF Conjuje" matInput placeholder="CPF Conjuje" [(ngModel)]="pessoa.cpfConjuge"
+                name="cpfConjuge" (keypress)="BuscarConjuje($event)">
+              <mat-icon (click)="BuscarConjuje($event)">search</mat-icon>
+            </div>
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>Nome do Conjuge</mat-label>
             <input matInput placeholder="Nome do Conjuge" [(ngModel)]="pessoa.nomeConjuge" name="nomeConjuge">
           </mat-form-field>
 
-          <mat-form-field color="accent" style="width: 213px;">
+          <mat-form-field color="accent" style="width: 220px;" appearance="outline">
             <mat-label>Data Casamento</mat-label>
-            <mat-label style="font-weight: 600; padding-left: 5px;font-size: 14px;">{{pessoa.dataCasamento != null && idadeCasado > 0 ?
+            <mat-label style="font-weight: 600; padding-left: 5px;font-size: 14px;">{{pessoa.dataCasamento != null &&
+              idadeCasado > 0 ?
               idadeCasado + ' Anos de Casado' : '' }}</mat-label>
-            <input style="padding-top: 5px;" matInput [matDatepicker]="dataCasamento" [(ngModel)]="pessoa.dataCasamento" name="dataCasamento">
+            <input style="padding-top: 5px;" matInput [matDatepicker]="dataCasamento" [(ngModel)]="pessoa.dataCasamento"
+              name="dataCasamento">
             <mat-datepicker-toggle matSuffix [for]="dataCasamento"></mat-datepicker-toggle>
             <mat-datepicker #dataCasamento></mat-datepicker>
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>Idoso</mat-label>
             <input style="height: 20px; width: 150px;" matInput placeholder="Idoso">
             <input name="idoso" [(ngModel)]="pessoa.idoso" [checked]="pessoa.idoso" type="checkbox">
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>Nome do Pai</mat-label>
             <input matInput placeholder="Nome do Pai" [(ngModel)]="pessoa.nomePai" name="nomePai">
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>Nome da Mãe</mat-label>
             <input matInput placeholder="Nome da Mãe" [(ngModel)]="pessoa.nomeMae" name="nomeMae">
           </mat-form-field>
@@ -144,12 +151,15 @@
         </div>
 
       </div>
+      <div style="text-align: -webkit-center;">
+        <mat-spinner *ngIf="spinner"></mat-spinner>
+      </div>
     </div>
 
     <mat-action-row>
       <button *ngIf="pessoa.nome && pessoa.id > 0" mat-button color="primary"
         routerLink="/membros/{{pessoa.nome.split(' ')[0]}}">Voltar</button>
-      <button mat-button color="primary" (click)="Proximo()">Salvar</button>
+      <button [disabled]="spinner" mat-button color="primary" (click)="Proximo()">Salvar</button>
     </mat-action-row>
 
   </mat-expansion-panel>
@@ -168,48 +178,54 @@
     <!-- DADOS DO ENDEREÇO -->
 
     <div class="mat-elevation-z8">
-      <div style="padding-top: 15px;">
-        <mat-form-field style="padding-left: 17px;">
+      <div *ngIf="!spinner" style="padding-top: 15px;">
+        <mat-form-field style="padding-left: 17px;" appearance="outline">
           <mat-label>CEP</mat-label>
-          <input class="number" matInput maxlength="8" placeholder="Informe o CEP" [(ngModel)]="endereco.cep" name="cep"
-            (keypress)="BuscaCep($event)">
+          <div style="display: flex;">
+            <input class="number" matInput maxlength="8" placeholder="Informe o CEP" [(ngModel)]="endereco.cep"
+              name="cep" (keydown)="BuscaCep($event)">
+            <mat-icon (click)="BuscaCep($event)">search</mat-icon>
+          </div>
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Estado</mat-label>
           <input matInput placeholder="Estado" [(ngModel)]="endereco.estado" name="estado">
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Cidade</mat-label>
           <input matInput placeholder="Cidade" [(ngModel)]="endereco.cidade" name="cidade">
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Bairro</mat-label>
           <input matInput placeholder="Bairro" [(ngModel)]="endereco.bairro" name="bairro">
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Rua</mat-label>
           <input matInput placeholder="Rua" [(ngModel)]="endereco.rua" name="rua">
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Número</mat-label>
           <input matInput placeholder="Número" [(ngModel)]="endereco.numero" name="numero">
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Complemento</mat-label>
           <input matInput placeholder="Complemento" [(ngModel)]="endereco.complemento" name="complemento">
         </mat-form-field>
+      </div>
+      <div style="text-align: -webkit-center;">
+        <mat-spinner *ngIf="spinner"></mat-spinner>
       </div>
     </div>
     <mat-action-row *ngIf="endereco.cep > 0 && endereco.estado && endereco.cidade 
       && endereco.bairro && endereco.rua && endereco.numero ">
       <button mat-button color="warn" (click)="Voltar()">Voltar</button>
-      <button mat-button color="primary" (click)="Proximo()">Salvar</button>
+      <button [disabled]="spinner" mat-button color="primary" (click)="Proximo()">Salvar</button>
     </mat-action-row>
 
   </mat-expansion-panel>
@@ -229,33 +245,38 @@
 
     <div class="menuInternoGrid">
       <div class="mat-elevation-z8">
-        <div style="padding-top: 15px;">
-          <mat-form-field>
+        <div *ngIf="!spinner" style="display: flex;padding-top: 15px;">
+          <mat-form-field appearance="outline">
             <mat-label>DDD</mat-label>
             <input class="number" maxlength="2" matInput placeholder="DDD" [(ngModel)]="contato.ddd" name="ddd">
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>Telefone</mat-label>
             <input class="number" maxlength="9" matInput placeholder="Telefone" [(ngModel)]="contato.telefone"
               name="telefone">
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>Celular</mat-label>
             <input class="number" maxlength="9" matInput placeholder="Celular" [(ngModel)]="contato.celular"
               name="celular">
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>Email</mat-label>
-            <input matInput placeholder="Email" [(ngModel)]="contato.email" name="email">
+            <input type="email" matInput placeholder="Email" [(ngModel)]="contato.email" name="email">
           </mat-form-field>
 
-          <a>
-            <i class="material-icons" (click)="AdicionarContato()">add</i>
-          </a>
+          <div style="padding-left: 15px;padding-top: 10px;">
+            <button style="background-color:blue; color: white;" [disabled]="spinner" mat-button color="primary"
+              (click)="AdicionarContato()">Adicionar</button>
+          </div>
         </div>
+        <div style="text-align: -webkit-center;">
+          <mat-spinner *ngIf="spinner"></mat-spinner>
+        </div>
+
       </div>
     </div>
     <br>
@@ -320,7 +341,7 @@
 
     <mat-action-row>
       <button mat-button color="warn" (click)="Voltar()">Voltar</button>
-      <button mat-button color="primary" (click)="Proximo()">Próximo</button>
+      <button [disabled]="spinner" mat-button color="primary" (click)="Proximo()">Próximo</button>
     </mat-action-row>
 
   </mat-expansion-panel>
@@ -336,45 +357,45 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <!-- dados Membro -->
-    <div class="menuInternoGrid">
-      <mat-form-field style="padding-left: 17px;">
+    <div *ngIf="!spinner" class="menuInternoGrid">
+      <mat-form-field style="padding-left: 17px;" appearance="outline">
         <mat-label>ROL</mat-label>
         <input class="number" required="required" pattern="\d*" matInput placeholder="rol" [(ngModel)]="dadosMembro.rol"
           name="rol">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Congregação</mat-label>
         <input matInput placeholder="Congregacao" [(ngModel)]="dadosMembro.congregacao" name="congregacao">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Regional</mat-label>
         <input matInput placeholder="Regional" [(ngModel)]="dadosMembro.regional" name="regional">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Batismo Filho Crente</mat-label>
         <input style="height: 20px; width: 150px;" matInput placeholder="Batismo filho de Crente">
         <input name="batismoFilhoCrente" [(ngModel)]="dadosMembro.batismoFilhoCrente"
           [checked]="dadosMembro.batismoFilhoCrente" type="checkbox">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Batismo filho não Crente</mat-label>
         <input style="height: 20px; width: 150px;" matInput placeholder="Batismo Filho de  não Crente">
         <input name="batismoFilhoNaoCrente" [(ngModel)]="dadosMembro.batismoFilhoNaoCrente"
           [checked]="dadosMembro.batismoFilhoNaoCrente" type="checkbox">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Fez Discipulado</mat-label>
         <input style="height: 20px; width: 150px;" matInput placeholder="Fez Discipulado">
         <input name="fezDiscipulado" [(ngModel)]="dadosMembro.fezDiscipulado" [checked]="dadosMembro.fezDiscipulado"
           type="checkbox">
       </mat-form-field>
       <!-- data referencia -->
-      <mat-form-field color="accent" style="width: 213px;">
+      <mat-form-field color="accent" style="width: 220px;" appearance="outline">
         <mat-label>Data Batismo Águas</mat-label>
         <input matInput [matDatepicker]="batismoAguas" [(ngModel)]="dadosMembro.batismoAguas" name="batismoAguas">
         <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
@@ -382,38 +403,38 @@
         <mat-datepicker #batismoAguas></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Batismo Águas Igreja</mat-label>
         <input matInput placeholder="Batismo Águas Igreja" [(ngModel)]="dadosMembro.batismoAguasIgreja"
           name="batismoAguasIgreja">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Batismo Águas Cidade</mat-label>
         <input matInput placeholder="Batismo Águas Cidade" [(ngModel)]="dadosMembro.batismoAguasCidade"
           name="batismoAguasCidade">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Batismo Águas Estado</mat-label>
         <input matInput placeholder="Batismo Águas Estado" [(ngModel)]="dadosMembro.batismoAguasEstado"
           name="batismoAguasEstado">
       </mat-form-field>
 
-      <mat-form-field color="accent" style="width: 213px;">
-        <mat-label>Data do Batismo no E. Santo</mat-label>
+      <mat-form-field color="accent" style="width: 220px;" appearance="outline">
+        <mat-label>Batismo no Esp. Santo</mat-label>
         <input matInput [matDatepicker]="batismoESanto" [(ngModel)]="dadosMembro.batismoESanto" name="batismoESanto">
         <mat-datepicker-toggle matIconSuffix [for]="batismoESanto"></mat-datepicker-toggle>
         <mat-datepicker #batismoESanto></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Batismo no E. Santo Igreja</mat-label>
         <input matInput placeholder="Batismo no E. Santo Igreja" [(ngModel)]="dadosMembro.batismoESantoIgreja"
           name="batismoESantoIgreja">
       </mat-form-field>
 
-      <mat-form-field color="accent" style="width: 213px;">
+      <mat-form-field color="accent" style="width: 220px;" appearance="outline">
         <mat-label>Membro Desde</mat-label>
         <input matInput [matDatepicker]="membroDesde" [(ngModel)]="dadosMembro.membroDesde" name="membroDesde">
         <mat-datepicker-toggle matIconSuffix [for]="membroDesde"></mat-datepicker-toggle>
@@ -421,7 +442,7 @@
       </mat-form-field>
 
 
-      <mat-form-field color="accent" style="width: 213px;">
+      <mat-form-field color="accent" style="width: 220px;" appearance="outline">
         <mat-label>Validade Cartão Membro</mat-label>
         <input matInput [matDatepicker]="validadeCartaoMembro" [(ngModel)]="dadosMembro.validadeCartaoMembro"
           name="validadeCartaoMembro">
@@ -429,7 +450,7 @@
         <mat-datepicker #validadeCartaoMembro></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Curso Teológico</mat-label>
         <mat-select [(value)]="dadosMembro.cursoTeologico" placeholder="Curso Teológico">
           <mat-option *ngFor="let ec of cursoTeoligico" [value]="ec.id">
@@ -438,26 +459,26 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Curso Teológico onde cursou</mat-label>
         <input matInput placeholder="Curso Teológico onde cursou" [(ngModel)]="dadosMembro.cursoTeologicoOndeCursou"
           name="cursoTeologicoOndeCursou">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Dizimista</mat-label>
         <input style="height: 20px; width: 150px;" matInput placeholder="Dizimista">
         <input name="dizimista" [(ngModel)]="dadosMembro.dizimista" [checked]="dadosMembro.dizimista" type="checkbox">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Frequenta EBD</mat-label>
         <input style="height: 20px; width: 150px;" matInput placeholder="Frequenta EBD">
         <input name="frequentaEbd" [(ngModel)]="dadosMembro.frequentaEbd" [checked]="dadosMembro.frequentaEbd"
           type="checkbox">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Função</mat-label>
         <mat-select [(value)]="dadosMembro.funcao" (selectionChange)="AlteraFuncao(false)" placeholder="Função">
           <mat-option *ngFor="let ec of funcao" [value]="ec.id">
@@ -466,7 +487,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field color="accent" style="width: 213px;">
+      <mat-form-field color="accent" style="width: 220px;" appearance="outline">
         <mat-label>Mudança Com Carta</mat-label>
         <input matInput [matDatepicker]="mudancaComcarta" [(ngModel)]="dadosMembro.mudancaComCarta"
           name="mudancaComCarta">
@@ -474,19 +495,19 @@
         <mat-datepicker #mudancaComcarta></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Mudança Com Carta(Igreja)</mat-label>
         <input matInput placeholder="Mudança Com Carta(Igreja)" [(ngModel)]="dadosMembro.mudancaComCartaIgreja"
           name="mudancaComCartaIgreja">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Mudança Com Carta(Estado)</mat-label>
         <input matInput placeholder="Mudança Com Carta(Estado)" [(ngModel)]="dadosMembro.mudancaComCartaIgrejaEstado"
           name="mudancaComCartaIgrejaEstado">
       </mat-form-field>
 
-      <mat-form-field color="accent" style="width: 213px;">
+      <mat-form-field color="accent" style="width: 220px;" appearance="outline">
         <mat-label>Mudança Sem Carta</mat-label>
         <input matInput [matDatepicker]="mudancaSemcarta" [(ngModel)]="dadosMembro.mudancaSemCarta"
           name="mudancaSemCarta">
@@ -494,27 +515,30 @@
         <mat-datepicker #mudancaSemcarta></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field color="accent" style="width: 213px;">
+      <mat-form-field color="accent" style="width: 220px;" appearance="outline">
         <mat-label>Data Comunhão</mat-label>
         <input matInput [matDatepicker]="dataComunhao" [(ngModel)]="dadosMembro.comunhao" name="comunhao">
         <mat-datepicker-toggle matIconSuffix [for]="dataComunhao"></mat-datepicker-toggle>
         <mat-datepicker #dataComunhao></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Procedência</mat-label>
         <input matInput placeholder="Procedência" [(ngModel)]="dadosMembro.procedencia" name="procedencia">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Observação</mat-label>
         <input matInput placeholder="Observação" [(ngModel)]="dadosMembro.observacao" name="observacao">
       </mat-form-field>
     </div>
+    <div style="text-align: -webkit-center;">
+      <mat-spinner *ngIf="spinner"></mat-spinner>
+    </div>
 
     <mat-action-row>
       <button mat-button color="warn" (click)="Voltar()">Voltar</button>
-      <button mat-button color="primary" (click)="Proximo()">Salvar</button>
+      <button [disabled]="spinner" mat-button color="primary" (click)="Proximo()">Salvar</button>
     </mat-action-row>
   </mat-expansion-panel>
 
@@ -532,30 +556,37 @@
 
     <!-- Cargos -->
 
-    <div class="menuInternoGrid">
-      <mat-form-field>
+    <div style="display:flex" *ngIf="!spinner" class="menuInternoGrid">
+      <mat-form-field appearance="outline">
         <mat-label>Cargo</mat-label>
         <input matInput placeholder="Novo Cargo" [(ngModel)]="cargo.cargo" name="cargo">
       </mat-form-field>
 
-      <mat-form-field color="accent" style="width: 213px;">
+      <mat-form-field color="accent" style="width: 220px;" appearance="outline">
         <mat-label>Data do Cargo</mat-label>
         <input matInput [matDatepicker]="noCargoDesde" [(ngModel)]="cargo.noCargoDesde" name="noCargoDesde">
         <mat-datepicker-toggle matIconSuffix [for]="noCargoDesde"></mat-datepicker-toggle>
         <mat-datepicker #noCargoDesde></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field color="accent" style="width: 213px;">
+      <mat-form-field color="accent" style="width: 213px;" appearance="outline">
         <mat-label>Ficou no cargo até</mat-label>
         <input matInput [matDatepicker]="noCargoAte" [(ngModel)]="cargo.noCargoAte" name="noCargoAte">
         <mat-datepicker-toggle matIconSuffix [for]="noCargoAte"></mat-datepicker-toggle>
         <mat-datepicker #noCargoAte></mat-datepicker>
       </mat-form-field>
 
-      <a>
-        <i class="material-icons" (click)="AdicionarCargo()">save</i>
-      </a>
+      <div style="padding-left: 15px;padding-top: 10px;">
+        <button style="background-color:blue; color: white;" [disabled]="spinner" mat-button color="primary"
+          (click)="AdicionarCargo()">Adicionar</button>
+      </div>
+
     </div>
+    <div style="text-align: -webkit-center;">
+      <mat-spinner *ngIf="spinner"></mat-spinner>
+    </div>
+
+
     <br>
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="cargos" matSort>
@@ -642,47 +673,47 @@
         <mat-icon>date_range</mat-icon>
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <div class="mat-elevation-z8">
+    <div *ngIf="!spinner" class="mat-elevation-z8">
 
       <!-- histórico do OBREIRO -->
       <div style="padding-top: 15px;">
 
-        <mat-form-field style="padding-left: 17px;">
+        <mat-form-field style="padding-left: 17px;" appearance="outline">
           <mat-label>Frequenta Reuniões Min.</mat-label>
           <input style="height: 20px; width: 150px;" matInput placeholder="Frequenta Reuniões Min.">
           <input name="frequentaReunioesMinisteriais" [(ngModel)]="dadosObreiro.frequentaReunioesMinisteriais"
             [checked]="dadosObreiro.frequentaReunioesMinisteriais" type="checkbox">
         </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Frequenta Doutrina/Ensino.</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Freq. Doutrina/Ensino.</mat-label>
           <input style="height: 20px; width: 155px;" matInput placeholder="Frequenta Doutrina/Ensino.">
           <input name="frequentaDoutrinaEnsinamento" [(ngModel)]="dadosObreiro.frequentaDoutrinaEnsinamento"
             [checked]="dadosObreiro.frequentaDoutrinaEnsinamento" type="checkbox">
         </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Possui Cheque S.Fundo?</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Cheque S.Fundo?</mat-label>
           <input style="height: 20px; width: 150px;" matInput placeholder="Possui Cheque S.Fundo?">
           <input name="possuiChequeSemFundos" [(ngModel)]="dadosObreiro.possuiChequeSemFundos"
             [checked]="dadosObreiro.possuiChequeSemFundos" type="checkbox">
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Possui Protestos?</mat-label>
           <input style="height: 20px; width: 150px;" matInput placeholder="Possui Protestos?">
           <input name="possuiProtestos" [(ngModel)]="dadosObreiro.possuiProtestos"
             [checked]="dadosObreiro.possuiProtestos" type="checkbox">
         </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Cartão Provisório</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Cartão Provisório?</mat-label>
           <input style="height: 20px; width: 150px;" matInput placeholder="Cartão Provisório?">
           <input name="possuiProtestos" [(ngModel)]="dadosObreiro.cartaoProvisorio"
             [checked]="dadosObreiro.cartaoProvisorio" type="checkbox">
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Observação</mat-label>
           <input matInput placeholder="Observação" [(ngModel)]="dadosObreiro.observacao" name="observacao">
         </mat-form-field>
@@ -778,9 +809,13 @@
       </div>
 
     </div>
+    <div style="text-align: -webkit-center;">
+      <mat-spinner *ngIf="spinner"></mat-spinner>
+    </div>
+
     <mat-action-row>
       <button mat-button color="warn" (click)="Voltar()">Voltar</button>
-      <button mat-button color="primary" (click)="Proximo()">Salvar</button>
+      <button [disabled]="spinner" mat-button color="primary" (click)="Proximo()">Salvar</button>
     </mat-action-row>
   </mat-expansion-panel>
 

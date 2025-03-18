@@ -4,31 +4,31 @@
 
     <div *ngIf="datasource.length === 0">
         
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Nome</mat-label>
             <input matInput placeholder="Nome" [(ngModel)]="pessoa.nome" name="nome">
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>CPF</mat-label>
             <input class="number" matInput placeholder="CPF" [(ngModel)]="pessoa.cpf" name="cpf">
         </mat-form-field>
 
-        <mat-form-field color="accent" style="width: 213px;">
+        <mat-form-field color="accent" style="width: 213px;" appearance="outline">
             <mat-label>Data Nascimento</mat-label>
             <input matInput [matDatepicker]="dataNascimento" [(ngModel)]="pessoa.dataNascimento" name="dataNascimento">
             <mat-datepicker-toggle matIconSuffix [for]="dataNascimento"></mat-datepicker-toggle>
             <mat-datepicker #dataNascimento></mat-datepicker>
         </mat-form-field>
 
-        <mat-form-field color="accent" style="width: 213px;">
+        <mat-form-field color="accent" style="width: 213px;" appearance="outline">
             <mat-label>Data da Posse</mat-label>
             <input matInput [matDatepicker]="dataPosse" [(ngModel)]="pessoa.dataCriacao" name="dataPosse">
             <mat-datepicker-toggle matIconSuffix [for]="dataPosse"></mat-datepicker-toggle>
             <mat-datepicker #dataPosse></mat-datepicker>
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Grau de Instrução</mat-label>
             <mat-select [(value)]="pessoa.grauInstrucao" placeholder="Grau Instrução">
                 <mat-option *ngFor="let i of instrucao" [value]="i.id">
@@ -38,7 +38,7 @@
         </mat-form-field>
 
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Sexo</mat-label>
             <mat-select [(value)]="pessoa.sexo" placeholder="Sexo">
                 <mat-option *ngFor="let s of sexo" [value]="s.id">
@@ -47,7 +47,7 @@
             </mat-select>
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Quantidade de Membros</mat-label>
             <input type="number" matInput placeholder="Quantidade de Membros"
                 [(ngModel)]="pastor.qantidadeMembosEntrada" name="quantMembros">

@@ -28,41 +28,41 @@ export class Precadastro {
 export class Contato {
     id: number;
     pessoaId: number;
-    ddd: number;
-    telefone: number;
-    celular: number;
-    email: string;
+    ddd: number = 0;
+    telefone: number = 0;
+    celular: number = 0;
+    email: string = '';
 }
 
 export class DadosMembro {
-    id: number;
-    pessoaId: number;
-    rol: number;
-    congregacao: string;
-    regional: string;
+    id: number = 0;
+    pessoaId: number = 0;
+    rol: number = 0;
+    congregacao: string = '';
+    regional: string = '';
     batismoFilhoCrente: boolean;
     batismoFilhoNaoCrente: boolean;
     fezDiscipulado: boolean;
-    batismoAguas: Date;
-    batismoAguasIgreja: string;
-    batismoAguasCidade: string;
-    batismoAguasEstado: string;
+    batismoAguas: Date = new Date();
+    batismoAguasIgreja: string = '';
+    batismoAguasCidade: string = '';
+    batismoAguasEstado: string = '';
     batismoESanto: Date;
     membroDesde: Date;
     validadeCartaoMembro: Date;
     cursoTeologico: number;
-    cursoTeologicoOndeCursou: string;
+    cursoTeologicoOndeCursou: string = '';
     dizimista: boolean;
     frequentaEbd: boolean;
     funcao: number;
     mudancaComCarta: Date;
-    mudancaComCartaIgreja: string;
+    mudancaComCartaIgreja: string = '';
     mudancaSemCarta: Date;
     comunhao: Date;
-    procedencia: string;
-    observacao: string;
-    batismoESantoIgreja: string;
-    mudancaComCartaIgrejaEstado: string;
+    procedencia: string = '';
+    observacao: string = '';
+    batismoESantoIgreja: string = '';
+    mudancaComCartaIgrejaEstado: string = '';
 }
 
 export class PessoaEndereco {

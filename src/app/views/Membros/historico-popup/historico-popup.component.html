@@ -2,22 +2,22 @@
 
     <h3 style="padding-left: 17px; padding-top: 4%;">Informe os dados</h3>
 
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Pastor Apresentador</mat-label>
       <input matInput placeholder="Pastor Apresentador" [(ngModel)]="historico.pastorApresentador" name="nome">
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Pastor Regional</mat-label>
       <input matInput placeholder="Pastor Regional" [(ngModel)]="historico.pastorRegional" name="pastorRegional">
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Local da Apres. Ex: Belém</mat-label>
       <input matInput placeholder="Local da Apres. Ex: Belém" [(ngModel)]="historico.local" name="local">
     </mat-form-field>
     
-    <mat-form-field color="accent" style="width: 213px;">
+    <mat-form-field color="accent" style="width: 213px;" appearance="outline">
       <mat-label>Data entrada Função</mat-label>
       <input matInput [matDatepicker]="dataEntradaFuncao" [(ngModel)]="historico.dataEntradaFuncao"
         name="dataEntradaFuncao">
@@ -25,7 +25,7 @@
       <mat-datepicker #dataEntradaFuncao></mat-datepicker>
     </mat-form-field>
 
-    <mat-form-field style="padding-left: 17px;">
+    <mat-form-field style="padding-left: 17px;" appearance="outline">
       <mat-label>Entrada na Função</mat-label>
       <mat-select [(value)]="historico.entradaFuncao" placeholder="Entrada na Função">
         <mat-option *ngFor="let ef of entradaFuncao" [value]="ef.id">
@@ -35,14 +35,14 @@
     </mat-form-field>
 
 
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Reintegrado</mat-label>
       <input style="height: 20px; width: 150px;" matInput placeholder="Reintegrado">
       <input name="reintegrado" [(ngModel)]="historico.reintegrado" [checked]="historico.reintegrado"
         type="checkbox">
     </mat-form-field>
 
-    <mat-form-field color="accent" style="width: 213px;">
+    <mat-form-field color="accent" style="width: 213px;" appearance="outline">
       <mat-label>Reintegrado Em</mat-label>
       <input matInput [matDatepicker]="reintegradoem" [(ngModel)]="historico.reintegradoEm"
         name="Reintegrado em.">
@@ -50,7 +50,7 @@
       <mat-datepicker #reintegradoem></mat-datepicker>
     </mat-form-field>
 
-    <mat-form-field *ngIf="historico.id > 0">
+    <mat-form-field *ngIf="historico.id > 0" appearance="outline">
       <mat-label>Aprovar</mat-label>
       <input style="height: 20px; width: 150px;" matInput placeholder="Aprovar">
       <input name="aprovado" [(ngModel)]="historico.aprovado" [checked]="historico.aprovado" type="checkbox">

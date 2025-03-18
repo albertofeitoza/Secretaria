@@ -53,7 +53,7 @@
                 </mat-select>
                 <hr />
             </div>
-            <div style="text-align: end;">
+            <div *ngIf="sedeSelecionada.id > 0" style="text-align: end;">
                 <button class="button" mat-raised-button color="primary" (click)="Confirmar()">Confirmar</button>
             </div>
         </div>
@@ -139,17 +139,17 @@
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" color="accent">
-                                    <mat-label>Naturalidade</mat-label>
-                                    <input matInput placeholder="Naturalidade" [(ngModel)]="pessoa.naturalidade"
+                                    <mat-label>Cidade onde nasceu</mat-label>
+                                    <input matInput placeholder="Cidade onde nasceu" [(ngModel)]="pessoa.naturalidade"
                                         name="naturalidade">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" color="accent">
-                                    <mat-label>Naturalidade-Estado</mat-label>
-                                    <input matInput placeholder="Naturalidade-Estado"
+                                    <mat-label>Estado onde nasceu</mat-label>
+                                    <input matInput placeholder="Estado onde nasceu"
                                         [(ngModel)]="pessoa.naturalidadeEstado" name="naturalidadeEstado">
                                 </mat-form-field>
-                              
+
                                 <mat-form-field appearance="outline" color="accent">
                                     <mat-label>CPF Conjuje</mat-label>
                                     <input matTooltip="Informe o Cpf e pressione Enter" matInput
@@ -181,7 +181,7 @@
                                     <input matInput placeholder="Nome da Mãe" [(ngModel)]="pessoa.nomeMae"
                                         name="nomeMae">
                                 </mat-form-field>
-                              
+
                                 <mat-form-field appearance="outline" color="accent">
                                     <mat-label>Idoso</mat-label>
                                     <input style="height: 20px; width: 150px;" matInput placeholder="Idoso">
@@ -221,10 +221,14 @@
 
                                 <mat-form-field style="padding-left: inherit;" appearance="outline" color="accent">
                                     <mat-label>CEP</mat-label>
-                                    <input class="number" matInput maxlength="8" placeholder="Informe o CEP"
-                                        [(ngModel)]="pessoa.pessoaEndereco.cep" name="cep"
-                                        (keypress)="BuscaCep($event)">
+                                    <div style="display: flex;">
+                                        <input class="number" matInput maxlength="8" placeholder="Informe o CEP"
+                                            [(ngModel)]="pessoa.pessoaEndereco.cep" name="cep"
+                                            (keydown)="BuscaCep($event)">
+                                        <mat-icon (click)="BuscaCep($event)">search</mat-icon>
+                                    </div>
                                 </mat-form-field>
+
 
                                 <mat-form-field appearance="outline" color="accent">
                                     <mat-label>Estado</mat-label>
@@ -309,11 +313,11 @@
 
                             <mat-form-field>
                                 <mat-label>Email</mat-label>
-                                <input matInput placeholder="Email" [(ngModel)]="contato.email" name="email">
+                                <input type="email" matInput placeholder="Email" [(ngModel)]="contato.email" name="email" pattern=".+@example\.com">
                             </mat-form-field>
 
                             <a>
-                                <i class="material-icons" (click)="AdicionarContato()">add</i>
+                                <i class="material-icons cursor" (click)="AdicionarContato()">add</i>
                             </a>
                         </div>
                     </div>
@@ -323,7 +327,7 @@
 
                 <div class="mat-elevation-z8">
                     <table mat-table [dataSource]="pessoa.contatos" matSort>
-                      
+
                         <ng-container matColumnDef="ddd">
                             <mat-header-cell *matHeaderCellDef>DDD</mat-header-cell>
                             <mat-cell id="ddd" *matCellDef="let row">{{row.ddd}}</mat-cell>
@@ -338,7 +342,7 @@
                             <mat-header-cell *matHeaderCellDef>Celular</mat-header-cell>
                             <mat-cell mat-cell id="celular" *matCellDef="let row">{{row.celular}}</mat-cell>
                         </ng-container>
-                        
+
                         <ng-container matColumnDef="email">
                             <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
                             <mat-cell *matCellDef="let row">{{row.email}}</mat-cell>
@@ -382,7 +386,7 @@
                     </mat-panel-description>
                 </mat-expansion-panel-header>
 
-                <div class="col">
+                <div *ngIf="!spinner" class="col">
                     <mat-form-field style="padding-left: inherit;" appearance="outline" color="accent">
                         <mat-label>ROL</mat-label>
                         <input class="number" required="required" pattern="\d*" matInput placeholder="rol"
@@ -431,8 +435,8 @@
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" color="accent">
-                        <mat-label>Batismo Águas Igreja</mat-label>
-                        <input matInput placeholder="Batismo Águas Igreja"
+                        <mat-label>Batismo Águas - Igreja</mat-label>
+                        <input matInput placeholder="Batismo Águas - Igreja"
                             [(ngModel)]="pessoa.dadosMembro.batismoAguasIgreja" name="batismoAguasIgreja">
                     </mat-form-field>
 
@@ -443,8 +447,8 @@
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" color="accent">
-                        <mat-label>Batismo Águas Estado</mat-label>
-                        <input matInput placeholder="Batismo Águas Estado"
+                        <mat-label>Batismo Águas - Estado</mat-label>
+                        <input matInput placeholder="Batismo Águas - Estado"
                             [(ngModel)]="pessoa.dadosMembro.batismoAguasEstado" name="batismoAguasEstado">
                     </mat-form-field>
 
@@ -457,27 +461,11 @@
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" color="accent">
-                        <mat-label>Batismo no E. Santo Igreja</mat-label>
-                        <input matInput placeholder="Batismo no E. Santo Igreja"
+                        <mat-label>Batismo E.Santo Igreja</mat-label>
+                        <input matInput placeholder="Batismo E.Santo Igreja"
                             [(ngModel)]="pessoa.dadosMembro.batismoESantoIgreja" name="batismoESantoIgreja">
                     </mat-form-field>
 
-                    <mat-form-field style="width: 220px;" appearance="outline" color="accent">
-                        <mat-label>Membro Desde</mat-label>
-                        <input matInput [matDatepicker]="membroDesde" [(ngModel)]="pessoa.dadosMembro.membroDesde"
-                            name="membroDesde">
-                        <mat-datepicker-toggle matIconSuffix [for]="membroDesde"></mat-datepicker-toggle>
-                        <mat-datepicker #membroDesde></mat-datepicker>
-                    </mat-form-field>
-
-
-                    <mat-form-field color="accent" style="width: 220px;" appearance="outline">
-                        <mat-label>Validade Cartão Membro</mat-label>
-                        <input matInput [matDatepicker]="validadeCartaoMembro"
-                            [(ngModel)]="pessoa.dadosMembro.validadeCartaoMembro" name="validadeCartaoMembro">
-                        <mat-datepicker-toggle matIconSuffix [for]="validadeCartaoMembro"></mat-datepicker-toggle>
-                        <mat-datepicker #validadeCartaoMembro></mat-datepicker>
-                    </mat-form-field>
 
                     <mat-form-field appearance="outline" color="accent">
                         <mat-label>Curso Teológico</mat-label>
@@ -537,24 +525,19 @@
                         <mat-datepicker #mudancaSemcarta></mat-datepicker>
                     </mat-form-field>
 
-                    <mat-form-field style="width: 220px;" appearance="outline" color="accent">
-                        <mat-label>Data Comunhão</mat-label>
-                        <input matInput [matDatepicker]="dataComunhao" [(ngModel)]="pessoa.dadosMembro.comunhao"
-                            name="comunhao">
-                        <mat-datepicker-toggle matIconSuffix [for]="dataComunhao"></mat-datepicker-toggle>
-                        <mat-datepicker #dataComunhao></mat-datepicker>
-                    </mat-form-field>
-
                     <mat-form-field appearance="outline" color="accent">
                         <mat-label>Procedência</mat-label>
                         <input matInput placeholder="Procedência" [(ngModel)]="pessoa.dadosMembro.procedencia"
                             name="procedencia">
                     </mat-form-field>
                 </div>
+                <div style="text-align: -webkit-center;">
+                    <mat-spinner *ngIf="spinner"></mat-spinner>
+                </div>
 
                 <mat-action-row>
                     <button mat-button color="warn" (click)="Voltar()">Voltar</button>
-                    <button mat-button color="primary" (click)="Proximo()">Salvar</button>
+                    <button [disabled]="spinner" mat-button color="primary" (click)="Proximo()">Salvar</button>
                 </mat-action-row>
             </mat-expansion-panel>
 

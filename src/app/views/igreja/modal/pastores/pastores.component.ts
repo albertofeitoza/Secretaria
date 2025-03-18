@@ -76,6 +76,9 @@ export class PastoresComponent implements OnInit {
 
     this.pessoa.estadoCivil = 1;
     this.pessoa.statusPessoa = 0;
+    
+    this.pessoa.cpf = this.pessoa.cpf.replace(/\D/g, '');
+    this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
 
     this.serverApi.readById(this.pessoa.cpf, Endpoint.BuscaPorCpf, '', Number(this.matdialogRef.id)).subscribe(response => {
       if (response.code != 200) {

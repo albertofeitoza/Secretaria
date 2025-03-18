@@ -6,7 +6,7 @@
     <br />
     <hr />
     <div style="display: flex; padding: 15px;">
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Selecione a Opção</mat-label>
             <mat-select [(value)]="tipoPresencaSelecionado" placeholder="Tipo de documento">
                 <mat-option *ngFor="let cmb of comboTipoPresenca" [value]="cmb.id">
@@ -15,7 +15,7 @@
             </mat-select>
         </mat-form-field>
 
-        <mat-form-field color="accent" style="width: 213px;">
+        <mat-form-field color="accent" style="width: 213px;" appearance="outline">
             <mat-label>Data</mat-label>
             <input matInput [matDatepicker]="dataPresenca" [(ngModel)]="controlePresenca.data" name="data">
             <mat-datepicker-toggle matIconSuffix [for]="dataPresenca"></mat-datepicker-toggle>
@@ -23,7 +23,7 @@
         </mat-form-field>
 
         
-        <mat-form-field color="accent" style="width: 350px;">
+        <mat-form-field color="accent" style="width: 350px;" appearance="outline">
             <mat-select [(value)]="justificativaSelecionada" placeholder="Tipo de Justificativa"
                 (selectionChange)="TipoJustificativa()">
                 <mat-option *ngFor="let pr of tipoJustificativaPresenca" [value]="pr.id">
@@ -32,7 +32,7 @@
             </mat-select>
         </mat-form-field>
 
-        <mat-form-field *ngIf="exibiroutros" style="width: 490px;">
+        <mat-form-field *ngIf="exibiroutros" style="width: 490px;" appearance="outline">
             <mat-label>Motivo</mat-label>
             <input matInput placeholder="Motivo" [(ngModel)]="controlePresenca.motivo" name="motivo">
         </mat-form-field>

@@ -2,26 +2,27 @@
     <div class="row col-md-12">
         <div style="padding-right: 15px;">
             <h3>{{igreja.id > 0 ? 'Editar cadastro de Igreja' : 'Cadastro de Igreja'}} </h3>
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Nome Igreja</mat-label>
                 <input matInput placeholder="Nome Igreja" [(ngModel)]="igreja.nome" name="nome">
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>CNPJ</mat-label>
                 <input matInput placeholder="Cnpj" [(ngModel)]="igreja.cnpj" name="cnpj">
             </mat-form-field>
-            <mat-form-field>
+
+            <mat-form-field appearance="outline">
                 <mat-label>Estado</mat-label>
                 <input matInput placeholder="Estado" [(ngModel)]="igreja.estado" name="estado">
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Cidade</mat-label>
                 <input matInput placeholder="cidade" [(ngModel)]="igreja.cidade" name="nome">
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Tipo de Igreja</mat-label>
                 <mat-select [(value)]="igreja.tipoIgreja" placeholder="Tipo de Igreja"
                     (selectionChange)="BuscarIgrejas()">
@@ -31,7 +32,7 @@
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Igreja Mãe</mat-label>
                 <mat-select id="igrejamae" [(value)]="igreja.igrejaMae" placeholder="Selecione a Igreja">
                     <mat-option *ngFor="let ig of listaIgrejas" [value]="ig.id">
@@ -40,13 +41,13 @@
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Domínio</mat-label>
                 <input matInput placeholder="Dominio - campo usado na tela de Login" [(ngModel)]="igreja.dominio"
                     name="dominio">
             </mat-form-field>
 
-            <mat-form-field *ngIf="igreja.id > 0">
+            <mat-form-field *ngIf="igreja.id > 0" appearance="outline">
                 <mat-label>Ativo</mat-label>
                 <input style="height: 20px; width: 150px;" matInput placeholder="Ativo">
                 <input name="ativo" [(ngModel)]="igreja.status" [checked]="igreja.status" type="checkbox">
