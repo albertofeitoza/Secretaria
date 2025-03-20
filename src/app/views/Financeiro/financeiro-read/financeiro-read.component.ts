@@ -14,12 +14,10 @@ import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 })
 export class FinanceiroReadComponent implements OnInit {
 
-
-
   idLinhaSelecionada = 0;
   igrejaSelecionada = 0;
   Colunas = ['id', 'idAssinatura', 'numeroCobranca', 'linkBoleto', 'dataVencimento', 'tolerancia', 'statusPagamento', 'action']
-
+  tipoUsuario = false;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   datasource = new MatTableDataSource<ViewFinanceiro>();
@@ -35,7 +33,7 @@ export class FinanceiroReadComponent implements OnInit {
     
     this.igrejaSelecionada = this.auth.dadosUsuario.IgrejaLogada;
     this.auth.dadosUsuario.IgrejaSelecionada = this.auth.dadosUsuario.IgrejaLogada;
-
+    this.tipoUsuario = this.auth.dadosUsuario.TipoUsuarioLogado === 1 ? true : false;
     this.BuscarFaturas();
   }
 
@@ -51,6 +49,10 @@ export class FinanceiroReadComponent implements OnInit {
   }
 
   public LinhaSelecionada(id: number): void {
+
+  }
+
+  public AtualizarFatura(row: any): void {
 
   }
 
