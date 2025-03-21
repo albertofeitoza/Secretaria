@@ -168,7 +168,7 @@ export class CadastroMembrosComponent implements OnDestroy {
                 this.pessoa.dataCasamento = this.pessoa.estadoCivil == 1 || this.pessoa.estadoCivil > 4 ? undefined : this.pessoa.dataCasamento
                 this.pessoa.igrejaId = Number(this.igrejaSelecionada)
                 //salvar dados de Pessoa
-                if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada) {
+                if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2) {
                   this.spinner = false;
                   return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
                 }
@@ -203,7 +203,7 @@ export class CadastroMembrosComponent implements OnDestroy {
 
                   if (response.code == 200 && this.pessoa.cpf === response.data.cpf) {
 
-                    if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada) {
+                    if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2) {
                       this.spinner = false;
                       return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
                     }
@@ -235,7 +235,7 @@ export class CadastroMembrosComponent implements OnDestroy {
             this.endereco.pessoaId = this.pessoa.id;
 
             //Salvar Endereço
-            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada) {
+            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2) {
               this.spinner = false;
               return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.")
             };
@@ -260,7 +260,7 @@ export class CadastroMembrosComponent implements OnDestroy {
             if (this.dadosMembro.id === 0)
               this.dadosMembro.funcao = 1;
 
-            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada) {
+            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2) {
               this.spinner = false;
               return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
             }
@@ -283,7 +283,7 @@ export class CadastroMembrosComponent implements OnDestroy {
           if (this.pessoa.id > 0) {
             this.dadosObreiro.pessoaId = this.pessoa.id;
 
-            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada) {
+            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2) {
               this.spinner = false;
               return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
             }
@@ -389,9 +389,12 @@ export class CadastroMembrosComponent implements OnDestroy {
     return result;
   }
 
-  AlteraFuncao(aprovado: boolean, idHistorico: number = 0) {
+  public AlteraFuncao(aprovado: boolean, idHistorico: number = 0): void {
 
     if (this.dadosMembro.funcao > 1 || aprovado && idHistorico > 0) {
+
+      if (!this.ValidarDadosMembro())
+        return;
 
       this.serviceUtil.Popup("Informar os dados", TipoPopup.ComponenteInstancia, HistoricoPopupComponent, idHistorico, 'auto', 'auto', false, aprovado)
         .subscribe(result => {
@@ -403,7 +406,7 @@ export class CadastroMembrosComponent implements OnDestroy {
               this.dadosObreiro.id = 0;
               this.dadosObreiro.pessoaId = this.pessoa.id;
 
-              if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+              if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2)
                 return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
 
               this.serverApi.create(this.dadosObreiro, Endpoint.Obreiro)
@@ -435,7 +438,7 @@ export class CadastroMembrosComponent implements OnDestroy {
 
   public ExcluirHistorico(id: number): void {
 
-    if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+    if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2)
       return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
 
     this.serverApi.create(id, Endpoint.HistoricoObreiro + `/excluir/${id}`)
@@ -454,7 +457,7 @@ export class CadastroMembrosComponent implements OnDestroy {
             let guardaNome = this.pessoa.nome;
             this.pessoa.nome = result.Motivo;
 
-            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+            if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2)
               return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
 
             this.serverApi.create(this.pessoa, Endpoint.Pessoa)
@@ -477,7 +480,7 @@ export class CadastroMembrosComponent implements OnDestroy {
       this.historico.dadosObreiroId = this.dadosObreiro.id;
       this.historico.funcao = this.dadosMembro.funcao;
 
-      if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+      if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2)
         return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
 
       this.serverApi.create(this.historico, Endpoint.HistoricoObreiro)
@@ -572,7 +575,7 @@ export class CadastroMembrosComponent implements OnDestroy {
       this.contato.telefone = Number(this.contato.telefone.toString().length > 9 ? this.contato.telefone.toString().substring(0, 9) : this.contato.telefone)
       this.contato.celular = Number(this.contato.celular.toString().length > 9 ? this.contato.celular.toString().substring(0, 9) : this.contato.celular)
 
-      if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+      if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2)
         return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
 
       this.serverApi.create(this.contato, Endpoint.Contatos)
@@ -590,7 +593,7 @@ export class CadastroMembrosComponent implements OnDestroy {
 
     let body = { id: id, acao: "excluir" };
 
-    if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+    if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2)
       return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
 
     this.serverApi.create(body, Endpoint.Contatos + '/Excluir').subscribe(x => {
@@ -625,7 +628,7 @@ export class CadastroMembrosComponent implements OnDestroy {
       if (this.pessoa.id > 0) {
         this.cargo.pessoaId = this.pessoa.id;
 
-        if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada)
+        if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2)
           return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
 
         this.serverApi.create(this.cargo, Endpoint.Cargos)

@@ -98,7 +98,7 @@
       <td style="height: 21px;width: 18%;" mat-cell *matCellDef="let row">
         <mat-icon class="cursor" matTooltip="Editar Cadastro!" (click)="AtualizarMembro(row.id)">edit</mat-icon>
         <mat-icon class="cursor" matTooltip="Impressão da ficha de membro!"
-          *ngIf="!filtros.inativos && !filtros.precadastro" (click)="ImprimirFichaMembro(row.id)">print</mat-icon>
+          *ngIf="!filtros.inativos && !filtros.precadastro" (click)="ImprimirFichaMembro(row)">print</mat-icon>
         <mat-icon class="cursor" matTooltip="Solicitação de Cartas!" *ngIf="!filtros.inativos && !filtros.precadastro"
           (click)="Cartas(row.id)">mail_outline</mat-icon>
         <mat-icon class="cursor" matTooltip="Filhos!" *ngIf="!filtros.inativos && !filtros.precadastro"

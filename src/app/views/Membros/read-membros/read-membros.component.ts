@@ -48,8 +48,6 @@ export class ReadMembrosComponent implements OnInit {
 
   listaIgrejas: TodasAsIgrejas[] = new Array();
 
-  // listaIgrejas$ : Observable<TodasAsIgrejas[]>;
-
   constructor(
     private serverApi: AllservicesService<any>,
     private serviceUtil: UtilServiceService,
@@ -77,7 +75,7 @@ export class ReadMembrosComponent implements OnInit {
   private CarregaCombo(): void {
     this.serverApi.read(Endpoint.Igreja + `/igrejasFilhas/${this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada || this.igrejaSelecionada === 0 ? this.auth.dadosUsuario.IgrejaLogada : this.igrejaSelecionada}`)
       .subscribe((result: TodasAsIgrejas[]) => {
-        this.listaIgrejas = result; 
+        this.listaIgrejas = result;
       })
   }
 
@@ -105,7 +103,7 @@ export class ReadMembrosComponent implements OnInit {
     try {
       this.spinner = true
 
-      this.serverApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada || this.igrejaSelecionada === 0 ? this.auth.dadosUsuario.IgrejaLogada : this.igrejaSelecionada}`)
+      this.serverApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada && this.auth.dadosUsuario.TipoUsuarioLogado === 2 ? this.auth.dadosUsuario.IgrejaLogada : this.auth.dadosUsuario.TipoUsuarioLogado === 1 ? 0 : this.igrejaSelecionada}`)
         .subscribe((response) => {
           response = response.sort()
 
@@ -159,15 +157,15 @@ export class ReadMembrosComponent implements OnInit {
   }
 
 
-  ImprimirFichaMembro(id: number) {
+  ImprimirFichaMembro(row: any) {
 
     this.spinner = true
-    this.serverApi.DownloadArquivo(id.toString(), Endpoint.RelatoriosFichaMembro)
+    this.serverApi.DownloadArquivo(row.id.toString(), Endpoint.RelatoriosFichaMembro)
       .subscribe(result => {
 
         this.serviceUtil.showMessage("Aguarde a impressão.", false);
 
-        this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `FichaMembro${id.toString()}.docx`);
+        this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `FichaMembro_${row?.nome?.trim()}.docx`);
         this.spinner = false;
       },
         (error) => {
@@ -198,7 +196,7 @@ export class ReadMembrosComponent implements OnInit {
                 pessoa.sexo = 1
                 pessoa.statusPessoa = 5
                 pessoa.fotoCadastrada = false,
-                pessoa.idoso = false
+                  pessoa.idoso = false
                 this.serverApi.create(pessoa, Endpoint.Pessoa)
                   .subscribe(response => {
                     this.serviceUtil.showMessage("Membro inativado com sucesso!.", false);
@@ -285,7 +283,7 @@ export class ReadMembrosComponent implements OnInit {
         if (x.Status) {
           let dados: Cartas = new Cartas();
           dados = x.data;
-          
+
           this.spinner = true;
           this.serverApi.DownloadCartas(dados, Endpoint.RelatoriosCartas)
             .subscribe(result => {
