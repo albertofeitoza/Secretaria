@@ -60,7 +60,8 @@ export class CadastroMembrosComponent implements OnDestroy {
   ColunasCargos = ['id', 'cargo', 'noCargoDesde', 'noCargoAte', 'action']
   ColunasHistoricoObreiro = ['id', 'pastorApresentador', 'pastorRegional', 'local', 'funcao', 'entradaFuncao', 'dataEntradaFuncao', 'dataSaidaFuncao', 'reintegrado', 'reintegradoEm', 'aprovado', 'action']
   colunasLogs = ['data', 'descricao']
-
+  cpfbloqueado = false;
+  igrejas: any
   // ----------------
 
   //combos
@@ -86,10 +87,11 @@ export class CadastroMembrosComponent implements OnDestroy {
 
     this.igrejaSelecionada = this.auth.dadosUsuario.IgrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada || this.auth.dadosUsuario.IgrejaSelecionada === 0 ?
       this.auth.dadosUsuario.IgrejaLogada : this.auth.dadosUsuario.IgrejaSelecionada;
-
+    this.cpfbloqueado = this.auth.dadosUsuario.TipoUsuarioLogado > 1 ? true : false;
     this.CarregarCombos()
     this.setStep(0)
     this.BuscarMembro()
+    this.BuscarIgrejas()
 
   }
 
@@ -122,10 +124,16 @@ export class CadastroMembrosComponent implements OnDestroy {
 
           this.idade = this.serviceUtil.SubtractYears(this.pessoa.dataNascimento ? this.pessoa.dataNascimento : new Date)
           this.idadeCasado = this.serviceUtil.SubtractYears(this.pessoa.dataCasamento ? this.pessoa.dataCasamento : new Date)
-
         })
+    }
+  }
 
-
+  BuscarIgrejas() {
+    if (!this.cpfbloqueado) {
+      this.serverApi.read(Endpoint.Igreja + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
+        .subscribe(result => {
+          this.igrejas = result
+        })
     }
   }
   CarregarCombos() {
@@ -159,8 +167,11 @@ export class CadastroMembrosComponent implements OnDestroy {
 
       switch (step) {
         case 0:
-          this.spinner = true;
+
           if (this.ValidarPessoa() && this.pessoa.id == 0) {
+
+            this.spinner = true;
+
             this.serverApi.readById(this.pessoa.cpf, Endpoint.BuscaPorCpf, '', this.igrejaSelecionada).subscribe(response => {
               if (response.code != 200) {
                 this.pessoa.cpf = this.pessoa.cpf != undefined ? this.pessoa.cpf.toString() : this.pessoa.cpf
@@ -176,8 +187,16 @@ export class CadastroMembrosComponent implements OnDestroy {
 
                 this.serverApi.create(this.pessoa, Endpoint.Pessoa,).subscribe(x => {
                   this.step++;
-                  this.spinner = false;
+
                   this.pessoa = x
+
+                  this.serverApi.readById(this.auth.dadosUsuario.IgrejaLogada.toString(), Endpoint.Igreja + `/regional`, '', 0)
+                    .subscribe(response => {
+                      this.dadosMembro.congregacao = response.congregacao;
+                      this.dadosMembro.regional = response.regional;
+                      let res = response;
+                    })
+                  this.spinner = false;
                   this.serviceUtil.showMessage("Cadastro realizado");
                 });
 
@@ -187,51 +206,41 @@ export class CadastroMembrosComponent implements OnDestroy {
                 this.serviceUtil.showMessage(`Já existe cadastro para o CPF informado : ${this.pessoa.cpf} Nome: ${igreja[0]} ${igreja[1]} `, true)
               }
 
+            }, (err) => {
+              this.spinner = false;
             });
           }
           else {
 
-            this.pessoa.cpf = this.pessoa.cpf != undefined ? this.pessoa.cpf.toString() : this.pessoa.cpf
             this.pessoa.rg = this.pessoa.rg != undefined ? this.pessoa.rg.toString() : this.pessoa.rg
             this.pessoa.dataCasamento = this.pessoa.estadoCivil == 1 || this.pessoa.estadoCivil > 4 ? undefined : this.pessoa.dataCasamento
-            this.pessoa.igrejaId = this.igreja.id
-            //Atualizando dados de Pessoa
+
             if (this.ValidarPessoa()) {
 
-              this.serverApi.readById(this.pessoa.cpf, Endpoint.BuscaPorCpf, '', this.igrejaSelecionada)
-                .subscribe(response => {
+              this.spinner = true;
 
-                  if (response.code == 200 && this.pessoa.cpf === response.data.cpf) {
+              if (this.auth.dadosUsuario.IgrejaLogada != this.pessoa.igrejaId && this.auth.dadosUsuario.TipoUsuarioLogado === 2) {
+                this.spinner = false;
+                return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
+              }
 
-                    if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2) {
-                      this.spinner = false;
-                      return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
-                    }
+              this.serverApi.create(this.pessoa, Endpoint.Pessoa,)
+                .subscribe(x => {
+                  this.spinner = false;
+                  this.step++;
+                  this.pessoa = x
+                  this.serviceUtil.showMessage(`Dados atualizados`, false)
 
-
-                    this.serverApi.create(this.pessoa, Endpoint.Pessoa,)
-                      .subscribe(x => {
-                        this.spinner = false;
-                        this.step++;
-                        this.pessoa = x
-                        this.serviceUtil.showMessage(`Dados atualizados`, false)
-
-                      });
-                  } else {
-                    this.spinner = false;
-                    const igreja = response?.data?.nome?.split(';');
-                    this.serviceUtil.showMessage(`Já existe cadastro para o CPF informado: ${this.pessoa.cpf} Nome: ${igreja[0]} ${igreja[1]} `, true)
-                  }
+                }, (err) => {
+                  this.spinner = false;
                 });
             }
-
           }
-          this.spinner = false;
           break;
         case 1:
-          this.spinner = true;
-          if (this.ValidarEndereco() && this.pessoa.id > 0) {
 
+          if (this.ValidarEndereco() && this.pessoa.id > 0) {
+            this.spinner = true;
             this.endereco.pessoaId = this.pessoa.id;
 
             //Salvar Endereço
@@ -246,15 +255,17 @@ export class CadastroMembrosComponent implements OnDestroy {
                 this.spinner = false;
                 this.step++
                 this.serviceUtil.showMessage("Endereço salvo", true);
+              }, (err) => {
+                this.spinner = false;
               })
           }
-          this.spinner = false;
+
           break;
         case 2:
         case 3:
-          this.spinner = true;
-          if (this.ValidarDadosMembro() && this.pessoa.id > 0) {
 
+          if (this.ValidarDadosMembro() && this.pessoa.id > 0) {
+            this.spinner = true;
             this.dadosMembro.pessoaId = this.pessoa.id;
 
             if (this.dadosMembro.id === 0)
@@ -265,22 +276,29 @@ export class CadastroMembrosComponent implements OnDestroy {
               return this.serviceUtil.showMessage("Você só pode cadastrar ou alterar dados da sua igreja.");
             }
 
+            this.serverApi.readById(this.auth.dadosUsuario.IgrejaLogada.toString(), Endpoint.Igreja + `/regional`, '', 0)
+              .subscribe(response => {
+                this.dadosMembro.congregacao = response.congregacao ? response.congregacao : this.dadosMembro.congregacao;
+                this.dadosMembro.regional = response.regional ? response.regional : this.dadosMembro.regional;
 
-            this.serverApi.create(this.dadosMembro, Endpoint.Membros)
-              .subscribe(x => {
-                this.dadosMembro = x
-                this.spinner = false;
-                this.step++
-              }, (err) => {
-                this.spinner = false;
-              })
+                this.serverApi.create(this.dadosMembro, Endpoint.Membros)
+                  .subscribe(x => {
+                    this.dadosMembro = x
+                    this.spinner = false;
+                    this.step++
+                  }, (err) => {
+                    this.spinner = false;
+                  })
+
+              });
           }
-          this.spinner = false;
           break;
 
         case 4:
-          this.spinner = true;
+
           if (this.pessoa.id > 0) {
+            this.spinner = true;
+
             this.dadosObreiro.pessoaId = this.pessoa.id;
 
             if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2) {
@@ -293,9 +311,10 @@ export class CadastroMembrosComponent implements OnDestroy {
                 this.dadosObreiro = x;
                 this.spinner = false;
                 this.serviceUtil.showMessage("Dados de obreiro salvo com suecsso!", true);
+              }, (err) => {
+                this.spinner = false;
               });
           }
-          this.spinner = false;
           break;
         default:
           break;
@@ -342,7 +361,9 @@ export class CadastroMembrosComponent implements OnDestroy {
                   this.pessoa.naturalidadeEstado == undefined ? this.serviceUtil.showMessage("Informe --> Estado onde nasceu") :
                     this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.dataCasamento == undefined ? this.serviceUtil.showMessage("Informe a Data de Casamento.") :
                       this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.cpfConjuge == "" ? this.serviceUtil.showMessage("Informe o CPF do Cônjuje e pressione enter.") :
-                        result = true
+                        this.pessoa.nomePai == undefined ? this.serviceUtil.showMessage("Informe --> O nome do pai") :
+                          this.pessoa.nomeMae == undefined ? this.serviceUtil.showMessage("Informe --> O nome da mãe") :
+                            result = true
     return result;
 
   }
@@ -449,7 +470,8 @@ export class CadastroMembrosComponent implements OnDestroy {
   }
 
   AlteraSituacao() {
-    if (this.ValidarDadosMembro() && this.situacaoCache == 5 && this.pessoa.statusPessoa < 5 && this.pessoa.id > 0) {
+    
+    if (this.ValidarPessoa() && this.situacaoCache == 5 && this.pessoa.statusPessoa < 5 && this.pessoa.id > 0) {
 
       this.serviceUtil.Popup("Informe o Motivo da Reativação do Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
         .subscribe(result => {

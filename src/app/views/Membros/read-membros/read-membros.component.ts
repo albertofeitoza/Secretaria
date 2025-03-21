@@ -113,23 +113,23 @@ export class ReadMembrosComponent implements OnInit {
               ? response.filter(f => f.statusPessoa == 'Inativo')
 
               : this.filtros.inativos && this.filtros.txtBusca.length > 0
-                ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.statusPessoa == 'Inativo' && f.rol.toString().includes(this.filtros.txtBusca))
+                ? response.filter(f => f.statusPessoa == 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.statusPessoa == 'Inativo' && f.cpf.toString().toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.statusPessoa == 'Inativo' && f.rol.toString().includes(this.filtros.txtBusca))
 
                 : this.filtros.precadastro && this.filtros.txtBusca.length == 0
                   ? response.filter(f => f.statusPessoa == 'PreCadastro')
 
                   : this.filtros.precadastro && this.filtros.txtBusca.length > 0
-                    ? response.filter(f => f.statusPessoa == 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.statusPessoa == 'PreCadastro' && f.rol.toString().toLowerCase().includes(this.filtros.txtBusca))
+                    ? response.filter(f => f.statusPessoa == 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.statusPessoa == 'PreCadastro' && f.cpf.toString().toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) ||  f.statusPessoa == 'PreCadastro' && f.rol.toString().toLowerCase().includes(this.filtros.txtBusca))
 
                     : this.filtros.obreiros && this.filtros.txtBusca.length == 0
                       ? response.filter(f => f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro")
 
                       : this.filtros.obreiros && this.filtros.txtBusca.length > 0
-                        ? response.filter(f => f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro" && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro" && f.rol.toString().toLowerCase().includes(this.filtros.txtBusca))
+                        ? response.filter(f => f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro" && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro" && f.cpf.toString().toString().toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro" && f.rol.toString().toLowerCase().includes(this.filtros.txtBusca))
 
                         : !this.filtros.inativos && !this.filtros.obreiros && !this.filtros.precadastro && this.filtros.txtBusca.length == 0
                           ? response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro')
-                          : response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.rol.toString().toLowerCase().includes(this.filtros.txtBusca.toLowerCase()));
+                          : response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.cpf.toString().toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.rol.toString().toLowerCase().includes(this.filtros.txtBusca.toLowerCase()));
 
           this.spinner = false;
         })
