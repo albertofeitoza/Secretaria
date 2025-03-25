@@ -40,13 +40,21 @@ export class ReadMembrosComponent implements OnInit {
   filtros: Filtros = new Filtros()
   spinner: boolean = false
   Colunas = ['id', 'rol', 'foto', 'nome', 'dataNascimento', 'funcao', 'statusPessoa', 'action']
+  sedeSelecionada = 0;
+  subsedeSelecionada = 0
+  congregacaoselecionada = 0;
+
   igrejaSelecionada = 0;
+  tipoIgreja = 0;
+
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   datasource = new MatTableDataSource<Pessoa>();
 
-  listaIgrejas: TodasAsIgrejas[] = new Array();
+  sede: TodasAsIgrejas[] = new Array();
+  subsedes: TodasAsIgrejas[] = new Array();
+  congregacoes: TodasAsIgrejas[] = new Array();
 
   constructor(
     private serverApi: AllservicesService<any>,
@@ -65,26 +73,54 @@ export class ReadMembrosComponent implements OnInit {
 
     this.igrejaSelecionada = this.auth.dadosUsuario.IgrejaLogada;
     this.auth.dadosUsuario.IgrejaSelecionada = this.auth.dadosUsuario.IgrejaLogada;
+    this.tipoIgreja = this.auth.dadosUsuario.TipoIgrejaLogada;
 
-    this.buscarMembro()
-    this.CarregaCombo();
-
-
-  }
-
-  private CarregaCombo(): void {
-    this.serverApi.read(Endpoint.Igreja + `/igrejasFilhas/${this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada || this.igrejaSelecionada === 0 ? this.auth.dadosUsuario.IgrejaLogada : this.igrejaSelecionada}`)
-      .subscribe((result: TodasAsIgrejas[]) => {
-        this.listaIgrejas = result;
-      })
-  }
-
-  public AlterarBuscaIgreja(): void {
-
-    this.auth.dadosUsuario.IgrejaSelecionada = this.igrejaSelecionada;
     this.buscarMembro();
-    this.CarregaCombo();
+    this.BuscarSedes();
+  }
 
+  
+
+
+  public BuscarSedes(): void {
+    this.serverApi.read(Endpoint.Igreja + `/estabelecimento/${this.igrejaSelecionada}`)
+      .subscribe((result: TodasAsIgrejas[]) => {
+
+        this.sede = result.filter(x => this.auth.dadosUsuario.TipoUsuarioLogado === 1 ? x.tipoIgreja == 1 : x.id === this.auth.dadosUsuario.IgrejaLogada);
+        if (this.sede.length === 1 && this.sede[0].id === this.auth.dadosUsuario.IgrejaLogada) {
+          this.sedeSelecionada = this.sede[0].id;
+        }
+      })
+
+  }
+
+  public BuscarSubsedes(idSede: number): void {
+
+    if (!idSede)
+      return;
+
+    this.serverApi.read(Endpoint.Igreja + `/igrejasFilhas/${idSede}`)
+      .subscribe((result: TodasAsIgrejas[]) => {
+        this.subsedes = result.filter(x => x.idMae === idSede);
+        this.sedeSelecionada = idSede;
+        this.auth.dadosUsuario.IgrejaSelecionada = idSede
+        this.buscarMembro();
+      })
+
+  }
+
+  public Congregacoes(subsede: number): void {
+
+    if (!subsede)
+      return;
+
+    this.serverApi.read(Endpoint.Igreja + `/igrejasFilhas/${subsede}`)
+      .subscribe((result: TodasAsIgrejas[]) => {
+        this.congregacoes = result.filter(x => x.idMae === subsede)
+        this.auth.dadosUsuario.IgrejaSelecionada = subsede
+        this.buscarMembro();
+
+      })
   }
 
 
@@ -102,8 +138,8 @@ export class ReadMembrosComponent implements OnInit {
   buscarMembro() {
     try {
       this.spinner = true
-
-      this.serverApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada && this.auth.dadosUsuario.TipoUsuarioLogado === 2 ? this.auth.dadosUsuario.IgrejaLogada : this.auth.dadosUsuario.TipoUsuarioLogado === 1 ? 0 : this.igrejaSelecionada}`)
+      //this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada && this.auth.dadosUsuario.TipoUsuarioLogado === 2 ? this.auth.dadosUsuario.IgrejaLogada : this.auth.dadosUsuario.TipoUsuarioLogado === 1 ? 0 : this.igrejaSelecionada
+      this.serverApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.igrejaSelecionada}`)
         .subscribe((response) => {
           response = response.sort()
 
@@ -119,7 +155,7 @@ export class ReadMembrosComponent implements OnInit {
                   ? response.filter(f => f.statusPessoa == 'PreCadastro')
 
                   : this.filtros.precadastro && this.filtros.txtBusca.length > 0
-                    ? response.filter(f => f.statusPessoa == 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.statusPessoa == 'PreCadastro' && f.cpf.toString().toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) ||  f.statusPessoa == 'PreCadastro' && f.rol.toString().toLowerCase().includes(this.filtros.txtBusca))
+                    ? response.filter(f => f.statusPessoa == 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.statusPessoa == 'PreCadastro' && f.cpf.toString().toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.statusPessoa == 'PreCadastro' && f.rol.toString().toLowerCase().includes(this.filtros.txtBusca))
 
                     : this.filtros.obreiros && this.filtros.txtBusca.length == 0
                       ? response.filter(f => f.funcao != "Membro" && f.statusPessoa != "Inativo" && f.statusPessoa != "PreCadastro")
@@ -131,22 +167,19 @@ export class ReadMembrosComponent implements OnInit {
                           ? response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro')
                           : response.filter(f => f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.cpf.toString().toLowerCase().includes(this.filtros.txtBusca.toLowerCase()) || f.statusPessoa != 'Inativo' && f.statusPessoa != 'PreCadastro' && f.rol.toString().toLowerCase().includes(this.filtros.txtBusca.toLowerCase()));
 
+          this.datasource.data = [...this.datasource.data]
           this.spinner = false;
         })
-
-
     } catch (error) {
       this.spinner = false
     }
-
-
   }
 
   private Precadastro(filtro: string = "") {
-    this.serverApi.read(`${Endpoint.Pessoa}/preCadastro?igreja=${this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada || this.igrejaSelecionada === 0 ? this.auth.dadosUsuario.IgrejaLogada : this.igrejaSelecionada}`)
+    //this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada || this.igrejaSelecionada === 0 ? this.auth.dadosUsuario.IgrejaLogada : this.igrejaSelecionada
+    this.serverApi.read(`${Endpoint.Pessoa}/preCadastro?igreja=${this.igrejaSelecionada}`)
       .subscribe(() => { });
   }
-
 
   cadastroMembro() {
     alert("Novo membro")
@@ -155,7 +188,6 @@ export class ReadMembrosComponent implements OnInit {
   AtualizarMembro(id: number) {
     this.route.navigate([`/membrosupdate/${id}`]);
   }
-
 
   ImprimirFichaMembro(row: any) {
 
