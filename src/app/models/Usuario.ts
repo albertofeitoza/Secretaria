@@ -18,7 +18,7 @@ export class ResetSenha {
   idUsuario: number;
   sequencia: number = 1;
   dominio: string;
-  
+
 }
 
 export class DadosLogados {
@@ -26,5 +26,6 @@ export class DadosLogados {
   LoginSistema: string = "";
   TipoUsuarioLogado: number;
   IgrejaLogada: number;
+  TipoIgrejaLogada: number;
   IgrejaSelecionada: number = 0;
 }

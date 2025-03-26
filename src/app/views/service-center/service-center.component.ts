@@ -47,7 +47,8 @@ export class ServiceCenterComponent implements OnInit {
 
 
   private BuscarMembros(): void {
-    this.serviceApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.auth.dadosUsuario.IgrejaLogada}`)
+    //this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada && this.auth.dadosUsuario.TipoUsuarioLogado === 2 ? this.auth.dadosUsuario.IgrejaLogada : this.auth.dadosUsuario.TipoUsuarioLogado === 1 ? 0 : this.igrejaSelecionada;
+    this.serviceApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.auth.dadosUsuario.TipoUsuarioLogado === 1 ? 0 : this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: ViewPessoa[]) => {
         this.pessoas = result;
         this.funcoes = new Set(result.map(x => x.funcao).sort());
@@ -56,7 +57,7 @@ export class ServiceCenterComponent implements OnInit {
   }
 
   private BuscarPendencias(): void {
-    this.serviceApi.read(Endpoint.ServiceCenter + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
+    this.serviceApi.read(Endpoint.ServiceCenter + `/estabelecimento/${this.auth.dadosUsuario.TipoUsuarioLogado === 1 ? 0 : this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: ServiceCenter[]) => {
 
         this.departamentos = new Set(result.map(x => x.departamento).sort());

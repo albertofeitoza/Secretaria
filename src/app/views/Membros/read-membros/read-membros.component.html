@@ -22,19 +22,31 @@
       </a>
     </div>
   </div>
-  <div class="col">
 
-    <div style="display: flex;">
-      <mat-select style="appearance: outline;" [(value)]="igrejaSelecionada" (selectionChange)="AlterarBuscaIgreja()"
-        placeholder="Igreja">
-        <mat-option [value]="0">Voltar</mat-option>
-        <mat-option *ngFor="let li of listaIgrejas" [value]="li.id">
-          {{li.nome}}
-        </mat-option>
-      </mat-select>
-    </div>
-
+  <div *ngIf="sede.length > 0" class="col-md-2">
+    <mat-select style="appearance: outline;" [(value)]="igrejaSelecionada"
+      placeholder="Selecione Sede">
+      <mat-option (click)="BuscarSubsedes(li.id)" *ngFor="let li of sede" [value]="li.id">
+        {{li.nome}}
+      </mat-option>
+    </mat-select>
   </div>
+  <div *ngIf="subsedes.length > 0" class="col-md-2">
+    <mat-select style="appearance: outline;" [(value)]="igrejaSelecionada"
+      placeholder="Selecione uma Filial">
+      <mat-option (click)="Congregacoes(li.id)" *ngFor="let li of subsedes" [value]="li.id">
+        {{li.nome}}
+      </mat-option>
+    </mat-select>
+  </div>
+  <div *ngIf="congregacoes.length > 0" class="col-md-2">
+    <mat-select style="appearance: outline;" [(value)]="igrejaSelecionada" placeholder="Selecione uma congregação">
+      <mat-option *ngFor="let li of congregacoes" [value]="li.id">
+        {{li.nome}}
+      </mat-option>
+    </mat-select>
+  </div>
+
   <div class="col">
     <div style="text-align: right; padding-right: 120px;">
       <input style="margin-top: 1px;" id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)" value=""
@@ -98,7 +110,7 @@
       <td style="height: 21px;width: 18%;" mat-cell *matCellDef="let row">
         <mat-icon class="cursor" matTooltip="Editar Cadastro!" (click)="AtualizarMembro(row.id)">edit</mat-icon>
         <mat-icon class="cursor" matTooltip="Impressão da ficha de membro!"
-          *ngIf="!filtros.inativos && !filtros.precadastro" (click)="ImprimirFichaMembro(row.id)">print</mat-icon>
+          *ngIf="!filtros.inativos && !filtros.precadastro" (click)="ImprimirFichaMembro(row)">print</mat-icon>
         <mat-icon class="cursor" matTooltip="Solicitação de Cartas!" *ngIf="!filtros.inativos && !filtros.precadastro"
           (click)="Cartas(row.id)">mail_outline</mat-icon>
         <mat-icon class="cursor" matTooltip="Filhos!" *ngIf="!filtros.inativos && !filtros.precadastro"

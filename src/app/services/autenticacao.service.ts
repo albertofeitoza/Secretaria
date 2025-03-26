@@ -103,5 +103,8 @@ export class AutenticacaoService {
     this.dadosUsuario.TipoUsuarioLogado = Number(jwtDecode<TokenResponse>(token).unique_name[1]);
     this.dadosUsuario.NomeUsuarioLogado = jwtDecode<TokenResponse>(token).unique_name[2];
     this.dadosUsuario.IgrejaLogada = this.dadosUsuario.TipoUsuarioLogado === 1 ? 0 : Number(jwtDecode<TokenResponse>(token).unique_name[3]);
+    this.dadosUsuario.TipoIgrejaLogada = this.dadosUsuario.TipoUsuarioLogado === 1 ? 1 : Number(jwtDecode<TokenResponse>(token).unique_name[4]);
+    let teste = 1;
+  
   }
 }
