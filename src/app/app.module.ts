@@ -72,6 +72,7 @@ import { OrganogramaComponent } from './views/organograma/organograma.component'
 import { ModalSelecionaLiderComponent } from './views/filhos-membros/modal/modal-seleciona-lider/modal-seleciona-lider.component';
 import { CadastreSeComponent } from './views/cadastre-se/cadastre-se.component';
 import { FinanceiroReadComponent } from './views/Financeiro/financeiro-read/financeiro-read.component';
+import { AssinaturasReadComponent } from './views/Financeiro/assinaturas-read/assinaturas-read.component';
 
 registerLocaleData(localePt);
 
@@ -107,6 +108,7 @@ registerLocaleData(localePt);
     ModalSelecionaLiderComponent,
     CadastreSeComponent,
     FinanceiroReadComponent,
+    AssinaturasReadComponent,
 
   ],
   imports: [

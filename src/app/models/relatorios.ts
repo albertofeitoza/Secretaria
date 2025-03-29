@@ -1,27 +1,27 @@
 export class RelatorioAnivCasamento {
     nome: string
-    dataNascimento : Date
-    dataAniversario : Date
+    dataNascimento: Date
+    dataAniversario: Date
     nomeConjuge: string;
     dataCasamento: string;
     quantidadeAnosCasado: number;
-    tipoRelatorio : number
+    tipoRelatorio: number
 }
 
-export class RelatorioMembrosAtivos{
+export class RelatorioMembrosAtivos {
     nome: string
     rol: number
-    congregacao : string
-    validadeCartaoMembro : Date
-    dataBatismo : Date
+    congregacao: string
+    validadeCartaoMembro: Date
+    dataBatismo: Date
 }
 
-export class RelatorioIdosos{
-    nome : string
-    endereco : string
-    ultimaSantaCeia : string
+export class RelatorioIdosos {
+    nome: string
+    endereco: string
+    ultimaSantaCeia: string
 }
-export class RelatorioPresenca{
+export class RelatorioPresenca {
     nome: string
     janeiro: string
     fevereiro: string
@@ -35,11 +35,11 @@ export class RelatorioPresenca{
     outubro: string
     novembro: string
     dezembro: string
-    participacao : string
+    participacao: string
 
 }
 
-export class RelatorioPastores{
+export class ViewPastores {
     igreja: string
     pastor: string
     esposa: string

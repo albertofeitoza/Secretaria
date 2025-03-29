@@ -8,7 +8,7 @@ import {
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { Filtros } from 'src/app/models/Filtros';
 import { ViewPessoa } from 'src/app/models/pessoa';
-import { RelatorioAnivCasamento, RelatorioIdosos, RelatorioMembrosAtivos, RelatorioPastores, RelatorioPresenca } from 'src/app/models/relatorios';
+import { RelatorioAnivCasamento, RelatorioIdosos, RelatorioMembrosAtivos, ViewPastores, RelatorioPresenca } from 'src/app/models/relatorios';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
@@ -48,7 +48,7 @@ export class RelatoriosComponent implements OnInit {
   relatorioAniversario: RelatorioAnivCasamento[] = new Array();
   relatorioAniCasamento: RelatorioAnivCasamento[] = new Array();
   relatorioMembrosAtivos: RelatorioMembrosAtivos[] = new Array()
-  relatorioPastores: RelatorioPastores[] = new Array()
+  relatorioPastores: ViewPastores[] = new Array()
 
   relatorioIdosos: RelatorioIdosos[] = new Array()
   relatorioPresenca: RelatorioPresenca[] = new Array()
