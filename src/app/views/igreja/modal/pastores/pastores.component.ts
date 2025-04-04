@@ -71,7 +71,8 @@ export class PastoresComponent implements OnInit {
           this.CadastrarPastor(result, true);
         });
       } else {
-        this.CadastrarPastor(response.data, false);
+        let mensagem = response.data.nome.split(';')
+        this.utilService.showMessage(`Já existe umc adastro para esse cpf pessoa: ${mensagem[0]}${mensagem[1]}`);
       }
     });
 
@@ -96,8 +97,6 @@ export class PastoresComponent implements OnInit {
       });
 
   }
-
-
 
   private CarregarCombos(): void {
     this.instrucao = this.utilService.GrauInstrucao();

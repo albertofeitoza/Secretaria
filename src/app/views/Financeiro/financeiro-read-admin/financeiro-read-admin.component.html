@@ -4,22 +4,11 @@
       <div style="display: flex;">
   
         <a>
-          <i style="padding-right: 10px;" class="material-icons">add_circle_outline</i>
+          <i style="padding-right: 10px;" class="material-icons" (click)="CadastroBoleto()">add_circle_outline</i>
         </a>
       </div>
     </div>
     <div class="col">
-  
-      <!-- <div style="display: flex;">
-          <mat-select style="appearance: outline;" [(value)]="igrejaSelecionada" (selectionChange)="AlterarBuscaIgreja()"
-            placeholder="Igreja">
-            <mat-option [value]="0">Voltar</mat-option>
-            <mat-option *ngFor="let li of listaIgrejas" [value]="li.id">
-              {{li.nome}}
-            </mat-option>
-          </mat-select>
-        </div> -->
-  
     </div>
     <div class="col">
       <div style="text-align: right; padding-right: 120px;">
@@ -33,7 +22,6 @@
     </div>
   </div>
   
-  
   <div class="mat-elevation-z4" style="height:74%; width: 100%;overflow: auto;">
     <table mat-table [dataSource]="datasource" matSort class="mat-elevation-z8 demo-table">
       <!-- Id Column -->
@@ -42,9 +30,9 @@
         <mat-cell *matCellDef="let row" [hidden]="true">{{row.id}}</mat-cell>
       </ng-container>
       <!-- rol Column -->
-      <ng-container matColumnDef="idAssinatura">
+      <ng-container matColumnDef="assinaturaId">
         <mat-header-cell *matHeaderCellDef [hidden]="true" mat-sort-header>Assinatura</mat-header-cell>
-        <mat-cell *matCellDef="let row" [hidden]="true">{{row.idAssinatura}}</mat-cell>
+        <mat-cell *matCellDef="let row" [hidden]="true">{{row.assinaturaId}}</mat-cell>
       </ng-container>
   
       <ng-container matColumnDef="numeroCobranca">
@@ -66,18 +54,12 @@
         <mat-cell *matCellDef="let row">{{row.dataVencimento | date : 'dd/MM/yyyy'}}</mat-cell>
       </ng-container>
   
-      <!-- Função -->
-      <ng-container matColumnDef="tolerancia">
-        <mat-header-cell mat-sort-header *matHeaderCellDef mat-sort-header>Tolerância</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{row.tolerancia}} dias Após.Ven</mat-cell>
-      </ng-container>
-  
-  
       <!-- status -->
       <ng-container matColumnDef="statusPagamento">
         <mat-header-cell mat-sort-header *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <div style="width: 77px; text-align: center; border: 1px; border-style: outset; padding: 4px; color: {{row.statusPagamento ? '#28a745' : '#f44336'}};">
+          <div
+            style="width: 77px; text-align: center; border: 1px; border-style: outset; padding: 4px; color: {{row.statusPagamento ? '#28a745' : '#f44336'}};">
             {{row.statusPagamento ? 'Pago' : 'Em aberto'}}
           </div>
         </mat-cell>
@@ -86,9 +68,9 @@
       <!-- Coluna de Ações -->
   
       <ng-container matColumnDef="action">
-        <mat-header-cell [hidden]="true" *matHeaderCellDef>Ações</mat-header-cell>
-        <mat-cell [hidden]="true" *matCellDef="let row">
-  
+        <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+        <mat-cell  *matCellDef="let row">
+          <mat-icon class="cursor" matTooltip="Financeiro!" (click)="EditarBoleto(row)">edit</mat-icon>
         </mat-cell>
       </ng-container>
   

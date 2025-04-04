@@ -140,6 +140,16 @@ export class UtilServiceService {
     return statusPessoa
   }
 
+  StatusPagamento() {
+
+    let statusPagamento = [];
+
+    statusPagamento.push({ "id": 0, "value": "Em aberto" })
+    statusPagamento.push({ "id": 1, "value": "Pago" })
+    
+    return statusPagamento
+  }
+
   CursoTeologico() {
     let cursoteoligico = [];
     cursoteoligico.push({ "id": 0, "value": "Nenhum" })
@@ -298,6 +308,7 @@ export class UtilServiceService {
     tipoUsuario.push({ "id": 3, "value": "Membro" })
     tipoUsuario.push({ "id": 4, "value": "Tesoureiro" })
     tipoUsuario.push({ "id": 5, "value": "DepInfantil" })
+    tipoUsuario.push({ "id": 6, "value": "DepAdolescentes" })
 
     return tipoUsuario;
 

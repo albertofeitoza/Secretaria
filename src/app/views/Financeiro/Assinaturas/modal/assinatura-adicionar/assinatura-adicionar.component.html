@@ -1,0 +1,63 @@
+<div style="padding: 30px;">
+    <div style="text-align: center;">
+        <h2>{{this.assinatura.id > 0 ? 'CADASTRO | ASSINATURA | EDITAR' : 'CADASTRO | ASSINATURA'}}</h2>
+    </div>
+    <mat-form-field appearance="outline">
+        <mat-label>Assinatura Externa</mat-label>
+        <input type="number" matInput placeholder="Assinatura Externa" [(ngModel)]="assinatura.idAssinatura"
+            name="idAssinatura">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Nome</mat-label>
+        <input matInput placeholder="Nome" [(ngModel)]="assinatura.nome" name="nome">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>CPF</mat-label>
+        <input type="number" matInput placeholder="CPF" [(ngModel)]="assinatura.cpf" name="cpf">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Dia Vencimento</mat-label>
+        <input type="number" matInput placeholder="Dia Vencimento" [(ngModel)]="assinatura.diaVencimento"
+            name="diaVencimento">
+    </mat-form-field>
+    <br />
+    <mat-form-field appearance="outline">
+        <mat-label>Tolerância</mat-label>
+        <input type="number" matInput placeholder="Tolerância" [(ngModel)]="assinatura.tolerancia" name="tolerancia">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Telefone</mat-label>
+        <input type="number" matInput placeholder="Telefone" [(ngModel)]="assinatura.telefone" name="telefone">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>E-mail</mat-label>
+        <input type="email" matInput placeholder="E-mail" [(ngModel)]="assinatura.email" name="email">
+    </mat-form-field>
+
+
+    <mat-form-field appearance="outline">
+        <mat-label>Selecione a Igreja</mat-label>
+        <mat-select [(value)]="assinatura.igrejaId" placeholder="Igreja">
+            <mat-option *ngFor="let i of igrejas" [value]="i.id">
+                {{i.nome}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <br />
+
+    <br />
+    <div style="text-align: end;">
+        <span class="cursor" *ngIf="assinatura.idAssinatura != null 
+        && assinatura.nome && assinatura.cpf && assinatura.diaVencimento != null 
+        && assinatura.tolerancia != null && assinatura.telefone != null 
+        && assinatura.email && assinatura.igrejaId" (click)="Salvar()">
+            <i class="material-icons">save</i>
+        </span>
+    </div>
+</div>

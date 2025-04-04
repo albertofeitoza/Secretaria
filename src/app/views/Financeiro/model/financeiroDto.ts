@@ -1,4 +1,4 @@
-export class ViewFinanceiro {
+export class FinanceiroDto {
     id: number;
     dtCriacao: Date;
     assinaturaId: number;

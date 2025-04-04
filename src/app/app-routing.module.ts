@@ -8,10 +8,11 @@ import { RelatoriosComponent } from './views/Relatorios/relatorios/relatorios.co
 import { CadastroMembrosComponent } from './views/Membros/cadastro-membros/cadastro-membros.component';
 import { UpdateMembroComponent } from './views/Membros/update-membro/update-membro.component';
 import { OfertasComponent } from './views/ofertas/ofertas.component';
-import { UsuariosComponent } from './views/usuarios/usuarios.component';
+import { UsuariosComponent } from './views/usuarios/modal/Adicionar/usuarios.component';
 import { FilhosMembrosComponent } from './views/filhos-membros/filhos-membros.component';
 import { IgrejaComponent } from './views/igreja/igreja.component';
 import { FinanceiroReadComponent } from './views/Financeiro/financeiro-read/financeiro-read.component';
+import { AssinaturasReadComponent } from './views/Financeiro/Assinaturas/assinaturas-read/assinaturas-read.component';
 
 const routes: Routes = [
   {path : '', component: BemVindoComponent},
@@ -23,10 +24,15 @@ const routes: Routes = [
   {path: "membrosupdate/:id", component: UpdateMembroComponent},
   {path: "relatorios", component: RelatoriosComponent},
   {path: "ofertas", component: OfertasComponent},
-  {path: "usuarios", component: UsuariosComponent},
+  // {path: "usuarios", component: UsuariosReadComponent},
   {path: "igreja", component: IgrejaComponent},
   {path: "filhos", component: FilhosMembrosComponent},
+
+  {path: "assinaturas", component: AssinaturasReadComponent},
   {path: "financeiro", component: FinanceiroReadComponent}
+  
+
+  
 
   
 ];

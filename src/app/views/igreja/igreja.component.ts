@@ -5,13 +5,14 @@ import { TipoPopup } from 'src/app/enum/TipoPopup';
 import { igreja, ViewIgreja } from 'src/app/models/Igreja';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
-import { UsuariosComponent } from '../usuarios/usuarios.component';
+import { UsuariosComponent } from '../usuarios/modal/Adicionar/usuarios.component';
 import { AdicionarIgrejaComponent } from './modal/adicionar-igreja/adicionar-igreja.component';
 import { PastoresComponent } from './modal/pastores/pastores.component';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { UsuariosReadComponent } from '../usuarios/usuarios-read/usuarios-read.component';
 
 @Component({
   selector: 'app-igreja',
@@ -108,7 +109,7 @@ export class IgrejaComponent implements OnInit {
 
 
   public Usuarios(element: any): void {
-    this.serviceUtil.Popup("", TipoPopup.ComponenteInstancia, UsuariosComponent, element.id, 'auto', 'auto', false, false, element);
+    this.serviceUtil.Popup("", TipoPopup.ComponenteInstancia, UsuariosReadComponent, element.id, '65%', '55%', false, false, element);
   }
 
 

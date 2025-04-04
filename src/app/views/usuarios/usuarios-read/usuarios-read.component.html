@@ -1,0 +1,62 @@
+<div style="padding-left: 17px;padding-top: 1%;">
+
+    <div style="padding-top: 15px;">
+        <h1 style="padding-left: 25px;">Usuários</h1>
+        <a class="cursor" style="padding-left: 25px;" (click)="AdicionarUsuario()">
+            <i class="material-icons">add_circle_outline</i>
+        </a>
+    </div>
+    <div style="padding-left: 25px; padding-bottom: 20px;">
+        <div class="mat-elevation-z4" style="height:35%; width: 96%; overflow: auto;">
+
+            <mat-spinner *ngIf="spinner"></mat-spinner>
+
+            <table mat-table [dataSource]="usuarios" class="mat-elevation-z8 demo-table">
+                <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
+                <!-- Id Column -->
+                <ng-container matColumnDef="id">
+                    <mat-header-cell style="display: none;" *matHeaderCellDef hidden="true">Id</mat-header-cell>
+                    <mat-cell style="display: none;" id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="nome">
+                    <mat-header-cell *matHeaderCellDef>Nome </mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
+                </ng-container>
+
+
+                <ng-container matColumnDef="nomeUsuario">
+                    <mat-header-cell *matHeaderCellDef>Login </mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.nomeUsuario}}</mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="tipoUsuario">
+                    <mat-header-cell *matHeaderCellDef>Tipo de Usuário</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.tipoUsuario}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="ativo">
+                    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                    <mat-cell *matCellDef="let row"><mat-icon>{{row.ativo ? 'lock_open' : 'lock'}}</mat-icon></mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="primeiroAcesso">
+                    <mat-header-cell *matHeaderCellDef>Primeiro Acesso</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.primeiroAcesso ? 'SIM' : 'NÃO'}}</mat-cell>
+                </ng-container>
+
+
+                <!-- Coluna de Ações -->
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <mat-icon matTooltip="Editar Cadastro!" (click)="EditarUsuario(row)">edit</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-row style="height: 10%;" (click)="LinhaSelecionada(row.id)" *matRowDef="let row; columns: Colunas;"
+                    [ngClass]="{'corLinhaGrid' : row.id == linhaSelecionada}"></mat-row>
+            </table>
+        </div>
+    </div>

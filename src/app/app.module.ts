@@ -50,7 +50,7 @@ import { CadastroMembrosComponent } from './views/Membros/cadastro-membros/cadas
 import { RelatoriosComponent } from './views/Relatorios/relatorios/relatorios.component';
 import { PopupConfirmacaoComponent } from './popups/popup-confirmacao/popup-confirmacao.component';
 import { OfertasComponent } from './views/ofertas/ofertas.component';
-import { UsuariosComponent } from './views/usuarios/usuarios.component';
+import { UsuariosComponent } from './views/usuarios/modal/Adicionar/usuarios.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { PopupcomponetComponent } from './popups/popupcomponet/popupcomponet.component';
 import { HistoricoPopupComponent } from './views/Membros/historico-popup/historico-popup.component';
@@ -72,7 +72,12 @@ import { OrganogramaComponent } from './views/organograma/organograma.component'
 import { ModalSelecionaLiderComponent } from './views/filhos-membros/modal/modal-seleciona-lider/modal-seleciona-lider.component';
 import { CadastreSeComponent } from './views/cadastre-se/cadastre-se.component';
 import { FinanceiroReadComponent } from './views/Financeiro/financeiro-read/financeiro-read.component';
-import { AssinaturasReadComponent } from './views/Financeiro/assinaturas-read/assinaturas-read.component';
+import { AssinaturasReadComponent } from './views/Financeiro/Assinaturas/assinaturas-read/assinaturas-read.component';
+import { UsuariosReadComponent } from './views/usuarios/usuarios-read/usuarios-read.component';
+import { UsuariosEditarComponent } from './views/usuarios/modal/editar/usuarios-editar/usuarios-editar.component';
+import { AssinaturaAdicionarComponent } from './views/Financeiro/Assinaturas/modal/assinatura-adicionar/assinatura-adicionar.component';
+import { FinanceiroReadAdminComponent } from './views/Financeiro/financeiro-read-admin/financeiro-read-admin.component';
+import { FinanceiroCadastroBoletoComponent } from './views/Financeiro/modal/financeiro-cadastro-boleto/financeiro-cadastro-boleto.component';
 
 registerLocaleData(localePt);
 
@@ -109,6 +114,11 @@ registerLocaleData(localePt);
     CadastreSeComponent,
     FinanceiroReadComponent,
     AssinaturasReadComponent,
+    UsuariosReadComponent,
+    UsuariosEditarComponent,
+    AssinaturaAdicionarComponent,
+    FinanceiroReadAdminComponent,
+    FinanceiroCadastroBoletoComponent,
 
   ],
   imports: [
