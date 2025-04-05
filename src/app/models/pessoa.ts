@@ -29,8 +29,9 @@ export class ViewPessoa {
   nome: string;
   dataNascimento: Date;
   funcao: string
-  statusPessoa: string
-  sexo : number
+  statusPessoa: string;
+  sexo : number;
+  cpf: string;
 }
 
 export class ViewFilhos {

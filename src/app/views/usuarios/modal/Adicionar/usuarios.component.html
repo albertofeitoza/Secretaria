@@ -2,117 +2,120 @@
 
     <div style="padding-top: 15px;">
 
-        <h1 style="padding-left: 10px;">{{pessoa.id === 0 ? 'Cadastrar nova pessoa' : 'Cadastro de usuário'}}</h1>
+        <h1 style="padding-left: 10px;">{{pessoa.id < 0 ? 'Cadastrar nova pessoa' : 'Cadastro de usuário' }}</h1>
 
-        <div *ngIf="pessoa.id === undefined || pessoa.id > 0">
-            <mat-form-field appearance="outline" style="width: 300px;">
-                <mat-label>Selecione a Pessoa</mat-label>
-                <mat-select [(value)]="pessoa.id" placeholder="Selecione uma pessoa">
-                    <mat-option *ngFor="let pe of pessoas" [value]="pe.id">
-                        {{pe.nome}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-
-
-            <a matTooltip="Adicionar nova pessoa" style="padding-left: 15px;"
-                (click)="CadastrarNovaPessoa()">
-                <i class="material-icons">add</i>
-            </a>
-        </div>
-        <br />
-
-        <div *ngIf="pessoa.id === 0">
-
-            <mat-form-field appearance="outline">
-                <mat-label>Nome</mat-label>
-                <input [disabled]="bloquearCampos" matInput placeholder="Nome" [(ngModel)]="pessoa.nome" name="nome">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-                <mat-label>CPF</mat-label>
-                <input [disabled]="bloquearCampos" class="number" matInput placeholder="CPF" [(ngModel)]="pessoa.cpf"
-                    name="cpf">
-            </mat-form-field>
-
-            <mat-form-field color="accent" style="width: 213px;" appearance="outline">
-                <mat-label>Data Nascimento</mat-label>
-                <input [disabled]="bloquearCampos" matInput [matDatepicker]="dataNascimento"
-                    [(ngModel)]="pessoa.dataNascimento" name="dataNascimento">
-                <mat-datepicker-toggle matIconSuffix [for]="dataNascimento"></mat-datepicker-toggle>
-                <mat-datepicker #dataNascimento></mat-datepicker>
-            </mat-form-field>
-            <br />
-            <mat-form-field appearance="outline">
-                <mat-label>Grau de Instrução</mat-label>
-                <mat-select [disabled]="bloquearCampos" [(value)]="pessoa.grauInstrucao" placeholder="Grau Instrução">
-                    <mat-option *ngFor="let i of instrucao" [value]="i.id">
-                        {{i.value}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+                <div>
+                    <mat-form-field appearance="outline" style="width: 300px;">
+                        <mat-label>Selecione a Pessoa</mat-label>
+                        <mat-select [(value)]="pessoa.id" placeholder="Selecione uma pessoa"
+                            (selectionChange)="pessoaSelecionada=true">
+                            <mat-option *ngFor="let pe of pessoas" [value]="pe.id">
+                                {{pe.nome}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
 
 
-            <mat-form-field appearance="outline">
-                <mat-label>Sexo</mat-label>
-                <mat-select [disabled]="bloquearCampos" [(value)]="pessoa.sexo" placeholder="Sexo">
-                    <mat-option *ngFor="let s of sexo" [value]="s.id">
-                        {{s.value}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+                    <a matTooltip="Adicionar nova pessoa" style="padding-left: 15px;" (click)="CadastrarNovaPessoa()">
+                        <i class="material-icons">add</i>
+                    </a>
+                </div>
+                <br />
 
-            <mat-form-field appearance="outline">
-                <mat-label>Email</mat-label>
-                <input matTooltip="informar email válido ese email será usado para reset de senha" type="email" matInput
-                    placeholder="Email" [(ngModel)]="contato.email" name="senha">
-            </mat-form-field>
-            <br />
-            <div style="text-align: end;">
-                <span class="cursor" *ngIf="pessoa.nome && pessoa.cpf && pessoa.dataNascimento && pessoa.grauInstrucao && pessoa.sexo 
+                <div *ngIf="!pessoaSelecionada">
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nome</mat-label>
+                        <input [disabled]="bloquearCampos" matInput placeholder="Nome" [(ngModel)]="pessoa.nome"
+                            name="nome">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>CPF</mat-label>
+                        <input [disabled]="bloquearCampos" class="number" matInput placeholder="CPF"
+                            [(ngModel)]="pessoa.cpf" name="cpf">
+                    </mat-form-field>
+
+                    <mat-form-field color="accent" style="width: 213px;" appearance="outline">
+                        <mat-label>Data Nascimento</mat-label>
+                        <input [disabled]="bloquearCampos" matInput [matDatepicker]="dataNascimento"
+                            [(ngModel)]="pessoa.dataNascimento" name="dataNascimento">
+                        <mat-datepicker-toggle matIconSuffix [for]="dataNascimento"></mat-datepicker-toggle>
+                        <mat-datepicker #dataNascimento></mat-datepicker>
+                    </mat-form-field>
+                    <br />
+                    <mat-form-field appearance="outline">
+                        <mat-label>Grau de Instrução</mat-label>
+                        <mat-select [disabled]="bloquearCampos" [(value)]="pessoa.grauInstrucao"
+                            placeholder="Grau Instrução">
+                            <mat-option *ngFor="let i of instrucao" [value]="i.id">
+                                {{i.value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Sexo</mat-label>
+                        <mat-select [disabled]="bloquearCampos" [(value)]="pessoa.sexo" placeholder="Sexo">
+                            <mat-option *ngFor="let s of sexo" [value]="s.id">
+                                {{s.value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matTooltip="informar email válido ese email será usado para reset de senha" type="email"
+                            matInput placeholder="Email" [(ngModel)]="contato.email" name="senha">
+                    </mat-form-field>
+                    <br />
+                    <div style="text-align: end;">
+                        <span class="cursor" *ngIf="pessoa.nome && pessoa.cpf && pessoa.dataNascimento && pessoa.grauInstrucao && pessoa.sexo 
                 && contato.email" (click)="SalvarPessoa()">
-                    <i class="material-icons">save</i>
-                </span>
-            </div>
+                            <i class="material-icons">save</i>
+                        </span>
+                    </div>
 
 
-        </div>
+                </div>
 
 
-        <!-- Dados de login no sistema -->
-        <div *ngIf="pessoa.id > 0">
-            <h1 style="padding-left: 10px;">Dados de acesso</h1>
+                <!-- Dados de login no sistema -->
+                <div *ngIf="pessoa.id > 0">
+                    <h1 style="padding-left: 10px;">Dados de acesso</h1>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Usuario</mat-label>
-                <input matInput placeholder="Usuário" [(ngModel)]="usuario.nomeUsuario" name="Usuario">
-            </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Usuario</mat-label>
+                        <input matInput placeholder="Usuário" [(ngModel)]="usuario.nomeUsuario" name="Usuario">
+                    </mat-form-field>
 
 
-            <mat-form-field appearance="outline">
-                <mat-label>Senha</mat-label>
-                <input type="password" matInput placeholder="Senha" [(ngModel)]="usuario.senha" name="senha">
-            </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Senha</mat-label>
+                        <input type="password" matInput placeholder="Senha" [(ngModel)]="usuario.senha" name="senha">
+                    </mat-form-field>
 
-            <mat-form-field *ngIf="usuario.id > 0" appearance="outline">
-                <mat-label>Ativo</mat-label>
-                <input style="height: 20px; width: 150px;" matInput placeholder="Ativo">
-                <input name="ativo" [(ngModel)]="usuario.ativo" [checked]="usuario.ativo" type="checkbox">
-            </mat-form-field>
+                    <mat-form-field *ngIf="usuario.id > 0" appearance="outline">
+                        <mat-label>Ativo</mat-label>
+                        <input style="height: 20px; width: 150px;" matInput placeholder="Ativo">
+                        <input name="ativo" [(ngModel)]="usuario.ativo" [checked]="usuario.ativo" type="checkbox">
+                    </mat-form-field>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Tipo de Usuário</mat-label>
-                <mat-select [(value)]="usuario.tipoUsuario" placeholder="Tipo de Usuario">
-                    <mat-option *ngFor="let tu of tipousuarios" [value]="tu.id">
-                        {{tu.value}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <br />
-            <div style="text-align: end;">
-                <span class="cursor" *ngIf="usuario.nomeUsuario && usuario.tipoUsuario" (click)="CadastrarUsuario()">
-                    <i class="material-icons">save</i>
-                </span>
-            </div>
-        </div>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Tipo de Usuário</mat-label>
+                        <mat-select [(value)]="usuario.tipoUsuario" placeholder="Tipo de Usuario">
+                            <mat-option *ngFor="let tu of tipousuarios" [value]="tu.id">
+                                {{tu.value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <br />
+                    <div style="text-align: end;">
+                        <span class="cursor" *ngIf="usuario.nomeUsuario && usuario.tipoUsuario"
+                            (click)="CadastrarUsuario()">
+                            <i class="material-icons">save</i>
+                        </span>
+                    </div>
+                </div>
     </div>

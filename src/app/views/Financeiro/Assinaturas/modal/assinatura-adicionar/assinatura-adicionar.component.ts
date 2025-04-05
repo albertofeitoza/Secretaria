@@ -4,6 +4,7 @@ import { Endpoint } from 'src/app/enum/Endpoints';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { igreja, ViewIgreja } from 'src/app/models/Igreja';
 import { MatDialogRef } from '@angular/material/dialog';
+import { UtilServiceService } from 'src/app/services/util-service.service';
 
 @Component({
   selector: 'app-assinatura-adicionar',
@@ -17,7 +18,8 @@ export class AssinaturaAdicionarComponent implements OnInit {
 
   constructor(
     private matdialogRef: MatDialogRef<AssinaturaAdicionarComponent>,
-    private serviceApi: AllservicesService<any>
+    private serviceApi: AllservicesService<any>,
+    private utilService: UtilServiceService
   ) { }
 
   ngOnInit(): void {
@@ -27,6 +29,14 @@ export class AssinaturaAdicionarComponent implements OnInit {
   }
 
   public Salvar(): void {
+
+    if(!this.utilService.ValidaCpf(this.assinatura.cpf.toString()))
+      return this.utilService.showMessage("Cpf Inválido", true)
+
+    this.assinatura.cpf = this.assinatura.cpf.toString().replace(/\D/g, '');
+    this.assinatura.cpf = ("00000000000" + this.assinatura.cpf.toString()).slice(-11);
+    this.assinatura.telefone = this.assinatura.telefone.toString();
+    
     this.serviceApi.create(this.assinatura, Endpoint.Assinaturas)
         .subscribe((result: AssinaturaDto) => {
           this.assinatura = result;

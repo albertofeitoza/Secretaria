@@ -1,5 +1,5 @@
 import { Pessoa, ViewPessoa } from '../../../../models/pessoa';
-import { Component, OnInit } from '@angular/core';
+import { booleanAttribute, Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { Usuario } from 'src/app/models/Usuario';
@@ -33,6 +33,7 @@ export class UsuariosComponent implements OnInit {
   linhaSelecionada: number = 0
   bloquearCampos = false;
   igrejaSelecionada = 0;
+  pessoaSelecionada = true;
 
   constructor(
     private matdialogRef: MatDialogRef<UsuariosComponent>,
@@ -45,7 +46,6 @@ export class UsuariosComponent implements OnInit {
 
   ngOnInit() {
     this.igrejaSelecionada = this.matdialogRef._containerInstance._config.data.dadosTela;
-    // this.BuscaUsuarios();
     this.BuscarPessoas();
     this.CarregarCombos();
   }
@@ -63,25 +63,6 @@ export class UsuariosComponent implements OnInit {
   }
 
 
-
-  // Filtros(keyEvent: any) {
-
-  //   if (keyEvent.which == 13 || keyEvent.which == 1) {
-
-  //     if (this.cpf) {
-  //       this.serverApi.readById(this.cpf, Endpoint.BuscaPorCpf, '', this.auth.dadosUsuario.IgrejaLogada).subscribe(res => {
-  //         if (res.code == 200)
-  //           this.pessoa = res.data;
-  //         else
-  //           this.utilService.showMessage("Cpf não cadastrado", true);
-  //         this.cpf = ""
-  //       })
-  //     } else
-  //       this.utilService.showMessage("Informe o cpf.", true);
-  //   }
-  // }
-
-
   SalvarPessoa() {
 
     if (this.pessoa.id === 0) {
@@ -95,6 +76,12 @@ export class UsuariosComponent implements OnInit {
       this.pessoa.cpf = this.pessoa.cpf.replace(/\D/g, '');
       this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
 
+      if(this.pessoas.filter(p => p.cpf === this.pessoa.cpf).length > 0){
+        this.utilService.showMessage(`Esse cpf já possui cadastro, selecione no combo box pessoa : ${this.pessoas.filter(p => p.cpf === this.pessoa.cpf)[0].nome}`, true)
+        this.pessoaSelecionada = false;
+        return 
+      }
+        
       this.serverApi.readById(this.pessoa.cpf, Endpoint.BuscaPorCpf, '', Number(this.igrejaSelecionada))
         .subscribe(response => {
           if (response.code != 200) {
@@ -109,6 +96,7 @@ export class UsuariosComponent implements OnInit {
                 this.contato.pessoaId = result.id
                 this.CadastrarContato(result);
                 this.BuscarPessoas();
+                this.pessoaSelecionada = false;
               });
           } else {
 
@@ -143,7 +131,7 @@ export class UsuariosComponent implements OnInit {
 
   public CadastrarNovaPessoa(): void {
     this.pessoa = new Pessoa();
-    this.pessoa.id = 0;
+    this.pessoaSelecionada = false;
   }
 
 
