@@ -1,10 +1,12 @@
 <div class="menuInternoGrid">
     <div class="row col-md-12">
       
-      <a style="position: absolute;">
-         <h5><span>Cuidado ao realizar essa tarefa, ocorre a união do cadastro mantendo apenas um cadastro.</span></h5>
+      <a style="position: absolute;color: red;">
+         <h2>Cuidado ao realizar essa tarefa, ocorre a união dos dados do cadastro pelos dados do pré cadastro.</h2>
       </a>
+    </div>
       <!-- <mat-spinner style="width: 10%;height: 8%;" *ngIf="spinner"> Aguarde! </mat-spinner> -->
+    <div>
       <span style="margin-top: 1px;" class="search" (click)="Filtros($event)">
         <i class="material-icons">search</i>
       </span>
@@ -12,7 +14,6 @@
     </div>
   </div>
   
-  <hr />
   <div class="mat-elevation-z4" style="height:73%; width: 100%;overflow: auto;">
     <table mat-table [dataSource]="datasource" matSort class="mat-elevation-z8 demo-table">
       <!-- Id Column -->

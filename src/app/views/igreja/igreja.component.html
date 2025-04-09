@@ -1,6 +1,21 @@
-<a style="padding-left: 15px;" (click)="CadastrarIgreja()">
-  <i class="material-icons">add_circle_outline</i>
-</a>
+<div class="row display: flex">
+  <div class="col">
+    <a style="padding-left: 15px;" (click)="CadastrarIgreja()">
+      <i class="material-icons">add_circle_outline</i>
+    </a>
+  </div>
+  <div class="col display: flex;" style="text-align: -webkit-right; padding-right: 150px;">
+   
+      <input type="text" name="txtbusca" id="txtbusca" (keypress)="BuscarIgreja($event)">
+
+      <a style="padding-left: 15px;" (click)="BuscarIgreja($event)">
+        <i class="material-icons">search</i>
+      </a>
+    </div>
+ 
+</div>
+
+
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="igrejas" matSort>
     <!-- Id Column -->
@@ -10,38 +25,39 @@
     </ng-container>
     <!-- rol Column -->
     <ng-container matColumnDef="nome">
-      <mat-header-cell *matHeaderCellDef>Nome da Igreja</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Nome da Igreja</mat-header-cell>
       <mat-cell id="igreja" *matCellDef="let row">{{row.nome}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="nomeIgrejaMae">
-      <mat-header-cell *matHeaderCellDef>Igreja Mãe</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Igreja Mãe</mat-header-cell>
       <mat-cell id="igreja" *matCellDef="let row">{{row.nomeIgrejaMae}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="dominio">
-      <mat-header-cell matTooltip="Esse Campo é usado na tela de Login" *matHeaderCellDef>Domínio</mat-header-cell>
+      <mat-header-cell matTooltip="Esse Campo é usado na tela de Login" *matHeaderCellDef
+        mat-sort-header>Domínio</mat-header-cell>
       <mat-cell id="igreja" *matCellDef="let row">{{row.dominio}}</mat-cell>
     </ng-container>
 
 
     <ng-container matColumnDef="cnpj">
-      <mat-header-cell *matHeaderCellDef>CNPJ</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>CNPJ</mat-header-cell>
       <mat-cell id="cnpj" *matCellDef="let row">{{row.cnpj | number}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="estado">
-      <mat-header-cell *matHeaderCellDef>Estado</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Estado</mat-header-cell>
       <mat-cell id="estado" *matCellDef="let row">{{row.estado}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="cidade">
-      <mat-header-cell *matHeaderCellDef>Cidade</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Cidade</mat-header-cell>
       <mat-cell id="cidade" *matCellDef="let row">{{row.cidade}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
       <mat-cell id="cidade" *matCellDef="let row"><mat-icon>{{row.status ? 'lock_open' : 'lock'}}</mat-icon></mat-cell>
     </ng-container>
 
@@ -52,11 +68,12 @@
         <mat-icon class="cursor" matTooltip="Alterar Cadastro!" (click)="EditarIgreja(row.id)">edit</mat-icon>
         <mat-icon class="cursor" matTooltip="Pastores!" (click)="Pastores(row)">people</mat-icon>
         <mat-icon class="cursor" matTooltip="usuários!" (click)="Usuarios(row)">groups</mat-icon>
-       </mat-cell>
+      </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="ColunasIgreja"></mat-header-row>
     <mat-row (click)="LinhaSelecionada(row.id)" *matRowDef="let row; columns: ColunasIgreja;"
       [ngClass]="{'corLinhaGrid' : row.id == linhaSelecionada}"></mat-row>
   </table>
+  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>
 </div>

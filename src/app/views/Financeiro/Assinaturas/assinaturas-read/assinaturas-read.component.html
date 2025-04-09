@@ -1,0 +1,99 @@
+<!-- barra de menu -->
+<div style="display: flex; padding: 1%;" class="row">
+  <div class="col">
+    <div style="display: flex;">
+      <a>
+        <i style="padding-right: 10px;" class="material-icons" (click)="AdicionarAssinatura()">add_circle_outline</i>
+      </a>
+    </div>
+  </div>
+  <div class="col">
+
+    <!-- <div style="display: flex;">
+          <mat-select style="appearance: outline;" [(value)]="igrejaSelecionada" (selectionChange)="AlterarBuscaIgreja()"
+            placeholder="Igreja">
+            <mat-option [value]="0">Voltar</mat-option>
+            <mat-option *ngFor="let li of listaIgrejas" [value]="li.id">
+              {{li.nome}}
+            </mat-option>
+          </mat-select>
+        </div> -->
+
+  </div>
+  <div class="col">
+    <div style="text-align: right; padding-right: 120px;">
+      <input style="margin-top: 1px;" id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)" value=""
+        placeholder="pesquisar por NOME, CPF, idAssinatura" />
+
+      <span style="margin-top: 1px;" class="search" (click)="Filtros($event)">
+        <i class="material-icons">search</i>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="mat-elevation-z4" style="height:74%; width: 100%;overflow: auto;">
+  <table mat-table [dataSource]="datasource" matSort class="mat-elevation-z8 demo-table">
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
+    </ng-container>
+    <!-- rol Column -->
+    <ng-container matColumnDef="idAssinatura">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Ass. Externa</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.idAssinatura}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="igreja">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Igreja</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.igreja}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="diaVencimento">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Dia Vcto</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.diaVencimento}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="tolerancia">
+      <mat-header-cell mat-sort-header *matHeaderCellDef mat-sort-header>Tolerância</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.tolerancia}} dias Após.Ven</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="nome">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Resp Financeiro</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="cpf">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>CPF</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.cpf}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="telefone">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Telefone</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.telefone}}</mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>E-mail</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.email}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-icon class="cursor" matTooltip="Alterar Cadastro!" (click)="EditarAssinatura(row.id)">edit</mat-icon>
+        <mat-icon class="cursor" matTooltip="Faturas!" (click)="Faturas(row)">paid</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
+    <mat-row style="height: 10%;" (click)="LinhaSelecionada(row.id)" *matRowDef="let row; columns: Colunas;"
+      [ngClass]="{'corLinhaGrid' : row.id == idLinhaSelecionada}"></mat-row>
+  </table>
+</div>
+<mat-paginator #paginator [pageSize]="13" [pageSizeOptions]="[13]" showFirstLastButtons>
+</mat-paginator>

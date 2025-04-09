@@ -5,7 +5,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { Pastor } from 'src/app/models/Pastor';
 import { Pessoa } from 'src/app/models/pessoa';
-import { RelatorioPastores } from 'src/app/models/relatorios';
+import { ViewPastores } from 'src/app/models/relatorios';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
@@ -18,7 +18,7 @@ import { UtilServiceService } from 'src/app/services/util-service.service';
 export class PastoresComponent implements OnInit {
 
   ColunasGridPastores = ['pastor', 'datainicial', 'membrosinicial', 'membrossaida', 'saldomembros', 'status']
-  datasource: RelatorioPastores[] = new Array()
+  datasource: ViewPastores[] = new Array()
   mensagemDeretorno = "";
   spinner = false;
   pessoa: Pessoa = new Pessoa();
@@ -45,29 +45,9 @@ export class PastoresComponent implements OnInit {
     // this.serverApi.readById(Endpoint.Igreja + `/estabelecimento/${this.matdialogRef.id}`)
     //   .subscribe(result => {
 
-    this.serverApi.readById(this.matdialogRef.id.toString(), Endpoint.Igreja)
-      .subscribe(result => {
-
-        this.datasource = new Array();
-
-        let pastores: Pastor[] = result.data.pastores
-        let pessoas:Pessoa[] = result.data.pessoas
-
-         pastores.forEach(x => {
-
-          let pastor: RelatorioPastores = new RelatorioPastores();
-          pastor.pastor = pessoas.filter(fi => fi.id == x.pessoaId).map(p => p.nome)[0]
-          pastor.esposa = pessoas.filter(fi => fi.id == x.pessoaId).map(p => p.nomeConjuge)[0];
-          pastor.datainicial = x.dataEntrada.toString();
-          pastor.membrosinicial = x.qantidadeMembosEntrada.toString();
-          pastor.membrossaida = x.qantidadeMembosSaida.toString();
-          pastor.saldomembros = x.diferencaMembrosSaida.toString();
-          pastor.status = x.ativo ? 'Atual' : 'Anterior';
-
-          this.datasource.push(pastor);
-
-        });
-
+    this.serverApi.read(Endpoint.Pastores + `/estabelecimento/${this.matdialogRef.id}`)
+      .subscribe((result: ViewPastores[]) => {
+        this.datasource = result
         this.spinner = false;
       });
   }
@@ -76,7 +56,7 @@ export class PastoresComponent implements OnInit {
 
     this.pessoa.estadoCivil = 1;
     this.pessoa.statusPessoa = 0;
-    
+
     this.pessoa.cpf = this.pessoa.cpf.replace(/\D/g, '');
     this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
 
@@ -91,7 +71,8 @@ export class PastoresComponent implements OnInit {
           this.CadastrarPastor(result, true);
         });
       } else {
-        this.CadastrarPastor(response.data, false);
+        let mensagem = response.data.nome.split(';')
+        this.utilService.showMessage(`Já existe umc adastro para esse cpf pessoa: ${mensagem[0]}${mensagem[1]}`);
       }
     });
 
@@ -102,7 +83,7 @@ export class PastoresComponent implements OnInit {
 
     this.pastor.id = 0;
     this.pastor.pessoaId = pessoa.id;
-    this.pastor.igrejaId = Number(pessoa.igrejaId );
+    this.pastor.igrejaId = Number(pessoa.igrejaId);
     this.pastor.dataEntrada = this.pessoa.dataCriacao
     this.pastor.qantidadeMembosEntrada = this.pastor.qantidadeMembosEntrada;
     this.pastor.qantidadeMembosSaida = 0;
@@ -116,8 +97,6 @@ export class PastoresComponent implements OnInit {
       });
 
   }
-
-
 
   private CarregarCombos(): void {
     this.instrucao = this.utilService.GrauInstrucao();

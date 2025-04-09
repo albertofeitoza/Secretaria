@@ -20,6 +20,7 @@ export class ViewIgreja {
     igrejaMae: number = 0;
     status: boolean;
     dominio: string;
+    tipoIgreja: number;
 }
 
 export class TodasAsIgrejas{

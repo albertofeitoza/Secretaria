@@ -75,11 +75,13 @@ export class ReadMembrosComponent implements OnInit {
     this.auth.dadosUsuario.IgrejaSelecionada = this.auth.dadosUsuario.IgrejaLogada;
     this.tipoIgreja = this.auth.dadosUsuario.TipoIgrejaLogada;
 
+    this.sedeSelecionada = this.igrejaSelecionada;
+
     this.buscarMembro();
     this.BuscarSedes();
   }
 
-  
+
 
 
   public BuscarSedes(): void {
@@ -102,8 +104,11 @@ export class ReadMembrosComponent implements OnInit {
     this.serverApi.read(Endpoint.Igreja + `/igrejasFilhas/${idSede}`)
       .subscribe((result: TodasAsIgrejas[]) => {
         this.subsedes = result.filter(x => x.idMae === idSede);
-        this.sedeSelecionada = idSede;
-        this.auth.dadosUsuario.IgrejaSelecionada = idSede
+        this.igrejaSelecionada = idSede
+       
+        this.subsedeSelecionada = 0;
+        this.congregacaoselecionada = 0;
+
         this.buscarMembro();
       })
 
@@ -117,10 +122,16 @@ export class ReadMembrosComponent implements OnInit {
     this.serverApi.read(Endpoint.Igreja + `/igrejasFilhas/${subsede}`)
       .subscribe((result: TodasAsIgrejas[]) => {
         this.congregacoes = result.filter(x => x.idMae === subsede)
-        this.auth.dadosUsuario.IgrejaSelecionada = subsede
+        this.igrejaSelecionada = subsede
+        this.congregacaoselecionada = 0;
         this.buscarMembro();
-
       })
+  }
+
+
+  public FiltrarCongregacao(idCongregacao: number): void {
+    this.igrejaSelecionada = idCongregacao;
+    this.buscarMembro();
   }
 
 
@@ -138,7 +149,6 @@ export class ReadMembrosComponent implements OnInit {
   buscarMembro() {
     try {
       this.spinner = true
-      //this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada && this.auth.dadosUsuario.TipoUsuarioLogado === 2 ? this.auth.dadosUsuario.IgrejaLogada : this.auth.dadosUsuario.TipoUsuarioLogado === 1 ? 0 : this.igrejaSelecionada
       this.serverApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.igrejaSelecionada}`)
         .subscribe((response) => {
           response = response.sort()

@@ -24,24 +24,22 @@
   </div>
 
   <div *ngIf="sede.length > 0" class="col-md-2">
-    <mat-select style="appearance: outline;" [(value)]="igrejaSelecionada"
-      placeholder="Selecione Sede">
+    <mat-select style="appearance: outline;" [(value)]="sedeSelecionada" placeholder="Selecione Sede">
       <mat-option (click)="BuscarSubsedes(li.id)" *ngFor="let li of sede" [value]="li.id">
         {{li.nome}}
       </mat-option>
     </mat-select>
   </div>
   <div *ngIf="subsedes.length > 0" class="col-md-2">
-    <mat-select style="appearance: outline;" [(value)]="igrejaSelecionada"
-      placeholder="Selecione uma Filial">
+    <mat-select style="appearance: outline;" [(value)]="subsedeSelecionada" placeholder="Selecione uma Filial">
       <mat-option (click)="Congregacoes(li.id)" *ngFor="let li of subsedes" [value]="li.id">
         {{li.nome}}
       </mat-option>
     </mat-select>
   </div>
   <div *ngIf="congregacoes.length > 0" class="col-md-2">
-    <mat-select style="appearance: outline;" [(value)]="igrejaSelecionada" placeholder="Selecione uma congregação">
-      <mat-option *ngFor="let li of congregacoes" [value]="li.id">
+    <mat-select style="appearance: outline;" [(value)]="congregacaoselecionada" placeholder="Selecione uma congregação">
+      <mat-option (click)="FiltrarCongregacao(li.id)" *ngFor="let li of congregacoes" [value]="li.id">
         {{li.nome}}
       </mat-option>
     </mat-select>

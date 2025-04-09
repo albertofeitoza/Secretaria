@@ -140,6 +140,15 @@ export class UtilServiceService {
     return statusPessoa
   }
 
+  StatusPagamento() {
+
+    let statusPagamento = [];
+
+    statusPagamento.push({ "id": 0, "value": "Em aberto" })
+    statusPagamento.push({ "id": 1, "value": "Pago" })
+    return statusPagamento
+  }
+
   CursoTeologico() {
     let cursoteoligico = [];
     cursoteoligico.push({ "id": 0, "value": "Nenhum" })
@@ -229,6 +238,15 @@ export class UtilServiceService {
     return periodo;
   }
 
+
+  TipoFilhos() {
+    let tipoFilho = [];
+    tipoFilho.push({ "id": 0, "value": "Criança" });
+    tipoFilho.push({ "id": 1, "value": "Adolescente" });
+    tipoFilho.push({ "id": 2, "value": "Adulto" });
+    
+    return tipoFilho;
+  }
   // PeriodoCemAnos() {
   //   let periodo = [];
   //   periodo.push({ "id": 0, "value": "Informe o mês" });
@@ -298,6 +316,7 @@ export class UtilServiceService {
     tipoUsuario.push({ "id": 3, "value": "Membro" })
     tipoUsuario.push({ "id": 4, "value": "Tesoureiro" })
     tipoUsuario.push({ "id": 5, "value": "DepInfantil" })
+    tipoUsuario.push({ "id": 6, "value": "DepAdolescentes" })
 
     return tipoUsuario;
 

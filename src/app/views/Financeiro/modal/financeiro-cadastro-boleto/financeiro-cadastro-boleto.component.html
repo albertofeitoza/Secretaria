@@ -1,0 +1,42 @@
+<div style="padding: 30px;">
+    <div style="text-align: center;">
+        <h2>{{this.boleto.id > 0 ? 'CADASTRO | BOLETO | EDITAR' : 'CADASTRO | BOLETO'}}</h2>
+    </div>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Número da Cobrança</mat-label>
+        <input type="number" matInput placeholder="Número da Cobrança" [(ngModel)]="boleto.numeroCobranca"
+            name="numeroCobranca">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Link do boleto</mat-label>
+        <input matInput placeholder="Link do boleto" [(ngModel)]="boleto.linkBoleto" name="linkBoleto">
+    </mat-form-field>
+    <br />
+
+    <mat-form-field style="width: 220px;" appearance="outline" color="accent">
+        <mat-label>Data Vencimento</mat-label>
+        <input matInput [matDatepicker]="dataVencimento" [(ngModel)]="boleto.dataVencimento" name="dataVencimento">
+        <mat-datepicker-toggle matIconSuffix [for]="dataVencimento"></mat-datepicker-toggle>
+        <mat-datepicker #dataVencimento></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Status Pagamento</mat-label>
+        <mat-select [(value)]="boleto.statusPagamento" placeholder="Status Pagamento">
+            <mat-option *ngFor="let p of statusPagamento" [value]="p.id">
+                {{p.value}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <br />
+
+    <hr />
+    <div style="text-align: end;">
+        <!-- <span class="cursor" *ngIf="boleto.numeroCobranca != null && boleto.dataVencimento" (click)="Salvar()"> -->
+            <i *ngIf="boleto.numeroCobranca != null && boleto.dataVencimento" (click)="Salvar()" class="material-icons cursor">save</i>
+        <!-- </span> -->
+    </div>
+</div>

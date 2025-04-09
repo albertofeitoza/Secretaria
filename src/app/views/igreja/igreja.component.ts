@@ -1,14 +1,18 @@
 import { PopperOptions } from './../../../../node_modules/popper.js/index.d';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { TipoPopup } from 'src/app/enum/TipoPopup';
 import { igreja, ViewIgreja } from 'src/app/models/Igreja';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
-import { UsuariosComponent } from '../usuarios/usuarios.component';
+import { UsuariosComponent } from '../usuarios/modal/Adicionar/usuarios.component';
 import { AdicionarIgrejaComponent } from './modal/adicionar-igreja/adicionar-igreja.component';
 import { PastoresComponent } from './modal/pastores/pastores.component';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { UsuariosReadComponent } from '../usuarios/usuarios-read/usuarios-read.component';
 
 @Component({
   selector: 'app-igreja',
@@ -18,11 +22,16 @@ import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 export class IgrejaComponent implements OnInit {
 
 
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-  igrejas: ViewIgreja[] = new Array();
+  igrejas = new MatTableDataSource<any>();
+
+  //igrejas: ViewIgreja[] = new Array();
   igreja: igreja = new igreja();
   ColunasIgreja = ['id', 'nome', 'nomeIgrejaMae', 'dominio', 'estado', 'cidade', 'status', 'action'];
   linhaSelecionada = 0;
+  txtBusca = '';
 
   constructor(
     private serviceApi: AllservicesService<any>,
@@ -31,7 +40,9 @@ export class IgrejaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.txtBusca = ''
     this.BuscarIgrejas();
+
   }
 
   public EditarIgreja(id: number): void {
@@ -46,7 +57,12 @@ export class IgrejaComponent implements OnInit {
     //refazer o Array
     this.serviceApi.read(Endpoint.Igreja + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: igreja[]) => {
-        this.igrejas = new Array();
+        this.igrejas.data = new Array();
+
+        result = result.filter(x => this.txtBusca != '' ? x.nome.toLowerCase().includes(this.txtBusca.toLowerCase()) : result)
+        
+        this.txtBusca = '';
+        
         result.forEach(igr => {
 
           let viewIgreja: ViewIgreja = new ViewIgreja()
@@ -60,10 +76,15 @@ export class IgrejaComponent implements OnInit {
           viewIgreja.status = igr.status;
           viewIgreja.dominio = igr.dominio;
 
-          this.igrejas.push(viewIgreja)
+          this.igrejas.data.push(viewIgreja)
         });
-        this.igrejas = [...this.igrejas];
+        this.igrejas.data = [...this.igrejas.data];
       });
+
+    this.igrejas.paginator = this.paginator
+    this.igrejas.sort = this.sort;
+    this.paginator._intl.itemsPerPageLabel = "Itens por página";
+
   }
 
   public CadastrarIgreja(): void {
@@ -73,13 +94,22 @@ export class IgrejaComponent implements OnInit {
       });
   }
 
+  public BuscarIgreja(event: any): void {
+
+    if (event.which === 13 || event.which === 1) {
+      this.txtBusca = (<HTMLSelectElement>document.getElementById('txtbusca')).value;
+      this.BuscarIgrejas();
+    }
+  }
+
+
   public LinhaSelecionada(id: number): void {
     return;
   }
 
 
   public Usuarios(element: any): void {
-    this.serviceUtil.Popup("", TipoPopup.ComponenteInstancia, UsuariosComponent, element.id, 'auto', 'auto', false, false, element);
+    this.serviceUtil.Popup("", TipoPopup.ComponenteInstancia, UsuariosReadComponent, element.id, '65%', '55%', false, false, element);
   }
 
 
