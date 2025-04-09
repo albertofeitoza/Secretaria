@@ -146,7 +146,6 @@ export class UtilServiceService {
 
     statusPagamento.push({ "id": 0, "value": "Em aberto" })
     statusPagamento.push({ "id": 1, "value": "Pago" })
-    
     return statusPagamento
   }
 
@@ -239,6 +238,15 @@ export class UtilServiceService {
     return periodo;
   }
 
+
+  TipoFilhos() {
+    let tipoFilho = [];
+    tipoFilho.push({ "id": 0, "value": "Criança" });
+    tipoFilho.push({ "id": 1, "value": "Adolescente" });
+    tipoFilho.push({ "id": 2, "value": "Adulto" });
+    
+    return tipoFilho;
+  }
   // PeriodoCemAnos() {
   //   let periodo = [];
   //   periodo.push({ "id": 0, "value": "Informe o mês" });

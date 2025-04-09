@@ -23,7 +23,7 @@ export class UnirCadastroComponent implements OnInit {
   filtros: Filtros = new Filtros()
   spinner: boolean = false
   Colunas = ['id', 'nome', 'dataNascimento', 'statusPessoa', 'action']
-
+  IgrejaSelecionada = 0;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   datasource = new MatTableDataSource<Pessoa>();
@@ -40,6 +40,7 @@ export class UnirCadastroComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.IgrejaSelecionada = this.auth.dadosUsuario.IgrejaLogada
     this.buscarMembro()
   }
 
@@ -62,14 +63,14 @@ export class UnirCadastroComponent implements OnInit {
     try {
       this.spinner = true
 
-      this.serverApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.auth.dadosUsuario.IgrejaSelecionada == 0 ? this.auth.dadosUsuario.IgrejaLogada : this.auth.dadosUsuario.IgrejaSelecionada }`)
+      this.serverApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.IgrejaSelecionada }`)
         .subscribe(response => {
           response = response.sort()
           this.datasource.data =
 
             this.filtros.txtBusca.length > 0
-              ? response.filter(f => f.statusPessoa != 'Inativo' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase())) 
-              : response.filter(f => f.statusPessoa != 'Inativo');
+              ? response.filter(f => f.statusPessoa === 'PreCadastro' && f.nome.toLowerCase().includes(this.filtros.txtBusca.toLowerCase())) 
+              : response.filter(f => f.statusPessoa === 'PreCadastro');
 
               this.spinner = false;
 

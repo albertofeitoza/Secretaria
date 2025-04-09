@@ -42,6 +42,7 @@ export class ViewFilhos {
   membro: string;
   idPai: string;
   idMae: string;
+  tipoFilho: number
 }
 
 

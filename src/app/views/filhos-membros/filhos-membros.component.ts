@@ -21,16 +21,18 @@ export class FilhosMembrosComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   filhos = new MatTableDataSource<ViewFilhos>();
-
+  igrejaSelecionada = 0;
+  tipoUsuario = 0;
   filho: ViewFilhos = new ViewFilhos();
   contatoSelecionado: 0;
   simNao: any[];
   filhoMembro: number = 0;
   ListaPai: any[] = new Array();
   ListaMae: any[] = new Array();
+  tipoFilhos:any[] = new Array()
   pessoas: Pessoa[] = new Array()
   txtBusca: string = "";
-  Colunas = ['id', 'nome', 'dataNascimento', 'membro', 'idPai', 'idMae', 'action'];
+  Colunas = ['id', 'nome', 'dataNascimento', 'membro', 'idPai', 'idMae', 'tipoFilho', 'action'];
 
   constructor(
 
@@ -44,6 +46,8 @@ export class FilhosMembrosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.igrejaSelecionada = this.auth.dadosUsuario.IgrejaLogada;
+    this.tipoUsuario = this.auth.dadosUsuario.TipoUsuarioLogado;
     this.CarregarCombos()
   }
 
@@ -53,11 +57,14 @@ export class FilhosMembrosComponent implements OnInit {
   }
 
   private BuscarDados(): void {
-    this.serviceApi.read(Endpoint.Filhos + `/estabelecimento/${this.auth.dadosUsuario.IgrejaSelecionada > 0 ? this.auth.dadosUsuario.IgrejaSelecionada : this.auth.dadosUsuario.IgrejaLogada}`)
+    this.serviceApi.read(Endpoint.Filhos + `/estabelecimento/${this.igrejaSelecionada}`)
       .subscribe((response: ViewFilhos[]) => {
 
+        response = response.filter(res => this.tipoUsuario === 5 ? res.tipoFilho === 0 : this.tipoUsuario === 6 ? res.tipoFilho === 1 : res);
+       
         const Response = this.txtBusca.length > 0
-          ? response.filter(f => f.nome.toLowerCase().includes(this.txtBusca.toLowerCase())) : response
+          ? response.filter(f => f.nome.toLowerCase().includes(this.txtBusca.toLowerCase())) 
+          : response
 
         let filhos = new Array();
         Response.forEach(element => {
@@ -70,6 +77,7 @@ export class FilhosMembrosComponent implements OnInit {
           filho.membro = element.membro ? 'Sim' : 'Não';
           filho.idPai = this.pessoas?.filter(x => x.id === Number(element.idPai))?.map(x => x.nome)?.toString() ?? " ";
           filho.idMae = this.pessoas?.filter(x => x.id === Number(element.idMae))?.map(x => x.nome)?.toString() ?? " ";
+          filho.tipoFilho = element.tipoFilho;
           filhos.push(filho);
         });
         this.filhos.data = filhos;
@@ -84,11 +92,12 @@ export class FilhosMembrosComponent implements OnInit {
   private async CarregarCombos() {
     this.simNao = this.servico.SimNao()
     this.CarregarComboPaiMae()
+    this.tipoFilhos = this.servico.TipoFilhos();
   }
 
   private CarregarComboPaiMae() {
 
-    this.serviceApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.auth.dadosUsuario.IgrejaLogada}`)
+    this.serviceApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.igrejaSelecionada}`)
       .subscribe((result: Pessoa[]) => {
 
         this.pessoas = result;
@@ -123,7 +132,8 @@ export class FilhosMembrosComponent implements OnInit {
         membro: this.filhoMembro == 1 ? true : false,
         idPai: this.filho.idPai ? Number(this.filho.idPai) : null,
         idMae: this.filho.idMae ? Number(this.filho.idMae) : null,
-        igrejaId: this.auth.dadosUsuario.IgrejaLogada
+        igrejaId: this.igrejaSelecionada,
+        tipoFilho: this.filho.tipoFilho
       }
 
       this.serviceApi.create(body, Endpoint.Filhos)
@@ -150,6 +160,7 @@ export class FilhosMembrosComponent implements OnInit {
           this.filho.nome = result.nome;
           this.filho.idMae = result.idMae;
           this.filho.idPai = result.idPai;
+          this.filho.tipoFilho = result.tipoFilho
         }
       });
   }

@@ -51,7 +51,7 @@ export class FinanceiroReadAdminComponent implements OnInit {
   private BuscarFaturas() {
     this.serviceApi.read(Endpoint.Financeiro + `/estabelecimento/${this.igrejaSelecionada}`)
       .subscribe((result: ViewFinanceiro[]) => {
-        this.datasource.data = result.filter(x => x.assinaturaId == this.assinatura.id);
+        this.datasource.data = result.filter(x => x.assinaturaId == this.assinatura.id || x.idAssinatura == this.assinatura.idAssinatura);
       })
   }
 
@@ -69,9 +69,9 @@ export class FinanceiroReadAdminComponent implements OnInit {
 
   public CadastroBoleto(): void {
     this.serviceUtil.Popup("", TipoPopup.cadastro, FinanceiroCadastroBoletoComponent, 0, 'auto', 'auto', false, false, this.assinatura)
-    .subscribe(() => {
-      this.BuscarFaturas();
-    });
+      .subscribe(() => {
+        this.BuscarFaturas();
+      });
   }
 
   public EditarBoleto(row: any): void {

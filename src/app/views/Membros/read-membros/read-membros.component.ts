@@ -149,7 +149,6 @@ export class ReadMembrosComponent implements OnInit {
   buscarMembro() {
     try {
       this.spinner = true
-      //this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada && this.auth.dadosUsuario.TipoUsuarioLogado === 2 ? this.auth.dadosUsuario.IgrejaLogada : this.auth.dadosUsuario.TipoUsuarioLogado === 1 ? 0 : this.igrejaSelecionada
       this.serverApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.igrejaSelecionada}`)
         .subscribe((response) => {
           response = response.sort()

@@ -11,7 +11,7 @@ import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 })
 export class HomeComponent {
   private breakpointObserver = inject(BreakpointObserver);
-
+  tUsuarioLogado = 0;
   width = "200px;"
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -23,15 +23,15 @@ export class HomeComponent {
   constructor(private auth: AutenticacaoService) { }
 
   ngOnInit() {
-
+    this.PermissaoMenus()
   }
 
   logoof() {
     this.auth.logoof()
   }
 
-  PermissaoMenus() {
-    return this.auth.dadosUsuario;
+  private PermissaoMenus(): void {
+    this.tUsuarioLogado = this.auth.dadosUsuario.TipoUsuarioLogado;
   }
 
   Menu() {
