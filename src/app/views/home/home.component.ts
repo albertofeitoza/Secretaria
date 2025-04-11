@@ -3,6 +3,9 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
+import { Endpoint } from 'src/app/enum/Endpoints';
+import { AllservicesService } from 'src/app/services/allservices.service';
+import { ViewFinanceiro } from '../Financeiro/model/viewFinanceiro';
 
 @Component({
   selector: 'app-home',
@@ -20,10 +23,16 @@ export class HomeComponent {
       shareReplay()
     );
 
-  constructor(private auth: AutenticacaoService) { }
+  ValidaFaturas = false;
+
+  constructor(
+    private auth: AutenticacaoService,
+    private serviceApi: AllservicesService<any>
+  ) { }
 
   ngOnInit() {
-    this.PermissaoMenus()
+    this.PermissaoMenus();
+    this.ExibirMenuFaturas();
   }
 
   logoof() {
@@ -42,5 +51,12 @@ export class HomeComponent {
         this.width.includes("57px;") ?
           this.width = "200px;" : this.width = "200px;"
     return menu;
+  }
+
+  private ExibirMenuFaturas() {
+    this.serviceApi.read(Endpoint.Financeiro + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
+      .subscribe((result: ViewFinanceiro[]) => {
+        this.ValidaFaturas = result.length > 0 ? true : false;
+      })
   }
 }

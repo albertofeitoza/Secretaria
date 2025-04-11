@@ -1,4 +1,4 @@
 export enum TipoRelatorio {
- dadosPessoa = 20
-
+ dadosPessoa = 20,
+ Boleto = 24
 }

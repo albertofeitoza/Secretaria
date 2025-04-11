@@ -41,7 +41,7 @@
     <ng-container matColumnDef="linkBoleto">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Link Boleto</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <mat-icon *ngIf="row.linkBoleto && !row.statusPagamento" style="color: #EA3323;">picture_as_pdf</mat-icon>
+        <mat-icon *ngIf="row.linkBoleto && !row.statusPagamento" style="color: #EA3323;" (click)="ImprimirBoleto(row.linkBoleto)" >picture_as_pdf</mat-icon>
       </mat-cell>
     </ng-container>
 

@@ -5,30 +5,65 @@
 
     <mat-nav-list *ngIf="tUsuarioLogado === 1">
       <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
-      <a mat-list-item routerLink="/filhos"><mat-icon style="padding-right: 2px;">family_restroom</mat-icon>Crianças</a>
-      <!-- <a mat-list-item routerLink="/assinaturas"><i class="material-icons">payments</i>Assinaturas</a> -->
-      <a mat-list-item routerLink="/membros"><i class="material-icons">people</i> Membros</a>
-      <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i> Ofertas</a>
-      <a mat-list-item routerLink="/relatorios"><i class="material-icons">assignment</i>Relatórios</a>
+      <hr style="margin: 0px" />
 
       <a mat-list-item [matMenuTriggerFor]="menu"><i class="material-icons">settings</i> Configurações</a>
       <mat-menu #menu="matMenu">
         <a mat-menu-item>
-          <a mat-list-item routerLink="/assinaturas"><i class="material-icons">payments</i>Assinaturas</a> 
           <a mat-list-item routerLink="/igreja"><i class="material-icons">church</i>Igreja</a>
-          
+          <hr />
+          <a mat-list-item routerLink="/assinaturas"><i class="material-icons">payments</i>Assinaturas</a>
         </a>
       </mat-menu>
+      <hr style="margin: 0px" />
+
+      <a mat-list-item routerLink="/filhos"><mat-icon style="padding-right: 2px;">family_restroom</mat-icon>Crianças</a>
+      
+      <hr style="margin: 0px" />
+
+
+      <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i>EBD</a>
+
+
+      
+      <a mat-list-item routerLink="/membros"><i class="material-icons">people</i> Membros</a>
+      
+      <hr style="margin: 0px" />
+      
+      <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i> Ofertas</a>
+      
+      <hr style="margin: 0px" />
+      
+      <a mat-list-item routerLink="/relatorios"><i class="material-icons">assignment</i>Relatórios</a>
+      
+      <hr style="margin: 0px" />
+
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
     </mat-nav-list>
 
     <mat-nav-list *ngIf="tUsuarioLogado === 2">
       <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
+
+      <hr style="margin: 0px" />
+
       <a mat-list-item routerLink="/filhos"><mat-icon style="padding-right: 2px;">family_restroom</mat-icon>Crianças</a>
-      <a mat-list-item routerLink="/financeiro"><i class="material-icons">payments</i>Faturas</a>
+
+      <hr style="margin: 0px" />
+
+      <a *ngIf="ValidaFaturas" mat-list-item routerLink="/financeiro"><i class="material-icons">payments</i>Faturas</a>
+
+      <hr style="margin: 0px" />
+
       <a mat-list-item routerLink="/membros"><i class="material-icons">people</i> Membros</a>
+
+      <hr style="margin: 0px" />
+
       <a mat-list-item routerLink="/relatorios"><i class="material-icons">assignment</i>Relatórios</a>
+
+      <hr style="margin: 0px" />
+
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
+
     </mat-nav-list>
 
     <mat-nav-list *ngIf="tUsuarioLogado === 3">
@@ -38,19 +73,35 @@
 
     <mat-nav-list *ngIf="tUsuarioLogado === 4">
       <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
+
+      <hr style="margin: 0px" />
+
       <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i> Ofertas</a>
+
+      <hr style="margin: 0px" />
+
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
     </mat-nav-list>
 
     <mat-nav-list *ngIf="tUsuarioLogado === 5">
       <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
+
+      <hr style="margin: 0px" />
+
       <a mat-list-item routerLink="/filhos"><mat-icon style="padding-right: 2px;">family_restroom</mat-icon>Crianças</a>
+
+      <hr style="margin: 0px" />
+
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
     </mat-nav-list>
 
     <mat-nav-list *ngIf="tUsuarioLogado === 6">
       <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
-      <a mat-list-item routerLink="/filhos"><mat-icon style="padding-right: 2px;">family_restroom</mat-icon>Adolescentes</a>
+      <a mat-list-item routerLink="/filhos"><mat-icon
+          style="padding-right: 2px;">family_restroom</mat-icon>Adolescentes</a>
+
+          <hr style="margin: 0px" />
+
       <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
     </mat-nav-list>
 

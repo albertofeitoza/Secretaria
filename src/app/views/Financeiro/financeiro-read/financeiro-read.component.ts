@@ -7,6 +7,9 @@ import { AllservicesService } from 'src/app/services/allservices.service';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import { UtilServiceService } from 'src/app/services/util-service.service';
+import { TipoRelatorio } from 'src/app/enum/TipoRelatorio';
+import { Filtros } from 'src/app/models/Filtros';
 
 @Injectable()
 
@@ -21,7 +24,8 @@ export class FinanceiroReadComponent implements OnInit {
   igrejaSelecionada = 0;
   Colunas = ['id', 'assinaturaId', 'numeroCobranca', 'linkBoleto', 'dataVencimento', 'statusPagamento']
   tipoUsuario = false;
-  assinatura: any
+  assinatura: any;
+  filtros: Filtros = new Filtros();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -31,9 +35,9 @@ export class FinanceiroReadComponent implements OnInit {
   constructor(
     private serviceApi: AllservicesService<any>,
     private auth: AutenticacaoService,
+    private serviceUtil: UtilServiceService
 
   ) { }
-
 
   ngOnInit(): void {
     this.tipoUsuario = this.auth.dadosUsuario.TipoUsuarioLogado === 1 ? true : false;
@@ -59,5 +63,15 @@ export class FinanceiroReadComponent implements OnInit {
   public AtualizarFatura(row: any): void {
 
   }
+
+  public ImprimirBoleto(numBoleto:any): void {
+   
+    this.filtros.txtBusca = numBoleto.toString().replace(/\D/g, '');
+      
+    this.serviceApi.DownloadArquivo(TipoRelatorio.Boleto.toString(), Endpoint.DownloadArquivo, '', JSON.stringify(this.filtros))
+        .subscribe(result => {
+          this.serviceUtil.Imprimir(result, 'application/pdf')
+        });
+    }
 
 }
