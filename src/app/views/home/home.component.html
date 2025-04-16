@@ -1,115 +1,132 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer style="width: {{width}}" fixedInViewport
-    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    [opened]="(isHandset$ | async) === false">
+<!DOCTYPE html>
+<html lang="en">
 
-    <mat-nav-list *ngIf="tUsuarioLogado === 1">
-      <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
-      <hr style="margin: 0px" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+</head>
 
-      <a mat-list-item [matMenuTriggerFor]="menu"><i class="material-icons">settings</i> Configurações</a>
-      <mat-menu #menu="matMenu">
-        <a mat-menu-item>
-          <a mat-list-item routerLink="/igreja"><i class="material-icons">church</i>Igreja</a>
-          <hr />
-          <a mat-list-item routerLink="/assinaturas"><i class="material-icons">payments</i>Assinaturas</a>
-        </a>
-      </mat-menu>
-      <hr style="margin: 0px" />
+<body>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer style="width: {{width}}" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
 
-      <a mat-list-item routerLink="/filhos"><mat-icon style="padding-right: 2px;">family_restroom</mat-icon>Crianças</a>
-      
-      <hr style="margin: 0px" />
+      <mat-nav-list *ngIf="tUsuarioLogado === 1">
+        <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
+        <hr style="margin: 0px" />
+
+        <a mat-list-item [matMenuTriggerFor]="menu"><i class="material-icons">settings</i> Configurações</a>
+        <mat-menu #menu="matMenu">
+          <a mat-menu-item>
+            <a mat-list-item routerLink="/igreja"><i class="material-icons">church</i>Igreja</a>
+            <hr />
+            <a mat-list-item routerLink="/assinaturas"><i class="material-icons">payments</i>Assinaturas</a>
+          </a>
+        </mat-menu>
+        <hr style="margin: 0px" />
+
+        <a mat-list-item routerLink="/filhos"><mat-icon
+            style="padding-right: 2px;">family_restroom</mat-icon>Crianças</a>
+
+        <hr style="margin: 0px" />
 
 
-      <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i>EBD</a>
+        <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i>EBD</a>
 
 
-      
-      <a mat-list-item routerLink="/membros"><i class="material-icons">people</i> Membros</a>
-      
-      <hr style="margin: 0px" />
-      
-      <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i> Ofertas</a>
-      
-      <hr style="margin: 0px" />
-      
-      <a mat-list-item routerLink="/relatorios"><i class="material-icons">assignment</i>Relatórios</a>
-      
-      <hr style="margin: 0px" />
 
-      <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
-    </mat-nav-list>
+        <a mat-list-item routerLink="/membros"><i class="material-icons">people</i> Membros</a>
 
-    <mat-nav-list *ngIf="tUsuarioLogado === 2">
-      <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
+        <hr style="margin: 0px" />
 
-      <hr style="margin: 0px" />
+        <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i> Ofertas</a>
 
-      <a mat-list-item routerLink="/filhos"><mat-icon style="padding-right: 2px;">family_restroom</mat-icon>Crianças</a>
+        <hr style="margin: 0px" />
 
-      <hr style="margin: 0px" />
+        <a mat-list-item routerLink="/relatorios"><i class="material-icons">assignment</i>Relatórios</a>
 
-      <a *ngIf="ValidaFaturas" mat-list-item routerLink="/financeiro"><i class="material-icons">payments</i>Faturas</a>
+        <hr style="margin: 0px" />
 
-      <hr style="margin: 0px" />
+        <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
+      </mat-nav-list>
 
-      <a mat-list-item routerLink="/membros"><i class="material-icons">people</i> Membros</a>
+      <mat-nav-list *ngIf="tUsuarioLogado === 2">
+        <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
 
-      <hr style="margin: 0px" />
+        <hr style="margin: 0px" />
 
-      <a mat-list-item routerLink="/relatorios"><i class="material-icons">assignment</i>Relatórios</a>
+        <a mat-list-item routerLink="/filhos"><mat-icon
+            style="padding-right: 2px;">family_restroom</mat-icon>Crianças</a>
 
-      <hr style="margin: 0px" />
+        <hr style="margin: 0px" />
 
-      <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
+        <a *ngIf="ValidaFaturas" mat-list-item routerLink="/financeiro"><i
+            class="material-icons">payments</i>Faturas</a>
 
-    </mat-nav-list>
+        <hr style="margin: 0px" />
 
-    <mat-nav-list *ngIf="tUsuarioLogado === 3">
-      <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
-      <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
-    </mat-nav-list>
+        <a mat-list-item routerLink="/membros"><i class="material-icons">people</i> Membros</a>
 
-    <mat-nav-list *ngIf="tUsuarioLogado === 4">
-      <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
+        <hr style="margin: 0px" />
 
-      <hr style="margin: 0px" />
+        <a mat-list-item routerLink="/relatorios"><i class="material-icons">assignment</i>Relatórios</a>
 
-      <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i> Ofertas</a>
+        <hr style="margin: 0px" />
 
-      <hr style="margin: 0px" />
+        <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
 
-      <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
-    </mat-nav-list>
+      </mat-nav-list>
 
-    <mat-nav-list *ngIf="tUsuarioLogado === 5">
-      <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
+      <mat-nav-list *ngIf="tUsuarioLogado === 3">
+        <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
+        <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
+      </mat-nav-list>
 
-      <hr style="margin: 0px" />
+      <mat-nav-list *ngIf="tUsuarioLogado === 4">
+        <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
 
-      <a mat-list-item routerLink="/filhos"><mat-icon style="padding-right: 2px;">family_restroom</mat-icon>Crianças</a>
+        <hr style="margin: 0px" />
 
-      <hr style="margin: 0px" />
+        <a mat-list-item routerLink="/ofertas"><i class="material-icons">attach_money</i> Ofertas</a>
 
-      <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
-    </mat-nav-list>
+        <hr style="margin: 0px" />
 
-    <mat-nav-list *ngIf="tUsuarioLogado === 6">
-      <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
-      <a mat-list-item routerLink="/filhos"><mat-icon
-          style="padding-right: 2px;">family_restroom</mat-icon>Adolescentes</a>
+        <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
+      </mat-nav-list>
 
-          <hr style="margin: 0px" />
+      <mat-nav-list *ngIf="tUsuarioLogado === 5">
+        <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
 
-      <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
-    </mat-nav-list>
+        <hr style="margin: 0px" />
 
-  </mat-sidenav>
-  <mat-sidenav-content style="margin-left: {{width}}">
-    <mat-toolbar color="primary">
-      <mat-icon matTooltip="Navegar!" (click)="Menu()">sync_alt</mat-icon>
-    </mat-toolbar>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+        <a mat-list-item routerLink="/filhos"><mat-icon
+            style="padding-right: 2px;">family_restroom</mat-icon>Crianças</a>
+
+        <hr style="margin: 0px" />
+
+        <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
+      </mat-nav-list>
+
+      <mat-nav-list *ngIf="tUsuarioLogado === 6">
+        <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
+        <a mat-list-item routerLink="/filhos"><mat-icon
+            style="padding-right: 2px;">family_restroom</mat-icon>Adolescentes</a>
+
+        <hr style="margin: 0px" />
+
+        <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
+      </mat-nav-list>
+
+    </mat-sidenav>
+    <mat-sidenav-content style="margin-left: {{width}}">
+      <mat-toolbar color="primary">
+        <mat-icon matTooltip="Navegar!" (click)="Menu()">sync_alt</mat-icon>
+      </mat-toolbar>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Filhos</title>
+</head>
+
+<body>
+
+    <div class="left">
+        <div class="mat-elevation-z8" style="padding: 15px;">
+
+            <div class="titulo">
+                <h2>Cadastro de Filhos</h2>
+            </div>
+
+            <div style="padding-top: 15px;">
+                <mat-form-field style="width: 280px;" appearance="outline">
+                    <mat-label>Nome</mat-label>
+                    <input matInput placeholder="Nome" [(ngModel)]="filho.nome" name="nome">
+                </mat-form-field>
+
+                <mat-form-field color="accent" style="width: 220px;" appearance="outline">
+                    <mat-label>Data de Nascimento</mat-label>
+                    <input matInput [matDatepicker]="dataNascimento" [(ngModel)]="filho.dataNascimento"
+                        name="dataNascimento">
+                    <mat-datepicker-toggle matIconSuffix [for]="dataNascimento"></mat-datepicker-toggle>
+                    <mat-datepicker #dataNascimento></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field style="width: 161px;" appearance="outline">
+                    <mat-label>É Membro?</mat-label>
+                    <mat-select [(value)]="filhoMembro" placeholder="É Membro">
+                        <mat-option *ngFor="let sn of simNao" [value]="sn.id">
+                            {{sn.value}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <br />
+                <mat-form-field appearance="outline">
+                    <mat-label>Pai</mat-label>
+                    <mat-select id="pai" [(value)]="filho.idPai" placeholder="Selecione o Pai">
+                        <mat-option *ngFor="let p of ListaPai" [value]="p.id">
+                            {{p.nome}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Mãe</mat-label>
+                    <mat-select id="mae" [(value)]="filho.idMae" placeholder="Selecione a Mãe">
+                        <mat-option *ngFor="let m of ListaMae" [value]="m.id">
+                            {{m.nome}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Tipo Filho</mat-label>
+                    <mat-select id="filhos" [(value)]="filho.tipoFilho" placeholder="Selecione">
+                        <mat-option *ngFor="let f of tipoFilhos" [value]="f.id">
+                            {{f.value}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <hr />
+            </div>
+            <div style="text-align: end;">
+                <mat-icon style="padding-right: 50px;" class="cursor" (click)="FecharPopup()">close</mat-icon>
+                <mat-icon class="cursor" (click)="Salvar()">save</mat-icon>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

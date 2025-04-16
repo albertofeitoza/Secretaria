@@ -3,7 +3,7 @@ import { Endpoint } from 'src/app/enum/Endpoints';
 import { Cep } from 'src/app/models/Cep';
 import { DadosMembro } from 'src/app/models/DadosMembro';
 import { PessoaEndereco } from 'src/app/models/PessoaEndereco';
-import { Pessoa, ViewFilhos } from 'src/app/models/pessoa';
+import { Pessoa } from 'src/app/models/pessoa';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 import { cpf } from 'cpf-cnpj-validator';
@@ -19,6 +19,7 @@ import { HistoricoPopupComponent } from '../historico-popup/historico-popup.comp
 import { igreja } from 'src/app/models/Igreja';
 import { PopupConfirmacaoComponent } from 'src/app/popups/popup-confirmacao/popup-confirmacao.component';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
+import { ViewFilhos } from '../../filhos-membros/model/viewFilhos';
 
 @Component({
   selector: 'app-cadastro-membros',

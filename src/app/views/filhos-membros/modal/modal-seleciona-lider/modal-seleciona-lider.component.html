@@ -7,19 +7,19 @@
     <p>
     <mat-form-field appearance="outline">
         <mat-label>Nome do Pai</mat-label>
-        <input [disabled]="this.dadosTela.idPai != ''" matInput placeholder="Nome do Lider" [(ngModel)]="this.nomepai" name="nome">
+        <input [disabled]="this.dadosTela.nomePai" matInput placeholder="Nome do Lider" [(ngModel)]="this.nomepai" name="nome">
     </mat-form-field>
     <p>
     <mat-form-field appearance="outline">
         <mat-label>Nome da Mãe</mat-label>
-        <input [disabled]="this.dadosTela.idMae != ''" matInput placeholder="Nome do Lider" [(ngModel)]="this.nomemae" name="nome">
+        <input [disabled]="this.dadosTela.nomeMae" matInput placeholder="Nome do Lider" [(ngModel)]="this.nomemae" name="nome">
     </mat-form-field>
 
     <p>
     <a>
         <i class="posicao" style="padding-left: 5px;" class="material-icons" (click)="Cancelar()">cancel</i>
     </a>
-    <a>
-        <i class="posicao" style="padding-left: 5px;" class="material-icons" (click)="Selecionar()">save</i>
+    <a style="padding-left: 30px;">
+        <i class="posicao" style="padding-left: 5px;" class="material-icons" (click)="Selecionar()">print</i>
     </a>
 </div>

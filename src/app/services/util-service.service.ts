@@ -241,10 +241,11 @@ export class UtilServiceService {
 
   TipoFilhos() {
     let tipoFilho = [];
+    tipoFilho.push({ "id": -1, "value": "Selecione" });
     tipoFilho.push({ "id": 0, "value": "Criança" });
     tipoFilho.push({ "id": 1, "value": "Adolescente" });
     tipoFilho.push({ "id": 2, "value": "Adulto" });
-    
+
     return tipoFilho;
   }
   // PeriodoCemAnos() {

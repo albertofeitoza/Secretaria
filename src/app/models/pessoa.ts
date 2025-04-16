@@ -34,18 +34,6 @@ export class ViewPessoa {
   cpf: string;
 }
 
-export class ViewFilhos {
-  id: number = 0;
-  dataCriacao: Date;
-  nome: string  ;
-  dataNascimento: Date;
-  membro: string;
-  idPai: string;
-  idMae: string;
-  tipoFilho: number
-}
-
-
 export class UniaoCadastro {
   idPessoa:   number;
   idRascunho: number;

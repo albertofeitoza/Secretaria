@@ -1,134 +1,148 @@
 <!-- barra de menu -->
-<div style="display: flex; padding: 1%;" class="row">
-  <div class="col">
-    <div style="display: flex;">
+<!DOCTYPE html>
+<html lang="en">
 
-      <a routerLink="/membrosadd">
-        <i style="padding-right: 10px;" class="material-icons">add_circle_outline</i>
-      </a>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Membros</title>
+</head>
 
-      <a>
-        Inativos
-        <input name="inativos" [(ngModel)]="filtros.inativos" [checked]="filtros.inativos" type="checkbox"
-          (change)="Filtros($event)" (click)="filtros.periodoSelecionado = 1">
+<body>
 
-        Pré Cadastro
-        <input name="precadastro" [(ngModel)]="filtros.precadastro" [checked]="filtros.precadastro" type="checkbox"
-          (change)="Filtros($event)" (click)="filtros.periodoSelecionado = 2">
+  <div style="display: flex; padding: 1%;" class="row">
+    <div class="col">
+      <div style="display: flex;">
 
-        Obreiros
-        <input name="obreiros" [(ngModel)]="filtros.obreiros" [checked]="filtros.obreiros" type="checkbox"
-          (change)="Filtros($event)" (click)="filtros.periodoSelecionado = 3">
-      </a>
+        <a routerLink="/membrosadd">
+          <i style="padding-right: 10px;" class="material-icons">add_circle_outline</i>
+        </a>
+
+        <a>
+          Inativos
+          <input name="inativos" [(ngModel)]="filtros.inativos" [checked]="filtros.inativos" type="checkbox"
+            (change)="Filtros($event)" (click)="filtros.periodoSelecionado = 1">
+
+          Pré Cadastro
+          <input name="precadastro" [(ngModel)]="filtros.precadastro" [checked]="filtros.precadastro" type="checkbox"
+            (change)="Filtros($event)" (click)="filtros.periodoSelecionado = 2">
+
+          Obreiros
+          <input name="obreiros" [(ngModel)]="filtros.obreiros" [checked]="filtros.obreiros" type="checkbox"
+            (change)="Filtros($event)" (click)="filtros.periodoSelecionado = 3">
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="sede.length > 0" class="col-md-2">
+      <mat-select style="appearance: outline;" [(value)]="sedeSelecionada" placeholder="Selecione Sede">
+        <mat-option (click)="BuscarSubsedes(li.id)" *ngFor="let li of sede" [value]="li.id">
+          {{li.nome}}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div *ngIf="subsedes.length > 0" class="col-md-2">
+      <mat-select style="appearance: outline;" [(value)]="subsedeSelecionada" placeholder="Selecione uma Filial">
+        <mat-option (click)="Congregacoes(li.id)" *ngFor="let li of subsedes" [value]="li.id">
+          {{li.nome}}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div *ngIf="congregacoes.length > 0" class="col-md-2">
+      <mat-select style="appearance: outline;" [(value)]="congregacaoselecionada"
+        placeholder="Selecione uma congregação">
+        <mat-option (click)="FiltrarCongregacao(li.id)" *ngFor="let li of congregacoes" [value]="li.id">
+          {{li.nome}}
+        </mat-option>
+      </mat-select>
+    </div>
+
+    <div class="col">
+      <div style="text-align: right; padding-right: 120px;">
+        <input style="margin-top: 1px;" id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)" value=""
+          placeholder="pesquisar por NOME ou ROL." />
+
+        <span style="margin-top: 1px;" class="search" (click)="Filtros($event)">
+          <i class="material-icons">search</i>
+        </span>
+      </div>
     </div>
   </div>
+  <div class="mat-elevation-z4">
+    <table mat-table [dataSource]="datasource" matSort class="mat-elevation-z8 demo-table" >
+      <!-- Id Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell style="display: none;" *matHeaderCellDef hidden="true">Id</th>
+        <td mat-cell style="display: none;" id="idPessoa" *matCellDef="let row">{{row.id}}</td>
+      </ng-container>
+      <!-- rol Column -->
+      <ng-container matColumnDef="rol">
+        <th style="width:7%;" mat-header-cell *matHeaderCellDef mat-sort-header>Rol</th>
+        <td style="width:7%;" mat-cell *matCellDef="let row">{{row.rol}}
+        <td>
+      </ng-container>
 
-  <div *ngIf="sede.length > 0" class="col-md-2">
-    <mat-select style="appearance: outline;" [(value)]="sedeSelecionada" placeholder="Selecione Sede">
-      <mat-option (click)="BuscarSubsedes(li.id)" *ngFor="let li of sede" [value]="li.id">
-        {{li.nome}}
-      </mat-option>
-    </mat-select>
+      <ng-container matColumnDef="foto">
+        <th style="width:7%;" mat-header-cell *matHeaderCellDef mat-sort-header>Foto</th>
+        <td id="foto" mat-cell *matCellDef="let row">
+          <img *ngIf="row.foto !='' " style="width: 10px; border-radius: 100%;" src="{{row.foto}}" alt="Foto">
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="nome">
+        <th style="width: 31.5%;" mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
+        <td style="padding-left: 5%;width: 35%;" mat-cell *matCellDef="let row">{{row.nome}}</td>
+      </ng-container>
+      <!-- Data nascimento -->
+      <ng-container matColumnDef="dataNascimento">
+        <th style="width: 15%;" mat-header-cell *matHeaderCellDef mat-sort-header>Data Nascimento</th>
+        <td mat-cell *matCellDef="let row">{{row.dataNascimento | date : 'dd/MM/yyyy'}}</td>
+      </ng-container>
+
+      <!-- Função -->
+      <ng-container matColumnDef="funcao">
+        <th style="width: 12%;" mat-header-cell mat-sort-header *matHeaderCellDef mat-sort-header>Função</th>
+        <td style="padding-left: 7%;width: 16%;" mat-cell *matCellDef="let row">{{row.funcao}}</td>
+      </ng-container>
+
+
+      <!-- status -->
+      <ng-container matColumnDef="statusPessoa">
+        <th style="width: 14%;" mat-header-cell mat-sort-header *matHeaderCellDef mat-sort-header>Status</th>
+        <td style="padding-left: 2.8%;width: 13%;" mat-cell *matCellDef="let row">{{row.statusPessoa}}</td>
+      </ng-container>
+
+      <!-- Coluna de Ações -->
+
+      <ng-container matColumnDef="action">
+        <th style="width: 14%;" mat-header-cell *matHeaderCellDef>Ações</th>
+        <td style="height: 21px;width: 18%;" mat-cell *matCellDef="let row">
+          <mat-icon class="cursor" matTooltip="Editar Cadastro!" (click)="AtualizarMembro(row.id)">edit</mat-icon>
+          <mat-icon class="cursor" matTooltip="Impressão da ficha de membro!"
+            *ngIf="!filtros.inativos && !filtros.precadastro" (click)="ImprimirFichaMembro(row)">print</mat-icon>
+          <mat-icon class="cursor" matTooltip="Solicitação de Cartas!" *ngIf="!filtros.inativos && !filtros.precadastro"
+            (click)="Cartas(row.id)">mail_outline</mat-icon>
+          <mat-icon class="cursor" matTooltip="Filhos!" *ngIf="!filtros.inativos && !filtros.precadastro"
+            (click)="Filhos(row.id)">family_restroom</mat-icon>
+          <mat-icon class="cursor" matTooltip="Justificar Presença!" *ngIf="!filtros.inativos && !filtros.precadastro"
+            (click)="JustificarPresenca(row.id)">task_alt</mat-icon>
+          <mat-icon class="cursor" matTooltip="Unificar Cadastro!" *ngIf="!filtros.inativos && !filtros.precadastro"
+            (click)="UnificarCadastro(row.id)">join_left</mat-icon>
+          <mat-icon class="cursor" matTooltip="Histórico da Pessoa!" *ngIf="!filtros.precadastro"
+            (click)="HistoricoMembro(row.id)">list_alt</mat-icon>
+          <mat-icon class="cursor" matTooltip="Baixa manual de Membro!" *ngIf="!filtros.inativos"
+            (click)="ExcluirMembro(row.id)">delete</mat-icon>
+
+        </td>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
+      <mat-row style="height: 10%;" (click)="PessoaSelecionada(row.id)" *matRowDef="let row; columns: Colunas;"
+        [ngClass]="{'corLinhaGrid' : row.id == pessoaSelecionada}"></mat-row>
+    </table>
   </div>
-  <div *ngIf="subsedes.length > 0" class="col-md-2">
-    <mat-select style="appearance: outline;" [(value)]="subsedeSelecionada" placeholder="Selecione uma Filial">
-      <mat-option (click)="Congregacoes(li.id)" *ngFor="let li of subsedes" [value]="li.id">
-        {{li.nome}}
-      </mat-option>
-    </mat-select>
-  </div>
-  <div *ngIf="congregacoes.length > 0" class="col-md-2">
-    <mat-select style="appearance: outline;" [(value)]="congregacaoselecionada" placeholder="Selecione uma congregação">
-      <mat-option (click)="FiltrarCongregacao(li.id)" *ngFor="let li of congregacoes" [value]="li.id">
-        {{li.nome}}
-      </mat-option>
-    </mat-select>
-  </div>
-
-  <div class="col">
-    <div style="text-align: right; padding-right: 120px;">
-      <input style="margin-top: 1px;" id="txtBusca" class="txtBusca" type="text" (keypress)="Filtros($event)" value=""
-        placeholder="pesquisar por NOME ou ROL." />
-
-      <span style="margin-top: 1px;" class="search" (click)="Filtros($event)">
-        <i class="material-icons">search</i>
-      </span>
-    </div>
-  </div>
-</div>
-<div class="mat-elevation-z4" style="height:74%; width: 100%;overflow: auto;">
-  <table mat-table [dataSource]="datasource" matSort class="mat-elevation-z8 demo-table">
-    <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell style="display: none;" *matHeaderCellDef hidden="true">Id</th>
-      <td mat-cell style="display: none;" id="idPessoa" *matCellDef="let row">{{row.id}}</td>
-    </ng-container>
-    <!-- rol Column -->
-    <ng-container matColumnDef="rol">
-      <th style="width:7%;" mat-header-cell *matHeaderCellDef mat-sort-header>Rol</th>
-      <td style="width:7%;" mat-cell *matCellDef="let row">{{row.rol}}
-      <td>
-    </ng-container>
-
-    <ng-container matColumnDef="foto">
-      <th style="width:7%;" mat-header-cell *matHeaderCellDef mat-sort-header>Foto</th>
-      <td id="foto" mat-cell *matCellDef="let row">
-        <img *ngIf="row.foto !='' " style="width: 10px; border-radius: 100%;" src="{{row.foto}}" alt="Foto">
-      </td>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="nome">
-      <th style="width: 31.5%;" mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
-      <td style="padding-left: 5%;width: 35%;" mat-cell *matCellDef="let row">{{row.nome}}</td>
-    </ng-container>
-    <!-- Data nascimento -->
-    <ng-container matColumnDef="dataNascimento">
-      <th style="width: 15%;" mat-header-cell *matHeaderCellDef mat-sort-header>Data Nascimento</th>
-      <td mat-cell *matCellDef="let row">{{row.dataNascimento | date : 'dd/MM/yyyy'}}</td>
-    </ng-container>
-
-    <!-- Função -->
-    <ng-container matColumnDef="funcao">
-      <th style="width: 12%;" mat-header-cell mat-sort-header *matHeaderCellDef mat-sort-header>Função</th>
-      <td style="padding-left: 7%;width: 16%;" mat-cell *matCellDef="let row">{{row.funcao}}</td>
-    </ng-container>
-
-
-    <!-- status -->
-    <ng-container matColumnDef="statusPessoa">
-      <th style="width: 14%;" mat-header-cell mat-sort-header *matHeaderCellDef mat-sort-header>Status</th>
-      <td style="padding-left: 2.8%;width: 13%;" mat-cell *matCellDef="let row">{{row.statusPessoa}}</td>
-    </ng-container>
-
-    <!-- Coluna de Ações -->
-
-    <ng-container matColumnDef="action">
-      <th style="width: 14%;" mat-header-cell *matHeaderCellDef>Ações</th>
-      <td style="height: 21px;width: 18%;" mat-cell *matCellDef="let row">
-        <mat-icon class="cursor" matTooltip="Editar Cadastro!" (click)="AtualizarMembro(row.id)">edit</mat-icon>
-        <mat-icon class="cursor" matTooltip="Impressão da ficha de membro!"
-          *ngIf="!filtros.inativos && !filtros.precadastro" (click)="ImprimirFichaMembro(row)">print</mat-icon>
-        <mat-icon class="cursor" matTooltip="Solicitação de Cartas!" *ngIf="!filtros.inativos && !filtros.precadastro"
-          (click)="Cartas(row.id)">mail_outline</mat-icon>
-        <mat-icon class="cursor" matTooltip="Filhos!" *ngIf="!filtros.inativos && !filtros.precadastro"
-          (click)="Filhos(row.id)">family_restroom</mat-icon>
-        <mat-icon class="cursor" matTooltip="Justificar Presença!" *ngIf="!filtros.inativos && !filtros.precadastro"
-          (click)="JustificarPresenca(row.id)">task_alt</mat-icon>
-        <mat-icon class="cursor" matTooltip="Unificar Cadastro!" *ngIf="!filtros.inativos && !filtros.precadastro"
-          (click)="UnificarCadastro(row.id)">join_left</mat-icon>
-        <mat-icon class="cursor" matTooltip="Histórico da Pessoa!" *ngIf="!filtros.precadastro"
-          (click)="HistoricoMembro(row.id)">list_alt</mat-icon>
-        <mat-icon class="cursor" matTooltip="Baixa manual de Membro!" *ngIf="!filtros.inativos"
-          (click)="ExcluirMembro(row.id)">delete</mat-icon>
-
-      </td>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
-    <mat-row style="height: 10%;" (click)="PessoaSelecionada(row.id)" *matRowDef="let row; columns: Colunas;"
-      [ngClass]="{'corLinhaGrid' : row.id == pessoaSelecionada}"></mat-row>
-  </table>
-</div>
-<mat-paginator #paginator [pageSize]="13" [pageSizeOptions]="[13]" showFirstLastButtons>
-</mat-paginator>
+  <mat-paginator #paginator [pageSize]="13" [pageSizeOptions]="[13]" showFirstLastButtons>
+  </mat-paginator>
+</body>
+</html>

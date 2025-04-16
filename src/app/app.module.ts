@@ -78,6 +78,7 @@ import { UsuariosEditarComponent } from './views/usuarios/modal/editar/usuarios-
 import { AssinaturaAdicionarComponent } from './views/Financeiro/Assinaturas/modal/assinatura-adicionar/assinatura-adicionar.component';
 import { FinanceiroReadAdminComponent } from './views/Financeiro/financeiro-read-admin/financeiro-read-admin.component';
 import { FinanceiroCadastroBoletoComponent } from './views/Financeiro/modal/financeiro-cadastro-boleto/financeiro-cadastro-boleto.component';
+import { FilhosAdicionarComponent } from './views/filhos-membros/modal/filhos-adicionar/filhos-adicionar.component';
 
 registerLocaleData(localePt);
 
@@ -119,6 +120,7 @@ registerLocaleData(localePt);
     AssinaturaAdicionarComponent,
     FinanceiroReadAdminComponent,
     FinanceiroCadastroBoletoComponent,
+    FilhosAdicionarComponent,
 
   ],
   imports: [

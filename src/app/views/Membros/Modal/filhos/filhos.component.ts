@@ -5,10 +5,11 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { map } from 'rxjs';
 import { Endpoint } from 'src/app/enum/Endpoints';
-import { Pessoa, ViewFilhos } from 'src/app/models/pessoa';
+import { Pessoa } from 'src/app/models/pessoa';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
+import { ViewFilhos } from 'src/app/views/filhos-membros/model/viewFilhos';
 
 @Component({
   selector: 'app-filhos',
@@ -49,23 +50,23 @@ export class FilhosComponent implements OnInit {
       .subscribe((response: ViewFilhos[]) => {
 
 
-        let filhos = new Array();
-        response.forEach(element => {
+        // let filhos = new Array();
+        // response.forEach(element => {
 
-          let filho: ViewFilhos = new ViewFilhos();
+        //   let filho: ViewFilhos = new ViewFilhos();
 
-          if (element.idPai === this.matdialogRef.id || element.idMae === this.matdialogRef.id) {
-            filho.id = element.id;
-            filho.nome = element.nome;
-            filho.dataNascimento = element.dataNascimento;
-            filho.membro = element.membro ? 'Sim' : 'Não';
-            filho.idPai = element.idPai
-            filho.idMae = element.idMae
-            filhos.push(filho);
-          }
+        //   if (element.idPai === this.matdialogRef.id || element.idMae === this.matdialogRef.id) {
+        //     filho.id = element.id;
+        //     filho.nome = element.nome;
+        //     filho.dataNascimento = element.dataNascimento;
+        //     filho.membro = element.membro ? 'Sim' : 'Não';
+        //     // filho.idPai = element.idPai
+        //     // filho.idMae = element.idMae
+        //     filhos.push(filho);
+        //   }
           
-        });
-        this.filhos.data = filhos;
+        // });
+        // this.filhos.data = filhos;
       })
   }
 

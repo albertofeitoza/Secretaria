@@ -15,7 +15,7 @@ import { ViewFinanceiro } from '../Financeiro/model/viewFinanceiro';
 export class HomeComponent {
   private breakpointObserver = inject(BreakpointObserver);
   tUsuarioLogado = 0;
-  width = "200px;"
+  width = "57px;"
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -46,10 +46,10 @@ export class HomeComponent {
   Menu() {
 
     let menu =
-      this.width.includes("200px;") ?
-        this.width = "57px;" :
-        this.width.includes("57px;") ?
-          this.width = "200px;" : this.width = "200px;"
+      this.width.includes("57px;") ?
+        this.width = "140px;" :
+        this.width.includes("140px;") ?
+          this.width = "57px;" : this.width = "57px;"
     return menu;
   }
 

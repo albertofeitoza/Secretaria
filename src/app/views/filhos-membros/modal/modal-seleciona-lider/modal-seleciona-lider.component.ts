@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ViewFilhos } from 'src/app/models/pessoa';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
+import { ViewFilhos } from '../../model/viewFilhos';
 
 @Component({
   selector: 'app-modal-seleciona-lider',
@@ -29,8 +29,8 @@ export class ModalSelecionaLiderComponent implements OnInit {
 
   ngOnInit(): void {
     this.dadosTela = this.dialofRef._containerInstance._config.data.dadosTela;
-    this.nomepai = this.dadosTela.idPai;
-    this.nomemae = this.dadosTela.idMae;
+    this.nomepai = this.dadosTela?.nomePai ? this.dadosTela?.nomePai : undefined;
+    this.nomemae = this.dadosTela?.nomeMae ? this.dadosTela?.nomeMae : undefined;
   }
 
 

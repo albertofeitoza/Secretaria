@@ -5,11 +5,15 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Endpoint } from 'src/app/enum/Endpoints';
-import { Pessoa, ViewFilhos } from 'src/app/models/pessoa';
+import { Pessoa } from 'src/app/models/pessoa';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 import { ModalSelecionaLiderComponent } from './modal/modal-seleciona-lider/modal-seleciona-lider.component';
+import { ViewFilhos } from './model/viewFilhos';
+import { FilhosAdicionarComponent } from './modal/filhos-adicionar/filhos-adicionar.component';
+import { TipoPopup } from 'src/app/enum/TipoPopup';
+import { PopupConfirmacaoComponent } from 'src/app/popups/popup-confirmacao/popup-confirmacao.component';
 
 @Component({
   selector: 'app-filhos-membros',
@@ -29,10 +33,10 @@ export class FilhosMembrosComponent implements OnInit {
   filhoMembro: number = 0;
   ListaPai: any[] = new Array();
   ListaMae: any[] = new Array();
-  tipoFilhos:any[] = new Array()
+  tipoFilhos: any[] = new Array()
   pessoas: Pessoa[] = new Array()
   txtBusca: string = "";
-  Colunas = ['id', 'nome', 'dataNascimento', 'membro', 'idPai', 'idMae', 'tipoFilho', 'action'];
+  Colunas = ['id', 'nome', 'dataNascimento', 'membro', 'nomePai', 'nomeMae', 'tipoFilho', 'action'];
 
   constructor(
 
@@ -48,7 +52,7 @@ export class FilhosMembrosComponent implements OnInit {
   ngOnInit(): void {
     this.igrejaSelecionada = this.auth.dadosUsuario.IgrejaLogada;
     this.tipoUsuario = this.auth.dadosUsuario.TipoUsuarioLogado;
-    this.CarregarCombos()
+    this.BuscarFilhos()
   }
 
   ngAfterViewInit() {
@@ -56,123 +60,69 @@ export class FilhosMembrosComponent implements OnInit {
     this.filhos.sort = this.sort;
   }
 
-  private BuscarDados(): void {
+  private BuscarFilhos(): void {
     this.serviceApi.read(Endpoint.Filhos + `/estabelecimento/${this.igrejaSelecionada}`)
       .subscribe((response: ViewFilhos[]) => {
 
-        response = response.filter(res => this.tipoUsuario === 5 ? res.tipoFilho === 0 : this.tipoUsuario === 6 ? res.tipoFilho === 1 : res);
-       
-        const Response = this.txtBusca.length > 0
-          ? response.filter(f => f.nome.toLowerCase().includes(this.txtBusca.toLowerCase())) 
-          : response
+        response =
+          this.tipoUsuario === 5 ? response.filter(x => x.tipoFilho == 0) :
+            this.tipoUsuario === 6 ? response.filter(x => x.tipoFilho == 1) : response;
 
-        let filhos = new Array();
-        Response.forEach(element => {
-
-          let filho: ViewFilhos = new ViewFilhos();
-
-          filho.id = element.id
-          filho.nome = element.nome;
-          filho.dataNascimento = element.dataNascimento;
-          filho.membro = element.membro ? 'Sim' : 'Não';
-          filho.idPai = this.pessoas?.filter(x => x.id === Number(element.idPai))?.map(x => x.nome)?.toString() ?? " ";
-          filho.idMae = this.pessoas?.filter(x => x.id === Number(element.idMae))?.map(x => x.nome)?.toString() ?? " ";
-          filho.tipoFilho = element.tipoFilho;
-          filhos.push(filho);
-        });
-        this.filhos.data = filhos;
+        this.filhos.data =
+          this.txtBusca.length > 0 ?
+            response.filter(f => f.nome.toLowerCase().includes(this.txtBusca.toLowerCase()))
+            : response
 
         this.filhos.paginator = this.paginator
         this.filhos.sort = this.sort;
         this.paginator._intl.itemsPerPageLabel = "Itens por página";
-
+        this.txtBusca = '';
       })
   }
 
-  private async CarregarCombos() {
-    this.simNao = this.servico.SimNao()
-    this.CarregarComboPaiMae()
-    this.tipoFilhos = this.servico.TipoFilhos();
-  }
+  public Adicionar(): void {
 
-  private CarregarComboPaiMae() {
+    const request = {
+      idIgreja: this.igrejaSelecionada,
+      idCrianca: 0
+    };
 
-    this.serviceApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.igrejaSelecionada}`)
-      .subscribe((result: Pessoa[]) => {
+    this.servico.Popup("", 0, FilhosAdicionarComponent, 0, 'auto', 'auto', true, false, request)
+      .subscribe(result => {
 
-        this.pessoas = result;
+        this.BuscarFilhos();
 
-        result.forEach(res => {
-
-          const extracao = {
-            id: res.id,
-            nome: res.nome
-          }
-          if (res.sexo === 1)
-            this.ListaPai.push(extracao);
-
-          if (res.sexo === 2)
-            this.ListaMae.push(extracao);
-
-        });
-
-        this.BuscarDados();
       });
-  }
 
-  Adicionar() {
-
-    if (this.filho.nome && this.filho.dataNascimento && this.filhoMembro > 0) {
-
-      const body = {
-        id: this.filho.id,
-        dataCriacao: new Date,
-        nome: this.filho.nome,
-        dataNascimento: this.filho.dataNascimento,
-        membro: this.filhoMembro == 1 ? true : false,
-        idPai: this.filho.idPai ? Number(this.filho.idPai) : null,
-        idMae: this.filho.idMae ? Number(this.filho.idMae) : null,
-        igrejaId: this.igrejaSelecionada,
-        tipoFilho: this.filho.tipoFilho
-      }
-
-      this.serviceApi.create(body, Endpoint.Filhos)
-        .subscribe(x => {
-          this.servico.showMessage('Cadastro realizado com sucesso!', false)
-          this.CarregarComboPaiMae();
-          this.filho = new ViewFilhos()
-        });
-
-    } else {
-      this.servico.showMessage('Obrigatório os campos, Nome, Data de Nascimento e se é Membro', false)
-    }
   }
 
   Editar(id: string) {
 
-    this.serviceApi.readById(id, Endpoint.Filhos)
-      .subscribe((result: any) => {
-        if (result) {
+    const request = {
+      idIgreja: this.igrejaSelecionada,
+      idCrianca: id
+    };
 
-          this.filho.id = result.id;
-          this.filho.dataNascimento = result.dataNascimento;
-          this.filhoMembro = result.membro ? 1 : 2;
-          this.filho.nome = result.nome;
-          this.filho.idMae = result.idMae;
-          this.filho.idPai = result.idPai;
-          this.filho.tipoFilho = result.tipoFilho
-        }
+    this.servico.Popup("", 0, FilhosAdicionarComponent, 0, 'auto', 'auto', true, false, request)
+      .subscribe(result => {
+
+        this.BuscarFilhos();
+
       });
   }
 
   Excluir(id: number) {
 
-    this.serviceApi.create(id, Endpoint.Filhos + '/excluir')
-      .subscribe(() => {
-        this.servico.showMessage('Cadastro realizado com sucesso!', false)
-        this.BuscarDados();
+    this.servico.Popup("Deseja Realmente excluir esse cadastro ? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent, 0, 'auto', 'auto', false, false, null, false)
+      .subscribe(result => {
+        if (result.Status) {
+          this.serviceApi.create(id, Endpoint.Filhos + '/excluir')
+            .subscribe(() => {
+              this.servico.showMessage('Cadastro excluído com sucesso!', false)
+              this.BuscarFilhos();
+            });
+        }
       });
-
   }
 
   FilhoSelecionado(id: number) {
@@ -183,23 +133,11 @@ export class FilhosMembrosComponent implements OnInit {
     if (keyEvent.which === 13 || keyEvent.which === 1) {
       this.txtBusca = (<HTMLSelectElement>document.getElementById('txtBusca')).value;
 
-      this.BuscarDados();
+      this.BuscarFilhos();
     }
   }
 
   public EmissaoCertificado(row: ViewFilhos): void {
-
-    //Abrir popup pra capturar os dados
-
-    let nomePai = this.pessoas?.filter(x => x.id === Number(row.idPai))?.map(x => x.nome)?.toString() ?? " ";
-    let nomeMae = this.pessoas?.filter(x => x.id === Number(row.idMae))?.map(x => x.nome)?.toString() ?? " ";
-
-    if (nomePai)
-      row.idPai = nomePai;
-
-    if (nomeMae)
-      row.idMae = nomeMae;
-
 
     this.servico.Popup("", 0, ModalSelecionaLiderComponent, 0, 'auto', 'auto', true, false, row)
       .subscribe(result => {
