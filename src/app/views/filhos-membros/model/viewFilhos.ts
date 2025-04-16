@@ -3,7 +3,9 @@ export class ViewFilhos {
   nome: string;
   dataNascimento: Date;
   membro: boolean;
+  idPai: number;
   nomePai: string;
+  idMae: number;
   nomeMae: string;
   tipoFilho: number
 }

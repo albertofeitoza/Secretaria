@@ -36,7 +36,7 @@ export class FilhosComponent implements OnInit {
     private serviceUtil: UtilServiceService,
     private serviceApi: AllservicesService<any>,
     private matdialogRef: MatDialogRef<FilhosComponent>,
-    private auth : AutenticacaoService
+    private auth: AutenticacaoService
   ) {
 
   }
@@ -46,27 +46,9 @@ export class FilhosComponent implements OnInit {
     this.BuscarDados();
   }
   private BuscarDados() {
-    this.serviceApi.read(Endpoint.Filhos + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}` )
+    this.serviceApi.read(Endpoint.Filhos + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((response: ViewFilhos[]) => {
-
-
-        // let filhos = new Array();
-        // response.forEach(element => {
-
-        //   let filho: ViewFilhos = new ViewFilhos();
-
-        //   if (element.idPai === this.matdialogRef.id || element.idMae === this.matdialogRef.id) {
-        //     filho.id = element.id;
-        //     filho.nome = element.nome;
-        //     filho.dataNascimento = element.dataNascimento;
-        //     filho.membro = element.membro ? 'Sim' : 'Não';
-        //     // filho.idPai = element.idPai
-        //     // filho.idMae = element.idMae
-        //     filhos.push(filho);
-        //   }
-          
-        // });
-        // this.filhos.data = filhos;
+        this.filhos.data = response.filter(x => x.idPai === Number(this.matdialogRef.id) || x.idMae === Number(this.matdialogRef.id));
       })
   }
 

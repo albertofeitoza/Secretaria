@@ -31,7 +31,7 @@
 
         <ng-container matColumnDef="membro">
             <mat-header-cell *matHeaderCellDef>É Membro?</mat-header-cell>
-            <mat-cell mat-cell id="membro" *matCellDef="let row">{{row.membro}}</mat-cell>
+            <mat-cell mat-cell id="membro" *matCellDef="let row">{{row.membro ? 'Sim' : 'Não'}}</mat-cell>
         </ng-container>
 
         <mat-row style="height: 10%;" (click)="FilhoSelecionado(row.id)" *matRowDef="let row; columns: Colunas;"
