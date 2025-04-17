@@ -54,7 +54,6 @@ export class IgrejaComponent implements OnInit {
   }
 
   public BuscarIgrejas(): void {
-    //refazer o Array
     this.serviceApi.read(Endpoint.Igreja + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: ViewIgreja[]) => {
 
