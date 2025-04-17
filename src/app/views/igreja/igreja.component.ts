@@ -56,29 +56,12 @@ export class IgrejaComponent implements OnInit {
   public BuscarIgrejas(): void {
     //refazer o Array
     this.serviceApi.read(Endpoint.Igreja + `/estabelecimento/${this.auth.dadosUsuario.IgrejaLogada}`)
-      .subscribe((result: igreja[]) => {
+      .subscribe((result: ViewIgreja[]) => {
+
         this.igrejas.data = new Array();
-
         result = result.filter(x => this.txtBusca != '' ? x.nome.toLowerCase().includes(this.txtBusca.toLowerCase()) : result)
-        
         this.txtBusca = '';
-        
-        result.forEach(igr => {
-
-          let viewIgreja: ViewIgreja = new ViewIgreja()
-          viewIgreja.id = igr.id
-          viewIgreja.nome = igr.nome;
-          viewIgreja.nomeIgrejaMae = result.filter(x => x.id === igr.igrejaMae).map(x => x.nome)[0];
-          viewIgreja.cnpj = igr.cnpj;
-          viewIgreja.estado = igr.estado;
-          viewIgreja.cidade = igr.cidade;
-          viewIgreja.igrejaMae = igr.igrejaMae;
-          viewIgreja.status = igr.status;
-          viewIgreja.dominio = igr.dominio;
-
-          this.igrejas.data.push(viewIgreja)
-        });
-        this.igrejas.data = [...this.igrejas.data];
+        this.igrejas.data = [...result];
       });
 
     this.igrejas.paginator = this.paginator
