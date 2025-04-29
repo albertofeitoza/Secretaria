@@ -1,13 +1,13 @@
-import { HttpClient } from '@angular/common/http';
-import { Observable, EMPTY } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Overlay } from '@angular/cdk/overlay';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar'
 import { cnpj, cpf } from 'cpf-cnpj-validator';
 import DateDiff from 'date-diff';
 import * as CryptoJS from 'crypto-js';
+import { ToastrService } from 'ngx-toastr';
+import { EMPTY_OBSERVER } from 'rxjs/internal/Subscriber';
+import { EMPTY, Observable } from 'rxjs';
+import * as printJS from 'print-js';
 
 
 @Injectable({
@@ -16,29 +16,16 @@ import * as CryptoJS from 'crypto-js';
 export class UtilServiceService {
 
   constructor(
-    private snackBar: MatSnackBar,
-    private http: HttpClient,
-    private router: Router,
     public overlay: Overlay,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private toast: ToastrService
   ) { }
-
-  showMessage(msg: string, isErro: boolean = false): void {
-    this.snackBar.open(msg, 'X', {
-      duration: 3000,
-      horizontalPosition: "right",
-      verticalPosition: "top",
-      panelClass: isErro ? ['msg-error'] : ['msg-sucess']
-    })
-
-  }
 
   erroHandler(e: any): Observable<any> {
     let mensagem = e.error;
-    this.showMessage(e.error, true)
-    return EMPTY
+    this.toast.error(mensagem);
+    return new Observable();
   }
-
   convertToBase64(data: any) {
     return btoa(data);
   }
@@ -60,7 +47,6 @@ export class UtilServiceService {
 
       iframe.style.display = 'none';
       iframe.src = fileURL;
-
 
       iframe.onload = function () {
         setTimeout(function () {
@@ -248,35 +234,6 @@ export class UtilServiceService {
 
     return tipoFilho;
   }
-  // PeriodoCemAnos() {
-  //   let periodo = [];
-  //   periodo.push({ "id": 0, "value": "Informe o mês" });
-
-  //   const anoCorrente = new Date().getFullYear();
-
-  //   for (let index = 0; index < 100; index++) {
-  //     const element = index;
-
-
-  //   }
-
-  //   periodo.push({ "id": 0, "value": "Informe o mês" });
-  //   periodo.push({ "id": 1, "value": "Janeiro" });
-  //   periodo.push({ "id": 2, "value": "Fevereiro" });
-  //   periodo.push({ "id": 3, "value": "Março" });
-  //   periodo.push({ "id": 4, "value": "Abril" });
-  //   periodo.push({ "id": 5, "value": "Maio" });
-  //   periodo.push({ "id": 6, "value": "Junho" });
-  //   periodo.push({ "id": 7, "value": "Julho" });
-  //   periodo.push({ "id": 8, "value": "Agosto" });
-  //   periodo.push({ "id": 9, "value": "Setembro" });
-  //   periodo.push({ "id": 10, "value": "Outubro" });
-  //   periodo.push({ "id": 11, "value": "Novembro" });
-  //   periodo.push({ "id": 12, "value": "Dezembro" });
-
-  //   return periodo;
-  // }
-
 
   public TipoCartas(): any {
     let documento = [];
@@ -340,6 +297,26 @@ export class UtilServiceService {
     return tipoIgreja;
   }
 
+  public TipoDocumento() {
+
+    let documento = [];
+
+    documento.push({ "id": -1, "value": "Selecione" })
+    documento.push({ "id": 0, "value": "Foto de Perfil" })
+    documento.push({ "id": 1, "value": "Cópia de RG" })
+    documento.push({ "id": 2, "value": "Cópia de CPF" })
+    documento.push({ "id": 3, "value": "Comprovante de Residência" })
+    documento.push({ "id": 4, "value": "Cópia Certidão de Nascimento" })
+    documento.push({ "id": 5, "value": "Cópia Certidão de Casamento" })
+    documento.push({ "id": 6, "value": "Cópia de ATA" })
+    documento.push({ "id": 7, "value": "Cópia da Carta de Mudança" })
+    documento.push({ "id": 8, "value": "Cópia da Carta de Recomendação" })
+    documento.push({ "id": 9, "value": "Outros" })
+
+    return documento
+  }
+
+
   Popup(mensagem: string, tipo: number, componente: any, Id: any = 0, Width: any = 'auto', Height: any = 'auto', disableClose: boolean = false, status: boolean = false, dados: any = null, motivo: boolean = true) {
 
     const dialog = this.dialog.open(componente, {
@@ -364,14 +341,14 @@ export class UtilServiceService {
       let numeroCpf = ("00000000000" + cpfEntrada).slice(-11);
 
       if (!cpf.isValid(numeroCpf)) {
-        this.showMessage("Cpf Inválido", false)
+        this.toast.warning("Cpf Inválido")
         return false
 
       } else
         return true
     }
     else
-      this.showMessage("Informe o Cpf", false)
+      this.toast.warning("Informe o Cpf")
     return false
   }
 
@@ -383,14 +360,14 @@ export class UtilServiceService {
       let numeroCpf = ("00000000000000" + CnpjEntrada).slice(-14);
 
       if (!cnpj.isValid(numeroCpf)) {
-        this.showMessage("cnpj Inválido", false)
+        this.toast.warning("cnpj Inválido")
         return false
 
       } else
         return true
     }
     else
-      this.showMessage("Informe o CNPJ", false)
+      this.toast.warning("Informe o CNPJ")
     return false
   }
 

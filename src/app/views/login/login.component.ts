@@ -9,6 +9,7 @@ import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 import { OrganogramaComponent } from '../organograma/organograma.component';
 import { CadastreSeComponent } from '../cadastre-se/cadastre-se.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -31,13 +32,14 @@ export class LoginComponent {
   constructor(
     private auth: AutenticacaoService,
     private serviceUtil: UtilServiceService,
-    private serverApi: AllservicesService<any>) {
+    private serverApi: AllservicesService<any>,
+    private toast: ToastrService) {
 
   }
 
   ngOnInit() {
     this.sessao = new login()
-    
+
     this.auth.autenticado
       .subscribe(response => {
         this.isLoggedIn = response
@@ -73,39 +75,39 @@ export class LoginComponent {
             this.dadosResetSenha.sequencia = response.data.data.sequencia
           }
           else
-            this.serviceUtil.showMessage(response.data.mensagem, true)
+            this.toast.success(response.data.mensagem)
         })
     }
 
     if (this.sequenciaTelaReset == 2) {
 
       if (!this.dadosResetSenha.cpf) {
-        this.serviceUtil.showMessage("Cpf Obrigatório", true)
+        this.toast.warning("Cpf Obrigatório")
         return
       }
 
       if (!this.dadosResetSenha.token) {
-        this.serviceUtil.showMessage("Token recebido por e-mail Obrigatório", true)
+        this.toast.info("Token recebido por e-mail Obrigatório")
         return
       }
 
       if (!this.dadosResetSenha.novaSenha) {
-        this.serviceUtil.showMessage("Nova senha obrigatoria", true)
+        this.toast.warning("Nova senha obrigatoria")
         return
       }
 
       if (!this.dadosResetSenha.novaSenhaConfirm) {
-        this.serviceUtil.showMessage("Nova senha de confirmação obrigatoria", true)
+        this.toast.warning("Nova senha de confirmação obrigatoria")
         return
       }
       if (this.dadosResetSenha.novaSenha != this.dadosResetSenha.novaSenhaConfirm) {
-        this.serviceUtil.showMessage("A senha nova está diferente da confirmação de senha", true)
+        this.toast.warning("A senha nova está diferente da confirmação de senha")
         return
       }
 
       this.serverApi.create(this.dadosResetSenha, Endpoint.ResetSenha)
         .subscribe(response => {
-          this.serviceUtil.showMessage(response.data.mensagem, true)
+          this.toast.success(response.data.mensagem)
           this.dadosResetSenha = new ResetSenha();
           this.sessao = new login()
           this.esqueciSenha = false

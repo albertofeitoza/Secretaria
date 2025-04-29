@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { catchError } from 'rxjs';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { igreja } from 'src/app/models/Igreja';
@@ -22,7 +23,8 @@ export class AdicionarIgrejaComponent implements OnInit {
     private matdialogRef: MatDialogRef<AdicionarIgrejaComponent>,
     private serviceApi: AllservicesService<any>,
     private serviceUtil: UtilServiceService,
-    private servico: UtilServiceService
+    private servico: UtilServiceService,
+    private toast: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -34,8 +36,11 @@ export class AdicionarIgrejaComponent implements OnInit {
 
   public AdicionarIgreja(): void {
 
-    if (this.listaIgrejas.length > 0 && this.igreja.igrejaMae === 0)
-      return this.serviceUtil.showMessage("Informe a igreja mãe!")
+    if (this.listaIgrejas.length > 0 && this.igreja.igrejaMae === 0) {
+      this.toast.warning("Informe a igreja mãe!")
+      return;
+    }
+
 
     if (this.igreja.cnpj.length <= 11) {
 
@@ -46,9 +51,9 @@ export class AdicionarIgrejaComponent implements OnInit {
           .subscribe(() => {
 
             if (this.igreja.id > 0)
-              this.serviceUtil.showMessage("Dados Alterados com sucesso!")
+              this.toast.warning("Dados Alterados com sucesso!")
             else
-              this.serviceUtil.showMessage("Igreja cadastrada com sucesso!")
+              this.toast.warning("Igreja cadastrada com sucesso!")
 
             this.matdialogRef.close();
           });
@@ -62,13 +67,13 @@ export class AdicionarIgrejaComponent implements OnInit {
           .subscribe(() => {
 
             if (this.igreja.id > 0)
-              this.serviceUtil.showMessage("Dados Alterados com sucesso!")
+              this.toast.success("Dados Alterados com sucesso!")
             else
-              this.serviceUtil.showMessage("Igreja cadastrada com sucesso!")
+              this.toast.success("Igreja cadastrada com sucesso!")
 
             this.matdialogRef.close();
           });
-        
+
       }
     }
   }
@@ -81,7 +86,7 @@ export class AdicionarIgrejaComponent implements OnInit {
         this.igreja = result.data;
 
       }, err => {
-        this.serviceUtil.showMessage(`Erro ao buscar os dados da Igreja ${err.error.message}';
+        this.toast.error(`Erro ao buscar os dados da Igreja ${err.error.message}';
       } `)
       });
   }
@@ -90,7 +95,7 @@ export class AdicionarIgrejaComponent implements OnInit {
     if (Number(this.matdialogRef.id) > 0)
       this.serviceApi.readById(this.matdialogRef.id.toString(), Endpoint.Igreja)
         .subscribe((result) => {
-          
+
           this.igreja = result.data;
 
           if (this.igreja.tipoIgreja > 1)

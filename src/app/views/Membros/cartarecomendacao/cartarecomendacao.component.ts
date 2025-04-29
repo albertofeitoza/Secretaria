@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { Cartas } from 'src/app/models/Cartas';
 import { PopupConfirm } from 'src/app/models/dialogConfirm';
@@ -29,7 +30,8 @@ export class CartarecomendacaoComponent implements OnInit {
     public dialogRef: MatDialogRef<CartarecomendacaoComponent>,
     public dialog: MatDialog,
     private serviceApi: AllservicesService<any>,
-    private auth: AutenticacaoService
+    private auth: AutenticacaoService,
+    private toast: ToastrService
   ) { }
 
   ngOnInit() {
@@ -73,12 +75,12 @@ export class CartarecomendacaoComponent implements OnInit {
     if (confirm) {
 
       if (this.relatorioSelecionado == 14 && !this.dados.cpfConjuge || this.relatorioSelecionado == 16 && !this.dados.cpfConjuge) {
-        this.serviceUtil.showMessage("Para emissão de carta de recomendação / Mudança para o casal corrigir o cadastro associando o cpf do conjuge.", true)
+        this.toast.warning("Para emissão de carta de recomendação / Mudança para o casal corrigir o cadastro associando o cpf do conjuge.")
         return;
       }
 
       if (this.relatorioSelecionado === 15 && this.PastorIgreja || this.relatorioSelecionado === 22 && this.PastorIgreja) {
-        this.serviceUtil.showMessage('Para emissão de carta de Mudança do pastor selecionar a opção "Carta de Mudança Casal. interna ou externa"', true)
+        this.toast.warning('Para emissão de carta de Mudança do pastor selecionar a opção "Carta de Mudança Casal. interna ou externa"')
         return;
       }
 
@@ -92,7 +94,7 @@ export class CartarecomendacaoComponent implements OnInit {
       }
 
       if (this.relatorioSelecionado == 14 && this.dados.estadoCivil == 1) {
-        this.serviceUtil.showMessage("Uma pessoa solteiro(a) não pode emitir uma carta de recomendação de casal", true)
+        this.toast.warning("Uma pessoa solteiro(a) não pode emitir uma carta de recomendação de casal")
       }
       else {
         this.resposta.Status = true;

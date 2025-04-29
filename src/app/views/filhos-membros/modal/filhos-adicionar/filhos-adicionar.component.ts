@@ -5,6 +5,7 @@ import { Pessoa } from 'src/app/models/pessoa';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 import { DtoFilhos, ViewFilhos } from '../../model/viewFilhos';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-filhos-adicionar',
@@ -27,7 +28,8 @@ export class FilhosAdicionarComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<FilhosAdicionarComponent>,
     private servico: UtilServiceService,
-    private serviceApi: AllservicesService<any>
+    private serviceApi: AllservicesService<any>,
+    private toast: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -82,7 +84,7 @@ export class FilhosAdicionarComponent implements OnInit {
 
       this.serviceApi.create(this.filho, Endpoint.Filhos)
         .subscribe(x => {
-          this.servico.showMessage(`${this.filho.id == undefined ? 'Cadastro realizado com sucesso!' : 'Dados atualizados.'} `, false)
+          this.toast.success(`${this.filho.id == undefined ? 'Cadastro realizado com sucesso!' : 'Dados atualizados.'} `)
           this.CarregarComboPaiMae();
 
           if (this.filho.id > 0)
@@ -93,7 +95,7 @@ export class FilhosAdicionarComponent implements OnInit {
         });
 
     } else {
-      this.servico.showMessage('Obrigatório os campos, Nome, Data de Nascimento e se é Membro e o tipo de filho', false)
+      this.toast.warning('Obrigatório os campos, Nome, Data de Nascimento e se é Membro e o tipo de filho')
     }
   }
 

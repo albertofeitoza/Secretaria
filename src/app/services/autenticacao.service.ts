@@ -1,3 +1,4 @@
+
 import { EventEmitter, Injectable } from '@angular/core';
 import { login } from '../models/modelLogin';
 import { Router } from '@angular/router';
@@ -8,10 +9,11 @@ import { UtilServiceService } from './util-service.service';
 import { Endpoint } from '../enum/Endpoints';
 import { ApiResponse } from '../models/ApiResponse';
 //import * as jwt_decode from 'jwt-decode';
-import { JwtDecodeOptions, JwtHeader, JwtPayload, jwtDecode } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { TokenResponse } from '../models/token';
-import { Observable } from 'rxjs';
 import { DadosLogados } from '../models/Usuario';
+import { ToastrService } from 'ngx-toastr';
+import { TipoDocumento } from '../enum/TipoDocumento';
 
 
 @Injectable({
@@ -31,7 +33,8 @@ export class AutenticacaoService {
   constructor(
     private router: Router,
     private http: HttpClient,
-    private utilService: UtilServiceService
+    private utilService: UtilServiceService,
+    private toast: ToastrService
 
   ) {
     this.environmentUrl = environment.BASE_URL;
@@ -53,17 +56,18 @@ export class AutenticacaoService {
     this.http.post<ApiResponse>(this.environmentUrl + endpoint, sessao)
       .pipe(
         map(obj => obj),
-        catchError(e => this.utilService.erroHandler(this.utilService.showMessage("Api Indisponível", true))),
+        catchError(e => this.utilService.erroHandler('Api Indisponível'))
       )
       .subscribe(result => {
         if (result.code === 200) {
 
+
           this.primeiroAcesso.emit(false);
-          this.token = result.data;
+          this.token = result?.data;
           this.autenticado.emit(true);
-          this.getDecodedAccessToken(result.data)
+          this.getDecodedAccessToken(result?.data)
           this.router.navigate(['/']);
-          this.utilService.showMessage(result.mensagem, false)
+          this.toast.info(result?.mensagem)
 
         } else if (result.code === 203) {
 
@@ -71,7 +75,7 @@ export class AutenticacaoService {
 
         }
         else {
-          this.utilService.showMessage(result.mensagem, true)
+           this.toast.error(result.mensagem)
         }
       });
   }
@@ -86,10 +90,12 @@ export class AutenticacaoService {
     return { headers: headers };
   }
 
-  HeaderForFile(fileName: string, idPessoa: number) {
+  HeaderForFile(fileName: string, idPessoa: number, tipoDocumento: TipoDocumento, idDocumento: number) {
     const headers = new HttpHeaders({
       'filename': fileName,
       'idpessoa': idPessoa,
+      'idDocumento': idDocumento,
+      'tipoDocumento': tipoDocumento,
       'Authorization': `Bearer ${this.token}`
     });
     return { headers: headers };
@@ -105,6 +111,6 @@ export class AutenticacaoService {
     this.dadosUsuario.IgrejaLogada = this.dadosUsuario.TipoUsuarioLogado === 1 ? 0 : Number(jwtDecode<TokenResponse>(token).unique_name[3]);
     this.dadosUsuario.TipoIgrejaLogada = this.dadosUsuario.TipoUsuarioLogado === 1 ? 1 : Number(jwtDecode<TokenResponse>(token).unique_name[4]);
     let teste = 1;
-  
+
   }
 }

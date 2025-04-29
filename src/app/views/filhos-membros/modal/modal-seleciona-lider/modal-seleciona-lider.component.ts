@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AllservicesService } from 'src/app/services/allservices.service';
-import { UtilServiceService } from 'src/app/services/util-service.service';
 import { ViewFilhos } from '../../model/viewFilhos';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-modal-seleciona-lider',
@@ -22,8 +22,7 @@ export class ModalSelecionaLiderComponent implements OnInit {
 
   constructor(
     private dialofRef: MatDialogRef<ModalSelecionaLiderComponent>,
-    private servico: UtilServiceService,
-    private serviceApi: AllservicesService<any>
+    private toast: ToastrService
   ) {
   }
 
@@ -41,14 +40,23 @@ export class ModalSelecionaLiderComponent implements OnInit {
 
   public Selecionar(): void {
 
-    if (!this.nomeLider)
-      return this.servico.showMessage("Informar o Nome do lider do departamento infantil", true)
+    if (!this.nomeLider){
+      this.toast.warning("Informar o Nome do lider do departamento infantil")
+      return;
+    }
+       
 
-    if (!this.nomepai)
-      return this.servico.showMessage("Informar o Nome do pai.", true)
+    if (!this.nomepai){
+      this.toast.warning("Informar o Nome do pai.")
+      return;
+    }
+      
 
-    if (!this.nomemae)
-      return this.servico.showMessage("Informar o Nome da mãe.", true)
+    if (!this.nomemae){
+      this.toast.warning("Informar o Nome da mãe.")
+      return
+    }
+      
 
     if (this.nomeLider && this.nomepai && this.nomemae) {
 

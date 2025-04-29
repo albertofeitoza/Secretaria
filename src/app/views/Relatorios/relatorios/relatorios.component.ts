@@ -1,10 +1,10 @@
-import { getLocaleDateFormat } from '@angular/common';
 import {
   OnInit,
   Component,
   HostListener,
   Injectable,
 } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { Filtros } from 'src/app/models/Filtros';
 import { ViewPessoa } from 'src/app/models/pessoa';
@@ -70,7 +70,8 @@ export class RelatoriosComponent implements OnInit {
 
   constructor(private serviceUtil: UtilServiceService,
     private serverApi: AllservicesService<any>,
-    private auth: AutenticacaoService
+    private auth: AutenticacaoService,
+    private toast: ToastrService
   ) { }
 
   ngOnInit() {
@@ -277,7 +278,7 @@ export class RelatoriosComponent implements OnInit {
               break;
           }
         }, (err) => {
-          this.serviceUtil.showMessage(`Erro ao extrair relatório : ${err.error.message}`, true);
+          this.toast.error(`Erro ao extrair relatório : ${err.error.message}`);
           this.spinner = false
         });
     } catch (error) {
@@ -288,7 +289,7 @@ export class RelatoriosComponent implements OnInit {
   private ValidacoesRelatorio(): boolean {
 
     if (this.relatorioSelecionado === 0) {
-      this.serviceUtil.showMessage("Selecione um relatório", true);
+      this.toast.warning("Selecione um relatório");
       this.LimparFiltros();
       this.relatorioSelecionado = 0;
       this.filtros.periodoSelecionado = 0;
@@ -296,7 +297,7 @@ export class RelatoriosComponent implements OnInit {
     }
 
     if (this.relatorioSelecionado === 4 && this.filtros.periodoSelecionado === 0) {
-      this.serviceUtil.showMessage("Selecione o período.", true);
+      this.toast.warning("Selecione o período.");
       this.LimparFiltros();
       this.relatorioSelecionado = 0;
       this.filtros.periodoSelecionado = 0;
@@ -304,7 +305,7 @@ export class RelatoriosComponent implements OnInit {
     }
 
     if (this.relatorioSelecionado === 4 && this.filtros.periodoSelecionado === 2 && this.filtros.mesSelecionado === 0) {
-      this.serviceUtil.showMessage("Informe o mês.", true);
+      this.toast.warning("Informe o mês.");
       this.LimparFiltros();
       this.relatorioSelecionado = 0;
       this.filtros.periodoSelecionado = 0;
@@ -316,7 +317,7 @@ export class RelatoriosComponent implements OnInit {
       this.relatorioSelecionado === 6 && this.filtros.anoSelecionado === 0 ||
       this.relatorioSelecionado === 7 && this.filtros.anoSelecionado === 0 ||
       this.relatorioSelecionado === 17 && this.filtros.anoSelecionado === 0) {
-      this.serviceUtil.showMessage("Informe o ano.", true);
+      this.toast.warning("Informe o ano.");
       this.LimparFiltros();
       this.relatorioSelecionado = 0;
       this.filtros.periodoSelecionado = 0;

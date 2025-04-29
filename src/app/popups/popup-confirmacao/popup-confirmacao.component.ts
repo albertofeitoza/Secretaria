@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { stringToKeyValue } from '@angular/flex-layout/extended/style/style-transforms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { PopupConfirm } from 'src/app/models/dialogConfirm';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 
@@ -17,7 +18,7 @@ export class PopupConfirmacaoComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<PopupConfirmacaoComponent>,
     public dialog: MatDialog,
-    private utilService: UtilServiceService
+    private toast: ToastrService
 
   ) {
   }
@@ -44,7 +45,7 @@ export class PopupConfirmacaoComponent implements OnInit {
           this.dialogRef.close(this.resposta);
         }
         else
-          this.utilService.showMessage("Obrigatório Informar o Motivo")
+          this.toast.warning("Obrigatório Informar o Motivo")
       }
 
     }

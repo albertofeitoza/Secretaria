@@ -21,7 +21,7 @@ const routes: Routes = [
   {path: "membros", component: ReadMembrosComponent},
   {path: "membros/:nome", component: ReadMembrosComponent},
   {path: "membrosadd", component: CadastroMembrosComponent},
-  {path: "membrosupdate/:id", component: UpdateMembroComponent},
+  {path: "membrosupdate", component: UpdateMembroComponent},
   {path: "relatorios", component: RelatoriosComponent},
   {path: "ofertas", component: OfertasComponent},
   // {path: "usuarios", component: UsuariosReadComponent},

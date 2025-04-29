@@ -24,3 +24,9 @@
   width: 30px;
   
 }
+.router-outlet{
+  width: auto;
+  height: auto;
+  scrollbar-width: none;
+  
+}

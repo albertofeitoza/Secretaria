@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { Usuario } from 'src/app/models/Usuario';
 import { AllservicesService } from 'src/app/services/allservices.service';
@@ -20,7 +21,8 @@ export class UsuariosEditarComponent implements OnInit {
     private matdialogRef: MatDialogRef<UsuariosEditarComponent>,
     private utilService: UtilServiceService,
     private serverApi: AllservicesService<any>,
-    private auth: AutenticacaoService
+    private auth: AutenticacaoService,
+    private toast : ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -44,7 +46,7 @@ export class UsuariosEditarComponent implements OnInit {
 
     this.serverApi.create(this.usuario, Endpoint.Usuario)
       .subscribe(() => {
-        this.utilService.showMessage(`Dados Alterados com sucesso`, false)
+        this.toast.success(`Dados Alterados com sucesso`)
         this.matdialogRef.close();
       });
   }

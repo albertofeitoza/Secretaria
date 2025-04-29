@@ -1,6 +1,5 @@
-import { cpf } from 'cpf-cnpj-validator';
 import { Component, ViewChild, OnInit, Injectable } from '@angular/core';
-import { Pessoa, UniaoCadastro, ViewPessoa } from 'src/app/models/pessoa';
+import { Pessoa, UniaoCadastro } from 'src/app/models/pessoa';
 import { MatTableDataSource, _MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -16,13 +15,11 @@ import { Cartas } from 'src/app/models/Cartas';
 import { FilhosComponent } from '../Modal/filhos/filhos.component';
 import { ControlePresencaComponent } from '../Modal/controle-presenca/controle-presenca.component';
 import { UnirCadastroComponent } from '../Modal/unir-cadastro/unir-cadastro.component';
-import jsPDF from 'jspdf';
 import { TipoRelatorio } from 'src/app/enum/TipoRelatorio';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
-import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
 
 import { TodasAsIgrejas } from 'src/app/models/Igreja';
-import { of } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Injectable()
@@ -61,8 +58,8 @@ export class ReadMembrosComponent implements OnInit {
     private serviceUtil: UtilServiceService,
     private route: Router,
     private activatedRoute: ActivatedRoute,
-    private auth: AutenticacaoService
-
+    private auth: AutenticacaoService,
+    private toast: ToastrService
   ) {
 
   }
@@ -105,7 +102,7 @@ export class ReadMembrosComponent implements OnInit {
       .subscribe((result: TodasAsIgrejas[]) => {
         this.subsedes = result.filter(x => x.idMae === idSede);
         this.igrejaSelecionada = idSede
-       
+
         this.subsedeSelecionada = 0;
         this.congregacaoselecionada = 0;
 
@@ -196,7 +193,9 @@ export class ReadMembrosComponent implements OnInit {
   }
 
   AtualizarMembro(id: number) {
-    this.route.navigate([`/membrosupdate/${id}`]);
+
+    this.serverApi.idMembro.next(id);
+    this.route.navigate([`/membrosupdate`]);
   }
 
   ImprimirFichaMembro(row: any) {
@@ -205,13 +204,13 @@ export class ReadMembrosComponent implements OnInit {
     this.serverApi.DownloadArquivo(row.id.toString(), Endpoint.RelatoriosFichaMembro)
       .subscribe(result => {
 
-        this.serviceUtil.showMessage("Aguarde a impressão.", false);
+        this.toast.info("Aguarde a impressão.");
 
         this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `FichaMembro_${row?.nome?.trim()}.docx`);
         this.spinner = false;
       },
         (error) => {
-          this.serviceUtil.showMessage("Não foi possível baixar a ficha, verifique o cadastro", true);
+          this.toast.error("Não foi possível baixar a ficha, verifique o cadastro");
         });
   }
 
@@ -220,7 +219,7 @@ export class ReadMembrosComponent implements OnInit {
     this.serverApi.readById(id.toString(), Endpoint.Pessoa)
       .subscribe(res => {
         if (res.data.igreja.pastores[0].pessoaId === id) {
-          this.serviceUtil.showMessage("O pastor da Igreja não pode ser excluido, emita a carta de mudança!.", false);
+          this.toast.error("O pastor da Igreja não pode ser excluido, emita a carta de mudança!.");
           return
         } else {
           this.serviceUtil.Popup("Deseja Excluir o Membro? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
@@ -241,13 +240,13 @@ export class ReadMembrosComponent implements OnInit {
                   pessoa.idoso = false
                 this.serverApi.create(pessoa, Endpoint.Pessoa)
                   .subscribe(response => {
-                    this.serviceUtil.showMessage("Membro inativado com sucesso!.", false);
+                    this.toast.success("Membro inativado com sucesso!.");
                     this.buscarMembro()
                   })
               }
             },
               (error) => {
-                this.serviceUtil.showMessage("Problema pra excluir o cadastro!.", false);
+                this.toast.error("Problema pra excluir o cadastro!.");
               });
         }
 
@@ -266,11 +265,11 @@ export class ReadMembrosComponent implements OnInit {
           .subscribe(result => {
             this.serviceUtil.Imprimir(result, 'application/pdf');
           }, err => {
-            this.serviceUtil.showMessage("Erro ao realizar a baixa do histórico da pessoa.")
+            this.toast.error("Erro ao realizar a baixa do histórico da pessoa.")
           }
           );
       }, (erro) => {
-        this.serviceUtil.showMessage("Erro ao gerar o histórico da pessoa.")
+        this.toast.error("Erro ao gerar o histórico da pessoa.")
       });
   }
 
@@ -329,17 +328,17 @@ export class ReadMembrosComponent implements OnInit {
           this.spinner = true;
           this.serverApi.DownloadCartas(dados, Endpoint.RelatoriosCartas)
             .subscribe(result => {
-              this.serviceUtil.showMessage("Aguarde a Impressão.", false);
+              this.toast.info("Aguarde a Impressão.");
 
               this.serviceUtil.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `Carta_${id.toString()}.docx`);
               this.spinner = false;
             },
               (error) => {
-                this.serviceUtil.showMessage("Não foi possível realizar a impressão , verifique o cadastro", true);
+                this.toast.error("Não foi possível realizar a impressão , verifique o cadastro");
               });
         }
         else {
-          this.serviceUtil.showMessage("Informações ignoradas", false)
+          this.toast.warning("Informações ignoradas")
         }
       })
   }
@@ -363,11 +362,11 @@ export class ReadMembrosComponent implements OnInit {
           dados.motivo = result?.motivo
 
           if (id === dados.idRascunho) {
-            this.serviceUtil.showMessage("Escolha uma pessoa diferente para união dos dados!")
+            this.toast.warning("Escolha uma pessoa diferente para união dos dados!")
           } else {
             this.serverApi.create(dados, `${Endpoint.Pessoa}/uniaoCadastro`)
               .subscribe(() => {
-                this.serviceUtil.showMessage("Cadastros unificados, não é possível desfazer essa operação!")
+                this.toast.info("Cadastros unificados, não é possível desfazer essa operação!")
               })
           }
         }

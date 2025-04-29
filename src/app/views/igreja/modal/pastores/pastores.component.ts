@@ -1,5 +1,3 @@
-import { map } from 'rxjs';
-import { igreja } from 'src/app/models/Igreja';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Endpoint } from 'src/app/enum/Endpoints';
@@ -7,8 +5,8 @@ import { Pastor } from 'src/app/models/Pastor';
 import { Pessoa } from 'src/app/models/pessoa';
 import { ViewPastores } from 'src/app/models/relatorios';
 import { AllservicesService } from 'src/app/services/allservices.service';
-import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-pastores',
@@ -30,6 +28,7 @@ export class PastoresComponent implements OnInit {
     private utilService: UtilServiceService,
     private matdialogRef: MatDialogRef<PastoresComponent>,
     private serverApi: AllservicesService<any>,
+    private toast: ToastrService
   ) {
 
   }
@@ -41,10 +40,6 @@ export class PastoresComponent implements OnInit {
   private BuscarPastores(): void {
 
     this.spinner = true;
-
-    // this.serverApi.readById(Endpoint.Igreja + `/estabelecimento/${this.matdialogRef.id}`)
-    //   .subscribe(result => {
-
     this.serverApi.read(Endpoint.Pastores + `/estabelecimento/${this.matdialogRef.id}`)
       .subscribe((result: ViewPastores[]) => {
         this.datasource = result
@@ -72,7 +67,7 @@ export class PastoresComponent implements OnInit {
         });
       } else {
         let mensagem = response.data.nome.split(';')
-        this.utilService.showMessage(`Já existe umc adastro para esse cpf pessoa: ${mensagem[0]}${mensagem[1]}`);
+        this.toast.error(`Já existe umc adastro para esse cpf pessoa: ${mensagem[0]}${mensagem[1]}`);
       }
     });
 
@@ -92,7 +87,7 @@ export class PastoresComponent implements OnInit {
 
     this.serverApi.create(this.pastor, Endpoint.Pastores)
       .subscribe(() => {
-        this.utilService.showMessage("Cadastro realizado com sucesso");
+        this.toast.success("Cadastro realizado com sucesso");
         this.BuscarPastores();
       });
 

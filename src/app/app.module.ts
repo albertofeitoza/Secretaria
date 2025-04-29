@@ -36,11 +36,11 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatExpansionModule } from '@angular/material/expansion'
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core'
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 //configurar a app para português
 import localePt from '@angular/common/locales/pt';
-import { registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 
 import { BemVindoComponent } from './views/bem-vindo/bem-vindo.component';
 import { ReadMembrosComponent } from './views/Membros/read-membros/read-membros.component';
@@ -51,7 +51,7 @@ import { RelatoriosComponent } from './views/Relatorios/relatorios/relatorios.co
 import { PopupConfirmacaoComponent } from './popups/popup-confirmacao/popup-confirmacao.component';
 import { OfertasComponent } from './views/ofertas/ofertas.component';
 import { UsuariosComponent } from './views/usuarios/modal/Adicionar/usuarios.component';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PopupcomponetComponent } from './popups/popupcomponet/popupcomponet.component';
 import { HistoricoPopupComponent } from './views/Membros/historico-popup/historico-popup.component';
 import { CartarecomendacaoComponent } from './views/Membros/cartarecomendacao/cartarecomendacao.component';
@@ -79,6 +79,9 @@ import { AssinaturaAdicionarComponent } from './views/Financeiro/Assinaturas/mod
 import { FinanceiroReadAdminComponent } from './views/Financeiro/financeiro-read-admin/financeiro-read-admin.component';
 import { FinanceiroCadastroBoletoComponent } from './views/Financeiro/modal/financeiro-cadastro-boleto/financeiro-cadastro-boleto.component';
 import { FilhosAdicionarComponent } from './views/filhos-membros/modal/filhos-adicionar/filhos-adicionar.component';
+import { ToastrModule } from 'ngx-toastr';
+import { CadastroDocumentosPessoaisComponent } from './views/Membros/Modal/documentos-pessoais/cadastro-documentos-pessoais/cadastro-documentos-pessoais.component';
+import { WebcamModule } from 'ngx-webcam';
 
 registerLocaleData(localePt);
 
@@ -121,9 +124,11 @@ registerLocaleData(localePt);
     FinanceiroReadAdminComponent,
     FinanceiroCadastroBoletoComponent,
     FilhosAdicionarComponent,
+    CadastroDocumentosPessoaisComponent,
 
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
@@ -159,16 +164,20 @@ registerLocaleData(localePt);
     MatNativeDateModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
-    MatSortModule, 
-    MatAutocompleteModule
+    MatSortModule,
+    MatAutocompleteModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+    WebcamModule,
   ],
   providers: [
     {
       provide: LOCALE_ID,
       useValue: 'pt-BR',
     },
-   [AutenticacaoService]
+    [AutenticacaoService]
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
 })
 export class AppModule { }

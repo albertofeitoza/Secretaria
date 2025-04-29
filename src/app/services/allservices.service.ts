@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { environment } from '../environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AutenticacaoService } from './autenticacao.service';
 import { map, catchError } from 'rxjs/operators';
 import { HttpClient, HttpRequest } from '@angular/common/http';
@@ -8,6 +8,8 @@ import { Injectable } from '@angular/core';
 import { UtilServiceService } from './util-service.service';
 import { Cartas } from '../models/Cartas';
 import { Filtros } from '../models/Filtros';
+import { ToastrService } from 'ngx-toastr';
+import { TipoDocumento } from '../enum/TipoDocumento';
 
 @Injectable({
   providedIn: 'root'
@@ -15,19 +17,21 @@ import { Filtros } from '../models/Filtros';
 export class AllservicesService<T> {
 
   environmentUrl = ''
+  public idMembro: BehaviorSubject<any> = new  BehaviorSubject<any>({});
 
   constructor(
     private router: Router,
     private http: HttpClient,
     private utilService: UtilServiceService,
-    private loginService: AutenticacaoService
+    private loginService: AutenticacaoService,
+    private toast : ToastrService
 
   ) {
     this.environmentUrl = environment.BASE_URL
   }
 
-  EnviarArquivoServidor(T: any, endpoint: string, fileName: string, idPessoa: number): Observable<T> {
-    let headers = this.loginService.HeaderForFile(fileName, idPessoa).headers;
+  EnviarArquivoServidor(T: any, endpoint: string, fileName: string, idPessoa: number, tipoDocumento : TipoDocumento, idDocumento: number): Observable<T> {
+    let headers = this.loginService.HeaderForFile(fileName, idPessoa, tipoDocumento, idDocumento).headers;
     const uploadReq = new HttpRequest('POST', this.environmentUrl + endpoint, T,
       {
         reportProgress: true,
@@ -72,7 +76,8 @@ export class AllservicesService<T> {
     
     return this.http.get(url, { responseType : 'blob', headers : this.loginService.Header(filtros).headers})
     .pipe(
-      map(res => res)
+      map(res => res),
+      catchError(e => this.utilService.erroHandler('Erro ao realizar o download tente novamente'))
     )
   }
 

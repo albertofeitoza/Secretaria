@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { Endpoint } from 'src/app/enum/Endpoints';
+import { TipoDocumento } from 'src/app/enum/TipoDocumento';
 import { TipoPopup } from 'src/app/enum/TipoPopup';
 import { ApiResponse } from 'src/app/models/ApiResponse';
 import { Cep } from 'src/app/models/Cep';
@@ -59,7 +61,8 @@ export class CadastreSeComponent implements OnInit {
     private service: UtilServiceService,
     private serverApi: AllservicesService<any>,
     private servicoCep: AllservicesService<Cep>,
-    private dialogRef: MatDialogRef<CadastreSeComponent>
+    private dialogRef: MatDialogRef<CadastreSeComponent>,
+    private toast: ToastrService
   ) { }
 
 
@@ -186,10 +189,10 @@ export class CadastreSeComponent implements OnInit {
       const formData: FormData = new FormData();
       formData.append('image', file)
 
-      this.serverApi.EnviarArquivoServidor(formData, Endpoint.UploadArquivo, this.pessoa.cpf, this.pessoa.id)
+      this.serverApi.EnviarArquivoServidor(formData, Endpoint.FotoDocumento, this.pessoa.cpf, this.pessoa.id, 0, 0)
         .subscribe(x => {
           event.target.files = undefined
-          this.service.showMessage("Imagem importada com sucesso!", false);
+          this.toast.success("Imagem importada com sucesso!");
           //this.BuscarMembro()
         })
     }
@@ -199,15 +202,14 @@ export class CadastreSeComponent implements OnInit {
     this.service.Popup("Deseja excluir a foto de perfil ? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
       .subscribe(result => {
         if (result.Status) {
-          this.serverApi.readById(idPessoa, Endpoint.RemoverFotoperfil)
+          this.serverApi.readById(idPessoa, Endpoint.RemoverFotoDocumento)
             .subscribe(() => {
-              this.service.showMessage("Imagem removida com sucesso!", false);
-              // this.BuscarMembro()
+              this.toast.success("Imagem removida com sucesso!");
             })
         }
       },
         (error) => {
-          this.service.showMessage("Problema pra excluir a foto do usuário!.", false);
+          this.toast.error("Problema pra excluir a foto do usuário!.");
         });
   }
 
@@ -218,7 +220,7 @@ export class CadastreSeComponent implements OnInit {
     this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
 
     if (!this.sedeSelecionada)
-      return this.service.showMessage("Selecione a Sede!.", true);
+      return this.toast.warning("Selecione a Sede!.");
 
     if (this.service.ValidaCpf(this.pessoa.cpf)) {
 
@@ -251,7 +253,7 @@ export class CadastreSeComponent implements OnInit {
           break;
         case 2:
           if (this.pessoa.contatos.length == 0) {
-            return this.service.showMessage("Cadastrar pelo menos um contato!.", false);
+            return this.toast.warning("Cadastrar pelo menos um contato!.");
           }
           this.step++;
           break;
@@ -262,19 +264,19 @@ export class CadastreSeComponent implements OnInit {
             this.serverApi.create(this.pessoa, Endpoint.Token + `/precadastro/`)
               .subscribe((result: ApiResponse) => {
                 if (result.code === 200) {
-                  this.service.showMessage("Cadastro enviado com sucesso!.", false);
+                  this.toast.success("Cadastro enviado com sucesso!.");
 
                   this.spinner = false;
 
                   //implementar a proxima tela envio de documentos
-                  this.service.showMessage("Cadastro enviado com sucesso!.", false);
+                  this.toast.success("Cadastro enviado com sucesso!.");
                   this.dialogRef.close();
 
 
                 }
               }, (err) => {
                 this.spinner = false;
-                this.service.showMessage(`${err?.error?.message}`, false);
+                this.toast.error(`${err?.error?.message}`);
               })
           }
           break;
@@ -298,12 +300,12 @@ export class CadastreSeComponent implements OnInit {
               this.pessoa.pessoaEndereco.complemento = ret.complemento
             }
             else {
-              this.service.showMessage("Não foi possível encontrar o CEP informado", false)
+              this.toast.error("Não foi possível encontrar o CEP informado")
             }
           });
       }
     } catch (error) {
-      this.service.showMessage(`site do correio indisponível ${error}`, false)
+      this.toast.error(`site do correio indisponível ${error}`)
     }
   }
 
@@ -321,9 +323,7 @@ export class CadastreSeComponent implements OnInit {
       this.contato = new Contato();
 
     } else
-      this.service.showMessage("informar os dados do contato.", false)
-
-
+      this.toast.warning("informar os dados do contato.")
   }
 
   RemoveContato(row: any) {
@@ -334,18 +334,18 @@ export class CadastreSeComponent implements OnInit {
 
   ValidarPessoa(): boolean {
     let result: boolean = false;
-    this.pessoa.nome == undefined ? this.service.showMessage("Dados Pessoais -> Nome Obrigatório") :
-      this.pessoa.estadoCivil < 1 || this.pessoa.estadoCivil == undefined ? this.service.showMessage("Selecione --> Estado Civil") :
-        this.pessoa.dataNascimento == undefined ? this.service.showMessage("Informe a --> Data nascimento ") :
-          this.pessoa.grauInstrucao < 1 || this.pessoa.grauInstrucao == undefined ? this.service.showMessage("Selecione --> Grau de Instrução") :
-            this.pessoa.sexo < 1 || this.pessoa.sexo == undefined ? this.service.showMessage("Selecione --> Sexo ") :
-              this.pessoa.naturalidade == undefined ? this.service.showMessage("Informe --> Cidade onde nasceu") :
-                this.pessoa.naturalidadeEstado == undefined ? this.service.showMessage("Informe --> Estado onde nasceu") :
-                  this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.dataCasamento == undefined ? this.service.showMessage("Informe a Data de Casamento.") :
-                    this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.cpfConjuge == "" ? this.service.showMessage("Informe o CPF do Cônjuje.") :
-                      this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.nomeConjuge == "" ? this.service.showMessage("Informe o nome do Cônjuje.") :
-                        this.pessoa.nomePai == undefined ? this.service.showMessage("Informe --> O nome do pai") :
-                          this.pessoa.nomeMae == undefined ? this.service.showMessage("Informe --> O nome da mãe") :
+    this.pessoa.nome == undefined ? this.toast.warning("Dados Pessoais -> Nome Obrigatório") :
+      this.pessoa.estadoCivil < 1 || this.pessoa.estadoCivil == undefined ? this.toast.warning("Selecione --> Estado Civil") :
+        this.pessoa.dataNascimento == undefined ? this.toast.warning("Informe a --> Data nascimento ") :
+          this.pessoa.grauInstrucao < 1 || this.pessoa.grauInstrucao == undefined ? this.toast.warning("Selecione --> Grau de Instrução") :
+            this.pessoa.sexo < 1 || this.pessoa.sexo == undefined ? this.toast.warning("Selecione --> Sexo ") :
+              this.pessoa.naturalidade == undefined ? this.toast.warning("Informe --> Cidade onde nasceu") :
+                this.pessoa.naturalidadeEstado == undefined ? this.toast.warning("Informe --> Estado onde nasceu") :
+                  this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.dataCasamento == undefined ? this.toast.warning("Informe a Data de Casamento.") :
+                    this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.cpfConjuge == "" ? this.toast.warning("Informe o CPF do Cônjuje.") :
+                      this.pessoa.estadoCivil >= 2 && this.pessoa.estadoCivil < 5 && this.pessoa.nomeConjuge == "" ? this.toast.warning("Informe o nome do Cônjuje.") :
+                        this.pessoa.nomePai == undefined ? this.toast.warning("Informe --> O nome do pai") :
+                          this.pessoa.nomeMae == undefined ? this.toast.warning("Informe --> O nome da mãe") :
                             result = true
     return result;
 
@@ -354,12 +354,12 @@ export class CadastreSeComponent implements OnInit {
   ValidarEndereco(): boolean {
     let result: boolean = false;
 
-    this.pessoa.pessoaEndereco.cep == undefined || this.pessoa.pessoaEndereco.cep == 0 ? this.service.showMessage("Informe o --> CEP e Pressione Enter") :
-      this.pessoa.pessoaEndereco.estado == undefined ? this.service.showMessage("Informe --> Estado ") :
-        this.pessoa.pessoaEndereco.cidade == undefined ? this.service.showMessage("Informe --> Cidade ") :
-          this.pessoa.pessoaEndereco.bairro == undefined ? this.service.showMessage("Informe --> Bairro") :
-            this.pessoa.pessoaEndereco.rua == undefined ? this.service.showMessage("Informe --> Rua ") :
-              this.pessoa.pessoaEndereco.numero == undefined ? this.service.showMessage("Informe --> Nº Casa ") :
+    this.pessoa.pessoaEndereco.cep == undefined || this.pessoa.pessoaEndereco.cep == 0 ? this.toast.warning("Informe o --> CEP e Pressione Enter") :
+      this.pessoa.pessoaEndereco.estado == undefined ? this.toast.warning("Informe --> Estado ") :
+        this.pessoa.pessoaEndereco.cidade == undefined ? this.toast.warning("Informe --> Cidade ") :
+          this.pessoa.pessoaEndereco.bairro == undefined ? this.toast.warning("Informe --> Bairro") :
+            this.pessoa.pessoaEndereco.rua == undefined ? this.toast.warning("Informe --> Rua ") :
+              this.pessoa.pessoaEndereco.numero == undefined ? this.toast.warning("Informe --> Nº Casa ") :
                 result = true
 
     return result;
@@ -374,15 +374,15 @@ export class CadastreSeComponent implements OnInit {
   ValidarDadosMembro(): boolean {
 
     let result: boolean = false;
-    this.pessoa.dadosMembro.rol.toString() == '' ? this.service.showMessage("Informe --> Nº Rol caso não saiba deixe zero(0)") :
-      this.pessoa.dadosMembro.congregacao == '' ? this.service.showMessage("Selecione --> a Congregação") :
-        this.pessoa.dadosMembro.regional == '' ? this.service.showMessage("Informe --> Regional") :
-          this.pessoa.dadosMembro.batismoAguas == undefined ? this.service.showMessage("Informe a data de --> Batismo nas Águas se for canditado informe a data que será batizado.") :
-            this.pessoa.dadosMembro.batismoAguasIgreja == '' ? this.service.showMessage("Informe a Igreja --> que foi ou será batizado") :
-              this.pessoa.dadosMembro.batismoAguasCidade == '' ? this.service.showMessage("Informe a Cidade --> que foi ou será batizado") :
-                this.pessoa.dadosMembro.batismoAguasEstado == '' ? this.service.showMessage("Informe o Estado --> que foi ou será batizado") :
-                  this.pessoa.dadosMembro.batismoESanto != undefined && this.pessoa.dadosMembro.batismoESantoIgreja == '' ? this.service.showMessage("Informe a igreja que foi batizado no espirito santo") :
-                    this.pessoa.dadosMembro.cursoTeologico > 0 && this.pessoa.dadosMembro.cursoTeologicoOndeCursou == undefined ? this.service.showMessage("Informe onde cursou Teologia.") :
+    this.pessoa.dadosMembro.rol.toString() == '' ? this.toast.warning("Informe --> Nº Rol caso não saiba deixe zero(0)") :
+      this.pessoa.dadosMembro.congregacao == '' ? this.toast.warning("Selecione --> a Congregação") :
+        this.pessoa.dadosMembro.regional == '' ? this.toast.warning("Informe --> Regional") :
+          this.pessoa.dadosMembro.batismoAguas == undefined ? this.toast.warning("Informe a data de --> Batismo nas Águas se for canditado informe a data que será batizado.") :
+            this.pessoa.dadosMembro.batismoAguasIgreja == '' ? this.toast.warning("Informe a Igreja --> que foi ou será batizado") :
+              this.pessoa.dadosMembro.batismoAguasCidade == '' ? this.toast.warning("Informe a Cidade --> que foi ou será batizado") :
+                this.pessoa.dadosMembro.batismoAguasEstado == '' ? this.toast.warning("Informe o Estado --> que foi ou será batizado") :
+                  this.pessoa.dadosMembro.batismoESanto != undefined && this.pessoa.dadosMembro.batismoESantoIgreja == '' ? this.toast.warning("Informe a igreja que foi batizado no espirito santo") :
+                    this.pessoa.dadosMembro.cursoTeologico > 0 && this.pessoa.dadosMembro.cursoTeologicoOndeCursou == undefined ? this.toast.warning("Informe onde cursou Teologia.") :
                       result = true
     return result;
   }

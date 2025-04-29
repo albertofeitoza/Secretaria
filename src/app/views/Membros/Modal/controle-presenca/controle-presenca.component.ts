@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { ControlePresenca } from 'src/app/models/ControlePresenca';
 import { Pessoa } from 'src/app/models/pessoa';
@@ -24,7 +25,8 @@ export class ControlePresencaComponent implements OnInit {
   constructor(
     private matdialogRef: MatDialogRef<ControlePresencaComponent>,
     private serviceUtil: UtilServiceService,
-    private serviceApi: AllservicesService<any>
+    private serviceApi: AllservicesService<any>,
+    private toast: ToastrService
   ) {
   }
 
@@ -60,7 +62,7 @@ export class ControlePresencaComponent implements OnInit {
         this.controlePresenca.motivo = ''
         this.serviceApi.create(this.controlePresenca, `${Endpoint.Pessoa}/controlePresenca`)
           .subscribe(result => {
-            return this.serviceUtil.showMessage("Informações cadastradas com sucesso!")
+            return this.toast.success("Informações cadastradas com sucesso!")
           });
       }
 
@@ -69,10 +71,10 @@ export class ControlePresencaComponent implements OnInit {
         if (this.controlePresenca.motivo) {
           this.serviceApi.create(this.controlePresenca, `${Endpoint.Pessoa}/controlePresenca`)
             .subscribe(result => {
-              this.serviceUtil.showMessage("Informações cadastradas com sucesso!")
+              this.toast.success("Informações cadastradas com sucesso!")
             });
         } else {
-          this.serviceUtil.showMessage("Obrigatório informar o motivo!.")
+          this.toast.warning("Obrigatório informar o motivo!.")
         }
       }
 
@@ -82,7 +84,7 @@ export class ControlePresencaComponent implements OnInit {
 
         this.serviceApi.create(this.controlePresenca, `${Endpoint.Pessoa}/controlePresenca`)
           .subscribe(result => {
-            this.serviceUtil.showMessage("Informações cadastradas com sucesso!")
+            this.toast.success("Informações cadastradas com sucesso!")
           });
       }
     }
@@ -94,7 +96,7 @@ export class ControlePresencaComponent implements OnInit {
           this.controlePresenca.motivo = ''
           this.serviceApi.create(this.controlePresenca, `${Endpoint.Pessoa}/controlePresenca`)
             .subscribe(result => {
-              return this.serviceUtil.showMessage("Informações cadastradas com sucesso!")
+              return this.toast.success("Informações cadastradas com sucesso!")
             });
         }
 
@@ -103,10 +105,10 @@ export class ControlePresencaComponent implements OnInit {
           if (this.controlePresenca.motivo) {
             this.serviceApi.create(this.controlePresenca, `${Endpoint.Pessoa}/controlePresenca`)
               .subscribe(result => {
-                return this.serviceUtil.showMessage("Informações cadastradas com sucesso!")
+                return this.toast.success("Informações cadastradas com sucesso!")
               });
           } else {
-            this.serviceUtil.showMessage("Obrigatório informar o motivo!.")
+            this.toast.warning("Obrigatório informar o motivo!.")
           }
         }
 
@@ -116,11 +118,11 @@ export class ControlePresencaComponent implements OnInit {
 
           this.serviceApi.create(this.controlePresenca, `${Endpoint.Pessoa}/controlePresenca`)
             .subscribe(result => {
-              this.serviceUtil.showMessage("Informações cadastradas com sucesso!")
+              this.toast.success("Informações cadastradas com sucesso!")
             });
         }
       } else {
-        this.serviceUtil.showMessage("Não é um obreiro!")
+        this.toast.warning("Não é um obreiro!")
       }
     }
   }

@@ -1,9 +1,7 @@
-import { saveAs } from 'file-saver';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { Pessoa } from 'src/app/models/pessoa';
 import { AllservicesService } from 'src/app/services/allservices.service';
@@ -14,6 +12,7 @@ import { ViewFilhos } from './model/viewFilhos';
 import { FilhosAdicionarComponent } from './modal/filhos-adicionar/filhos-adicionar.component';
 import { TipoPopup } from 'src/app/enum/TipoPopup';
 import { PopupConfirmacaoComponent } from 'src/app/popups/popup-confirmacao/popup-confirmacao.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-filhos-membros',
@@ -42,8 +41,8 @@ export class FilhosMembrosComponent implements OnInit {
 
     private servico: UtilServiceService,
     private serviceApi: AllservicesService<any>,
-    private router: Router,
-    private auth: AutenticacaoService
+    private auth: AutenticacaoService,
+    private toast: ToastrService
 
   ) {
 
@@ -118,7 +117,7 @@ export class FilhosMembrosComponent implements OnInit {
         if (result.Status) {
           this.serviceApi.create(id, Endpoint.Filhos + '/excluir')
             .subscribe(() => {
-              this.servico.showMessage('Cadastro excluído com sucesso!', false)
+              this.toast.success('Cadastro excluído com sucesso!')
               this.BuscarFilhos();
             });
         }
@@ -148,14 +147,14 @@ export class FilhosMembrosComponent implements OnInit {
           this.serviceApi.DownloadArquivo('', Endpoint.Relatorios + `${url}`,)
             .subscribe((result: Blob) => {
 
-              this.servico.showMessage("Aguarde a impressão.", false);
+              this.toast.info("Aguarde a impressão.");
               this.servico.BaixarArquivo(result, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', `CertificadoCrianca${row.id.toString()}.docx`);
             },
               (error) => {
-                this.servico.showMessage("Não foi possível baixar o certificado, verifique o cadastro", true);
+                this.toast.error("Não foi possível baixar o certificado, verifique o cadastro");
               });
         } else
-          this.servico.showMessage("impressão ignorada.", true);
+          this.toast.warning("impressão ignorada.");
 
 
       })

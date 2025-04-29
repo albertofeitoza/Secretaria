@@ -1,11 +1,11 @@
 import { Pessoa, ViewPessoa } from '../../../../models/pessoa';
-import { booleanAttribute, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { Usuario } from 'src/app/models/Usuario';
 import { contatos } from 'src/app/models/contato';
 import { AllservicesService } from 'src/app/services/allservices.service';
-import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 
 @Component({
@@ -39,7 +39,7 @@ export class UsuariosComponent implements OnInit {
     private matdialogRef: MatDialogRef<UsuariosComponent>,
     private utilService: UtilServiceService,
     private serverApi: AllservicesService<any>,
-    private auth: AutenticacaoService
+    private toast: ToastrService
   ) {
 
   }
@@ -77,7 +77,7 @@ export class UsuariosComponent implements OnInit {
       this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
 
       if(this.pessoas.filter(p => p.cpf === this.pessoa.cpf).length > 0){
-        this.utilService.showMessage(`Esse cpf já possui cadastro, selecione no combo box pessoa : ${this.pessoas.filter(p => p.cpf === this.pessoa.cpf)[0].nome}`, true)
+        this.toast.warning(`Esse cpf já possui cadastro, selecione no combo box pessoa : ${this.pessoas.filter(p => p.cpf === this.pessoa.cpf)[0].nome}`)
         this.pessoaSelecionada = false;
         return 
       }
@@ -101,7 +101,7 @@ export class UsuariosComponent implements OnInit {
           } else {
 
             const igreja = response?.data?.nome?.split(';');
-            this.utilService.showMessage(`Já existe cadastro para o CPF informado : ${this.pessoa.cpf} Nome: ${igreja[0]} ${igreja[1]}, solicite a transferência `, true)
+            this.toast.warning(`Já existe cadastro para o CPF informado : ${this.pessoa.cpf} Nome: ${igreja[0]} ${igreja[1]}, solicite a transferência `)
 
           }
         });
@@ -123,7 +123,7 @@ export class UsuariosComponent implements OnInit {
     this.usuario.primeiroAcesso = this.usuario.senha ? true : false;
     this.serverApi.create(this.usuario, Endpoint.Usuario)
       .subscribe(() => {
-        this.utilService.showMessage(`${this.usuario.id == 0 ? 'Usuário Cadastrado!' : 'Dados Alterados com sucesso'} `, false)
+        this.toast.success(`${this.usuario.id == 0 ? 'Usuário Cadastrado!' : 'Dados Alterados com sucesso'} `)
         this.matdialogRef.close();
       });
 
