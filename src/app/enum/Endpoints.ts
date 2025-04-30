@@ -20,7 +20,7 @@ export enum Endpoint {
     Relatorios = '/Relatorios',
     RelatoriosFichaMembro = '/Relatorios/FichaMembro',
     RelatoriosCartas = '/Relatorios/Cartas',
-    FotoDocumento = '/File/FotoDocumento',
+    UploadFiles = '/File/UploadFiles',
     RemoverFotoDocumento = '/File/RemoverFotoDocumento',
     ServiceCenter = '/ServiceCenter',
     DownloadArquivo = '/File/DownloadArquivo',

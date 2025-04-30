@@ -163,7 +163,7 @@
                 <br>
               </div>
               <div style="padding-top: 10px;">
-                <input style="display: none" type="file" accept="image/*" (change)="processFile($event)" #fileInput>
+                <input style="display: none" type="file" accept="image/*" (change)="ImportarFotoPerfil($event)" #fileInput>
                 <button mat-button color="primary" *ngIf="!this.pessoa.fotoCadastrada" style="margin-right: 60px;"
                   (click)="fileInput.click()">Foto</button>
                 <button mat-button color="primary" *ngIf="this.pessoa.fotoCadastrada" style="margin-right: 60px;"

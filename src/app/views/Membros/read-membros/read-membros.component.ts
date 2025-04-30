@@ -148,6 +148,7 @@ export class ReadMembrosComponent implements OnInit {
       this.spinner = true
       this.serverApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.igrejaSelecionada}`)
         .subscribe((response) => {
+          
           response = response.sort()
 
           this.datasource.data =

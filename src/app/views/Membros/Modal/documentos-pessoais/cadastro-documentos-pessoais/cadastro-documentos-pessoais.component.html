@@ -78,7 +78,7 @@
       <div style="padding-top: 10px;">
         <h4 *ngIf="dadosDocumento.nomeArqFisico" style="font-weight: 500;">Arquivo Selecionado:
           {{dadosDocumento.nomeArqFisico}} </h4>
-        <input style="display: none" type="file" accept="image/*, application/pdf" (change)="processFile($event)"
+        <input style="display: none" type="file" accept="image/*, application/pdf" (change)="SelecionarArquivo($event)"
           #fileInput>
         <button mat-button color="primary" style="margin-right: 60px;" (click)="fileInput.click()">Selecione o
           Documento</button>

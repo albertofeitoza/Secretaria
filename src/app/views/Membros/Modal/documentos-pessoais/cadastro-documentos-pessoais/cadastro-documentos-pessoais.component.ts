@@ -65,7 +65,7 @@ export class CadastroDocumentosPessoaisComponent implements OnInit {
   }
 
   private CarregarCombos(): void {
-    this.tipoDocumento = this.tipoUsuario === 2 ? this.serviceUtil.TipoDocumento().filter(x => x.id > 0) : this.serviceUtil.TipoDocumento() ;
+    this.tipoDocumento = this.tipoUsuario === 2 ? this.serviceUtil.TipoDocumento().filter(x => x.id > 0) : this.serviceUtil.TipoDocumento();
   }
 
   public HabilitaCamera(): void {
@@ -82,7 +82,7 @@ export class CadastroDocumentosPessoaisComponent implements OnInit {
     }
   }
 
-  processFile(event: any) {
+  SelecionarArquivo(event: any) {
 
     this.cpfPessoa = this.cpfPessoa.replace(/\D/g, '');
     this.cpfPessoa = ("00000000000" + this.cpfPessoa).slice(-11);
@@ -118,15 +118,14 @@ export class CadastroDocumentosPessoaisComponent implements OnInit {
             return;
         }
       }
-
-      this.formData.append('image', file)
+      this.formData.append('files', file)
       this.dadosDocumento.nomeArqFisico = file.name;
 
     }
   }
 
   RemoverDocumento() {
-    this.serviceUtil.Popup("Deseja excluir a foto de perfil ? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent, 0, 'auto','auto',false,false,false)
+    this.serviceUtil.Popup("Deseja excluir a foto de perfil ? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent, 0, 'auto', 'auto', false, false, false)
       .subscribe(result => {
         if (result.Status) {
           this.serverApi.readById(this.pessoaId.toString(), Endpoint.RemoverFotoDocumento)
@@ -157,14 +156,19 @@ export class CadastroDocumentosPessoaisComponent implements OnInit {
   }
 
   private EnviarArquivoServidor(idDocumento: number): void {
-    this.serverApi.EnviarArquivoServidor(this.formData, Endpoint.FotoDocumento, this.cpfPessoa, this.pessoaId, this.dadosDocumento.tipoDocumento, idDocumento)
+
+    const filtros = {
+      filename: '',
+      idpessoa: this.pessoaId,
+      idDocumento: idDocumento,
+      tipoDocumento: this.dadosDocumento.tipoDocumento
+    }
+
+    this.serverApi.EnviarArquivoServidor(this.formData, Endpoint.UploadFiles, filtros)
       .subscribe(result => {
-        if(result.status === 200){
           this.dialogRef.close(true);
-        }
-        
-      }, (err) => {
-        this.toast.error("Erro ao importar o arquivo para o servidor.")
+          }, (err) => {
+        this.toast.error("Erro ao importar o arquivo para o servidor." + err.message)
       })
   }
 

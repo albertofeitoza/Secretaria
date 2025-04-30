@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { environment } from '../environments/environment';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, pipe } from 'rxjs';
 import { AutenticacaoService } from './autenticacao.service';
 import { map, catchError } from 'rxjs/operators';
 import { HttpClient, HttpRequest } from '@angular/common/http';
@@ -10,6 +10,7 @@ import { Cartas } from '../models/Cartas';
 import { Filtros } from '../models/Filtros';
 import { ToastrService } from 'ngx-toastr';
 import { TipoDocumento } from '../enum/TipoDocumento';
+import { Endpoint } from '../enum/Endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -17,68 +18,62 @@ import { TipoDocumento } from '../enum/TipoDocumento';
 export class AllservicesService<T> {
 
   environmentUrl = ''
-  public idMembro: BehaviorSubject<any> = new  BehaviorSubject<any>({});
+  public idMembro: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
   constructor(
     private router: Router,
     private http: HttpClient,
     private utilService: UtilServiceService,
     private loginService: AutenticacaoService,
-    private toast : ToastrService
+    private toast: ToastrService
 
   ) {
     this.environmentUrl = environment.BASE_URL
   }
 
-  EnviarArquivoServidor(T: any, endpoint: string, fileName: string, idPessoa: number, tipoDocumento : TipoDocumento, idDocumento: number): Observable<T> {
-    let headers = this.loginService.HeaderForFile(fileName, idPessoa, tipoDocumento, idDocumento).headers;
-    const uploadReq = new HttpRequest('POST', this.environmentUrl + endpoint, T,
-      {
-        reportProgress: true,
-        headers: headers
-      });
-
-    return this.http.request(uploadReq).pipe(
-      map(obj => obj),
-      catchError(e => this.utilService.erroHandler(e))
-    );
+  EnviarArquivoServidor(formData: any, endpoint: string, filtros: any = null): Observable<any> {
+    return this.http.post(this.environmentUrl + endpoint, formData, this.loginService.HeaderForFile(filtros))
+      .pipe(
+        map(res => res)
+      )
   }
-  DownloadArquivo(id: string, endpoint: string, token: string = "", filtros: string = "") : Observable<any> {
+
+  DownloadArquivo(id: string, endpoint: string, token: string = "", filtros: string = ""): Observable<any> {
     const url = id != '' ? `${this.environmentUrl + endpoint}/${id}` : `${this.environmentUrl + endpoint}`
-    return this.http.get(url, { responseType : 'blob', headers : this.loginService.Header(filtros).headers} )
-    .pipe(
-      map(res => res)
-    )
+    return this.http.get(url, { responseType: 'blob', headers: this.loginService.Header(filtros).headers })
+      .pipe(
+        map(res => res)
+      )
   }
 
 
-  DownloadCartas(dados : Cartas, endpoint: string, filtros : string = "") : Observable<any> {
-    
+  DownloadCartas(dados: Cartas, endpoint: string, filtros: string = ""): Observable<any> {
+
     let url = `${this.environmentUrl + endpoint}?IdPessoa=${dados.idPessoa}&TipoRelatorio=${dados.tipoRelatorio}`;
-    
-    if(dados.cidade)
+
+    if (dados.cidade)
       url += `${'&Cidade=' + dados.cidade}`;
 
-    if(dados.estado)
+    if (dados.estado)
       url += `${'&Estado=' + dados.estado}`;
 
-    if(dados.igrejaDestino)
+    if (dados.igrejaDestino)
       url += `${'&IgrejaDestino=' + dados.igrejaDestino}`;
 
-    if(dados.idNovoPastor)
+    if (dados.idNovoPastor)
       url += `${'&IdNovoPastor=' + dados.idNovoPastor}`;
 
-    if(dados.nomeNovoPastor)
+    if (dados.nomeNovoPastor)
       url += `${'&NomeNovoPastor=' + dados.nomeNovoPastor}`;
 
-  if(dados.idIgrejaInterna > 0)
-    url += `${'&IdIgrejaInterna=' + dados.idIgrejaInterna}`
-    
-    return this.http.get(url, { responseType : 'blob', headers : this.loginService.Header(filtros).headers})
-    .pipe(
-      map(res => res),
-      catchError(e => this.utilService.erroHandler('Erro ao realizar o download tente novamente'))
-    )
+    if (dados.idIgrejaInterna > 0)
+      url += `${'&IdIgrejaInterna=' + dados.idIgrejaInterna}`
+
+    return this.http.get(url, { responseType: 'blob', headers: this.loginService.Header(filtros).headers })
+      .pipe(
+        map(res => res),
+        catchError(e => this.utilService.erroHandler('Erro ao realizar o download tente novamente'))
+      )
   }
 
   //Criar Cadastro
@@ -98,13 +93,13 @@ export class AllservicesService<T> {
   }
 
   readById(id: string, endpoint: string, filtros: string = "", igreja: number = 0): Observable<T> {
-    
+
     let url = `${this.environmentUrl + endpoint}/${id}`;
-    
-    if(igreja > 0){
-      url = `${url}/${igreja}` 
+
+    if (igreja > 0) {
+      url = `${url}/${igreja}`
     }
-    
+
 
     return this.http.get<T>(url, this.loginService.Header(filtros)).pipe(
       map(obj => obj),

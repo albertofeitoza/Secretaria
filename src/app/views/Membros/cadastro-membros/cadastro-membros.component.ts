@@ -117,6 +117,8 @@ export class CadastroMembrosComponent implements OnDestroy {
       this.fotoPerfil = "";
       this.serverApi.readById(id.toString(), Endpoint.Pessoa)
         .subscribe(response => {
+
+          
           this.pessoa = response?.data?.pessoa != null ? response?.data?.pessoa : new Pessoa();
           this.igreja = response?.data?.igreja != null ? response?.data?.igreja : new igreja();
           this.endereco = response?.data?.pessoaEndereco != null ? response?.data?.pessoaEndereco : this.endereco = new PessoaEndereco();
@@ -129,7 +131,7 @@ export class CadastroMembrosComponent implements OnDestroy {
           this.historicos = response?.data?.historicoObreiro
           this.logs = response?.data?.logs;
           this.filhos = response?.data?.filhos
-          this.fotoPerfil = this.pessoa.fotoCadastrada ? `./assets/imagens/${this.pessoa.id}_${response.data.pessoa.cpf.trim()}.jpg` : `./assets/imagens/sem-foto.jpg`
+          this.fotoPerfil = this.pessoa.fotoCadastrada ? `./assets/imagens/${this.pessoa.id}_${response.data.pessoa.cpf = ("00000000000" + response.data.pessoa.cpf).slice(-11)}.jpg` : `./assets/imagens/sem-foto.jpg`
           this.idade = this.serviceUtil.SubtractYears(this.pessoa.dataNascimento ? this.pessoa.dataNascimento : new Date)
           this.idadeCasado = this.serviceUtil.SubtractYears(this.pessoa.dataCasamento ? this.pessoa.dataCasamento : new Date)
         })
@@ -543,7 +545,7 @@ export class CadastroMembrosComponent implements OnDestroy {
     }
   }
 
-  processFile(event: any) {
+  ImportarFotoPerfil(event: any) {
 
     this.pessoa.cpf = this.pessoa.cpf.replace(/\D/g, '');
     this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
@@ -551,30 +553,31 @@ export class CadastroMembrosComponent implements OnDestroy {
     if (event.target.files && event.target.files[0] && this.serviceUtil.ValidaCpf(this.pessoa.cpf)) {
 
       const file = <File>event.target.files[0];
+
+      switch (file.type) {
+        case 'image/jpeg':
+        case 'image/jpg':
+          break;
+
+        default:
+          return this.toast.warning("Enviar apenas arquivo JPG e JPEG");
+      }
+
       const formData: FormData = new FormData();
-      formData.append('image', file)
+      formData.append('files', file)
 
-      // this.serverApi.EnviarArquivoServidor(formData, Endpoint.FotoDocumento, this.pessoa.cpf, this.pessoa.id, 0, 0)
-      //   .subscribe(result => {
-      //     if(result.status === 200){
-      //       this.toast.success("Imagem importada com sucesso!");
-      //       this.BuscarMembro()
-      //     }
-      //   })
+      const header = {
+        filename: this.pessoa.cpf,
+        idpessoa: this.pessoa.id,
+        idDocumento: 0,
+        tipoDocumento: 0
+      }
 
-
-      this.serverApi.EnviarArquivoServidor(formData, Endpoint.FotoDocumento, this.pessoa.cpf, this.pessoa.id, TipoDocumento.FotoPerfil, 0)
-        .subscribe(result => {
-          if (result.status === 200) {
-            this.toast.success("Imagem importada com sucesso!");
-            this.BuscarMembro()
-          }
-
-        }, (err) => {
-          this.toast.error("Erro ao importar o arquivo para o servidor.")
+      this.serverApi.EnviarArquivoServidor(formData, Endpoint.UploadFiles, header)
+        .subscribe((result) => {
+          this.toast.success("Imagem importada com sucesso!");
+          this.BuscarMembro();
         })
-
-
     }
   }
 
@@ -782,7 +785,6 @@ export class CadastroMembrosComponent implements OnDestroy {
 
     this.serviceUtil.Popup("", TipoPopup.cadastro, CadastroDocumentosPessoaisComponent, 0, 'auto', 'auto', false, false, request, false)
       .subscribe(result => {
-
         this.setStep(7);
       });
   }
@@ -810,6 +812,8 @@ export class CadastroMembrosComponent implements OnDestroy {
       .subscribe(result => {
 
         this.serviceUtil.Imprimir(result, 'application/pdf')
+      }, (err) => {
+        this.toast.error('Erro ao baixar arquivo!.' + err.message);
       });
   }
 }

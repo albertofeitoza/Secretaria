@@ -189,7 +189,14 @@ export class CadastreSeComponent implements OnInit {
       const formData: FormData = new FormData();
       formData.append('image', file)
 
-      this.serverApi.EnviarArquivoServidor(formData, Endpoint.FotoDocumento, this.pessoa.cpf, this.pessoa.id, 0, 0)
+      const header = {
+        filename: '',
+        idpessoa: this.pessoa.id,
+        idDocumento: 0,
+        tipoDocumento: 0
+      }
+
+      this.serverApi.EnviarArquivoServidor(formData, Endpoint.UploadFiles, JSON.stringify(header))
         .subscribe(x => {
           event.target.files = undefined
           this.toast.success("Imagem importada com sucesso!");
