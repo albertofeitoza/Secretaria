@@ -567,10 +567,9 @@ export class CadastroMembrosComponent implements OnDestroy {
       formData.append('files', file)
 
       const header = {
-        filename: this.pessoa.cpf,
         idpessoa: this.pessoa.id,
-        idDocumento: 0,
-        tipoDocumento: 0
+        iddocumento: 0,
+        tipodocumento: 0
       }
 
       this.serverApi.EnviarArquivoServidor(formData, Endpoint.UploadFiles, header)

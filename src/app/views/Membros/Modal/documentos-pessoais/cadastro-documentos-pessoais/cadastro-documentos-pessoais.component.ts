@@ -158,10 +158,9 @@ export class CadastroDocumentosPessoaisComponent implements OnInit {
   private EnviarArquivoServidor(idDocumento: number): void {
 
     const filtros = {
-      filename: '',
       idpessoa: this.pessoaId,
-      idDocumento: idDocumento,
-      tipoDocumento: this.dadosDocumento.tipoDocumento
+      iddocumento: idDocumento,
+      tipodocumento: this.dadosDocumento.tipoDocumento
     }
 
     this.serverApi.EnviarArquivoServidor(this.formData, Endpoint.UploadFiles, filtros)
