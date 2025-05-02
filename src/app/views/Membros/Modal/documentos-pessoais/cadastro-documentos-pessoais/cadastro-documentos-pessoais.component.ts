@@ -91,7 +91,6 @@ export class CadastroDocumentosPessoaisComponent implements OnInit {
 
       const file = <File>event.target.files[0];
 
-
       if (this.dadosDocumento.tipoDocumento === TipoDocumento.FotoPerfil) {
 
         switch (file.type) {
@@ -118,7 +117,7 @@ export class CadastroDocumentosPessoaisComponent implements OnInit {
             return;
         }
       }
-      this.formData.append('files', file)
+      this.formData.append('file', file)
       this.dadosDocumento.nomeArqFisico = file.name;
 
     }

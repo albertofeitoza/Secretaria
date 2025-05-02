@@ -564,7 +564,7 @@ export class CadastroMembrosComponent implements OnDestroy {
       }
 
       const formData: FormData = new FormData();
-      formData.append('files', file)
+      formData.append('file', file)
 
       const header = {
         idpessoa: this.pessoa.id,
