@@ -189,11 +189,14 @@ export class ReadMembrosComponent implements OnInit {
       .subscribe(() => { });
   }
 
-  cadastroMembro() {
-    alert("Novo membro")
+  cadastroMembro(): void {
+    this.serverApi.idMembro.next(0);
+    this.route.navigate([`/membrosadd`]);
+
+    
   }
 
-  AtualizarMembro(id: number) {
+  AtualizarMembro(id: number): void {
 
     this.serverApi.idMembro.next(id);
     this.route.navigate([`/membrosupdate`]);

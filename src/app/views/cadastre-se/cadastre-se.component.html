@@ -541,54 +541,61 @@
                 </mat-action-row>
             </mat-expansion-panel>
 
-            <!-- <mat-expansion-panel *ngIf="step === 4" [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    <h2>Envio de documentos</h2>
-                </mat-panel-title>
-                <mat-panel-description>
-                    Esse espaço é para envio dos documentos! Não feche a tela se fechar a tela deverão ser entregues
-                    pessoalmente.
+            <mat-expansion-panel *ngIf="pessoa.id > 0" [expanded]="step === 7" (opened)="setStep(7)" hideToggle>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <h2>Cópia de Documentos</h2>
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    Cópias de documentos Pessoais
                     <mat-icon>map</mat-icon>
-                </mat-panel-description>
-            </mat-expansion-panel-header>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+          
+                <mat-icon (click)="AdicionarNovoDocumento()">add_circle_outline</mat-icon>
+          
+                <!-- <div class="mat-elevation-z8">
+                  <table mat-table [dataSource]="documentos" matSort>
+          
+                    <mat-header-row *matHeaderRowDef="colunasDocumentos"></mat-header-row>
+          
+                    <ng-container matColumnDef="id">
+                      <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+                      <mat-cell id="data" *matCellDef="let row">{{row.id}}</mat-cell>
+                    </ng-container>
+          
+                    <ng-container matColumnDef="data">
+                      <mat-header-cell *matHeaderCellDef>Data</mat-header-cell>
+                      <mat-cell id="data" *matCellDef="let row">{{row.data | date : 'dd/MM/yyyy hh:mm:ss'}}</mat-cell>
+                    </ng-container>
+          
+                    <ng-container matColumnDef="descricao">
+                      <mat-header-cell *matHeaderCellDef>Descrição</mat-header-cell>
+                      <mat-cell id="descricao" *matCellDef="let row">{{row.descricao}}</mat-cell>
+                    </ng-container>
+          
+                    <ng-container matColumnDef="tipoDocumento">
+                      <mat-header-cell *matHeaderCellDef>Tipo de Documento</mat-header-cell>
+                      <mat-cell id="tipoDocumento" *matCellDef="let row">{{row.tipoDocumento}}</mat-cell>
+                    </ng-container>
+          
+                    <ng-container matColumnDef="action">
+                      <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+                      <mat-cell *matCellDef="let row">
+                        <mat-icon class="cursor" matTooltip="Visualizar Documento!" (click)="Imprimir(row)">visibility</mat-icon>
+                        <mat-icon class="cursor" matTooltip="Excluir Cadastro!"
+                          (click)="RemoverDocumento(row.id)">delete</mat-icon>
+          
+                      </mat-cell>
+                    </ng-container>
+          
+                    <mat-row *matRowDef="let row; columns: colunasDocumentos;"></mat-row>
+                  </table>
+                </div> -->
+              </mat-expansion-panel>
             
-            <div class="col-md-1">
-                <div style="float: right;margin: 50px; width: 90px; height: 120px; padding-right: 50px; border-radius: 10px; border: dotted">
-                    <div>
-                        <img *ngIf="pessoa.id > 0"
-                            style="width: 80px; height: 110px;padding-right: 50px; border-radius: 10px;"
-                            src="{{fotoPerfil}}" alt="Imagem">
-                        <br>
-                    </div>
-                    <div style="padding-top: 100px ;">
-                        <input style="display: none" type="file" accept="image/*" (change)="processFile($event)"
-                            #fileInput>
-                        <button mat-button color="primary" *ngIf="!this.pessoa.fotoCadastrada"
-                            style="margin-right: 60px;" (click)="fileInput.click()">Foto</button>
-                        <button mat-button color="primary" *ngIf="this.pessoa.fotoCadastrada"
-                            style="margin-right: 60px;" (click)="RemoverFoto(pessoa.id)">Excluir</button>
-                    </div>
-                </div>
 
-            </div>
-            <div class="col-md2">
-                Cópia RG
-            </div>
 
-            <div class="col-md2">
-                Cópia CPF
-            </div>
-
-            <div class="col-md2">
-                Certidão de nascimento
-            </div>
-
-            <mat-action-row>
-                <button mat-button color="warn" (click)="Voltar()">Voltar</button>
-                <button mat-button color="primary" (click)="Proximo()">Salvar</button>
-            </mat-action-row>
-        </mat-expansion-panel> -->
         </mat-accordion>
     </div>
 </div>

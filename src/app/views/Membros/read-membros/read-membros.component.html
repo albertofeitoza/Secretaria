@@ -11,25 +11,31 @@
 
   <div style="display: flex; padding: 1%;" class="row">
     <div class="col">
+
       <div style="display: flex;">
+        <div style="padding-right: 40px;">
+          <mat-icon class="cursor" matTooltip="Cadastro de novo membro" matto
+            (click)="cadastroMembro()">add_circle_outline</mat-icon>
+        </div>
+        <div style="padding-right: 40px;" matTooltip="Exibe membros que se cadastraram pela internet e estão aguardando uma ação">
+          Pré Cadastro
+          <input style="padding-right: 40px;" name="precadastro" [(ngModel)]="filtros.precadastro"
+            [checked]="filtros.precadastro" type="checkbox" (change)="Filtros($event)"
+            (click)="filtros.periodoSelecionado = 2">
+        </div>
+        <div style="padding-right: 40px;"  matTooltip="Exibe a listagem de obreiros">
+          Obreiros
+          <input style="padding-right: 40px;" name="obreiros" [(ngModel)]="filtros.obreiros"
+            [checked]="filtros.obreiros" type="checkbox" (change)="Filtros($event)"
+            (click)="filtros.periodoSelecionado = 3">
+        </div>
 
-        <a routerLink="/membrosadd">
-          <i style="padding-right: 10px;" class="material-icons">add_circle_outline</i>
-        </a>
-
-        <a>
+        <div style="padding-right: 40px;"  matTooltip="Exibe os membros inativos">
           Inativos
           <input name="inativos" [(ngModel)]="filtros.inativos" [checked]="filtros.inativos" type="checkbox"
             (change)="Filtros($event)" (click)="filtros.periodoSelecionado = 1">
+        </div>
 
-          Pré Cadastro
-          <input name="precadastro" [(ngModel)]="filtros.precadastro" [checked]="filtros.precadastro" type="checkbox"
-            (change)="Filtros($event)" (click)="filtros.periodoSelecionado = 2">
-
-          Obreiros
-          <input name="obreiros" [(ngModel)]="filtros.obreiros" [checked]="filtros.obreiros" type="checkbox"
-            (change)="Filtros($event)" (click)="filtros.periodoSelecionado = 3">
-        </a>
       </div>
     </div>
 

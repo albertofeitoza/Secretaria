@@ -20,7 +20,7 @@ import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 })
 
 export class CadastroDocumentosPessoaisComponent implements OnInit {
-
+  origem = '';
   idDocumento = 0;
   pessoaId = 0;
   pessoaNome = '';
@@ -54,6 +54,7 @@ export class CadastroDocumentosPessoaisComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.origem = this.dialogRef._containerInstance._config.data.dadosTela.Origem;
     this.tipoUsuario = this.auth.dadosUsuario.TipoUsuarioLogado;
     this.pessoaId = this.dialogRef._containerInstance._config.data.dadosTela.PessoaId;
     this.pessoaNome = this.dialogRef._containerInstance._config.data.dadosTela.PessoaNome;

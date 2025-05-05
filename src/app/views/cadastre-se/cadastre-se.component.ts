@@ -14,6 +14,7 @@ import { Contato, DadosMembro, Precadastro } from 'src/app/models/precadastro';
 import { PopupConfirmacaoComponent } from 'src/app/popups/popup-confirmacao/popup-confirmacao.component';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
+import { CadastroDocumentosPessoaisComponent } from '../Membros/Modal/documentos-pessoais/cadastro-documentos-pessoais/cadastro-documentos-pessoais.component';
 
 @Component({
   selector: 'app-cadastre-se',
@@ -187,16 +188,15 @@ export class CadastreSeComponent implements OnInit {
 
       const file = <File>event.target.files[0];
       const formData: FormData = new FormData();
-      formData.append('image', file)
+      formData.append('file', file)
 
       const header = {
-        filename: '',
         idpessoa: this.pessoa.id,
-        idDocumento: 0,
-        tipoDocumento: 0
+        iddocumento: 0,
+        tipodocumento: 0
       }
 
-      this.serverApi.EnviarArquivoServidor(formData, Endpoint.UploadFiles, JSON.stringify(header))
+      this.serverApi.EnviarArquivoServidor(formData, Endpoint.UploadFiles, header)
         .subscribe(x => {
           event.target.files = undefined
           this.toast.success("Imagem importada com sucesso!");
@@ -438,4 +438,19 @@ export class CadastreSeComponent implements OnInit {
     this.breadcrumbs = '';
   }
 
+
+  AdicionarNovoDocumento(): void{
+    
+    const request = {
+          PessoaId: this.pessoa.id,
+          IdDocumento: 0,
+          PessoaNome: this.pessoa.nome,
+          PessoaCpf: this.pessoa.cpf
+        }
+
+    this.service.Popup("", TipoPopup.cadastro, CadastroDocumentosPessoaisComponent, 0, 'auto', 'auto', false, false, request, false)
+      .subscribe(result => {
+        this.setStep(7);
+      });
+  }
 }

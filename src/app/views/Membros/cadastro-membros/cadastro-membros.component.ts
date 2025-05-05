@@ -776,6 +776,7 @@ export class CadastroMembrosComponent implements OnDestroy {
   public AdicionarNovoDocumento(): void {
 
     const request = {
+      Origem: 'U',
       PessoaId: this.pessoa.id,
       IdDocumento: 0,
       PessoaNome: this.pessoa.nome,
