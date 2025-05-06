@@ -63,12 +63,6 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-
-                    <mat-form-field appearance="outline">
-                        <mat-label>Email</mat-label>
-                        <input matTooltip="informar email válido ese email será usado para reset de senha" type="email"
-                            matInput placeholder="Email" [(ngModel)]="contato.email" name="senha">
-                    </mat-form-field>
                     <br />
                     <div style="text-align: end;">
                         <span class="cursor" *ngIf="pessoa.nome && pessoa.cpf && pessoa.dataNascimento && pessoa.grauInstrucao && pessoa.sexo 
@@ -90,13 +84,17 @@
                         <input matInput placeholder="Usuário" [(ngModel)]="usuario.nomeUsuario" name="Usuario">
                     </mat-form-field>
 
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input type="email" matInput placeholder="Senha" [(ngModel)]="usuario.email" name="email">
+                    </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label>Senha</mat-label>
                         <input type="password" matInput placeholder="Senha" [(ngModel)]="usuario.senha" name="senha">
                     </mat-form-field>
 
-                    <mat-form-field *ngIf="usuario.id > 0" appearance="outline">
+                     <mat-form-field *ngIf="usuario.id > 0" appearance="outline">
                         <mat-label>Ativo</mat-label>
                         <input style="height: 20px; width: 150px;" matInput placeholder="Ativo">
                         <input name="ativo" [(ngModel)]="usuario.ativo" [checked]="usuario.ativo" type="checkbox">
@@ -112,7 +110,7 @@
                     </mat-form-field>
                     <br />
                     <div style="text-align: end;">
-                        <span class="cursor" *ngIf="usuario.nomeUsuario && usuario.tipoUsuario"
+                        <span class="cursor" *ngIf="usuario.nomeUsuario && usuario.email && usuario.tipoUsuario"
                             (click)="CadastrarUsuario()">
                             <i class="material-icons">save</i>
                         </span>

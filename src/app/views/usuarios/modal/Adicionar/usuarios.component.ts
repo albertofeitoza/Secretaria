@@ -69,8 +69,8 @@ export class UsuariosComponent implements OnInit {
 
       this.pessoa.estadoCivil = 1;
       this.pessoa.statusPessoa = 0;
-      this.contato.id = 0;
-      this.contato.ddd = 11;
+      // this.contato.id = 0;
+      // this.contato.ddd = 11;
       this.usuario.ativo = true;
 
       this.pessoa.cpf = this.pessoa.cpf.replace(/\D/g, '');
@@ -94,7 +94,7 @@ export class UsuariosComponent implements OnInit {
               .subscribe(result => {
                 this.pessoa = result
                 this.contato.pessoaId = result.id
-                this.CadastrarContato(result);
+                // this.CadastrarContato(result);
                 this.BuscarPessoas();
                 this.pessoaSelecionada = false;
               });

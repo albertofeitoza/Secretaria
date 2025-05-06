@@ -2,6 +2,7 @@ export class Usuario {
   id: number = 0;
   pessoaId: number = 0;
   nomeUsuario: string;
+  email: string;
   senha: string;
   biometria: string;
   sessao: string;
@@ -11,7 +12,7 @@ export class Usuario {
 }
 
 export class ResetSenha {
-  cpf: string;
+  email: string;
   token: string;
   novaSenha: string;
   novaSenhaConfirm: string;

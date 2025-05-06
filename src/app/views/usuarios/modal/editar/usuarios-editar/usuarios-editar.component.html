@@ -6,6 +6,10 @@
         <input matInput placeholder="Usuário" [(ngModel)]="usuario.nomeUsuario" name="Usuario">
     </mat-form-field>
 
+    <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput placeholder="Senha" [(ngModel)]="usuario.email" name="email">
+    </mat-form-field>
 
     <mat-form-field appearance="outline">
         <mat-label>Senha</mat-label>
@@ -28,7 +32,7 @@
     </mat-form-field>
     <br />
     <div style="text-align: end;">
-        <span class="cursor" *ngIf="usuario.nomeUsuario && usuario.tipoUsuario" (click)="Salvar()">
+        <span class="cursor" *ngIf="usuario.nomeUsuario && usuario.email && usuario.tipoUsuario" (click)="Salvar()">
             <i class="material-icons">save</i>
         </span>
     </div>

@@ -139,7 +139,6 @@ registerLocaleData(localePt);
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    MatFormFieldModule,
     MatCardModule,
     MatSnackBarModule,
     MatInputModule,

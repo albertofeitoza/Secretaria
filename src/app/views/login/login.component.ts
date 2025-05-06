@@ -25,10 +25,9 @@ export class LoginComponent {
   usuario: Usuario = new Usuario()
   pessoa: Pessoa = new Pessoa()
   sequenciaTelaReset: number = 1;
-  InfBotao: string = "Enviar CPF";
+  InfBotao: string = "Enviar";
   dadosResetSenha: ResetSenha = new ResetSenha()
   primeiroAcesso = false;
-  // igrejas: any[] = new Array();
   constructor(
     private auth: AutenticacaoService,
     private serviceUtil: UtilServiceService,
@@ -81,7 +80,7 @@ export class LoginComponent {
 
     if (this.sequenciaTelaReset == 2) {
 
-      if (!this.dadosResetSenha.cpf) {
+      if (!this.dadosResetSenha.email) {
         this.toast.warning("Cpf Obrigatório")
         return
       }
