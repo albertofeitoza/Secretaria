@@ -46,7 +46,6 @@ export class AllservicesService<T> {
       )
   }
 
-
   DownloadCartas(dados: Cartas, endpoint: string, filtros: string = ""): Observable<any> {
 
     let url = `${this.environmentUrl + endpoint}?IdPessoa=${dados.idPessoa}&TipoRelatorio=${dados.tipoRelatorio}`;

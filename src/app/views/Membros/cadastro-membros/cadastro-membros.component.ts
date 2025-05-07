@@ -25,6 +25,7 @@ import { ViewDocumentos } from '../model/viewDocumentos';
 import { ToastrService } from 'ngx-toastr';
 import { CadastroDocumentosPessoaisComponent } from '../Modal/documentos-pessoais/cadastro-documentos-pessoais/cadastro-documentos-pessoais.component';
 import { TipoDocumento } from 'src/app/enum/TipoDocumento';
+import { PopupcomponetComponent } from 'src/app/popups/popupcomponet/popupcomponet.component';
 
 @Component({
   selector: 'app-cadastro-membros',
@@ -118,7 +119,7 @@ export class CadastroMembrosComponent implements OnDestroy {
       this.serverApi.readById(id.toString(), Endpoint.Pessoa)
         .subscribe(response => {
 
-          
+
           this.pessoa = response?.data?.pessoa != null ? response?.data?.pessoa : new Pessoa();
           this.igreja = response?.data?.igreja != null ? response?.data?.igreja : new igreja();
           this.endereco = response?.data?.pessoaEndereco != null ? response?.data?.pessoaEndereco : this.endereco = new PessoaEndereco();
@@ -579,6 +580,37 @@ export class CadastroMembrosComponent implements OnDestroy {
         })
     }
   }
+
+
+  public CapturarFoto(event: any): void {
+
+    this.serviceUtil.Popup("Capturar Imagem Camera", TipoPopup.Confirmacao, PopupcomponetComponent, 0, 'auto', 'auto', false, false, false)
+      .subscribe(result => {
+        if (result) {
+
+          let blob = this.serviceUtil.ConverterUriImagemBlob(result.imageAsDataUrl)
+
+          const formData: FormData = new FormData();
+          formData.append('file', blob)
+
+          const header = {
+            idpessoa: this.pessoa.id,
+            iddocumento: 0,
+            tipodocumento: 0
+          }
+          this.serverApi.EnviarArquivoServidor(formData, Endpoint.UploadFiles, header)
+            .subscribe((result) => {
+              this.toast.success("Imagem importada com sucesso!");
+              this.BuscarMembro();
+            })
+        }
+      },
+        (error) => {
+          this.toast.error("Problema pra excluir a foto do usuário!.");
+        });
+
+  }
+
 
   RemoverFoto(idPessoa: any) {
     this.serviceUtil.Popup("Deseja excluir a foto de perfil ? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent, 0, 'auto', 'auto', false, false, null, false)

@@ -11,6 +11,7 @@ import { TipoDocumento } from 'src/app/enum/TipoDocumento';
 import { Observable, Subject } from 'rxjs';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
+import { PopupcomponetComponent } from 'src/app/popups/popupcomponet/popupcomponet.component';
 
 
 @Component({
@@ -30,21 +31,6 @@ export class CadastroDocumentosPessoaisComponent implements OnInit {
   tipoUsuario = 0;
   formData: FormData = new FormData();
 
-  habilitaCamera = false;
-  public showWebcam = true;
-  public allowCameraSwitch = true;
-  public multipleWebcamsAvailable = false;
-  public deviceId: string;
-  public facingMode: string = 'environment';
-  public messages: any[] = [];
-
-  public webcamImage: WebcamImage
-
-  // webcam snapshot trigger
-  private trigger: Subject<void> = new Subject<void>();
-  // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
-  private nextWebcam: Subject<boolean | string> = new Subject<boolean | string>();
-
   constructor(
     private toast: ToastrService,
     private serverApi: AllservicesService<any>,
@@ -62,15 +48,10 @@ export class CadastroDocumentosPessoaisComponent implements OnInit {
     this.idDocumento = this.dialogRef._containerInstance._config.data.dadosTela.IdDocumento;
     this.CarregarCombos();
     this.BuscarDocumento(this.idDocumento);
-    this.readAvailableVideoInputs();
   }
 
   private CarregarCombos(): void {
     this.tipoDocumento = this.tipoUsuario === 2 ? this.serviceUtil.TipoDocumento().filter(x => x.id > 0) : this.serviceUtil.TipoDocumento();
-  }
-
-  public HabilitaCamera(): void {
-    this.habilitaCamera = !this.habilitaCamera ? true : false;
   }
 
 
@@ -81,6 +62,25 @@ export class CadastroDocumentosPessoaisComponent implements OnInit {
           this.dadosDocumento = result.data;
         })
     }
+  }
+
+
+  public CapturarFoto(event: any): void {
+
+    this.serviceUtil.Popup("Capturar Imagem Camera", TipoPopup.Confirmacao, PopupcomponetComponent, 0, 'auto', 'auto', false, false, false)
+      .subscribe(result => {
+        if (result) {
+
+          let blob = this.serviceUtil.ConverterUriImagemBlob(result.imageAsDataUrl)
+
+          this.formData.append('file', blob);
+          this.dadosDocumento.nomeArqFisico = "Foto_Capturada.jpeg";
+        }
+      },
+        (error) => {
+          this.toast.error("Problema pra excluir a foto do usuário!.");
+        });
+
   }
 
   SelecionarArquivo(event: any) {
@@ -165,76 +165,10 @@ export class CadastroDocumentosPessoaisComponent implements OnInit {
 
     this.serverApi.EnviarArquivoServidor(this.formData, Endpoint.UploadFiles, filtros)
       .subscribe(result => {
-          this.dialogRef.close(true);
-          }, (err) => {
+        this.dialogRef.close(true);
+      }, (err) => {
         this.toast.error("Erro ao importar o arquivo para o servidor." + err.message)
       })
   }
-
-  //Camera
-
-  public triggerSnapshot(): void {
-    this.trigger.next();
-  }
-
-  public toggleWebcam(): void {
-    this.showWebcam = !this.showWebcam;
-  }
-
-  public handleInitError(error: WebcamInitError): void {
-    this.messages.push(error);
-    if (error.mediaStreamError && error.mediaStreamError.name === 'NotAllowedError') {
-      this.addMessage('User denied camera access');
-    }
-  }
-
-  public showNextWebcam(directionOrDeviceId: boolean | string): void {
-    // true => move forward through devices
-    // false => move backwards through devices
-    // string => move to device with given deviceId
-    this.nextWebcam.next(directionOrDeviceId);
-  }
-
-  public handleImage(webcamImage: WebcamImage): void {
-    this.addMessage('Received webcam image');
-    console.log(webcamImage);
-    this.webcamImage = webcamImage;
-  }
-
-  public cameraWasSwitched(deviceId: string): void {
-    this.addMessage('Active device: ' + deviceId);
-    this.deviceId = deviceId;
-    this.readAvailableVideoInputs();
-  }
-
-  addMessage(message: any): void {
-    console.log(message);
-    this.messages.unshift(message);
-  }
-
-  public get triggerObservable(): Observable<void> {
-    return this.trigger.asObservable();
-  }
-
-  public get nextWebcamObservable(): Observable<boolean | string> {
-    return this.nextWebcam.asObservable();
-  }
-
-  public get videoOptions(): MediaTrackConstraints {
-    const result: MediaTrackConstraints = {};
-    if (this.facingMode && this.facingMode !== '') {
-      result.facingMode = { ideal: this.facingMode };
-    }
-
-    return result;
-  }
-
-  private readAvailableVideoInputs() {
-    WebcamUtil.getAvailableVideoInputs()
-      .then((mediaDevices: MediaDeviceInfo[]) => {
-        this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
-      });
-  }
-
 
 }
