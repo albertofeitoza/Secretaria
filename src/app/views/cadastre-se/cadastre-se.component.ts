@@ -15,6 +15,7 @@ import { PopupConfirmacaoComponent } from 'src/app/popups/popup-confirmacao/popu
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 import { CadastroDocumentosPessoaisComponent } from '../Membros/Modal/documentos-pessoais/cadastro-documentos-pessoais/cadastro-documentos-pessoais.component';
+import { PopupcomponetComponent } from 'src/app/popups/popupcomponet/popupcomponet.component';
 
 @Component({
   selector: 'app-cadastre-se',
@@ -33,9 +34,6 @@ export class CadastreSeComponent implements OnInit {
   contato: Contato = new Contato();
 
   confirmar = false;
-
-  fotoPerfil: string = ""
-
   sede: TodasAsIgrejas[] = new Array();
   subsede: TodasAsIgrejas[] = new Array();
   congregacoes: TodasAsIgrejas[] = new Array();
@@ -57,6 +55,14 @@ export class CadastreSeComponent implements OnInit {
   cursoTeoligico: any[]
   funcao: any[]
   spinner = false;
+
+  // Copia de documentos
+
+
+  fotoPerfil = '';
+  fotoRG = false;
+  certidaoNascimentoEnviado = false;
+  certidaoCasamentoEnviado = false;
 
   constructor(
     private service: UtilServiceService,
@@ -80,6 +86,9 @@ export class CadastreSeComponent implements OnInit {
     this.pessoa.dadosMembro.membroDesde = new Date();
     this.pessoa.dadosMembro.validadeCartaoMembro = new Date();
     this.pessoa.dadosMembro.comunhao = new Date();
+
+    //remover no final 
+    this.fotoPerfil = '../../../assets/imagens/sem-foto.jpg';
   }
 
 
@@ -179,46 +188,46 @@ export class CadastreSeComponent implements OnInit {
     this.step--;
   }
 
-  processFile(event: any) {
+  // processFile(event: any) {
 
-    this.pessoa.cpf = this.pessoa.cpf.replace(/\D/g, '');
-    this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
+  //   this.pessoa.cpf = this.pessoa.cpf.replace(/\D/g, '');
+  //   this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
 
-    if (event.target.files && event.target.files[0] && this.service.ValidaCpf(this.pessoa.cpf)) {
+  //   if (event.target.files && event.target.files[0] && this.service.ValidaCpf(this.pessoa.cpf)) {
 
-      const file = <File>event.target.files[0];
-      const formData: FormData = new FormData();
-      formData.append('file', file)
+  //     const file = <File>event.target.files[0];
+  //     const formData: FormData = new FormData();
+  //     formData.append('file', file)
 
-      const header = {
-        idpessoa: this.pessoa.id,
-        iddocumento: 0,
-        tipodocumento: 0
-      }
+  //     const header = {
+  //       idpessoa: this.pessoa.id,
+  //       iddocumento: 0,
+  //       tipodocumento: 0
+  //     }
 
-      this.serverApi.EnviarArquivoServidor(formData, Endpoint.UploadFiles, header)
-        .subscribe(x => {
-          event.target.files = undefined
-          this.toast.success("Imagem importada com sucesso!");
-          //this.BuscarMembro()
-        })
-    }
-  }
+  //     this.serverApi.EnviarArquivoServidor(formData, Endpoint.UploadFiles, header)
+  //       .subscribe(x => {
+  //         event.target.files = undefined
+  //         this.toast.success("Imagem importada com sucesso!");
+  //         //this.BuscarMembro()
+  //       })
+  //   }
+  // }
 
-  RemoverFoto(idPessoa: any) {
-    this.service.Popup("Deseja excluir a foto de perfil ? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
-      .subscribe(result => {
-        if (result.Status) {
-          this.serverApi.readById(idPessoa, Endpoint.RemoverFotoDocumento)
-            .subscribe(() => {
-              this.toast.success("Imagem removida com sucesso!");
-            })
-        }
-      },
-        (error) => {
-          this.toast.error("Problema pra excluir a foto do usuário!.");
-        });
-  }
+  // RemoverFoto(idPessoa: any) {
+  //   this.service.Popup("Deseja excluir a foto de perfil ? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
+  //     .subscribe(result => {
+  //       if (result.Status) {
+  //         this.serverApi.readById(idPessoa, Endpoint.RemoverFotoDocumento)
+  //           .subscribe(() => {
+  //             this.toast.success("Imagem removida com sucesso!");
+  //           })
+  //       }
+  //     },
+  //       (error) => {
+  //         this.toast.error("Problema pra excluir a foto do usuário!.");
+  //       });
+  // }
 
 
   Salvar(step: number) {
@@ -269,16 +278,14 @@ export class CadastreSeComponent implements OnInit {
           if (this.ValidarDadosMembro()) {
             this.spinner = true;
             this.serverApi.create(this.pessoa, Endpoint.Token + `/precadastro/`)
-              .subscribe((result: ApiResponse) => {
+              .subscribe((result) => {
                 if (result.code === 200) {
-                  this.toast.success("Cadastro enviado com sucesso!.");
-
+                  this.toast.success("Cadastro enviado com sucesso, agora envie os documentos necessários.");
+                  this.pessoa.id = result?.data?.id
+                  this.pessoa.fotoCadastrada = result?.data?.fotoCadastrada
+                  this.pessoa.estadoCivil = result?.data?.estadoCivil
                   this.spinner = false;
-
-                  //implementar a proxima tela envio de documentos
-                  this.toast.success("Cadastro enviado com sucesso!.");
-                  this.dialogRef.close();
-
+                  this.step++;
 
                 }
               }, (err) => {
@@ -291,6 +298,12 @@ export class CadastreSeComponent implements OnInit {
           break;
       }
     }
+  }
+
+  public Finalizar(): void {
+
+    this.toast.success("Cadastro finalizado com sucesso!.");
+    this.dialogRef.close();
   }
 
   public BuscaCep(event: any) {
@@ -439,18 +452,64 @@ export class CadastreSeComponent implements OnInit {
   }
 
 
-  AdicionarNovoDocumento(): void{
-    
+  AdicionarNovoDocumento(): void {
+
     const request = {
-          PessoaId: this.pessoa.id,
-          IdDocumento: 0,
-          PessoaNome: this.pessoa.nome,
-          PessoaCpf: this.pessoa.cpf
-        }
+      PessoaId: this.pessoa.id,
+      IdDocumento: 0,
+      PessoaNome: this.pessoa.nome,
+      PessoaCpf: this.pessoa.cpf
+    }
 
     this.service.Popup("", TipoPopup.cadastro, CadastroDocumentosPessoaisComponent, 0, 'auto', 'auto', false, false, request, false)
       .subscribe(result => {
         this.setStep(7);
       });
+  }
+
+
+  public CapturarFoto(textoImagem: any, tipoDocumento: number): void {
+    
+    this.service.Popup(textoImagem, TipoPopup.Confirmacao, PopupcomponetComponent, 0, 'auto', 'auto', false, false, false)
+      .subscribe(result => {
+        if (result) {
+          this.spinner = true;
+          let blob = this.service.ConverterUriImagemBlob(result.imageAsDataUrl)
+
+          const formData: FormData = new FormData();
+          formData.append('file', blob)
+          const header = {
+            idpessoa: this.pessoa.id,
+            iddocumento: 0,
+            tipodocumento: tipoDocumento
+          }
+          this.serverApi.EnviarArquivoServidor(formData, Endpoint.Token + `/envioFotoDocumentos`, header)
+            .subscribe((result) => {
+              this.spinner = false;
+
+              if (result && tipoDocumento === 0) {
+                this.toast.success("Imagem importada com sucesso!");
+                this.fotoPerfil = `../../../assets/imagens/${result.path}? + ${new Date().getTime()} `
+                this.pessoa.fotoCadastrada = result?.fotoCadastrada
+              }
+              if (result && tipoDocumento === 4) {
+                this.certidaoNascimentoEnviado = true
+                this.Finalizar();
+                return;
+              }
+
+              if (result && tipoDocumento === 5) {
+                this.certidaoCasamentoEnviado = true
+                this.Finalizar();
+                return;
+              }
+            })
+        }
+      },
+        (error) => {
+          this.toast.error("Problema pra enviar ");
+          this.spinner = false;
+        });
+
   }
 }

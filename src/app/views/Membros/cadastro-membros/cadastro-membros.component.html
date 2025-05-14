@@ -168,10 +168,11 @@
               <div style="padding-top: 10px;">
                 <div style="padding-left: 30px;">
                   <mat-icon *ngIf="!this.pessoa.fotoCadastrada" class="cursor"
-                    (click)="CapturarFoto($event)">add_a_photo</mat-icon>
+                    (click)="CapturarFoto('Foto para cartão de membro')">add_a_photo</mat-icon>
                 </div>
                 <input style="display: none" type="file" accept="image/*" (change)="ImportarFotoPerfil($event)"
                   #fileInput>
+                
                 <button mat-button color="primary" *ngIf="!this.pessoa.fotoCadastrada" style="margin-right: 60px;"
                   (click)="fileInput.click()">Selecione</button>
 

@@ -82,6 +82,7 @@ import { FilhosAdicionarComponent } from './views/filhos-membros/modal/filhos-ad
 import { ToastrModule } from 'ngx-toastr';
 import { CadastroDocumentosPessoaisComponent } from './views/Membros/Modal/documentos-pessoais/cadastro-documentos-pessoais/cadastro-documentos-pessoais.component';
 import { WebcamModule } from 'ngx-webcam';
+import { NgOptimizedImage } from '@angular/common'
 
 registerLocaleData(localePt);
 
@@ -168,6 +169,7 @@ registerLocaleData(localePt);
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     WebcamModule,
+    NgOptimizedImage,
   ],
   providers: [
     {

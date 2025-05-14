@@ -22,6 +22,7 @@ export class PopupcomponetComponent implements OnInit {
   public messages: any[] = [];
 
   public webcamImage: WebcamImage
+  mensagemCamera="";
 
   // webcam snapshot trigger
   private trigger: Subject<void> = new Subject<void>();
@@ -38,6 +39,7 @@ export class PopupcomponetComponent implements OnInit {
   ngOnInit() {
     this.IniciarComponente()
     this.readAvailableVideoInputs();
+    this.mensagemCamera = this.dialogRef._containerInstance._config.data.mensagem;
   }
 
   IniciarComponente() {

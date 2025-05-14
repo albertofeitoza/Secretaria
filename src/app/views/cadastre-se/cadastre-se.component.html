@@ -313,7 +313,8 @@
 
                             <mat-form-field>
                                 <mat-label>Email</mat-label>
-                                <input type="email" matInput placeholder="Email" [(ngModel)]="contato.email" name="email">
+                                <input type="email" matInput placeholder="Email" [(ngModel)]="contato.email"
+                                    name="email">
                             </mat-form-field>
 
                             <a>
@@ -537,65 +538,74 @@
 
                 <mat-action-row>
                     <button mat-button color="warn" (click)="Voltar()">Voltar</button>
-                    <button [disabled]="spinner" mat-button color="primary" (click)="Proximo()">Salvar</button>
+                    <button [disabled]="spinner" mat-button color="primary" (click)="Proximo()">Próximo</button>
                 </mat-action-row>
             </mat-expansion-panel>
 
-            <mat-expansion-panel *ngIf="pessoa.id > 0" [expanded]="step === 7" (opened)="setStep(7)" hideToggle>
+            <mat-expansion-panel *ngIf="step === 4" [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
                 <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    <h2>Cópia de Documentos</h2>
-                  </mat-panel-title>
-                  <mat-panel-description>
-                    Cópias de documentos Pessoais
-                    <mat-icon>map</mat-icon>
-                  </mat-panel-description>
+                    <mat-panel-title>
+                        <h2>Cópia de Documentos</h2>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Cópias de documentos Pessoais
+                        <mat-icon>map</mat-icon>
+                    </mat-panel-description>
                 </mat-expansion-panel-header>
-          
-                <mat-icon (click)="AdicionarNovoDocumento()">add_circle_outline</mat-icon>
-          
-                <!-- <div class="mat-elevation-z8">
-                  <table mat-table [dataSource]="documentos" matSort>
-          
-                    <mat-header-row *matHeaderRowDef="colunasDocumentos"></mat-header-row>
-          
-                    <ng-container matColumnDef="id">
-                      <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
-                      <mat-cell id="data" *matCellDef="let row">{{row.id}}</mat-cell>
-                    </ng-container>
-          
-                    <ng-container matColumnDef="data">
-                      <mat-header-cell *matHeaderCellDef>Data</mat-header-cell>
-                      <mat-cell id="data" *matCellDef="let row">{{row.data | date : 'dd/MM/yyyy hh:mm:ss'}}</mat-cell>
-                    </ng-container>
-          
-                    <ng-container matColumnDef="descricao">
-                      <mat-header-cell *matHeaderCellDef>Descrição</mat-header-cell>
-                      <mat-cell id="descricao" *matCellDef="let row">{{row.descricao}}</mat-cell>
-                    </ng-container>
-          
-                    <ng-container matColumnDef="tipoDocumento">
-                      <mat-header-cell *matHeaderCellDef>Tipo de Documento</mat-header-cell>
-                      <mat-cell id="tipoDocumento" *matCellDef="let row">{{row.tipoDocumento}}</mat-cell>
-                    </ng-container>
-          
-                    <ng-container matColumnDef="action">
-                      <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
-                      <mat-cell *matCellDef="let row">
-                        <mat-icon class="cursor" matTooltip="Visualizar Documento!" (click)="Imprimir(row)">visibility</mat-icon>
-                        <mat-icon class="cursor" matTooltip="Excluir Cadastro!"
-                          (click)="RemoverDocumento(row.id)">delete</mat-icon>
-          
-                      </mat-cell>
-                    </ng-container>
-          
-                    <mat-row *matRowDef="let row; columns: colunasDocumentos;"></mat-row>
-                  </table>
-                </div> -->
-              </mat-expansion-panel>
-            
 
+                <div *ngIf="!pessoa.fotoCadastrada" class="mat-elevation-z8">
 
+                    <div style="padding-left: 15px;">Por favor, tire uma foto do seu rosto, apenas até os ombros, para o
+                        seu cartão de membro.</div>
+                    <div style="padding-left: 15px;font-weight: 500;">OBS: Para um melhor resultado, tire a foto em um
+                        local bem
+                        iluminado, de preferência com fundo branco. Se a foto não ficar adequada, o secretário
+                        solicitará outra.</div>
+
+                    <div class="classDivBorda">
+                        <div>
+
+                            <img class="classImagem" src="{{this.fotoPerfil}}" alt="Foto">
+                            <br>
+
+                        </div>
+                        <div style="padding-top: 10px;">
+                            <div style="padding-left: 30px;">
+                                <mat-icon class="cursor" style="margin-right: 60px"
+                                    (click)="CapturarFoto('Foto para cartão de membro', 0)">add_a_photo</mat-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="pessoa.estadoCivil === 1 && pessoa.fotoCadastrada" class="mat-elevation-z8">
+
+                    <div style="padding-left: 15px;">Por favor, tire uma foto da certidão de nascimento bem legível
+                    </div>
+                    <div>
+                        <div *ngIf="!certidaoNascimentoEnviado" style="padding-top: 10px;">
+                            <div style="padding-left: 30px;">
+                                <mat-icon class="cursor" style="margin-right: 60px"
+                                    (click)="CapturarFoto('Cópia da Certidão de nascimento', 4)">add_a_photo</mat-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="pessoa.estadoCivil > 1 &&  pessoa.estadoCivil < 5 && pessoa.fotoCadastrada"
+                    class="mat-elevation-z8">
+
+                    <div style="padding-left: 15px;">Por favor, tire uma foto da certidão de casamento bem legível
+                    </div>
+
+                    <div *ngIf="!certidaoCasamentoEnviado" style="padding-top: 10px;">
+                        <div style="padding-left: 30px;">
+                            <mat-icon class="cursor" style="margin-right: 60px"
+                                (click)="CapturarFoto('Cópia da Certidão de casamento', 5)">add_a_photo</mat-icon>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
         </mat-accordion>
     </div>
 </div>

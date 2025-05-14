@@ -65,9 +65,10 @@ export class CadastroDocumentosPessoaisComponent implements OnInit {
   }
 
 
-  public CapturarFoto(event: any): void {
+  public CapturarFoto(textoImagem: any): void {
 
-    this.serviceUtil.Popup("Capturar Imagem Camera", TipoPopup.Confirmacao, PopupcomponetComponent, 0, 'auto', 'auto', false, false, false)
+
+    this.serviceUtil.Popup(textoImagem, TipoPopup.Confirmacao, PopupcomponetComponent, 0, 'auto', 'auto', false, false, false)
       .subscribe(result => {
         if (result) {
 

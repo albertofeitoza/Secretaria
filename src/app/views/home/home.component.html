@@ -49,6 +49,17 @@
 
         <hr style="margin: 0px" />
 
+        <a mat-list-item [matMenuTriggerFor]="menuservicos"><i class="material-icons">services</i>Serviços</a>
+        <mat-menu #menuservicos="matMenu">
+          <a mat-menu-item>
+            <a mat-list-item routerLink="/igreja"><i class="material-icons">church</i>Certificados</a>
+            <hr />
+            <a mat-list-item routerLink="/assinaturas"><i class="material-icons">payments</i>Assinaturas</a>
+          </a>
+        </mat-menu>
+
+        <hr style="margin: 0px" />
+
         <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
       </mat-nav-list>
 

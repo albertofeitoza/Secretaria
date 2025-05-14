@@ -132,7 +132,7 @@ export class CadastroMembrosComponent implements OnDestroy {
           this.historicos = response?.data?.historicoObreiro
           this.logs = response?.data?.logs;
           this.filhos = response?.data?.filhos
-          this.fotoPerfil = this.pessoa.fotoCadastrada ? `./assets/imagens/${this.pessoa.id}_${response.data.pessoa.cpf = ("00000000000" + response.data.pessoa.cpf).slice(-11)}.jpg` : `./assets/imagens/sem-foto.jpg`
+          this.fotoPerfil = this.pessoa.fotoCadastrada ? `./assets/imagens/${this.pessoa.id}_${response.data.pessoa.cpf = ("00000000000" + response.data.pessoa.cpf).slice(-11)}.jpg? + ${new Date().getTime()}` : `./assets/imagens/sem-foto.jpg`
           this.idade = this.serviceUtil.SubtractYears(this.pessoa.dataNascimento ? this.pessoa.dataNascimento : new Date)
           this.idadeCasado = this.serviceUtil.SubtractYears(this.pessoa.dataCasamento ? this.pessoa.dataCasamento : new Date)
         })
@@ -582,9 +582,9 @@ export class CadastroMembrosComponent implements OnDestroy {
   }
 
 
-  public CapturarFoto(event: any): void {
+  public CapturarFoto(textoImagem: any): void {
 
-    this.serviceUtil.Popup("Capturar Imagem Camera", TipoPopup.Confirmacao, PopupcomponetComponent, 0, 'auto', 'auto', false, false, false)
+    this.serviceUtil.Popup(textoImagem, TipoPopup.Confirmacao, PopupcomponetComponent, 0, 'auto', 'auto', false, false, false)
       .subscribe(result => {
         if (result) {
 
@@ -676,6 +676,7 @@ export class CadastroMembrosComponent implements OnDestroy {
       this.contato.ddd = Number(this.contato.ddd.toString().length > 2 ? this.contato.ddd.toString().substring(0, 2) : this.contato.ddd)
       this.contato.telefone = Number(this.contato.telefone.toString().length > 9 ? this.contato.telefone.toString().substring(0, 9) : this.contato.telefone)
       this.contato.celular = Number(this.contato.celular.toString().length > 9 ? this.contato.celular.toString().substring(0, 9) : this.contato.celular)
+
 
       if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2)
         return this.toast.warning("Você só pode cadastrar ou alterar dados da sua igreja.");
