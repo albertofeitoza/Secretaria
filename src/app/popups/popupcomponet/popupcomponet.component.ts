@@ -20,15 +20,17 @@ export class PopupcomponetComponent implements OnInit {
   public deviceId: string;
   public facingMode: string = 'environment';
   public messages: any[] = [];
+  largura = 640;
+  altura = 480;
+  
 
   public webcamImage: WebcamImage
-  mensagemCamera="";
+  mensagemCamera = "";
 
   // webcam snapshot trigger
   private trigger: Subject<void> = new Subject<void>();
   // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
-  private nextWebcam: Subject<boolean|string> = new Subject<boolean|string>();
-  
+  private nextWebcam: Subject<boolean | string> = new Subject<boolean | string>();
 
   constructor(private serviceUtil: UtilServiceService,
     private dialogRef: MatDialogRef<PopupcomponetComponent>
@@ -43,12 +45,12 @@ export class PopupcomponetComponent implements OnInit {
   }
 
   IniciarComponente() {
-
+    const query = window.matchMedia("(max-width: 450px)");
+    if(query.matches){
+        this.largura = 200;
+        this.altura = 300;
+    }
   }
-
-  //Camera
-
-  
 
   public triggerSnapshot(): void {
     this.trigger.next();
@@ -73,7 +75,6 @@ export class PopupcomponetComponent implements OnInit {
   }
 
   public handleImage(webcamImage: WebcamImage): void {
-    
     this.webcamImage = webcamImage;
     this.dialogRef.close(this.webcamImage);
   }
