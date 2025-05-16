@@ -87,8 +87,6 @@ export class CadastreSeComponent implements OnInit {
     this.pessoa.dadosMembro.validadeCartaoMembro = new Date();
     this.pessoa.dadosMembro.comunhao = new Date();
 
-    //remover no final 
-    this.fotoPerfil = '../../../assets/imagens/sem-foto.jpg';
   }
 
 
@@ -104,8 +102,10 @@ export class CadastreSeComponent implements OnInit {
   private BuscarSede(): void {
     this.confirmar = false
     this.serverApi.read(Endpoint.Token + `/igrejasMatrizes/`)
-      .subscribe((result: TodasAsIgrejas[]) => {
-        this.sede = result.filter(s => s.tipoIgreja === 1);
+      .subscribe((result) => {
+        let fromBase64 = JSON.parse(this.service.convertBase64toText(result.toString()));
+        let sede: TodasAsIgrejas[] = fromBase64
+        this.sede = sede;
       })
 
   }
@@ -114,9 +114,12 @@ export class CadastreSeComponent implements OnInit {
     this.confirmar = false
     if (igreja.id > 0) {
       this.serverApi.read(Endpoint.Token + `/igrejasFilhas/${igreja.id}`)
-        .subscribe((result: TodasAsIgrejas[]) => {
-          this.subsede = result.filter(s => this.sedeSelecionada.id != s.id && s.tipoIgreja === 2);
+        .subscribe((result) => {
 
+          let fromBase64 = JSON.parse(this.service.convertBase64toText(result.toString()));
+          let subsede: TodasAsIgrejas[] = fromBase64
+
+          this.subsede = subsede.filter(s => this.sedeSelecionada.id != s.id && s.tipoIgreja === 2);
 
           this.pessoa.statusPessoa = 0;
           this.pessoa.dadosMembro.congregacao =
@@ -141,8 +144,12 @@ export class CadastreSeComponent implements OnInit {
     this.confirmar = false
     if (igreja.id > 0) {
       this.serverApi.read(Endpoint.Token + `/igrejasFilhas/${igreja.id}`)
-        .subscribe((result: TodasAsIgrejas[]) => {
-          this.congregacoes = result.filter(s => this.sedeSelecionada.id != s.id && this.subSedeSelecionada.id != s.id && s.tipoIgreja === 3);
+        .subscribe((result) => {
+          
+           let fromBase64 = JSON.parse(this.service.convertBase64toText(result.toString()));
+          let congregacoes: TodasAsIgrejas[] = fromBase64
+          
+          this.congregacoes = congregacoes.filter(s => this.sedeSelecionada.id != s.id && this.subSedeSelecionada.id != s.id && s.tipoIgreja === 3);
 
           this.pessoa.statusPessoa = 0;
           this.pessoa.dadosMembro.congregacao =
@@ -187,48 +194,6 @@ export class CadastreSeComponent implements OnInit {
   Voltar() {
     this.step--;
   }
-
-  // processFile(event: any) {
-
-  //   this.pessoa.cpf = this.pessoa.cpf.replace(/\D/g, '');
-  //   this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11);
-
-  //   if (event.target.files && event.target.files[0] && this.service.ValidaCpf(this.pessoa.cpf)) {
-
-  //     const file = <File>event.target.files[0];
-  //     const formData: FormData = new FormData();
-  //     formData.append('file', file)
-
-  //     const header = {
-  //       idpessoa: this.pessoa.id,
-  //       iddocumento: 0,
-  //       tipodocumento: 0
-  //     }
-
-  //     this.serverApi.EnviarArquivoServidor(formData, Endpoint.UploadFiles, header)
-  //       .subscribe(x => {
-  //         event.target.files = undefined
-  //         this.toast.success("Imagem importada com sucesso!");
-  //         //this.BuscarMembro()
-  //       })
-  //   }
-  // }
-
-  // RemoverFoto(idPessoa: any) {
-  //   this.service.Popup("Deseja excluir a foto de perfil ? ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
-  //     .subscribe(result => {
-  //       if (result.Status) {
-  //         this.serverApi.readById(idPessoa, Endpoint.RemoverFotoDocumento)
-  //           .subscribe(() => {
-  //             this.toast.success("Imagem removida com sucesso!");
-  //           })
-  //       }
-  //     },
-  //       (error) => {
-  //         this.toast.error("Problema pra excluir a foto do usuário!.");
-  //       });
-  // }
-
 
   Salvar(step: number) {
 
@@ -469,7 +434,7 @@ export class CadastreSeComponent implements OnInit {
 
 
   public CapturarFoto(textoImagem: any, tipoDocumento: number): void {
-    
+
     this.service.Popup(textoImagem, TipoPopup.Confirmacao, PopupcomponetComponent, 0, 'auto', 'auto', false, false, false)
       .subscribe(result => {
         if (result) {
