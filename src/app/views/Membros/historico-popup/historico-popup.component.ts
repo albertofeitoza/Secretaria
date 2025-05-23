@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Endpoint } from 'src/app/enum/Endpoints';
-import { DadosObreiro } from 'src/app/models/DadosObreiro';
 import { Historico } from 'src/app/models/HistoricoDoObreiro';
 import { PopupConfirm } from 'src/app/models/dialogConfirm';
 import { AllservicesService } from 'src/app/services/allservices.service';
@@ -16,7 +15,6 @@ export class HistoricoPopupComponent implements OnInit {
 
   historico: Historico = new Historico()
   resposta: PopupConfirm = new PopupConfirm();
-  dadosObreiro : DadosObreiro = new DadosObreiro()
   entradaFuncao: any[]
 
   constructor(private serviceUtil : UtilServiceService,

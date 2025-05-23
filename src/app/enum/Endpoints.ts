@@ -6,6 +6,7 @@ export enum Endpoint {
     Pastores = '/Pastores',
     Pessoa = '/Pessoa',
     DocumentosPessoais = '/DocumentosPessoais',
+    Logs = '/Logs',
     Membros = '/Membros',
     Filhos = '/Filhos',
     Financeiro = '/Financeiro',

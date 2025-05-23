@@ -1,12 +1,6 @@
-/* html, body {
-	width: auto;
-	height: auto;
-	margin: 0;	
-} */
-
-
 .sidenav-container {
   height: 100%;
+  overflow: hidden;
 }
 
 .sidenav .mat-toolbar {
@@ -19,14 +13,8 @@
   z-index: 1;
 }
 
-.logo{
+.logo {
   height: 20px;
   width: 30px;
-  
-}
-.router-outlet{
-  width: auto;
-  height: auto;
-  scrollbar-width: none;
-  
+
 }

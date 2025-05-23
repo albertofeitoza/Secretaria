@@ -21,10 +21,42 @@
 
 
 table {
-  width: 98%;
+  width: 100%;
+  justify-content: center;
 }
 
 ::ng-deep .mat-sort-header-container {
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
 }
+
+.mat-column-rol {
+    flex: 0 0 7%;
+} 
+
+.mat-column-foto {
+    flex: 0 0 5%;
+}
+
+
+/* .mat-column-nome {
+    flex: 0 0 23%;
+}
+
+.mat-column-dataNascimento {
+    flex: 0 0 15%;
+}
+
+.mat-column-funcao {
+    flex: 0 0 10%;
+}
+
+.mat-column-statusPessoa {
+    flex: 0 0 10%;
+}
+
+.mat-column-action {
+    flex: 0 0 30%;
+}  */
+
+

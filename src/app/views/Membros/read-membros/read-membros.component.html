@@ -17,20 +17,21 @@
           <mat-icon class="cursor" matTooltip="Cadastro de novo membro" matto
             (click)="cadastroMembro()">add_circle_outline</mat-icon>
         </div>
-        <div style="padding-right: 40px;" matTooltip="Exibe membros que se cadastraram pela internet e estão aguardando uma ação">
+        <div style="padding-right: 40px;"
+          matTooltip="Exibe membros que se cadastraram pela internet e estão aguardando uma ação">
           Pré Cadastro
           <input style="padding-right: 40px;" name="precadastro" [(ngModel)]="filtros.precadastro"
             [checked]="filtros.precadastro" type="checkbox" (change)="Filtros($event)"
             (click)="filtros.periodoSelecionado = 2">
         </div>
-        <div style="padding-right: 40px;"  matTooltip="Exibe a listagem de obreiros">
+        <div style="padding-right: 40px;" matTooltip="Exibe a listagem de obreiros">
           Obreiros
           <input style="padding-right: 40px;" name="obreiros" [(ngModel)]="filtros.obreiros"
             [checked]="filtros.obreiros" type="checkbox" (change)="Filtros($event)"
             (click)="filtros.periodoSelecionado = 3">
         </div>
 
-        <div style="padding-right: 40px;"  matTooltip="Exibe os membros inativos">
+        <div style="padding-right: 40px;" matTooltip="Exibe os membros inativos">
           Inativos
           <input name="inativos" [(ngModel)]="filtros.inativos" [checked]="filtros.inativos" type="checkbox"
             (change)="Filtros($event)" (click)="filtros.periodoSelecionado = 1">
@@ -73,78 +74,82 @@
     </div>
   </div>
 
-  <table mat-table [dataSource]="datasource" matSort>
-    <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <mat-header-cell style="display: none;" *matHeaderCellDef hidden="true">Id</mat-header-cell>
-      <mat-cell style="display: none;" id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
-    </ng-container>
-    <!-- rol Column -->
-    <ng-container matColumnDef="rol">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Rol</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.rol}}</mat-cell>
-    </ng-container>
+  <div class="row">
+    <div class="col">
+      
+      <table mat-table [dataSource]="datasource" matSort>
+        <!-- Id Column -->
+        <ng-container matColumnDef="id">
+          <mat-header-cell style="display: none;" *matHeaderCellDef hidden="true">Id</mat-header-cell>
+          <mat-cell style="display: none;" id="idPessoa" *matCellDef="let row">{{row.id}}</mat-cell>
+        </ng-container>
+        <!-- rol Column -->
+        <ng-container matColumnDef="rol">
+          <mat-header-cell style="width: auto;" *matHeaderCellDef mat-sort-header>Rol</mat-header-cell>
+          <mat-cell style="width: auto;" *matCellDef="let row">{{row.rol}}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="foto">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Foto</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <img *ngIf="row.foto !='' " style="width: 10px; border-radius: 100%;" src="{{row.foto}}" alt="Foto">
-      </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="foto" style="width: min-content;">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Foto</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <img *ngIf="row.foto !='' " style="width: 10px; border-radius: 100%;" src="{{row.foto}}" alt="Foto">
+          </mat-cell>
+        </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="nome">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Nome</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
-    </ng-container>
-    <!-- Data nascimento -->
-    <ng-container matColumnDef="dataNascimento">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Data Nascimento</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.dataNascimento | date : 'dd/MM/yyyy'}}</mat-cell>
-    </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="nome">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Nome</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
+        </ng-container>
+        <!-- Data nascimento -->
+        <ng-container matColumnDef="dataNascimento">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Data Nascimento</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.dataNascimento | date : 'dd/MM/yyyy'}}</mat-cell>
+        </ng-container>
 
-    <!-- Função -->
-    <ng-container matColumnDef="funcao">
-      <mat-header-cell mat-sort-header *matHeaderCellDef mat-sort-header>Função</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.funcao}}</mat-cell>
-    </ng-container>
+        <!-- Função -->
+        <ng-container matColumnDef="funcao">
+          <mat-header-cell mat-sort-header *matHeaderCellDef mat-sort-header>Função</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.funcao}}</mat-cell>
+        </ng-container>
 
 
-    <!-- status -->
-    <ng-container matColumnDef="statusPessoa">
-      <mat-header-cell mat-sort-header *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.statusPessoa}}</mat-cell>
-    </ng-container>
+        <!-- status -->
+        <ng-container matColumnDef="statusPessoa">
+          <mat-header-cell mat-sort-header *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.statusPessoa}}</mat-cell>
+        </ng-container>
 
-    <!-- Coluna de Ações -->
+        <!-- Coluna de Ações -->
 
-    <ng-container matColumnDef="action">
-      <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <mat-icon class="cursor" matTooltip="Editar Cadastro!" (click)="AtualizarMembro(row.id)">edit</mat-icon>
-        <mat-icon class="cursor" matTooltip="Impressão da ficha de membro!"
-          *ngIf="!filtros.inativos && !filtros.precadastro" (click)="ImprimirFichaMembro(row)">print</mat-icon>
-        <mat-icon class="cursor" matTooltip="Solicitação de Cartas!" *ngIf="!filtros.inativos && !filtros.precadastro"
-          (click)="Cartas(row.id)">mail_outline</mat-icon>
-        <mat-icon class="cursor" matTooltip="Filhos!" *ngIf="!filtros.inativos && !filtros.precadastro"
-          (click)="Filhos(row.id)">family_restroom</mat-icon>
-        <mat-icon class="cursor" matTooltip="Justificar Presença!" *ngIf="!filtros.inativos && !filtros.precadastro"
-          (click)="JustificarPresenca(row.id)">task_alt</mat-icon>
-        <mat-icon class="cursor" matTooltip="Unificar Cadastro!" *ngIf="!filtros.inativos && !filtros.precadastro"
-          (click)="UnificarCadastro(row.id)">join_left</mat-icon>
-        <mat-icon class="cursor" matTooltip="Histórico da Pessoa!" *ngIf="!filtros.precadastro"
-          (click)="HistoricoMembro(row.id)">list_alt</mat-icon>
-        <mat-icon class="cursor" matTooltip="Baixa manual de Membro!" *ngIf="!filtros.inativos"
-          (click)="ExcluirMembro(row.id)">delete</mat-icon>
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <mat-icon class="cursor" matTooltip="Editar Cadastro!" (click)="AtualizarMembro(row.id)">edit</mat-icon>
+            <mat-icon class="cursor" matTooltip="Impressão da ficha de membro!"
+              *ngIf="!filtros.inativos && !filtros.precadastro" (click)="ImprimirFichaMembro(row)">print</mat-icon>
+            <mat-icon class="cursor" matTooltip="Solicitação de Cartas!"
+              *ngIf="!filtros.inativos && !filtros.precadastro" (click)="Cartas(row.id)">mail_outline</mat-icon>
+            <mat-icon class="cursor" matTooltip="Filhos!" *ngIf="!filtros.inativos && !filtros.precadastro"
+              (click)="Filhos(row.id)">family_restroom</mat-icon>
+            <mat-icon class="cursor" matTooltip="Justificar Presença!" *ngIf="!filtros.inativos && !filtros.precadastro"
+              (click)="JustificarPresenca(row.id)">task_alt</mat-icon>
+            <mat-icon class="cursor" matTooltip="Unificar Cadastro!" *ngIf="!filtros.inativos && !filtros.precadastro"
+              (click)="UnificarCadastro(row.id)">join_left</mat-icon>
+            <mat-icon class="cursor" matTooltip="Histórico da Pessoa!" *ngIf="!filtros.precadastro"
+              (click)="HistoricoMembro(row.id)">list_alt</mat-icon>
+            <mat-icon class="cursor" matTooltip="Baixa manual de Membro!" *ngIf="!filtros.inativos"
+              (click)="ExcluirMembro(row.id)">delete</mat-icon>
 
-      </mat-cell>
-    </ng-container>
+          </mat-cell>
+        </ng-container>
 
-    <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
-    <mat-row style="height: 10%;" (click)="PessoaSelecionada(row.id)" *matRowDef="let row; columns: Colunas;"
-      [ngClass]="{'corLinhaGrid' : row.id == pessoaSelecionada}"></mat-row>
-  </table>
-
+        <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
+        <mat-row style="height: 10%;" (click)="PessoaSelecionada(row.id)" *matRowDef="let row; columns: Colunas;"
+          [ngClass]="{'corLinhaGrid' : row.id == pessoaSelecionada}"></mat-row>
+      </table>
+    </div>
+  </div>
   <mat-paginator #paginator [pageSize]="13" [pageSizeOptions]="[13]" showFirstLastButtons></mat-paginator>
 
 </body>

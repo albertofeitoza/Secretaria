@@ -13,7 +13,6 @@ import { Cargos } from 'src/app/models/Cargos';
 import { Historico } from 'src/app/models/HistoricoDoObreiro';
 import { DadosObreiro } from 'src/app/models/DadosObreiro';
 import { Filtros } from 'src/app/models/Filtros';
-import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Logs } from 'src/app/models/Logs';
 import { TipoPopup } from 'src/app/enum/TipoPopup';
 import { HistoricoPopupComponent } from '../historico-popup/historico-popup.component';
@@ -43,13 +42,12 @@ export class CadastroMembrosComponent implements OnDestroy {
   igreja: igreja = new igreja();
   endereco: PessoaEndereco = new PessoaEndereco();
   dadosMembro: DadosMembro = new DadosMembro();
-  dadosObreiro: DadosObreiro = new DadosObreiro()
+  dadosObreiro: DadosObreiro = new DadosObreiro();
   fotoPerfil: string = ""
   cargos: Cargos[] = new Array()
   cargo: Cargos = new Cargos();
   funcaoMembroCache: number = 1;
   cursoTeologicoCache: number = 1;
-  historicos: Historico[] = new Array()
   historico: Historico = new Historico()
   foto: FormData = new FormData()
   filtros: Filtros = new Filtros()
@@ -116,26 +114,18 @@ export class CadastroMembrosComponent implements OnDestroy {
 
     if (id > 0) {
       this.fotoPerfil = "";
+
       this.serverApi.readById(id.toString(), Endpoint.Pessoa)
-        .subscribe(response => {
-
-
-          this.pessoa = response?.data?.pessoa != null ? response?.data?.pessoa : new Pessoa();
-          this.igreja = response?.data?.igreja != null ? response?.data?.igreja : new igreja();
-          this.endereco = response?.data?.pessoaEndereco != null ? response?.data?.pessoaEndereco : this.endereco = new PessoaEndereco();
-          this.contatos = response?.data?.contatos
-          this.dadosMembro = response?.data?.dadosMembro != null ? response?.data?.dadosMembro : this.dadosMembro = new DadosMembro()
-          this.funcaoMembroCache = response?.data?.dadosMembro?.funcao
-          this.situacaoCache = response?.data?.pessoa?.statusPessoa
-          this.cargos = response?.data?.cargos
-          this.dadosObreiro = response.data?.dadosObreiro != null ? response?.data?.dadosObreiro : this.dadosObreiro = new DadosObreiro()
-          this.historicos = response?.data?.historicoObreiro
-          this.logs = response?.data?.logs;
-          this.filhos = response?.data?.filhos
-          this.fotoPerfil = this.pessoa.fotoCadastrada ? `./assets/imagens/${this.pessoa.id}_${response.data.pessoa.cpf = ("00000000000" + response.data.pessoa.cpf).slice(-11)}.jpg? + ${new Date().getTime()}` : `./assets/imagens/sem-foto.jpg`
+        .subscribe((result) => {
+          this.pessoa = result;
+          this.situacaoCache = this.pessoa?.statusPessoa
+          this.fotoPerfil = this.pessoa.fotoCadastrada ? `./assets/imagens/${this.pessoa.id}_${this.pessoa.cpf = ("00000000000" + this.pessoa.cpf).slice(-11)}.jpg? + ${new Date().getTime()}` : `./assets/imagens/sem-foto.jpg`
           this.idade = this.serviceUtil.SubtractYears(this.pessoa.dataNascimento ? this.pessoa.dataNascimento : new Date)
           this.idadeCasado = this.serviceUtil.SubtractYears(this.pessoa.dataCasamento ? this.pessoa.dataCasamento : new Date)
-        })
+          this.spinner = false;
+        }, (err) => {
+          this.spinner = false;
+        });
     }
   }
 
@@ -160,6 +150,110 @@ export class CadastroMembrosComponent implements OnDestroy {
   setStep(index: number) {
     this.step = index;
     switch (index) {
+
+      case 0:
+
+        if (this.pessoa.id > 0) {
+          this.spinner = true;
+          this.BuscarMembro();
+        }
+        break;
+
+      case 1:
+
+        if (this.pessoa.id > 0) {
+          this.spinner = true;
+
+          this.serverApi.readById(this.pessoa.id.toString(), Endpoint.Enderecos + `/pessoa`)
+            .subscribe((result) => {
+              this.endereco = result;
+              this.spinner = false;
+            }, (err) => {
+              this.spinner = false;
+            });
+        }
+        break;
+
+      case 3:
+
+        if (this.pessoa.id > 0) {
+          this.spinner = true;
+
+          this.serverApi.readById(this.pessoa.id.toString(), Endpoint.Membros + `/pessoa`)
+            .subscribe((result) => {
+              this.dadosMembro = result;
+              this.funcaoMembroCache = this.dadosMembro.funcao;
+              this.spinner = false;
+            }, (err) => {
+              this.spinner = false;
+            });
+        }
+        break;
+
+      case 2:
+
+        if (this.pessoa.id > 0) {
+          this.spinner = true;
+
+          this.serverApi.read(Endpoint.Contatos + `?PessoaId=${this.pessoa.id}`)
+            .subscribe((result) => {
+              this.contatos = result;
+              this.spinner = false;
+            }, (err) => {
+              this.spinner = false;
+            });
+        }
+        break;
+      case 4:
+
+        if (this.pessoa.id > 0) {
+          this.spinner = true;
+
+          this.serverApi.readById(this.pessoa.id.toString(), Endpoint.Obreiro + `/pessoa`)
+            .subscribe((result) => {
+              this.dadosObreiro = result.data;
+              this.spinner = false;
+            }, (err) => {
+              this.spinner = false;
+            });
+        }
+
+        break;
+
+      case 5:
+
+        if (this.pessoa.id > 0) {
+          this.spinner = true;
+
+          this.serverApi.read(Endpoint.Cargos + `?PessoaId=${this.pessoa.id}`)
+            .subscribe((result) => {
+              this.cargos = result
+              this.spinner = false;
+            }, (err) => {
+              this.spinner = false;
+            });
+        }
+
+        break;
+
+
+      case 6:
+
+        if (this.pessoa.id > 0) {
+          this.spinner = true;
+
+          this.serverApi.read(Endpoint.Logs + `?PessoaId=${this.pessoa.id}`)
+            .subscribe((result) => {
+              this.logs = result
+              this.spinner = false;
+            }, (err) => {
+              this.spinner = false;
+            });
+        }
+
+        break;
+
+
       case 7:
 
         if (this.pessoa.id > 0) {
@@ -307,7 +401,7 @@ export class CadastroMembrosComponent implements OnDestroy {
               return this.toast.warning("Você só pode cadastrar ou alterar dados da sua igreja.");
             }
 
-            this.serverApi.readById(this.auth.dadosUsuario.IgrejaLogada.toString(), Endpoint.Igreja + `/regional`, '', 0)
+            this.serverApi.readById(this.auth.dadosUsuario.IgrejaLogada > 0 ? this.auth.dadosUsuario.IgrejaLogada.toString() : this.pessoa.igrejaId.toString() , Endpoint.Igreja + `/regional`, '', 0)
               .subscribe(response => {
                 this.dadosMembro.congregacao = response.congregacao ? response.congregacao : this.dadosMembro.congregacao;
                 this.dadosMembro.regional = response.regional ? response.regional : this.dadosMembro.regional;
@@ -685,7 +779,7 @@ export class CadastroMembrosComponent implements OnDestroy {
         .subscribe(x => {
           this.contato = new contatos()
           this.toast.success(`${this.contato.id === 0 ? 'Contato adicionado com sucesso.' : 'Contato alterado com sucesso.'} `)
-          this.BuscarContatos()
+          this.setStep(2)
         })
     } else
       this.toast.warning("informar os dados do contato.")
@@ -707,7 +801,7 @@ export class CadastroMembrosComponent implements OnDestroy {
 
           this.serverApi.create(body, Endpoint.Contatos + '/Excluir').subscribe(x => {
             this.toast.success("Contato Excluido com sucesso!")
-            this.BuscarContatos()
+            this.setStep(2)
           });
         }
       },
@@ -720,14 +814,6 @@ export class CadastroMembrosComponent implements OnDestroy {
     this.serverApi.readById(id, Endpoint.Contatos).subscribe(con => {
       this.contato = con.data
     })
-  }
-
-
-  BuscarContatos() {
-    this.serverApi.read(Endpoint.Contatos)
-      .subscribe(response => {
-        this.contatos = response.filter(x => x.pessoaId == this.pessoa.id)
-      })
   }
 
 
@@ -748,10 +834,7 @@ export class CadastroMembrosComponent implements OnDestroy {
         this.serverApi.create(this.cargo, Endpoint.Cargos)
           .subscribe(() => {
             this.cargo = new Cargos()
-            this.serverApi.read(Endpoint.Cargos)
-              .subscribe(cargos => {
-                this.cargos = cargos.filter(x => x.pessoaId == this.pessoa.id)
-              })
+            this.setStep(5);
             this.toast.success("Cargo Salvo com sucesso!. ")
           })
       }

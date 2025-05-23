@@ -172,7 +172,7 @@
                 </div>
                 <input style="display: none" type="file" accept="image/*" (change)="ImportarFotoPerfil($event)"
                   #fileInput>
-                
+
                 <button mat-button color="primary" *ngIf="!this.pessoa.fotoCadastrada" style="margin-right: 60px;"
                   (click)="fileInput.click()">Selecione</button>
 
@@ -215,7 +215,7 @@
 
           <mat-header-row *matHeaderRowDef="colunasDocumentos"></mat-header-row>
 
-          <ng-container matColumnDef="id">
+          <ng-container matColumnDef="id" style="width: min-content;">
             <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
             <mat-cell id="data" *matCellDef="let row">{{row.id}}</mat-cell>
           </ng-container>
@@ -724,7 +724,7 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
       <!-- ocorrências -->
-      <div class="mat-elevation-z8">
+      <div *ngIf="!spinner" class="mat-elevation-z8">
         <table mat-table [dataSource]="logs" matSort>
 
           <mat-header-row *matHeaderRowDef="colunasLogs"></mat-header-row>
@@ -745,22 +745,24 @@
         </table>
       </div>
 
+      <div style="text-align: -webkit-center;">
+        <mat-spinner *ngIf="spinner"></mat-spinner>
+      </div>
       <!-- ocorrencias -->
 
     </mat-expansion-panel>
 
-    <mat-expansion-panel *ngIf="dadosObreiro && historicos.length > 0" [expanded]="step === 4" (opened)="setStep(4)"
-      hideToggle>
+    <mat-expansion-panel *ngIf="pessoa.id > 0" [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <h2>Informações do Obreiro</h2>
+          <h2>Informações Eclesiásticas</h2>
         </mat-panel-title>
         <mat-panel-description>
-          Aqui está Salvo as informações do Obreiro quando o Membro for um obreiro...
+          Aqui está Salvo as informações do Obreiro como data de consagração etc...
           <mat-icon>date_range</mat-icon>
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <div *ngIf="!spinner" class="mat-elevation-z8">
+      <div *ngIf="!spinner && dadosObreiro != null" class="mat-elevation-z8">
 
         <!-- histórico do OBREIRO -->
         <div style="padding-top: 15px;">
@@ -811,7 +813,7 @@
         <!-- Grid de Obreiros -->
 
         <div class="mat-elevation-z8">
-          <table mat-table [dataSource]="historicos" matSort>
+          <table mat-table [dataSource]="dadosObreiro.historico" matSort>
             <!-- Id Column -->
             <ng-container matColumnDef="id">
               <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
@@ -836,13 +838,17 @@
             <!-- rol Column -->
             <ng-container matColumnDef="funcao">
               <mat-header-cell *matHeaderCellDef>Função</mat-header-cell>
-              <mat-cell id="funcao" *matCellDef="let row">{{row.funcao}}</mat-cell>
+              <mat-cell id="funcao" *matCellDef="let row">{{row.funcao === 2 ? 'Cooperador' : row.funcao === 3 ?
+                'Diácono' : row.funcao === 4 ? "Presbítero" : row.funcao === 5 ? 'Evangelista' : row.funcao === 6 ?
+                'Pastor' : '' }}</mat-cell>
             </ng-container>
 
             <!-- rol Column -->
             <ng-container matColumnDef="entradaFuncao">
               <mat-header-cell *matHeaderCellDef>Como Iniciou</mat-header-cell>
-              <mat-cell id="entradaFuncao" *matCellDef="let row">{{row.entradaFuncao}}</mat-cell>
+              <mat-cell id="entradaFuncao" *matCellDef="let row">{{row.entradaFuncao === 1 ? 'Apresentado' :
+                row.entradaFuncao === 2 ? 'Consagrado' : row.entradaFuncao === 3 ? 'Recebido' : row.entradaFuncao === 4
+                ? 'Reintegrado' : row.entradaFuncao === 5 ? 'Ordenado' : ''}}</mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="dataEntradaFuncao">
@@ -861,7 +867,7 @@
             <!-- Name Column -->
             <ng-container matColumnDef="reintegrado">
               <mat-header-cell *matHeaderCellDef>Reintegrado</mat-header-cell>
-              <mat-cell *matCellDef="let row">{{row.reintegrado}}</mat-cell>
+              <mat-cell *matCellDef="let row">{{row.reintegrado ? 'Sim' : 'Não'}}</mat-cell>
             </ng-container>
 
             <!-- Name Column -->
@@ -873,7 +879,7 @@
             <!-- Name Column -->
             <ng-container matColumnDef="aprovado">
               <mat-header-cell *matHeaderCellDef>Aprovado</mat-header-cell>
-              <mat-cell *matCellDef="let row">{{row.aprovado}}</mat-cell>
+              <mat-cell *matCellDef="let row">{{row.aprovado ? 'Sim' : 'Não'}}</mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="action">
