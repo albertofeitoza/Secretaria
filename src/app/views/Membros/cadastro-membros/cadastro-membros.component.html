@@ -197,59 +197,6 @@
 
     </mat-expansion-panel>
 
-    <mat-expansion-panel *ngIf="pessoa.id > 0" [expanded]="step === 7" (opened)="setStep(7)" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <h2>Cópia de Documentos</h2>
-        </mat-panel-title>
-        <mat-panel-description>
-          Cópias de documentos Pessoais
-          <mat-icon>map</mat-icon>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-
-      <mat-icon (click)="AdicionarNovoDocumento()">add_circle_outline</mat-icon>
-
-      <div class="mat-elevation-z8">
-        <table mat-table [dataSource]="documentos" matSort>
-
-          <mat-header-row *matHeaderRowDef="colunasDocumentos"></mat-header-row>
-
-          <ng-container matColumnDef="id" style="width: min-content;">
-            <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
-            <mat-cell id="data" *matCellDef="let row">{{row.id}}</mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="data">
-            <mat-header-cell *matHeaderCellDef>Data</mat-header-cell>
-            <mat-cell id="data" *matCellDef="let row">{{row.data | date : 'dd/MM/yyyy hh:mm:ss'}}</mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="descricao">
-            <mat-header-cell *matHeaderCellDef>Descrição</mat-header-cell>
-            <mat-cell id="descricao" *matCellDef="let row">{{row.descricao}}</mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="tipoDocumento">
-            <mat-header-cell *matHeaderCellDef>Tipo de Documento</mat-header-cell>
-            <mat-cell id="tipoDocumento" *matCellDef="let row">{{row.tipoDocumento}}</mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="action">
-            <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
-            <mat-cell *matCellDef="let row">
-              <mat-icon class="cursor" matTooltip="Visualizar Documento!" (click)="Imprimir(row)">visibility</mat-icon>
-              <mat-icon class="cursor" matTooltip="Excluir Cadastro!"
-                (click)="RemoverDocumento(row.id)">delete</mat-icon>
-
-            </mat-cell>
-          </ng-container>
-
-          <mat-row *matRowDef="let row; columns: colunasDocumentos;"></mat-row>
-        </table>
-      </div>
-    </mat-expansion-panel>
-
     <mat-expansion-panel *ngIf="pessoa.id > 0" [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -762,7 +709,7 @@
           <mat-icon>date_range</mat-icon>
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <div *ngIf="!spinner && dadosObreiro != null" class="mat-elevation-z8">
+      <div *ngIf="!spinner && dadosObreiro && dadosObreiro.id > 0 " class="mat-elevation-z8">
 
         <!-- histórico do OBREIRO -->
         <div style="padding-top: 15px;">
@@ -902,6 +849,10 @@
         </div>
 
       </div>
+      <div *ngIf="dadosObreiro.id === 0" style="text-align: -webkit-center;">
+        Não existem informações cadastradas.
+      </div>
+
       <div style="text-align: -webkit-center;">
         <mat-spinner *ngIf="spinner"></mat-spinner>
       </div>
@@ -910,6 +861,59 @@
         <button mat-button color="warn" (click)="Voltar()">Voltar</button>
         <button [disabled]="spinner" mat-button color="primary" (click)="Proximo()">Salvar</button>
       </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="pessoa.id > 0" [expanded]="step === 7" (opened)="setStep(7)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2>Cópia de Documentos</h2>
+        </mat-panel-title>
+        <mat-panel-description>
+          Cópias de documentos Pessoais
+          <mat-icon>map</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-icon (click)="AdicionarNovoDocumento()">add_circle_outline</mat-icon>
+
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="documentos" matSort>
+
+          <mat-header-row *matHeaderRowDef="colunasDocumentos"></mat-header-row>
+
+          <ng-container matColumnDef="id" style="width: min-content;">
+            <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+            <mat-cell id="data" *matCellDef="let row">{{row.id}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="data">
+            <mat-header-cell *matHeaderCellDef>Data</mat-header-cell>
+            <mat-cell id="data" *matCellDef="let row">{{row.data | date : 'dd/MM/yyyy hh:mm:ss'}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="descricao">
+            <mat-header-cell *matHeaderCellDef>Descrição</mat-header-cell>
+            <mat-cell id="descricao" *matCellDef="let row">{{row.descricao}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="tipoDocumento">
+            <mat-header-cell *matHeaderCellDef>Tipo de Documento</mat-header-cell>
+            <mat-cell id="tipoDocumento" *matCellDef="let row">{{row.tipoDocumento}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <mat-icon class="cursor" matTooltip="Visualizar Documento!" (click)="Imprimir(row)">visibility</mat-icon>
+              <mat-icon class="cursor" matTooltip="Excluir Cadastro!"
+                (click)="RemoverDocumento(row.id)">delete</mat-icon>
+
+            </mat-cell>
+          </ng-container>
+
+          <mat-row *matRowDef="let row; columns: colunasDocumentos;"></mat-row>
+        </table>
+      </div>
     </mat-expansion-panel>
 
   </mat-accordion>

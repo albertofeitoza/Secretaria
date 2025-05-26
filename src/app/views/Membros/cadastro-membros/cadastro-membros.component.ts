@@ -166,7 +166,7 @@ export class CadastroMembrosComponent implements OnDestroy {
 
           this.serverApi.readById(this.pessoa.id.toString(), Endpoint.Enderecos + `/pessoa`)
             .subscribe((result) => {
-              this.endereco = result;
+              this.endereco = result && result.id > 0 ? result : this.endereco = new PessoaEndereco() ;
               this.spinner = false;
             }, (err) => {
               this.spinner = false;
@@ -181,7 +181,7 @@ export class CadastroMembrosComponent implements OnDestroy {
 
           this.serverApi.readById(this.pessoa.id.toString(), Endpoint.Membros + `/pessoa`)
             .subscribe((result) => {
-              this.dadosMembro = result;
+              this.dadosMembro = result && result.id > 0 ? result : this.dadosMembro= new DadosMembro();
               this.funcaoMembroCache = this.dadosMembro.funcao;
               this.spinner = false;
             }, (err) => {
@@ -197,7 +197,7 @@ export class CadastroMembrosComponent implements OnDestroy {
 
           this.serverApi.read(Endpoint.Contatos + `?PessoaId=${this.pessoa.id}`)
             .subscribe((result) => {
-              this.contatos = result;
+              this.contatos = result && result.length > 0 ? result : this.contatos = new Array();
               this.spinner = false;
             }, (err) => {
               this.spinner = false;
@@ -211,7 +211,7 @@ export class CadastroMembrosComponent implements OnDestroy {
 
           this.serverApi.readById(this.pessoa.id.toString(), Endpoint.Obreiro + `/pessoa`)
             .subscribe((result) => {
-              this.dadosObreiro = result.data;
+              this.dadosObreiro = result.data && result.data.id > 0 ? result.data : new DadosObreiro();;
               this.spinner = false;
             }, (err) => {
               this.spinner = false;
@@ -227,7 +227,7 @@ export class CadastroMembrosComponent implements OnDestroy {
 
           this.serverApi.read(Endpoint.Cargos + `?PessoaId=${this.pessoa.id}`)
             .subscribe((result) => {
-              this.cargos = result
+              this.cargos = result && result.length > 0 ? result : this.cargos = new Array();
               this.spinner = false;
             }, (err) => {
               this.spinner = false;
@@ -244,7 +244,7 @@ export class CadastroMembrosComponent implements OnDestroy {
 
           this.serverApi.read(Endpoint.Logs + `?PessoaId=${this.pessoa.id}`)
             .subscribe((result) => {
-              this.logs = result
+              this.logs = result && result.length > 0 ? result : this.logs = new Array();
               this.spinner = false;
             }, (err) => {
               this.spinner = false;
@@ -261,7 +261,7 @@ export class CadastroMembrosComponent implements OnDestroy {
 
           this.serverApi.read(Endpoint.DocumentosPessoais + `/estabelecimento/${this.pessoa.id}`)
             .subscribe((result: ViewDocumentos[]) => {
-              this.documentos = result;
+              this.documentos = result && result.length > 0 ? result : this.documentos = new Array();
               this.spinner = false;
             }, (err) => {
               this.spinner = false;
@@ -387,6 +387,9 @@ export class CadastroMembrosComponent implements OnDestroy {
 
           break;
         case 2:
+          this.step++
+          break
+          
         case 3:
 
           if (this.ValidarDadosMembro() && this.pessoa.id > 0) {
