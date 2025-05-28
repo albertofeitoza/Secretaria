@@ -1,18 +1,17 @@
-import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource, _MatTableDataSource } from '@angular/material/table';
+import { Component, Injectable, OnInit } from '@angular/core';
+import { _MatTableDataSource } from '@angular/material/table';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { TipoPopup } from 'src/app/enum/TipoPopup';
 import { ViewPessoa } from 'src/app/models/pessoa';
 import { ServiceCenter } from 'src/app/models/ServiceCenter';
-import { PopupConfirmacaoComponent } from 'src/app/popups/popup-confirmacao/popup-confirmacao.component';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { UtilServiceService } from 'src/app/services/util-service.service';
 import { PendenciasComponent } from './modal/pendencias/pendencias.component';
 import { PessoasporfuncaoComponent } from './modal/pessoasporfuncao/pessoasporfuncao.component';
 import { TodasAsIgrejas } from 'src/app/models/Igreja';
+import Chart from 'chart.js/auto';
+
 
 @Injectable()
 
@@ -31,6 +30,7 @@ export class ServiceCenterComponent implements OnInit {
   totalGeralMembros = 0;
   pessoas: ViewPessoa[] = new Array();
   igrejasDoCampo: TodasAsIgrejas[] = new Array();
+  chart: any = [];
 
   constructor(
     private auth: AutenticacaoService,
@@ -43,11 +43,73 @@ export class ServiceCenterComponent implements OnInit {
     this.auth.dadosUsuario.IgrejaSelecionada = this.auth.dadosUsuario.IgrejaLogada;
     this.BuscarMembros();
     this.BuscarPendencias();
+    this.CriarChart();
+  }
+  CriarChart() {
+    this.chart = new Chart('canvas', {
+      type: 'line',
+      data: {
+        labels: ['Membros', 'Cooperadores', 'Diáconos', 'Presbíteros', 'Evangelistas', 'Pastores'],
+        datasets: [
+          {
+            // label: '# of values',
+            data: [541,2,3,4,5,6
+            //   {
+            //   value: 541
+            // }, {
+            //   value: 22
+            // }, {
+            //   value: 12
+            // }, {
+            //   value: 8
+            // }, {
+            //   value: 6
+            // }, {
+            //   value: 3
+            // }
+          ],
+            borderWidth: 1,
+
+          },
+        ],
+      },
+      options: {
+        onClick: (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+
+            this.chart.data.datasets[0].label =
+              index === 0 ? 'Membros' :
+                index === 1 ? 'Cooperadores' :
+                  index === 2 ? 'Diáconos' :
+                    index === 3 ? 'Presbíteros' :
+                      index === 4 ? 'Evangelistas' :
+                        index === 4 ? 'Pastores' : '';
+
+
+
+            // alert(`Você clicou no ponto com índice ${index} e valor ${this.chart.data.datasets[0].data[index]}`);
+          }
+        },
+
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+        events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
+        plugins: {
+          subtitle: {
+            display: true,
+            text: 'MEMBROS'
+          }
+        }
+      },
+    });
   }
 
 
   private BuscarMembros(): void {
-    //this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada && this.auth.dadosUsuario.TipoUsuarioLogado === 2 ? this.auth.dadosUsuario.IgrejaLogada : this.auth.dadosUsuario.TipoUsuarioLogado === 1 ? 0 : this.igrejaSelecionada;
     this.serviceApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.auth.dadosUsuario.TipoUsuarioLogado === 1 ? 0 : this.auth.dadosUsuario.IgrejaLogada}`)
       .subscribe((result: ViewPessoa[]) => {
         this.pessoas = result;
