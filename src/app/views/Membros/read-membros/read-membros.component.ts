@@ -148,7 +148,7 @@ export class ReadMembrosComponent implements OnInit {
       this.spinner = true
       this.serverApi.read(Endpoint.Pessoa + `/estabelecimento?igreja=${this.igrejaSelecionada}`)
         .subscribe((response) => {
-          
+
           response = response.sort()
 
           this.datasource.data =
@@ -184,7 +184,6 @@ export class ReadMembrosComponent implements OnInit {
   }
 
   private Precadastro(filtro: string = "") {
-    //this.igrejaSelecionada === this.auth.dadosUsuario.IgrejaLogada || this.igrejaSelecionada === 0 ? this.auth.dadosUsuario.IgrejaLogada : this.igrejaSelecionada
     this.serverApi.read(`${Endpoint.Pessoa}/preCadastro?igreja=${this.igrejaSelecionada}`)
       .subscribe(() => { });
   }
@@ -193,7 +192,7 @@ export class ReadMembrosComponent implements OnInit {
     this.serverApi.idMembro.next(0);
     this.route.navigate([`/membrosadd`]);
 
-    
+
   }
 
   AtualizarMembro(id: number): void {
@@ -220,9 +219,9 @@ export class ReadMembrosComponent implements OnInit {
 
   ExcluirMembro(id: number) {
 
-    this.serverApi.readById(id.toString(), Endpoint.Pessoa)
+    this.serverApi.readById(id.toString(), Endpoint.Pastores + `/pessoa`)
       .subscribe(res => {
-        if (res.data.igreja.pastores[0].pessoaId === id) {
+        if (res && res.idPessoa === id) {
           this.toast.error("O pastor da Igreja não pode ser excluido, emita a carta de mudança!.");
           return
         } else {
@@ -351,8 +350,8 @@ export class ReadMembrosComponent implements OnInit {
     this.serviceUtil.Popup('', TipoPopup.ComponenteInstancia, FilhosComponent, id, '70%', '80%');
   }
 
-  public JustificarPresenca(id: number): void {
-    this.serviceUtil.Popup('', TipoPopup.ComponenteInstancia, ControlePresencaComponent, id, '70%', '35%');
+  public JustificarPresenca(row: any): void {
+    this.serviceUtil.Popup('', TipoPopup.ComponenteInstancia, ControlePresencaComponent, row.id, '70%', '35%', false, false, row.funcao);
   }
 
   public UnificarCadastro(id: number): void {

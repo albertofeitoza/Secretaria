@@ -31,6 +31,7 @@ export class ControlePresencaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.funcao = this.matdialogRef._containerInstance._config.data.dadosTela.includes('Membro') ? 1 : 2;
     this.BuscarPessoa();
     this.CarregaCombos()
 
@@ -39,9 +40,7 @@ export class ControlePresencaComponent implements OnInit {
   private BuscarPessoa(): void {
     this.serviceApi.readById(this.matdialogRef.id, Endpoint.Pessoa)
       .subscribe((result) => {
-        this.dados = result?.data?.pessoa;
-        this.funcao = result?.data?.dadosMembro?.funcao;
-
+        this.dados = result
       });
   }
   private CarregaCombos(): void {

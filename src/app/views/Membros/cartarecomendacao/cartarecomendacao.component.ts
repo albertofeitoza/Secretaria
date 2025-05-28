@@ -37,6 +37,7 @@ export class CartarecomendacaoComponent implements OnInit {
   ngOnInit() {
     this.BuscarPessoa();
     this.CarregaCombos()
+    this.ValidarSePastorDaIgreja();
   }
 
   CarregaCombos() {
@@ -47,10 +48,17 @@ export class CartarecomendacaoComponent implements OnInit {
 
   BuscarPessoa() {
     this.serviceApi.readById(this.dialogRef.id, Endpoint.Pessoa)
-      .subscribe(p => {
-        this.dados = p.data.pessoa;
-        this.PastorIgreja = p.data.pessoa.id === p.data.igreja.pastores[0].pessoaId ? true : false;
+      .subscribe(result => {
+        this.dados = result;
       })
+  }
+  
+  ValidarSePastorDaIgreja(){
+    this.serviceApi.readById(this.dialogRef.id.toString(), Endpoint.Pastores + `/pessoa`)
+      .subscribe(result => {
+        this.PastorIgreja = result && result.idPessoa == this.dialogRef.id && result.idIgreja == this.auth.dadosUsuario.IgrejaLogada ? true : false;
+      })
+      
   }
 
   private BuscaObreiros(): void {

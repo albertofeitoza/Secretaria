@@ -133,7 +133,7 @@
             <mat-icon class="cursor" matTooltip="Filhos!" *ngIf="!filtros.inativos && !filtros.precadastro"
               (click)="Filhos(row.id)">family_restroom</mat-icon>
             <mat-icon class="cursor" matTooltip="Justificar Presença!" *ngIf="!filtros.inativos && !filtros.precadastro"
-              (click)="JustificarPresenca(row.id)">task_alt</mat-icon>
+              (click)="JustificarPresenca(row)">task_alt</mat-icon>
             <mat-icon class="cursor" matTooltip="Unificar Cadastro!" *ngIf="!filtros.inativos && !filtros.precadastro"
               (click)="UnificarCadastro(row.id)">join_left</mat-icon>
             <mat-icon class="cursor" matTooltip="Histórico da Pessoa!" *ngIf="!filtros.precadastro"
