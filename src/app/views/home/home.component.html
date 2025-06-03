@@ -3,15 +3,18 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, max-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
 </head>
 
 <body>
-  <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #drawer style="width: {{width}}" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
+  <mat-drawer-container class="drawer-container" autosize>
+    <mat-drawer #drawer class="drawer-sidenav" mode="side" opened="true">
+      <!-- <p>Auto-resizing sidenav</p>
+      <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p> -->
+      <!-- <button (click)="showFiller = !showFiller" mat-raised-button>
+        Toggle extra text
+      </button> -->
 
       <mat-nav-list *ngIf="tUsuarioLogado === 1">
         <a mat-list-item routerLink="/"><i class="material-icons">home</i> Menu</a>
@@ -49,14 +52,14 @@
 
         <hr style="margin: 0px" />
 
-        <a mat-list-item [matMenuTriggerFor]="menuservicos"><i class="material-icons">services</i>Serviços</a>
+        <!-- <a mat-list-item [matMenuTriggerFor]="menuservicos"><i class="material-icons">services</i>Serviços</a>
         <mat-menu #menuservicos="matMenu">
           <a mat-menu-item>
             <a mat-list-item routerLink="/igreja"><i class="material-icons">church</i>Certificados</a>
             <hr />
             <a mat-list-item routerLink="/assinaturas"><i class="material-icons">payments</i>Assinaturas</a>
           </a>
-        </mat-menu>
+        </mat-menu> -->
 
         <hr style="margin: 0px" />
 
@@ -130,16 +133,17 @@
         <a mat-list-item (click)="logoof()"><i class="material-icons">exit_to_app</i>Sair</a>
       </mat-nav-list>
 
-    </mat-sidenav>
-    <mat-sidenav-content style="margin-left: {{width}}">
+
+    </mat-drawer>
+    <div>
       <mat-toolbar color="primary">
-        <mat-icon matTooltip="Navegar!" (click)="Menu()">sync_alt</mat-icon>
+        <mat-icon matTooltip="Navegar!" (click)="drawer.toggle()">menu</mat-icon>
       </mat-toolbar>
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
-    
-  </mat-sidenav-container>
-  
+      <div class="drawer-sidenav-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </mat-drawer-container>
 </body>
 
 </html>

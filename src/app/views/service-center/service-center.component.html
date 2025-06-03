@@ -1,60 +1,26 @@
-<!-- <div *ngIf="tipoUsuario === 2" class="centralizar">
-    <div style="display: flex;" class="row">
-        <div *ngIf="funcoes" class="col-md-2">
-            <mat-card class="infIgreja">
-                <mat-card-title style="font-size: 14px;">Membresia</mat-card-title>
-                <mat-card-content style="display: grid; font-size: 12px;">
-                    <div style="display: ruby-text;" *ngFor="let func of funcoes">
-                        <label class="cursor" (click)="ExibirPessoas(func)">{{func}}: </label>
-                        <label>{{QuantPessoas(func)}}</label>
-                    </div>
-                    <div style="display: ruby-text;">
-                        <b><label>Total: </label></b>
-                        <b><label>{{totalGeralMembros}}</label></b>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-
-
+<div style="padding-top: 1% ;">
+    <div style="display: flex;">
+        <div class="col formataCol">
+           <div id="historicoIgreja" class="graficos"></div>
         </div>
-        <div style="padding-left: 50%;" *ngIf="servicecenter.length > 0" class="col-md-2">
-            <mat-card class="infSecretaria">
-                <mat-card-title style="font-size: 14px;">Pendências</mat-card-title>
-                <mat-card-content style="display: grid;font-size: 12px;">
-                    <div style="display: ruby-text;" *ngFor="let dep of departamentos">
-                        <label class="cursor" (click)="ExibirPependencia(dep)">{{dep}}: </label>
-                        <label>{{QuantPendencias(dep)}}</label><br>
-                    </div>
-                    <div style="display: ruby-text;">
-                        <b><label>Total: </label></b>
-                        <b><label>{{servicecenter.length}}</label></b>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-        </div>
-
-        <div style="padding-left: 50%;" *ngIf="igrejasDoCampo.length > 0" class="col-md-2">
-            <mat-card class="infSecretaria">
-                <mat-card-title style="font-size: 14px;">Igreja: {{'Unidade1'}}</mat-card-title>
-                <mat-card-content style="display: grid;font-size: 12px;">
-                    <div style="display: ruby-text;" *ngFor="let dep of departamentos">
-                        <label class="cursor" (click)="ExibirPependencia(dep)">{{dep}}: </label>
-                        <label>{{QuantPendencias(dep)}}</label><br>
-                    </div>
-                    <div style="display: ruby-text;">
-                        <b><label>Total: </label></b>
-                        <b><label>{{servicecenter.length}}</label></b>
-                    </div>
-                </mat-card-content>
-            </mat-card>
+        <div class="col formataCol">
+           <div id="historicoPendencias" class="graficos"></div>
         </div>
     </div>
+   
 
+    <!-- <div style="display: flex;">
+        <div class="col formataCol">
+           <div id="main" class="graficos"></div>
+        </div>
+        <div class="col formataCol">
+           <div id="main" class="graficos"></div>
+        </div>
+    </div> -->
 
-</div> -->
-<div>
-    <canvas id="canvas">{{chart}}</canvas>
 </div>
+
+
 
 
 <!-- <app-organograma></app-organograma> -->

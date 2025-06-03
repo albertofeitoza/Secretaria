@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPrintModule } from 'ngx-print';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import {NgIf} from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 //Componentes
@@ -138,6 +139,7 @@ registerLocaleData(localePt);
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
+    NgIf,
     MatIconModule,
     MatListModule,
     MatCardModule,

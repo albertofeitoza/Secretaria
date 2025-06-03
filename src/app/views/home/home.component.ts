@@ -25,6 +25,8 @@ export class HomeComponent {
 
   ValidaFaturas = false;
 
+  showFiller = false;
+
   constructor(
     private auth: AutenticacaoService,
     private serviceApi: AllservicesService<any>

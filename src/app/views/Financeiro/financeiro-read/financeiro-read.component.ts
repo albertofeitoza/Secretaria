@@ -22,7 +22,7 @@ export class FinanceiroReadComponent implements OnInit {
 
   idLinhaSelecionada = 0;
   igrejaSelecionada = 0;
-  Colunas = ['id', 'assinaturaId', 'numeroCobranca', 'linkBoleto', 'dataVencimento', 'statusPagamento']
+  Colunas = ['numeroCobranca', 'linkBoleto', 'dataVencimento', 'statusPagamento']
   tipoUsuario = false;
   assinatura: any;
   filtros: Filtros = new Filtros();
@@ -40,6 +40,7 @@ export class FinanceiroReadComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.paginator._intl.itemsPerPageLabel = 'Itens por página';
     this.tipoUsuario = this.auth.dadosUsuario.TipoUsuarioLogado === 1 ? true : false;
     this.igrejaSelecionada = this.auth.dadosUsuario.IgrejaLogada
     this.BuscarFaturas();

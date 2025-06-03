@@ -188,7 +188,7 @@ export class RelatoriosComponent implements OnInit {
       this.imprimir = false;
       this.exibePeriodo = false;
       this.mensagemDeretorno = '';
-      this.filtros.igrejaId = this.auth.dadosUsuario.IgrejaSelecionada > 0 ? this.auth.dadosUsuario.IgrejaSelecionada :  this.auth.dadosUsuario.IgrejaLogada
+      this.filtros.igrejaId = this.auth.dadosUsuario.IgrejaSelecionada > 0 ? this.auth.dadosUsuario.IgrejaSelecionada : this.auth.dadosUsuario.IgrejaLogada
 
       if (this.ValidacoesRelatorio()) {
         this.spinner = true
@@ -207,17 +207,17 @@ export class RelatoriosComponent implements OnInit {
 
             trataCamposPresenca.forEach(element => {
               element.janeiro = element.janeiro && element.janeiro.includes('P') ? "done" : element.janeiro && element.janeiro.includes('J') ? 'J' : 'highlight_off';
-              element.fevereiro = element.fevereiro  && element.fevereiro.includes('P') ? "done" : element.fevereiro && element.fevereiro.includes('J') ? 'J' : 'highlight_off';
-              element.marco = element.marco  && element.marco.includes('P') ? "done" : element.marco && element.marco.includes('J') ? 'J' : 'highlight_off';
-              element.abril = element.abril  && element.abril.includes('P') ? "done" : element.abril && element.abril.includes('J') ? 'J' : 'highlight_off';
-              element.maio = element.maio  && element.maio.includes('P') ? "done" : element.maio && element.maio.includes('J') ? 'J' : 'highlight_off';
-              element.junho = element.junho  && element.junho.includes('P') ? "done" : element.junho && element.junho.includes('J') ? 'J' : 'highlight_off';
-              element.julho = element.julho  && element.julho.includes('P') ? "done" : element.julho && element.julho.includes('J') ? 'J' : 'highlight_off';
-              element.agosto = element.agosto  && element.agosto.includes('P') ? "done" : element.agosto && element.agosto.includes('J') ? 'J' : 'highlight_off';
-              element.setembro = element.setembro  && element.setembro.includes('P') ? "done" : element.setembro && element.setembro.includes('J') ? 'J' : 'highlight_off';
-              element.outubro = element.outubro  && element.outubro .includes('P') ? "done" : element.outubro && element.outubro.includes('J') ? 'J' : 'highlight_off';
-              element.novembro = element.novembro  && element.novembro.includes('P') ? "done" : element.novembro && element.novembro.includes('J') ? 'J' : 'highlight_off';
-              element.dezembro = element.dezembro  && element.dezembro.includes('P') ? "done" : element.dezembro && element.dezembro.includes('J') ? 'J' : 'highlight_off';
+              element.fevereiro = element.fevereiro && element.fevereiro.includes('P') ? "done" : element.fevereiro && element.fevereiro.includes('J') ? 'J' : 'highlight_off';
+              element.marco = element.marco && element.marco.includes('P') ? "done" : element.marco && element.marco.includes('J') ? 'J' : 'highlight_off';
+              element.abril = element.abril && element.abril.includes('P') ? "done" : element.abril && element.abril.includes('J') ? 'J' : 'highlight_off';
+              element.maio = element.maio && element.maio.includes('P') ? "done" : element.maio && element.maio.includes('J') ? 'J' : 'highlight_off';
+              element.junho = element.junho && element.junho.includes('P') ? "done" : element.junho && element.junho.includes('J') ? 'J' : 'highlight_off';
+              element.julho = element.julho && element.julho.includes('P') ? "done" : element.julho && element.julho.includes('J') ? 'J' : 'highlight_off';
+              element.agosto = element.agosto && element.agosto.includes('P') ? "done" : element.agosto && element.agosto.includes('J') ? 'J' : 'highlight_off';
+              element.setembro = element.setembro && element.setembro.includes('P') ? "done" : element.setembro && element.setembro.includes('J') ? 'J' : 'highlight_off';
+              element.outubro = element.outubro && element.outubro.includes('P') ? "done" : element.outubro && element.outubro.includes('J') ? 'J' : 'highlight_off';
+              element.novembro = element.novembro && element.novembro.includes('P') ? "done" : element.novembro && element.novembro.includes('J') ? 'J' : 'highlight_off';
+              element.dezembro = element.dezembro && element.dezembro.includes('P') ? "done" : element.dezembro && element.dezembro.includes('J') ? 'J' : 'highlight_off';
             });
           }
           switch (this.relatorioSelecionado) {

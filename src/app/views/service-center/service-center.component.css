@@ -1,31 +1,17 @@
-.centralizar {
-  position: absolute;
-  left: 50%;
-  top: 25%;
-  transform: translate(-50%, -50%);
-  min-height: 25%;
-  min-width: 20%;
+.cursor {
+  cursor: pointer;
 }
 
-.infIgreja {
-  background-color: rgb(185, 199, 172);
-  width: 150px;
-  height: 180px;
-  margin-top: 15%;
-}
-
-.infSecretaria {
-  background-color: rgb(216, 175, 24);
-  width: 150px;
-  height: 180px;
-  margin-top: 15%;
-
-  
-}
-mat-card-title {
+.formataCol {
+  height: 44vh;
   text-align: center;
 }
 
-.cursor{
-  cursor: pointer;
+.graficos {
+  width: 40hv;
+  height: 40vh;
+  border: 1px solid;
+  border-color: #d3d3d3;
+  border-radius: 4px;
+  text-align: center;
 }

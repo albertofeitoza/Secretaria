@@ -1,6 +1,6 @@
 <h1 style="text-align: left;padding-left: 25px;">Relatórios</h1>
 <div>
-    <div style="display: flex;padding-left: 15px;"  class="row">
+    <div style="display: flex;padding-left: 15px;">
             <mat-form-field color="accent" style="width: 350px;"  appearance="outline">
                 <mat-select [(value)]="relatorioSelecionado" placeholder="Tipo de Relatório"
                     (selectionChange)="RelatorioSelecionado()">
@@ -180,20 +180,18 @@
 
                 <mat-header-row *matHeaderRowDef="Colunas"></mat-header-row>
                 <ng-container matColumnDef="nome">
-                    <mat-header-cell *matHeaderCellDef hidden="true">Nome</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
                     <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
                 </ng-container>
                 <!-- rol Column -->
                 <ng-container matColumnDef="dataNascimento">
-                    <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data de Nascimento</mat-header-cell>
-                    <mat-cell id="rol" *matCellDef="let row" hidden="true">{{row.dataNascimento | date :
-                        'dd/MM/yyyy'}}</mat-cell>
+                    <mat-header-cell *matHeaderCellDef>Data de Nascimento</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.dataNascimento | date : 'dd/MM/yyyy'}}</mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="dataAniversario">
-                    <mat-header-cell style="width: 2%;" *matHeaderCellDef>Data de Aniversário</mat-header-cell>
-                    <mat-cell id="rol" *matCellDef="let row" hidden="true">{{row.dataAniversario | date :
-                        'dd/MM/yyyy'}}</mat-cell>
+                    <mat-header-cell *matHeaderCellDef>Data de Aniversário</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.dataAniversario | date : 'dd/MM/yyyy'}}</mat-cell>
                 </ng-container>
 
                 <mat-row *matRowDef="let row; columns: Colunas;"></mat-row>
