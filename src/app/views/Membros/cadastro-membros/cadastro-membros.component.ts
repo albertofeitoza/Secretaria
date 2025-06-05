@@ -64,7 +64,7 @@ export class CadastroMembrosComponent implements OnDestroy {
 
   Colunas = ['id', 'ddd', 'telefone', 'celular', 'email', 'action']
   ColunasCargos = ['id', 'cargo', 'noCargoDesde', 'noCargoAte', 'action']
-  ColunasHistoricoObreiro = ['id', 'pastorApresentador', 'pastorRegional', 'local', 'funcao', 'entradaFuncao', 'dataEntradaFuncao', 'dataSaidaFuncao', 'reintegrado', 'reintegradoEm', 'aprovado', 'action']
+  ColunasHistoricoObreiro = ['id', 'pastorApresentador', 'pastorRegional', 'local', 'funcao', 'entradaFuncao', 'dataEntradaFuncao', 'dataSaidaFuncao', 'reintegrado', 'reintegradoEm', 'aprovado', 'observacao', 'action']
   colunasLogs = ['data', 'descricao']
   colunasDocumentos = ['id', 'data', 'descricao', 'tipoDocumento', 'action']
   cpfbloqueado = false;
@@ -166,7 +166,7 @@ export class CadastroMembrosComponent implements OnDestroy {
 
           this.serverApi.readById(this.pessoa.id.toString(), Endpoint.Enderecos + `/pessoa`)
             .subscribe((result) => {
-              this.endereco = result && result.id > 0 ? result : this.endereco = new PessoaEndereco() ;
+              this.endereco = result && result.id > 0 ? result : this.endereco = new PessoaEndereco();
               this.spinner = false;
             }, (err) => {
               this.spinner = false;
@@ -181,7 +181,7 @@ export class CadastroMembrosComponent implements OnDestroy {
 
           this.serverApi.readById(this.pessoa.id.toString(), Endpoint.Membros + `/pessoa`)
             .subscribe((result) => {
-              this.dadosMembro = result && result.id > 0 ? result : this.dadosMembro= new DadosMembro();
+              this.dadosMembro = result && result.id > 0 ? result : this.dadosMembro = new DadosMembro();
               this.funcaoMembroCache = this.dadosMembro.funcao;
               this.spinner = false;
             }, (err) => {
@@ -209,9 +209,9 @@ export class CadastroMembrosComponent implements OnDestroy {
         if (this.pessoa.id > 0) {
           this.spinner = true;
 
-          this.serverApi.readById(this.pessoa.id.toString(), Endpoint.Obreiro + `/pessoa`)
-            .subscribe((result) => {
-              this.dadosObreiro = result.data && result.data.id > 0 ? result.data : new DadosObreiro();;
+          this.BuscarInformacoesObreiro()
+            .subscribe(result => {
+              this.dadosObreiro = result.data && result.data.id > 0 ? result.data : new DadosObreiro();
               this.spinner = false;
             }, (err) => {
               this.spinner = false;
@@ -273,6 +273,11 @@ export class CadastroMembrosComponent implements OnDestroy {
       default:
         break;
     }
+  }
+
+
+  private BuscarInformacoesObreiro() {
+    return this.serverApi.readById(this.pessoa.id.toString(), Endpoint.Obreiro + `/pessoa`)
   }
 
   Proximo() {
@@ -389,7 +394,7 @@ export class CadastroMembrosComponent implements OnDestroy {
         case 2:
           this.step++
           break
-          
+
         case 3:
 
           if (this.ValidarDadosMembro() && this.pessoa.id > 0) {
@@ -404,7 +409,7 @@ export class CadastroMembrosComponent implements OnDestroy {
               return this.toast.warning("Você só pode cadastrar ou alterar dados da sua igreja.");
             }
 
-            this.serverApi.readById(this.auth.dadosUsuario.IgrejaLogada > 0 ? this.auth.dadosUsuario.IgrejaLogada.toString() : this.pessoa.igrejaId.toString() , Endpoint.Igreja + `/regional`, '', 0)
+            this.serverApi.readById(this.auth.dadosUsuario.IgrejaLogada > 0 ? this.auth.dadosUsuario.IgrejaLogada.toString() : this.pessoa.igrejaId.toString(), Endpoint.Igreja + `/regional`, '', 0)
               .subscribe(response => {
                 this.dadosMembro.congregacao = response.congregacao ? response.congregacao : this.dadosMembro.congregacao;
                 this.dadosMembro.regional = response.regional ? response.regional : this.dadosMembro.regional;
@@ -521,20 +526,18 @@ export class CadastroMembrosComponent implements OnDestroy {
   ValidarDadosMembro(): boolean {
     let result: boolean = false;
     this.dadosMembro.rol == undefined ? this.toast.warning("Informe --> Nº Rol ") :
-      this.dadosMembro.congregacao == undefined && this.pessoa.id > 0 ? this.toast.warning("Informe a --> Congregação") :
-        this.dadosMembro.regional == undefined && this.pessoa.id > 0 ? this.toast.warning("Informe --> Regional") :
-          this.dadosMembro.batismoAguas == undefined && this.pessoa.id > 0 ? this.toast.warning("Informe a data de --> Batismo nas Águas") :
-            this.dadosMembro.batismoAguasIgreja == undefined && this.pessoa.id > 0 ? this.toast.warning("Informe a Igreja --> Batismo nas Águas") :
-              this.dadosMembro.batismoAguasCidade == undefined && this.pessoa.id > 0 ? this.toast.warning("Informe a Cidade --> Onde foi batizado") :
-                this.dadosMembro.batismoAguasEstado == undefined && this.pessoa.id > 0 ? this.toast.warning("Informe o Estado --> Onde foi batizado") :
-                  this.dadosMembro.membroDesde == undefined && this.pessoa.id > 0 ? this.toast.warning("Informe --> Membro Desde") :
-                    this.dadosMembro.validadeCartaoMembro == undefined && this.pessoa.id > 0 ? this.toast.warning("Informe a data --> Validade do cartão de Membro") :
-                      this.dadosMembro.funcao == undefined && this.pessoa.id > 0 || this.dadosMembro.funcao < 1 && this.pessoa.id > 0 ? this.toast.warning("Selecione a Função --> Função") :
-                        this.dadosMembro.cursoTeologico > 0 && this.dadosMembro.cursoTeologicoOndeCursou == undefined && this.pessoa.id > 0 ? this.toast.warning("Informe onde cursou Teologia.") :
-                          this.dadosMembro.funcao < this.funcaoMembroCache && this.pessoa.id > 0 ? this.toast.warning("A função não pode ser rebaixada") :
-                            this.dadosMembro.funcao > this.funcaoMembroCache && this.dadosMembro.funcao - this.funcaoMembroCache > 1 ? this.toast.warning("Função Inválida deve ser adicionada uma por vez!.") :
-                              this.dadosMembro.id == 0 && this.dadosMembro.funcao > 1 ? this.toast.warning("No Primeiro cadastro do Membro ele deve ser atribuido a função Membro.") :
-                                result = true
+      this.dadosMembro.batismoAguas == undefined && this.pessoa.id > 0 ? this.toast.warning("Informe a data de --> Batismo nas Águas") :
+        this.dadosMembro.batismoAguasIgreja == undefined && this.pessoa.id > 0 ? this.toast.warning("Informe a Igreja --> Batismo nas Águas") :
+          this.dadosMembro.batismoAguasCidade == undefined && this.pessoa.id > 0 ? this.toast.warning("Informe a Cidade --> Onde foi batizado") :
+            this.dadosMembro.batismoAguasEstado == undefined && this.pessoa.id > 0 ? this.toast.warning("Informe o Estado --> Onde foi batizado") :
+              this.dadosMembro.membroDesde == undefined && this.pessoa.id > 0 ? this.toast.warning("Informe --> Membro Desde") :
+                this.dadosMembro.validadeCartaoMembro == undefined && this.pessoa.id > 0 ? this.toast.warning("Informe a data --> Validade do cartão de Membro") :
+                  this.dadosMembro.funcao == undefined && this.pessoa.id > 0 || this.dadosMembro.funcao < 1 && this.pessoa.id > 0 ? this.toast.warning("Selecione a Função --> Função") :
+                    this.dadosMembro.cursoTeologico > 0 && this.dadosMembro.cursoTeologicoOndeCursou == undefined && this.pessoa.id > 0 ? this.toast.warning("Informe onde cursou Teologia.") :
+                      this.dadosMembro.funcao < this.funcaoMembroCache && this.pessoa.id > 0 ? this.toast.warning("A função não pode ser rebaixada") :
+                        this.dadosMembro.funcao > this.funcaoMembroCache && this.dadosMembro.funcao - this.funcaoMembroCache > 1 ? this.toast.warning("Função Inválida deve ser adicionada uma por vez!.") :
+                          this.dadosMembro.id == 0 && this.dadosMembro.funcao > 1 ? this.toast.warning("No Primeiro cadastro do Membro ele deve ser atribuido a função Membro.") :
+                            result = true
     return result;
   }
 
@@ -542,35 +545,37 @@ export class CadastroMembrosComponent implements OnDestroy {
 
     if (this.dadosMembro.funcao > 1 || aprovado && idHistorico > 0) {
 
-      if (!this.ValidarDadosMembro())
-        return;
-
       this.serviceUtil.Popup("Informar os dados", TipoPopup.ComponenteInstancia, HistoricoPopupComponent, idHistorico, 'auto', 'auto', false, aprovado)
         .subscribe(result => {
 
           if (result && result.Status) {
             this.historico = result.data
 
-            if (this.dadosObreiro.id == 0) {
-              this.dadosObreiro.id = 0;
-              this.dadosObreiro.pessoaId = this.pessoa.id;
+            this.BuscarInformacoesObreiro()
+              .subscribe(result => {
 
-              if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2)
-                return this.toast.warning("Você só pode cadastrar ou alterar dados da sua igreja.");
+                if (result.data.id == 0) {
+                  this.dadosObreiro.id = 0;
+                  this.dadosObreiro.pessoaId = this.pessoa.id;
 
-              this.serverApi.create(this.dadosObreiro, Endpoint.Obreiro)
-                .subscribe(x => {
-                  this.dadosObreiro = x;
-                  this.historico.dadosObreiroId = x.id
-                  this.AdicionarFuncaoObreiro();
-                  this.toast.success("Obreiro cadastrado com sucesso.")
-                });
+                  if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2)
+                    return this.toast.warning("Você só pode cadastrar ou alterar dados da sua igreja.");
 
-            } else {
-              this.AdicionarFuncaoObreiro();
-              this.toast.success("Obreiro alterado com sucesso.")
-            }
+                  this.serverApi.create(this.dadosObreiro, Endpoint.Obreiro)
+                    .subscribe(x => {
+                      this.dadosObreiro = x;
+                      this.historico.dadosObreiroId = x.id
+                      this.AdicionarFuncaoObreiro(this.dadosObreiro.id);
+                      this.toast.success("Obreiro cadastrado com sucesso.")
+                    });
 
+                } else {
+                  this.AdicionarFuncaoObreiro(result.data.id);
+                  this.toast.success("Obreiro alterado com sucesso.")
+                }
+
+
+              });
           } else {
             this.toast.warning("Informações ignoradas")
 
@@ -587,17 +592,36 @@ export class CadastroMembrosComponent implements OnDestroy {
 
   public ExcluirHistorico(id: number): void {
 
-    if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2) {
-      this.toast.warning("Você só pode cadastrar ou alterar dados da sua igreja.");
-      return;
-    }
+    this.serviceUtil.Popup("Informe o Motivo do obreiro não ter sido aprovado ", TipoPopup.Confirmacao, PopupConfirmacaoComponent)
+      .subscribe(result => {
+        if (result.Status) {
 
+          if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2)
+            return this.toast.warning("Você só pode cadastrar ou alterar dados da sua igreja.");
 
-    this.serverApi.create(id, Endpoint.HistoricoObreiro + `/excluir/${id}`)
-      .subscribe(() => {
-        this.toast.success("Histórico excluído com sucesso.");
-        this.BuscarMembro();
-      });
+          if (result.Motivo.trim().length < 5)
+            return this.toast.warning("O Motivo precisa ter pelo menos 5 letras.");
+
+          const request = {
+            id: id,
+            acao: result.Motivo
+          }
+          this.serverApi.create(request, Endpoint.HistoricoObreiro + `/excluir`)
+            .subscribe(() => {
+              this.toast.success("Histórico cancelado com sucesso.");
+              this.setStep(4);
+            });
+
+        }
+      },
+        (error) => {
+          this.toast.error("Problema pra cancelar o histórico!.");
+        });
+  }
+
+  public ExibirMotivoRejeicao(motivoRejeicao: any) {
+    this.serviceUtil
+      .Popup(`Motivo da rejeição: ${motivoRejeicao}`, TipoPopup.Confirmacao, PopupConfirmacaoComponent, 0, 'auto', 'auto', false, false, null, false);
   }
 
   AlteraSituacao() {
@@ -626,11 +650,11 @@ export class CadastroMembrosComponent implements OnDestroy {
     }
   }
 
-  AdicionarFuncaoObreiro() {
+  AdicionarFuncaoObreiro(idObreiro: number) {
 
-    if (this.dadosObreiro.id > 0) {
+    if (idObreiro > 0) {
 
-      this.historico.dadosObreiroId = this.dadosObreiro.id;
+      this.historico.dadosObreiroId = idObreiro;
       this.historico.funcao = this.dadosMembro.funcao;
 
       if (this.auth.dadosUsuario.IgrejaLogada != this.igrejaSelecionada && this.auth.dadosUsuario.TipoUsuarioLogado === 2)

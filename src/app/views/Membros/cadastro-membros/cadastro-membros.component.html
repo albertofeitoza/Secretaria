@@ -829,13 +829,18 @@
               <mat-cell *matCellDef="let row">{{row.aprovado ? 'Sim' : 'Não'}}</mat-cell>
             </ng-container>
 
+            <ng-container matColumnDef="observacao">
+              <mat-header-cell *matHeaderCellDef>Motivo</mat-header-cell>
+              <mat-cell *matCellDef="let row"><mat-icon matTooltip="Motivo da rejeição" (click)="ExibirMotivoRejeicao(row.observacao)">{{row.observacao ? 'assignment' : ''}}</mat-icon></mat-cell>
+            </ng-container>
+            
             <ng-container matColumnDef="action">
               <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
 
               <mat-cell *matCellDef="let row">
-                <mat-icon *ngIf="row.aprovado === 'Não'" matTooltip="Editar Historico!"
+                <mat-icon *ngIf="!row.aprovado && !row.observacao" matTooltip="Editar Historico!"
                   (click)="AtualizarFuncao(row.id, true)">edit</mat-icon>
-                <mat-icon *ngIf="row.aprovado === 'Não'" matTooltip="excluir Historico!"
+                <mat-icon *ngIf="!row.aprovado && !row.observacao" matTooltip="Rejeitar Historico!"
                   (click)="ExcluirHistorico(row.id)">delete</mat-icon>
               </mat-cell>
             </ng-container>
