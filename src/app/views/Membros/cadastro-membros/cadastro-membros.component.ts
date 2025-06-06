@@ -554,7 +554,7 @@ export class CadastroMembrosComponent implements OnDestroy {
             this.BuscarInformacoesObreiro()
               .subscribe(result => {
 
-                if (result.data.id == 0) {
+                if (result.code == 404) {
                   this.dadosObreiro.id = 0;
                   this.dadosObreiro.pessoaId = this.pessoa.id;
 
@@ -567,11 +567,13 @@ export class CadastroMembrosComponent implements OnDestroy {
                       this.historico.dadosObreiroId = x.id
                       this.AdicionarFuncaoObreiro(this.dadosObreiro.id);
                       this.toast.success("Obreiro cadastrado com sucesso.")
+
                     });
 
                 } else {
                   this.AdicionarFuncaoObreiro(result.data.id);
                   this.toast.success("Obreiro alterado com sucesso.")
+
                 }
 
 
@@ -620,6 +622,10 @@ export class CadastroMembrosComponent implements OnDestroy {
   }
 
   public ExibirMotivoRejeicao(motivoRejeicao: any) {
+
+    if (!motivoRejeicao)
+      return;
+
     this.serviceUtil
       .Popup(`Motivo da rejeição: ${motivoRejeicao}`, TipoPopup.Confirmacao, PopupConfirmacaoComponent, 0, 'auto', 'auto', false, false, null, false);
   }
@@ -662,7 +668,7 @@ export class CadastroMembrosComponent implements OnDestroy {
 
       this.serverApi.create(this.historico, Endpoint.HistoricoObreiro)
         .subscribe(() => {
-          this.BuscarMembro();
+          this.setStep(4);
         })
     }
   }

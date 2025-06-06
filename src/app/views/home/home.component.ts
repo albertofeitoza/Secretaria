@@ -6,12 +6,23 @@ import { AutenticacaoService } from 'src/app/services/autenticacao.service';
 import { Endpoint } from 'src/app/enum/Endpoints';
 import { AllservicesService } from 'src/app/services/allservices.service';
 import { ViewFinanceiro } from '../Financeiro/model/viewFinanceiro';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
+
+// class FoodNode {
+//   name: string;
+//   children?: FoodNode[];
+// }
+
+
+
+
 export class HomeComponent {
   private breakpointObserver = inject(BreakpointObserver);
   tUsuarioLogado = 0;
@@ -27,10 +38,43 @@ export class HomeComponent {
 
   showFiller = false;
 
+  TREE_DATA: any[] = [
+    {
+      name: 'Serviços',
+      children: [
+        { name: 'Em Cert de batismo' }, 
+        { name: 'Em Cert Pré Nupcial' }, 
+        { name: 'Em Cert Apr Crianças' }
+      ]
+    }
+    // ,
+    // {
+    //   name: 'Vegetables',
+    //   children: [
+    //     {
+    //       name: 'Green',
+    //       children: [{ name: 'Broccoli' }, { name: 'Brussels sprouts' }],
+    //     },
+    //     {
+    //       name: 'Orange',
+    //       children: [{ name: 'Pumpkins' }, { name: 'Carrots' }],
+    //     },
+    //   ],
+    // },
+  ];
+
+  treeControl = new NestedTreeControl<any>(node => node.children);
+  dataSource = new MatTreeNestedDataSource<any>();
+
+
   constructor(
     private auth: AutenticacaoService,
     private serviceApi: AllservicesService<any>
-  ) { }
+  ) {
+    this.dataSource.data = this.TREE_DATA;
+  }
+
+  hasChild = (_: number, node: any) => !!node.children && node.children.length > 0;
 
   ngOnInit() {
     this.PermissaoMenus();

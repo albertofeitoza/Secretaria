@@ -831,7 +831,7 @@
 
             <ng-container matColumnDef="observacao">
               <mat-header-cell *matHeaderCellDef>Motivo</mat-header-cell>
-              <mat-cell *matCellDef="let row"><mat-icon matTooltip="Motivo da rejeição" (click)="ExibirMotivoRejeicao(row.observacao)">{{row.observacao ? 'assignment' : ''}}</mat-icon></mat-cell>
+              <mat-cell *matCellDef="let row"><mat-icon (click)="ExibirMotivoRejeicao(row.observacao)">{{row.observacao ? 'assignment' : ''}}</mat-icon></mat-cell>
             </ng-container>
             
             <ng-container matColumnDef="action">

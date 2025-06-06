@@ -38,6 +38,7 @@ import { MatExpansionModule } from '@angular/material/expansion'
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core'
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import {MatTreeModule} from '@angular/material/tree';
 
 //configurar a app para português
 import localePt from '@angular/common/locales/pt';
@@ -156,6 +157,7 @@ registerLocaleData(localePt);
     MatPaginatorModule,
     MatExpansionModule,
     NgxPrintModule,
+    MatTreeModule,
     HttpClientModule,
     MatExpansionModule,
     MatIconModule,
